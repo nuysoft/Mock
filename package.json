@@ -1,0 +1,14 @@
+{
+  "name": "mock",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-qunit": "~0.2.1",
+    "grunt-contrib-watch": "~0.2.0",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "node-print": "0.0.2",
+    "jquery": "~1.8.3"
+  }
+}
