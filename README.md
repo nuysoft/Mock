@@ -4,7 +4,12 @@
 通过添加前置过滤器、重写 XHR 对象，从模拟数据中读取 URL 匹配的数据。
 
 ## 模拟数据
-基于一套数据模板机制，简化模拟数据的构造过程。
+基于一套数据模板语法，简化模拟数据的构造过程。
+
+## DEMO & Test Case
+* Demo: demo/mock.html
+* NodeUnit: test/mock-node.js
+* QUnit: test/mock.html
 
 ## 依赖 & 支持
 * 无依赖
@@ -46,9 +51,6 @@
 * @DATETIME
 * @LOREM
 * @LOREM_IPSUM
-
-## DEMO & Test Case
-</test/mock.html>
 
 ## 参考资料：
 * <http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html>
