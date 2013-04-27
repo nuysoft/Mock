@@ -7,7 +7,7 @@
 基于一套数据模板语法，简化模拟数据的构造过程。
 
 ## DEMO & Test Case
-* Demo: [demo/mock.html](blob/master/demo/mock.html)
+* Demo: [demo/mock.html](https://github.com/nuysoft/Mock/blob/master/demo/mock.html)
 * NodeUnit: [test/mock-node.js](blob/master/test/mock-node.js)
 * QUnit: [test/mock.html](blob/master/test/mock.html)
 
