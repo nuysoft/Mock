@@ -9,7 +9,7 @@
 ## DEMO & Test Case
 * Demo: [demo/mock.html](https://github.com/nuysoft/Mock/blob/master/demo/mock.html)
 * NodeUnit: [test/mock-node.js](https://github.com/nuysoft/Mock/blob/master/test/mock-node.js)
-* QUnit: [test/mock.html](https://github.com/nuysoft/Mock/blob/master/test/mock.html)
+* QUnit: [test/mock.html](https://github.com/nuysoft/Mock/blob/master/test/mock.html), [test/mock.js](https://github.com/nuysoft/Mock/blob/master/test/mock.js)
 
 ## 依赖 & 支持
 * 无依赖
