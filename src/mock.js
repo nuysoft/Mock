@@ -1,6 +1,7 @@
 /*
     Mock - 模拟请求 & 模拟数据
-    nuysoft@gmail.com
+    https://github.com/nuysoft/Mock
+    墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
 */
 (function(global) {
     var Mock = {
@@ -33,7 +34,6 @@
                 options.xhr = mockxhr
                 break;
             }
-
         })
 
         return Mock
@@ -72,7 +72,7 @@
             range = parameters && parameters[3] && parameters[3].match(rrange),
             min = range && parseInt(range[1], 10) || 1,
             max = range && parseInt(range[2], 10) || 1,
-            count = range && !range[2] && range[1] || round(random() * (max - min)) + min || 1,
+            count = range && !range[2] && parseInt(range[1], 10) || round(random() * (max - min)) + min || 1,
 
             decimal = parameters && parameters[4] && parameters[4].match(rrange),
             dmin = decimal && parseInt(decimal[1], 10) || 0,
@@ -83,9 +83,13 @@
             result, i
         switch (type(template)) {
             case 'array':
-                result = []
-                for (i = 0; i < count; i++) {
-                    result[i] = Mock.gen(template[0]);
+                if (count === 1 && template.length > 1) {
+                    result = template[floor(random() * template.length)];
+                } else {
+                    result = []
+                    for (i = 0; i < count; i++) {
+                        result[i] = Mock.gen(template[0]);
+                    }
                 }
                 break
             case 'object':
@@ -211,7 +215,7 @@
         },
         LOREM: function() {
             var words = 'lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(' ');
-            var index = Math.floor(random() * words.length);
+            var index = floor(random() * words.length);
             return words[index];
         },
         LOREM_IPSUM: function() {

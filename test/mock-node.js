@@ -20,6 +20,29 @@ exports.testArray = function(test) {
   test.done();
 };
 
+exports.testSelect = function(test) {
+  function t(name, value) {
+    var tpl = {}
+    tpl[name] = value
+    var data = Mock.mock(tpl)
+    test.ok(value.indexOf(data.opt) >= 0)
+  }
+
+  t('opt|1', [1, 2, 4, 8]);
+  t('opt|1', ['GET', 'POST', 'HEAD', 'DELETE']);
+  t('opt|1', [{
+    a: 1
+  }, {
+    a: 2
+  }, {
+    a: 3
+  }, {
+    a: 4
+  }]);
+
+  test.done();
+}
+
 exports.testFloat = function(test) {
   function t(name, value, min, max, dmin, dmax) {
     var tpl = {}
