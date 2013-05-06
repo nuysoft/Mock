@@ -65,7 +65,7 @@
     }
     Mock.gen = function(template, name) {
         // 1 name, 2 inc, 3 range, 4 decimal
-        var rkey = /(\w+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
+        var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
             rrange = /(\d+)-?(\d+)?/,
             parameters = (name = name || '').match(rkey),
 
@@ -252,8 +252,9 @@
 
                         console.log('[mock]', options.url, '>', mock.rurl)
                         var data = Mock.gen(mock.template)
-                        options.success(data)
-                        options.complete(data)
+                        console.log('[mock]', data)
+                        if (options.success) options.success(data)
+                        if (options.complete) options.complete(data)
                         return S
                     }
                     // }
