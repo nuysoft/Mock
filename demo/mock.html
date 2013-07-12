@@ -77,7 +77,14 @@
         'date': '@DATE',
         'time': '@TIME',
         'datetime': '@DATETIME',
-        'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
+        'method|1': ['GET', 'POST', 'HEAD', 'DELETE'],
+        'size': '@AD_SIZE',
+        'img1': '@IMG(200x200)',
+        'img2': '@IMG',
+        'img3': '@IMG(@size)',
+        'img4': '@img3 @id',
+        'param': '?abc=123',
+        'url': '@img3@param'
     }]
 }</textarea>
         <button></button>

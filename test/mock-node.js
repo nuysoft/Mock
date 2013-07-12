@@ -2,7 +2,7 @@ var Mock = require('../src/mock'),
   Print = require('node-print'),
   $ = require('jquery');
 
-Mock.mockjax($)
+// Mock.mockjax($)
 
 exports.testArray = function(test) {
   function t(name, min, max) {

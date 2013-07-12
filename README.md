@@ -58,3 +58,4 @@
 * <http://nuysoft.com/2013/04/15/angry-birds-of-javascript-green-bird-mocking/>
 * <https://github.com/mennovanslooten/mockJSON>
 * <https://github.com/appendto/jquery-mockjax>
+* <http://chancejs.com/>

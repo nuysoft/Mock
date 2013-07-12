@@ -1,6 +1,7 @@
 {
-  "name": "mock",
-  "version": "0.1.0",
+  "name": "Mock",
+  "description": "模拟请求 & 模拟数据",
+  "version": "0.1.1",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.0",
