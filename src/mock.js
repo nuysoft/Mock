@@ -102,6 +102,34 @@
         }
         return Mock
     }
+
+    function parsePlaceholder(placeholder, obj) {
+        // 1 key, 2 params
+        rplaceholder.exec('')
+        var parts = rplaceholder.exec(placeholder), // .match(/@([^\(\)]+)(?:\((.+)\))?/)
+            key = parts && parts[1],
+            lkey = key && key.toLowerCase(),
+            params = parts && parts[2] ? parts[2].split(/,\s*/) : []
+        if (key in obj) return obj[key]
+
+        if (!(key in Random) && !(lkey in Random)) return key
+
+        for (var i = 0; i < params.length; i++) {
+            rplaceholder.exec('')
+            if (rplaceholder.test(params[i])) {
+                params[i] = parsePlaceholder(params[i], obj)
+            }
+        }
+
+        var handle = Random[key] || Random[lkey]
+        switch (type(handle)) {
+            case 'array':
+                return Random.pick(handle)
+            case 'function':
+                return handle.apply(Random, params)
+        }
+    }
+
     Mock.gen = function(template, name, obj) {
         var parameters = (name = name || '').match(rkey),
 
@@ -179,7 +207,6 @@
                     }
                     // 'email|1-10': '@EMAIL, ',
                     var placeholders = result.match(rplaceholder) || [] // A-Z_0-9 > \w_
-                    // var placeholders = result.match(/@([\w_]+(?:\([^@]+\))?)/g) || [] // A-Z_0-9 > \w_
                     for (i = 0; i < placeholders.length; i++) {
                         var ph = placeholders[i]
                         result = result.replace(ph, parsePlaceholder(ph, obj))
@@ -196,38 +223,6 @@
         }
         return result
     }
-
-    /*
-        placeholder
-    */
-
-    function parsePlaceholder(placeholder, obj) {
-        // 1 key, 2 params
-        rplaceholder.exec('')
-        var parts = rplaceholder.exec(placeholder), // .match(/@([^\(\)]+)(?:\((.+)\))?/)
-            key = parts && parts[1],
-            lkey = key && key.toLowerCase(),
-            params = parts && parts[2] ? parts[2].split(/,\s*/) : []
-        if (key in obj) return obj[key]
-
-        if (!(key in Random) && !(lkey in Random)) return key
-
-        for (var i = 0; i < params.length; i++) {
-            rplaceholder.exec('')
-            if (rplaceholder.test(params[i])) {
-                params[i] = parsePlaceholder(params[i], obj)
-            }
-        }
-
-        var handle = Random[key] || Random[lkey]
-        switch (type(handle)) {
-            case 'array':
-                return Random.pick(handle)
-            case 'function':
-                return handle.apply(Random, params)
-        }
-    }
-
 
     /*
         Random
@@ -289,6 +284,9 @@
             if (arguments.length === 1) {
                 length = pool
                 pool = undefined
+            }
+            if (arguments.length === 0) {
+                length = Random.natural(3, 7)
             }
 
             var text = ''
@@ -415,7 +413,10 @@
                 IMG(size, background)
                 IMG(size)
             */
-            if (arguments.length === 4) text = format
+            if (arguments.length === 4) {
+                text = format
+                format = undefined
+            }
             if (arguments.length === 3) text = foreground
             if (!size) size = this.pick(this.ad_size)
 
@@ -515,11 +516,9 @@
                 this.natural(0, 255) + '.' +
                 this.natural(0, 255)
         },
-        tlds: function() {
-            return ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'];
-        },
+        tlds: ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'],
         tld: function() { // Top Level Domain
-            return this.pick(this.tlds());
+            return this.pick(this.tlds);
         }
     })
     // Address TODO
@@ -560,9 +559,33 @@
     // Miscellaneous
     Random.extend({
         // Dice
+        d4: function() {
+            return this.natural(1, 4)
+        },
+        d6: function() {
+            return this.natural(1, 6)
+        },
+        d8: function() {
+            return this.natural(1, 8)
+        },
+        d12: function() {
+            return this.natural(1, 12)
+        },
+        d20: function() {
+            return this.natural(1, 20)
+        },
+        d100: function() {
+            return this.natural(1, 100)
+        },
         // Guid
         guid: function() {
-
+            var pool = "ABCDEF1234567890",
+                guid = this.string(pool, 8) + '-' +
+                    this.string(pool, 4) + '-' +
+                    this.string(pool, 4) + '-' +
+                    this.string(pool, 4) + '-' +
+                    this.string(pool, 12);
+            return guid;
         },
         id: function() {
             return this.string('number', 2) + this.string('number', 2) + this.string('number', 2) +
@@ -574,13 +597,6 @@
 
     Mock.Random = Random
 
-    /*
-        Date Format
-    */
-
-    /*
-     
-     */
 
     /*
         For Module Loader
