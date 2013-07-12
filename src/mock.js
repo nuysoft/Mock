@@ -55,7 +55,14 @@
         jQuery.ajaxPrefilter("*", function(options) {
             for (var surl in _mocked) {
                 var mock = _mocked[surl]
-                if (!mock.rurl.test(options.url)) continue
+
+                if (jQuery.type(mock.rurl) === 'string') {
+                    if (mock.rurl !== options.url) continue
+                }
+                if (jQuery.type(mock.rurl) === 'regexp') {
+                    if (!mock.rurl.test(options.url)) continue
+                }
+
                 options.converters['text json'] = convert(mock)
                 options.xhr = mockxhr
                 break;
@@ -75,6 +82,14 @@
         round = Math.round,
         random = Math.random;
 
+    // 1 name, 2 inc, 3 range, 4 decimal
+    /*
+        name|+inc
+        name|repeat
+        name|min-max
+        name|min-max.dmin-dmax
+        name|int.dmin-dmax
+    */
     var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
         rrange = /(\d+)-?(\d+)?/,
         rplaceholder = /@([^@()\s]+)(?:\((.+?)\))?/g;
@@ -88,14 +103,6 @@
         return Mock
     }
     Mock.gen = function(template, name, obj) {
-        // 1 name, 2 inc, 3 range, 4 decimal
-        /*
-            name|+inc
-            name|repeat
-            name|min-max
-            name|min-max.dmin-dmax
-            name|int.dmin-dmax
-        */
         var parameters = (name = name || '').match(rkey),
 
             range = parameters && parameters[3] && parameters[3].match(rrange),
@@ -201,7 +208,6 @@
             key = parts && parts[1],
             lkey = key && key.toLowerCase(),
             params = parts && parts[2] ? parts[2].split(/,\s*/) : []
-            debugger
         if (key in obj) return obj[key]
 
         if (!(key in Random) && !(lkey in Random)) return key
@@ -595,7 +601,13 @@
                     // if (options.dataType === 'json') {
                     for (var surl in _mocked) {
                         var mock = _mocked[surl];
-                        if (!mock.rurl.test(options.url)) continue
+
+                        if (jQuery.type(mock.rurl) === 'string') {
+                            if (mock.rurl !== options.url) continue
+                        }
+                        if (jQuery.type(mock.rurl) === 'regexp') {
+                            if (!mock.rurl.test(options.url)) continue
+                        }
 
                         console.log('[mock]', options.url, '>', mock.rurl)
                         var data = Mock.gen(mock.template)
