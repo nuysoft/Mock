@@ -92,7 +92,7 @@
     */
     var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
         rrange = /(\d+)-?(\d+)?/,
-        rplaceholder = /@([^@()\s]+)(?:\((.+?)\))?/g;
+        rplaceholder = /@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g; // 
 
     Mock.mock = function(rurl, template) {
         if (arguments.length === 1) return Mock.gen(rurl)
@@ -106,7 +106,7 @@
     function parsePlaceholder(placeholder, obj) {
         // 1 key, 2 params
         rplaceholder.exec('')
-        var parts = rplaceholder.exec(placeholder), // .match(/@([^\(\)]+)(?:\((.+)\))?/)
+        var parts = rplaceholder.exec(placeholder),
             key = parts && parts[1],
             lkey = key && key.toLowerCase(),
             params = parts && parts[2] ? parts[2].split(/,\s*/) : []
@@ -426,6 +426,14 @@
                 (foreground ? '/' + foreground : '') +
                 (format ? '.' + format : '') +
                 (text ? '&text=' + text : '')
+        }
+    })
+    // COLOR
+    Random.extend({
+        color: function() {
+            var colour = Math.floor(Math.random() * (16 * 16 * 16 * 16 * 16 * 16 - 1)).toString(16)
+            colour = "#" + ("000000" + colour).slice(-6)
+            return colour;
         }
     })
     // Helpers
