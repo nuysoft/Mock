@@ -1,5 +1,5 @@
 {
-  "name": "Mock",
+  "name": "mock-data",
   "description": "模拟请求 & 模拟数据",
   "version": "0.1.1",
   "dependencies": {},
