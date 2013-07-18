@@ -41,48 +41,17 @@
     * `'time': '@TIME'` - 随机生成一段时间字符串，默认格式为 HH:mm:ss
     * `'datetime': '@DATETIME'` - 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss
 
-3. 支持的占位符（正在完善）
-    * @BOOL
-    * @NATURAL
-    * @INTEGER
-    * @CHARACTER
-    * @STRING
-    * @PATTERNLETTERS
-    * @RFORMAT
-    * @FORMAT
-    * @RANDOMDATE
-    * @DATE
-    * @TIME
-    * @DATETIME
-    * @AD_SIZE
-    * @SCREEN_SIZE
-    * @VIDEO_SIZE
-    * @IMG
-    * @CAPITALIZE
-    * @PICK
-    * @PARAGRAPH
-    * @SENTENCE
-    * @WORD
-    * @FIRST
-    * @LAST
-    * @NAME
-    * @DOMAIN
-    * @EMAIL
-    * @IP
-    * @TLDS
-    * @TLD
-    * @ADDRESS
-    * @CITY
-    * @PHONE
-    * @AREACODE
-    * @STREET
-    * @STREET_SUFFIXES
-    * @STREET_SUFFIX
-    * @STATES
-    * @STATE
-    * @ZIP
-    * @GUID
-    * @ID
+3. 支持的占位符
+    * @BOOL, @NATURAL, @INTEGER, @CHARACTER, @STRING
+    * @DATE, @TIME, @DATETIME
+    * @AD_SIZE, @SCREEN_SIZE, @VIDEO_SIZE, @IMG
+    * @COLOR
+    * @PARAGRAPH, @SENTENCE, @WORD
+    * @FIRST, @LAST, @NAME
+    * @DOMAIN, @EMAIL, @IP, @TLD
+    * @GUID, @ID
+    * TODO: @ADDRESS, @CITY, @PHONE, @AREACODE, @STREET, @STREET_SUFFIXES, @STREET_SUFFIX, @STATES, @STATE, @ZIP
+    
 
 ## 参考资料：
 * <http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html>
@@ -103,6 +72,7 @@
 * 2013.7.18
     * 增加占位符 @COLOR。
     * 完善对占位符的解析，过滤掉 `#%&()?/.`。
+    * 对“支持的占位符”分组。
 
 ## 规划
 1. √ 暴露产生随机元数据的接口。
