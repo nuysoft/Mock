@@ -224,6 +224,9 @@ exports.testRandom = function(test) {
 
   t('guid()', Random.guid())
   t('id()', Random.id())
+
+  t('area()', Random.area())
+  t('region()', Random.region())
   
   test.ok(true);
   test.done();

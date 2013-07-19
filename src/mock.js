@@ -17,12 +17,12 @@
             i = 1,
             length = arguments.length
         if (length === i) {
-            target = this;
-            --i;
+            target = this
+            i = i - 1
         }
         for (; i < arguments.length; i++) {
             for (var name in arguments[i]) {
-                target[name] = arguments[i][name];
+                target[name] = arguments[i][name]
             }
         }
     }
@@ -65,7 +65,7 @@
 
                 options.converters['text json'] = convert(mock)
                 options.xhr = mockxhr
-                break;
+                break
             }
         })
 
@@ -170,7 +170,7 @@
                     // 'id|+1': 1
                     var inc = key.match(rkey)
                     if (inc && inc[2] && type(template[key]) === 'number') {
-                        template[key] += parseInt(inc[2], 10);
+                        template[key] += parseInt(inc[2], 10)
                     }
                 }
                 break
@@ -191,7 +191,7 @@
                     result = parseFloat(parts.join('.'))
                 } else { // integer
                     // 'grade1|1-100': 1,
-                    result = range && !parameters[2] ? count : template;
+                    result = range && !parameters[2] ? count : template
                 }
                 break
             case 'boolean':
@@ -307,7 +307,7 @@
 
             MM: function(date) {
                 var m = date.getMonth() + 1;
-                return m < 10 ? '0' + m : m;
+                return m < 10 ? '0' + m : m
             },
             M: function(date) {
                 return date.getMonth() + 1;
@@ -394,10 +394,10 @@
     // image
     Random.extend({
         ad_size: [
-                '300×250', '250×250', '240×400', '336×280', '180×150',
-                '720×300', '468×60', '234×60', '88×31', '120×90',
-                '120×60', '120×240', '125×125', '728×90', '160×600',
-                '120×600', '300×600'
+                '300x250', '250x250', '240x400', '336x280', '180x150',
+                '720x300', '468x60', '234x60', '88x31', '120x90',
+                '120x60', '120x240', '125x125', '728x90', '160x600',
+                '120x600', '300x600'
         ],
         screen_size: [
                 '320x200', '320x240', '640x480', '800x480', '800x480',
@@ -531,6 +531,26 @@
     })
     // Address TODO
     Random.extend({
+        areas: ['东北', '华北', '华东', '华中', '华南', '西南', '西北'],
+        area: function() {
+            return this.pick(this.areas)
+        },
+
+        regions: [
+            // 23个省 
+            '河北省', '山西省', '辽宁省', '吉林省', '黑龙江省', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省', '河南省', '湖北省', '湖南省', '广东省', '海南省', '四川省', '贵州省', '云南省', '陕西省', '甘肃省', '青海省', '台湾省',
+            // 4个直辖市 
+            '北京市', '天津市', '上海市', '重庆市',
+            // 5个自治区 
+            '广西壮族自治区', '内蒙古自治区', '西藏自治区', '宁夏回族自治区', '新疆维吾尔自治区',
+            // 2个特别行政区
+            '香港特别行政区', '澳门特别行政区'
+        ],
+        region: function() {
+            return this.pick(this.regions)
+        },
+
+
         address: function() {
 
         },
@@ -564,6 +584,12 @@
             return zip
         }
     })
+    // TODO ...
+    Random.extend({
+        todo: function() {
+            return 'todo'
+        }
+    })
     // Miscellaneous
     Random.extend({
         // Dice
@@ -587,6 +613,11 @@
         },
         // Guid
         guid: function() {
+            /*
+                http://www.broofa.com/2008/09/javascript-uuid-function/
+                http://www.ietf.org/rfc/rfc4122.txt
+                http://chancejs.com/#guid
+            */
             var pool = "ABCDEF1234567890",
                 guid = this.string(pool, 8) + '-' +
                     this.string(pool, 4) + '-' +
@@ -611,11 +642,11 @@
      */
     if (typeof define === "function") { // for seajs
         define(function() {
-            return Mock;
-        });
+            return Mock
+        })
     }
     if (typeof module !== 'undefined' && module.exports) { // for node
-        module.exports = Mock;
+        module.exports = Mock
     }
     if (typeof KISSY != 'undefined' && KISSY.add) { // for kissy
         KISSY.add('components/mock/index', function(S) {
@@ -641,18 +672,18 @@
                         return S
                     }
                     // }
-                    return _original_ajax.apply(this, arguments);
+                    return _original_ajax.apply(this, arguments)
                 }
             }
-            Mock.mockjax(S);
-            return Mock;
+            Mock.mockjax(S)
+            return Mock
         }, {
             requires: ['ajax']
         })
     }
 
-    global.Mock = Mock;
+    global.Mock = Mock
 
-    return Mock;
+    return Mock
 
 })(this)
