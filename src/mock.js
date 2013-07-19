@@ -112,7 +112,7 @@
             params = parts && parts[2] ? parts[2].split(/,\s*/) : []
         if (key in obj) return obj[key]
 
-        if (!(key in Random) && !(lkey in Random)) return key
+        if (!(key in Random) && !(lkey in Random)) return placeholder
 
         for (var i = 0; i < params.length; i++) {
             rplaceholder.exec('')
@@ -126,7 +126,9 @@
             case 'array':
                 return Random.pick(handle)
             case 'function':
-                return handle.apply(Random, params)
+                var re = handle.apply(Random, params)
+                if (re == undefined) re = ''
+                return re
         }
     }
 
