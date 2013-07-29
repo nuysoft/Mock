@@ -24,6 +24,18 @@ module.exports = function(grunt) {
                 files: ['<%= jshint.files %>', 'test/**/*.*'],
                 tasks: ['jshint', 'nodeunit']
             }
+        },
+        uglify: {
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+            },
+            src: {
+                expand: true,
+                cwd: 'src/',
+                src: ['**/*.js', '!**/*-min.js'],
+                dest: 'build/',
+                ext: '-min.js'
+            }
         }
     });
 
@@ -31,6 +43,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('default', ['jshint', 'nodeunit', 'watch:dev']);
+    grunt.registerTask('build', ['jshint', 'nodeunit', 'uglify']);
 };

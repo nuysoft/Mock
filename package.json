@@ -10,6 +10,9 @@
     "grunt-contrib-watch": "~0.2.0",
     "grunt-contrib-nodeunit": "~0.1.2",
     "node-print": "0.0.2",
-    "jquery": "~1.8.3"
+    "jquery": "~1.8.3",
+    "grunt-contrib-uglify": "~0.2.2",
+    "handlebars": "~1.0.12",
+    "underscore": "~1.5.1"
   }
 }

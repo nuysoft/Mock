@@ -9,19 +9,22 @@
     }, _mocked = {};
 
     /*
-        Utilities
+        Utilities/utility
     */
 
     function extend() {
         var target = arguments[1] || {},
             i = 1,
-            length = arguments.length
+            length = arguments.length,
+            name
+
         if (length === i) {
             target = this
             i = i - 1
         }
+
         for (; i < arguments.length; i++) {
-            for (var name in arguments[i]) {
+            for (name in arguments[i]) {
                 target[name] = arguments[i][name]
             }
         }
@@ -32,55 +35,8 @@
     }
 
     /*
-        mock ajax
-    */
-
-    Mock.mockjax = function mockjax(jQuery) {
-        function mockxhr() {
-            return {
-                open: jQuery.noop,
-                send: jQuery.noop,
-                getAllResponseHeaders: jQuery.noop,
-                readyState: 4,
-                status: 200
-            }
-        }
-
-        function convert(mock) {
-            return function() {
-                return Mock.gen(mock.template)
-            }
-        }
-
-        jQuery.ajaxPrefilter("*", function(options) {
-            for (var surl in _mocked) {
-                var mock = _mocked[surl]
-
-                if (jQuery.type(mock.rurl) === 'string') {
-                    if (mock.rurl !== options.url) continue
-                }
-                if (jQuery.type(mock.rurl) === 'regexp') {
-                    if (!mock.rurl.test(options.url)) continue
-                }
-
-                options.converters['text json'] = convert(mock)
-                options.xhr = mockxhr
-                break
-            }
-        })
-
-        return Mock
-    }
-    if (global.jQuery) Mock.mockjax(jQuery)
-
-
-    /*
         mock data
     */
-    var fromCharCode = String.fromCharCode,
-        floor = Math.floor,
-        round = Math.round,
-        random = Math.random;
 
     // 1 name, 2 inc, 3 range, 4 decimal
     /*
@@ -139,13 +95,13 @@
             min = range && parseInt(range[1], 10), // || 1
             max = range && parseInt(range[2], 10), // || 1
             // repeat || min-max || 1
-            count = range ? !range[2] && range[1] || round(random() * (max - min)) + min : 1,
+            count = range ? !range[2] && range[1] || Random.integer(min, max) : 1,
 
             decimal = parameters && parameters[4] && parameters[4].match(rrange),
             dmin = decimal && parseInt(decimal[1], 10), // || 0,
             dmax = decimal && parseInt(decimal[2], 10), // || 0,
             // int || dmin-dmax || 0
-            dcount = decimal ? !decimal[2] && decimal[1] || round(random() * (dmax - dmin)) + dmin : 0,
+            dcount = decimal ? !decimal[2] && decimal[1] || Random.integer(dmin, dmax) : 0,
 
             point = parameters && parameters[4],
             result, i;
@@ -154,9 +110,11 @@
         dcount = parseInt(dcount, 10)
         switch (type(template)) {
             case 'array':
+                if (!parameters) return template
+
                 // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
                 if (count === 1 && template.length > 1) {
-                    result = template[floor(random() * template.length)]
+                    result = Random.pick(template)
                 } else {
                     // 'data|1-10': [{}]
                     result = []
@@ -198,7 +156,7 @@
                 break
             case 'boolean':
                 // 'published|0-1': false,
-                result = parameters ? random() >= 0.5 : template
+                result = parameters ? Random.bool() : template
                 break
             case 'string':
                 if (template.length) {
@@ -215,8 +173,7 @@
                     }
                 } else {
                     // 'ASCII|1-10': '',
-                    result = ''
-                    for (i = 0; i < count; i++) result += fromCharCode(floor(random() * 255))
+                    result = Random.string(count)
                 }
                 break
             default:
@@ -378,7 +335,7 @@
             })
         },
         randomDate: function() { // min, max
-            return new Date(floor(random() * new Date().valueOf()))
+            return new Date(Math.floor(Math.random() * new Date().valueOf()))
         },
         date: function(format) {
             format = format || 'yyyy-MM-dd'
@@ -637,6 +594,47 @@
     })
 
     Mock.Random = Random
+
+    /*
+        mock ajax
+    */
+    Mock.mockjax = function mockjax(jQuery) {
+        function mockxhr() {
+            return {
+                open: jQuery.noop,
+                send: jQuery.noop,
+                getAllResponseHeaders: jQuery.noop,
+                readyState: 4,
+                status: 200
+            }
+        }
+
+        function convert(mock) {
+            return function() {
+                return Mock.gen(mock.template)
+            }
+        }
+
+        jQuery.ajaxPrefilter("*", function(options) {
+            for (var surl in _mocked) {
+                var mock = _mocked[surl]
+
+                if (jQuery.type(mock.rurl) === 'string') {
+                    if (mock.rurl !== options.url) continue
+                }
+                if (jQuery.type(mock.rurl) === 'regexp') {
+                    if (!mock.rurl.test(options.url)) continue
+                }
+
+                options.converters['text json'] = convert(mock)
+                options.xhr = mockxhr
+                break
+            }
+        })
+
+        return Mock
+    }
+    if (global.jQuery) Mock.mockjax(jQuery)
 
 
     /*
