@@ -657,10 +657,10 @@
                     for (var surl in _mocked) {
                         var mock = _mocked[surl];
 
-                        if (jQuery.type(mock.rurl) === 'string') {
+                        if (KISSY.type(mock.rurl) === 'string') {
                             if (mock.rurl !== options.url) continue
                         }
-                        if (jQuery.type(mock.rurl) === 'regexp') {
+                        if (KISSY.type(mock.rurl) === 'regexp') {
                             if (!mock.rurl.test(options.url)) continue
                         }
 

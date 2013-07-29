@@ -4,6 +4,22 @@ var Mock = require('../src/mock'),
 
 Mock.mockjax($)
 
+exports.testOrigArray = function(test) {
+  var arr = [{
+      foo: 'foo'
+    }, {
+      bar: 'bar'
+    }, {
+      foobar: 'foobar'
+    }
+  ];
+  var data = Mock.mock({
+    arr: arr
+  })
+  test.ok(data.arr === arr)
+  test.done();
+}
+
 exports.testArray = function(test) {
   function t(name, min, max) {
     var tpl = {}
@@ -108,7 +124,7 @@ exports.testHolder = function(test) {
       holder: value
     }
     var data = Mock.mock(tpl)
-    console.log(value, data.holder)
+    console.log(value, data)
   }
   t('@EMAIL')
   t('@DATE')
@@ -227,7 +243,7 @@ exports.testRandom = function(test) {
 
   t('area()', Random.area())
   t('region()', Random.region())
-  
+
   test.ok(true);
   test.done();
 }

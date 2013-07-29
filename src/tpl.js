@@ -40,6 +40,10 @@ console.log(JSON.stringify(ast, null, 4));
 for (var n in Handlebars.AST) {
     console.log(n);
 }
+
+/*
+    TODO
+*/
 var Mock4Tpl = {
     AST: {
         ProgramNode: function() {
