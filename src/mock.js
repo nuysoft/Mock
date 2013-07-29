@@ -110,7 +110,13 @@
         dcount = parseInt(dcount, 10)
         switch (type(template)) {
             case 'array':
-                if (!parameters) return template
+                // if (!parameters) return template
+                if (!parameters) {
+                    for (var i = 0; i < template.length; i++) {
+                        template[i] = Mock.gen(template[i])
+                    }
+                    return template
+                }
 
                 // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
                 if (count === 1 && template.length > 1) {

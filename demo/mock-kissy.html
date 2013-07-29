@@ -6,13 +6,25 @@
         <script src="../src/mock.js"></script>
         <title>Mock</title>
         <script type="text/javascript">
-            Mock.mock('abc.json', {
+            Mock.mock('foo.json', {
               'list|1-10':[{
                 'id|+1':1
               }]
             });
+            Mock.mock('bar.json', {
+              'list':[{
+                'id|+1':1
+              }]
+            });
             KISSY.use('components/mock/index',function(){
-                KISSY.io({url:'abc.json', success: function(data){console.log('data:', data)} })
+                KISSY.io({
+                    url:'foo.json', 
+                    success: function(data){ console.log('foo:', data) } 
+                })
+                KISSY.io({
+                    url:'bar.json',
+                    success: function(data){ console.log('bar:', data) } 
+                })
             });
         </script>
       </head>
