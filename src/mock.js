@@ -127,7 +127,7 @@
                 return Random.pick(handle)
             case 'function':
                 var re = handle.apply(Random, params)
-                if (re == undefined) re = ''
+                if (re === undefined) re = ''
                 return re
         }
     }
