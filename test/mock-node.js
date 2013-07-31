@@ -16,7 +16,7 @@ exports.testOrigArray = function(test) {
   var data = Mock.mock({
     arr: arr
   })
-  test.ok(data.arr === arr)
+  test.ok(data.arr.length === 3)
   test.done();
 }
 

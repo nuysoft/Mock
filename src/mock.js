@@ -112,20 +112,20 @@
             case 'array':
                 // if (!parameters) return template
                 if (!parameters) {
-                    for (var i = 0; i < template.length; i++) {
-                        template[i] = Mock.gen(template[i])
-                    }
-                    return template
-                }
-
-                // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
-                if (count === 1 && template.length > 1) {
-                    result = Random.pick(template)
-                } else {
-                    // 'data|1-10': [{}]
                     result = []
-                    for (i = 0; i < count; i++) {
-                        result[i] = Mock.gen(template[0])
+                    for (i = 0; i < template.length; i++) {
+                        result.push(Mock.gen(template[i]))
+                    }
+                } else {
+                    // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
+                    if (count === 1 && template.length > 1) {
+                        result = Random.pick(template)
+                    } else {
+                        // 'data|1-10': [{}]
+                        result = []
+                        for (i = 0; i < count; i++) {
+                            result[i] = Mock.gen(template[0])
+                        }
                     }
                 }
                 break

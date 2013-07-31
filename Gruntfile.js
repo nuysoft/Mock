@@ -13,7 +13,7 @@ module.exports = function(grunt) {
             files: ['test/**/*.html']
         },
         nodeunit: {
-            all: ['test/mock-node.js']
+            all: ['test/mock-node.js','test/mock4tpl-node.js']
         },
         watch: {
             dev: {
