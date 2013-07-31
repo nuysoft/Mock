@@ -66,7 +66,7 @@
             key = parts && parts[1],
             lkey = key && key.toLowerCase(),
             params = parts && parts[2] ? parts[2].split(/,\s*/) : []
-        if (key in obj) return obj[key]
+        if (obj && (key in obj)) return obj[key]
 
         if (!(key in Random) && !(lkey in Random)) return placeholder
 
@@ -201,13 +201,13 @@
             return Math.random() >= 0.5
         },
         natural: function(min, max) {
-            min = typeof min !== 'undefined' ? min : 0
-            max = typeof max !== 'undefined' ? max : 9007199254740992 // 2^53
+            min = typeof min !== 'undefined' ? parseInt(min, 10) : 0
+            max = typeof max !== 'undefined' ? parseInt(max, 10) : 9007199254740992 // 2^53
             return Math.round(Math.random() * (max - min)) + min
         },
         integer: function(min, max) {
-            min = typeof min !== 'undefined' ? min : -9007199254740992
-            max = typeof max !== 'undefined' ? max : 9007199254740992 // 2^53
+            min = typeof min !== 'undefined' ? parseInt(min, 10) : -9007199254740992
+            max = typeof max !== 'undefined' ? parseInt(max, 10) : 9007199254740992 // 2^53
             return Math.round(Math.random() * (max - min)) + min
         },
         character: function(pool) {
