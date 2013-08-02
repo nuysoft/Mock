@@ -13,6 +13,7 @@
     "jquery": "~1.8.3",
     "grunt-contrib-uglify": "~0.2.2",
     "handlebars": "~1.0.12",
-    "underscore": "~1.5.1"
+    "underscore": "~1.5.1",
+    "codemirror": "~3.15.0"
   }
 }

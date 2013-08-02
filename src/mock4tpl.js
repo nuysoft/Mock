@@ -8,28 +8,8 @@
         Mock = global.Mock
     }
 
-    var Util = {};
-    Util.type = function type(obj) {
-        return (obj === null || obj === undefined) ? String(obj) : Object.prototype.toString.call(obj).match(/\[object (\w+)\]/)[1].toLowerCase()
-    }
-    Util.each = function(obj, iterator, context) {
-        var i, key
-        if (this.type(obj) === 'number') {
-            for (i = 0; i < obj; i++) {
-                iterator(i, i)
-            }
-        } else if (obj.length === +obj.length) {
-            for (i = 0; i < obj.length; i++) {
-                if (iterator.call(context, obj[i], i, obj) === false) break;
-            }
-        } else {
-            for (key in obj) {
-                if (iterator.call(context, obj[key], key, obj) === false) break;
-            }
-        }
-    }
+    var Util = Mock.Util;
 
-    // if (!console.group) console.group = console.groupEnd = console.log
     if (!console.group) {
         console._log = console.log
         console._indent = ''
@@ -59,116 +39,190 @@
     }
 
     /*
-        for (var n in Handlebars.AST) console.log(n);
+        Mock4Tpl.gen(ast)
+        Mock4Tpl.gen(node, result)
+        Mock4Tpl.gen(node, result, options)
+        Mock4Tpl.gen(node, result, options, helpers)
      */
     var Mock4Tpl = {
-        gen: function(node, result, options) {
+        gen: function(node, result, options, helpers) {
             result = result || {}
             options = options || {}
 
             // console.group('[' + node.type + ']', (node))
             // console.log('[result]', result)
 
-            this[node.type](node, result, options)
+            this[node.type](node, result, options, helpers)
 
             // console.log('[result]', result)
             // console.groupEnd()
 
             return result
         },
+        /*
+            name    字符串，属性名
+            options 字符串或对象，数据模板
+            result  父节点
+            def     默认值
+        */
         val: function(name, options, result, def) {
+            if (def) def = Mock.mock(def)
             if (options) {
                 var mocked = Mock.mock(options)
+                if (Util.isString(mocked)) return mocked
                 if (name in mocked) {
-                    if (Util.type(mocked[name]) === 'array') return []
-                    if (Util.type(mocked[name]) === 'object') return {}
+                    if (Util.isArray(mocked[name])) return mocked[name]
+                        // if (Util.isObject(mocked[name])) return {}
                     return mocked[name]
                 }
             }
+            if (Util.isArray(result)) return []
             return def || (name) || Mock.Random.word()
         }
     }
-    Mock4Tpl.program = function(node, result, options) {
+
+
+    /*
+        for (var n in Handlebars.AST) console.log(n);
+    */
+    Mock4Tpl.program = function(node, result, options, helpers) {
         for (var i = 0; i < node.statements.length; i++) {
-            Mock4Tpl.gen(node.statements[i], result, options)
+            this.gen(node.statements[i], result, options, helpers)
         }
+        // TODO node.inverse
     }
-    Mock4Tpl.mustache = function(node, result, options) { // string id params
-        var i, len, cur, prev, type;
+    Mock4Tpl.mustache = function(node, result, options, helpers) { // string id params
+        var i, len, cur, prev, type, params, def, val;
         parts = node.id.parts
         if (Util.type(result) === 'array') {
             result.push({})
             result = result[result.length - 1]
         }
-        for (i = 0, len = parts.length; i < len; i++) {
-            cur = parts[i]
-            prev = parts[i - 1]
-            type = Util.type(prev)
-            if (i === 0) {
-                if (!result[cur]) result[cur] = this.val(cur, options, result)
+
+        // "isHelper": 1
+        if (node.isHelper || helpers && helpers[node.id.string]) {
+            if (node.params.length === 0) {
+                // TODO
             } else {
-                if (type !== 'object' && type !== 'array') {
-                    result[prev] = {}
-                    result[prev][cur] = this.val(cur, options, result[prev])
+                params = node.params[0].parts
+                for (i = 0; params && i < params.length; i++) {
+                    cur = params[i]
+                    if (params.length > 1) {
+                        // a.b.c 待优化
+                        def = i === params.length - 1 ? [] : {}
+                    } else def = undefined
+                    val = this.val(cur, options, result, def)
+                    result = result[cur] = val
+                }
+            }
+        } else {
+            if (!parts.length) {
+                // TODO 修正父节点的类型
+            } else {
+                for (i = 0, len = parts.length; i < len; i++) {
+                    cur = parts[i]
+                    prev = parts[i - 1]
+
+                    if (i === 0) {
+                        if (!result[cur]) result[cur] = this.val(cur, options, result)
+                    } else {
+                        type = Util.type(result[prev])
+                        if (type !== 'object' && type !== 'array') {
+                            result[prev] = {}
+                            result[prev][cur] = this.val(cur, options, result[prev])
+                        }
+                        if (type === 'object') {
+                            val = this.val(cur, options, result[prev])
+                            result = result[prev]
+                            result[cur] = val
+                        }
+                    }
                 }
             }
         }
+
+
     }
     Mock4Tpl.partial = function() {}
-    Mock4Tpl.block = function(node, result, options) { // mustache program inverse
+    Mock4Tpl.block = function(node, result, options, helpers) { // mustache program inverse
         var mustache = node.mustache,
-            expression = mustache.id.string,
             parts = mustache.id.parts,
-            i, len, type;
+            i, len, cur, val, params, def;
+
+        if (node.inverse) {
+            // TODO 
+        }
 
         // block.mustache
         if (mustache.isHelper) {
             // helper: each if unless with log
             switch (parts[0]) {
                 case 'each':
-                    var params = mustache.params[0].parts,
-                        param, def, val
+                    params = mustache.params[0].parts
                     for (i = 0; i < params.length; i++) {
-                        param = params[i]
+                        cur = params[i]
                         def = i === params.length - 1 ? [] : {}
-                        val = this.val(param, options, null, def)
-                        result = result[param] = val
+                        val = this.val(cur, options, result, def)
+                        result = result[cur] = Util.isArray(val) ? [] : val
                     }
                     break;
                 case 'if':
-                    break;
                 case 'unless':
+                    params = mustache.params[0].parts
+                    for (i = 0; i < params.length; i++) {
+                        cur = params[i]
+                        def = i === params.length - 1 ? '@BOOL' : {}
+                        val = this.val(cur, options, result, def)
+                        if (val === 'true') val = true
+                        if (val === 'false') val = false
+                        result[cur] = Util.isArray(val) ? [] : val
+                        if (Util.isObject(result[cur]) || Util.isArray(result[cur])) result = result[cur]
+                    }
                     break;
                 case 'with':
+                    params = mustache.params[0].parts
+                    for (i = 0; i < params.length; i++) {
+                        cur = params[i]
+                        def = {}
+                        val = this.val(cur, options, result, def)
+                        result = result[cur] = val
+                    }
                     break;
                 case 'log':
                     break;
                 default:
-                    result = result[expression] = {}
+                    // custom helper
+                    params = mustache.params[0].parts
+                    for (i = 0; i < params.length; i++) {
+                        cur = params[i]
+                        def = i === params.length - 1 ? [] : {}
+                        val = this.val(cur, options, result, def)
+                        result = result[cur] = val
+                    }
+                    // result = result[expression] = {}
             }
         } else {
             for (i = 0; i < parts.length; i++) {
                 cur = parts[i]
-                result[cur] = this.val(cur, options, result, {})
-                type = Util.type(result[cur])
-                if (type === 'object' || type === 'array') result = result[cur]
+
+                val = this.val(cur, options, result, {})
+                if (Util.isArray(val)) val = []
+                result[cur] = val
+
+                if (Util.isObject(result[cur]) || Util.isArray(result[cur])) result = result[cur]
             }
         }
         // block.program
         if (!node.program) return
         if (Util.type(result) === 'array') {
-            for (i = 0, len = Mock.Random.integer(3, 7); i < len; i++) {
-                var item = this.gen(node.program, {}, options)
-                result.push(item)
-
-                /*
-                // 不会更新 {}
-                result.push({})
-                result[result.length - 1]['random'] = Math.random()
-                this.gen(node.program, result[result.length - 1], options)
-                */
+            // val = this.val(cur, options, result)
+            len = val.length || Mock.Random.integer(3, 7)
+            for (i = 0; i < len; i++) {
+                if (val[i]) result.push(val[i])
+                else result.push({})
+                this.gen(node.program, result[result.length - 1], options, helpers)
             }
-        } else Mock4Tpl.gen(node.program, result, options)
+        } else this.gen(node.program, result, options, helpers)
     }
     Mock4Tpl.content = function() {}
     Mock4Tpl.hash = function() {}
@@ -180,11 +234,11 @@
     Mock4Tpl.BOOLEAN = function() {}
     Mock4Tpl.comment = function() {}
 
-    if (typeof module !== 'undefined' && module.exports) { // for node
+    // for node
+    if (typeof module !== 'undefined' && module.exports) {
         module.exports = Mock4Tpl
     }
-
+    // for browser
     global.Mock4Tpl = Mock4Tpl
-    return Mock4Tpl
 
 })(this)

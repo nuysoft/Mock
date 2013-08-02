@@ -3,7 +3,7 @@
     https://github.com/nuysoft/Mock
     墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
 */
-(function(global) {
+(function(global, undefined) {
     var Mock = {
         VERSION: '0.1.1'
     }, _mocked = {};
@@ -11,28 +11,69 @@
     /*
         Utilities/utility
     */
+    var Util = {}
 
-    function extend() {
-        var target = arguments[1] || {},
+    Util.extend = function extend() {
+        var target = arguments[0] || {},
             i = 1,
             length = arguments.length,
-            name
+            options, name, src, copy
 
-        if (length === i) {
+        if (length === 1) {
             target = this
-            i = i - 1
+            i = 0
         }
 
-        for (; i < arguments.length; i++) {
-            for (name in arguments[i]) {
-                target[name] = arguments[i][name]
+        for (; i < length; i++) {
+            options = arguments[i]
+            if (!options) continue
+
+            for (name in options) {
+                src = target[name]
+                copy = options[name]
+
+                if (target === copy) continue
+                if (copy === undefined) continue
+
+                if (Util.isArray(copy) || Util.isObject(copy)) {
+                    if (Util.isArray(copy)) clone = src && Util.isArray(src) ? src : []
+                    if (Util.isObject(copy)) clone = src && Util.isObject(src) ? src : {}
+
+                    target[name] = Util.extend(clone, copy)
+                } else {
+                    target[name] = copy
+                }
+            }
+        }
+
+        return target
+    }
+    Util.each = function each(obj, iterator, context) {
+        var i, key
+        if (this.type(obj) === 'number') {
+            for (i = 0; i < obj; i++) {
+                iterator(i, i)
+            }
+        } else if (obj.length === +obj.length) {
+            for (i = 0; i < obj.length; i++) {
+                if (iterator.call(context, obj[i], i, obj) === false) break
+            }
+        } else {
+            for (key in obj) {
+                if (iterator.call(context, obj[key], key, obj) === false) break
             }
         }
     }
 
-    function type(obj) {
+    Util.type = function type(obj) {
         return (obj === null || obj === undefined) ? String(obj) : Object.prototype.toString.call(obj).match(/\[object (\w+)\]/)[1].toLowerCase()
     }
+
+    Util.each('String Object Array'.split(' '), function(value) {
+        Util['is' + value] = function(obj) {
+            return Util.type(obj) === value.toLowerCase()
+        }
+    })
 
     /*
         mock data
@@ -78,7 +119,7 @@
         }
 
         var handle = Random[key] || Random[lkey]
-        switch (type(handle)) {
+        switch (Util.type(handle)) {
             case 'array':
                 return Random.pick(handle)
             case 'function':
@@ -108,7 +149,7 @@
 
         count = parseInt(count, 10)
         dcount = parseInt(dcount, 10)
-        switch (type(template)) {
+        switch (Util.type(template)) {
             case 'array':
                 // if (!parameters) return template
                 if (!parameters) {
@@ -135,7 +176,7 @@
                     result[key.replace(rkey, '$1')] = Mock.gen(template[key], key, result)
                     // 'id|+1': 1
                     var inc = key.match(rkey)
-                    if (inc && inc[2] && type(template[key]) === 'number') {
+                    if (inc && inc[2] && Util.type(template[key]) === 'number') {
                         template[key] += parseInt(inc[2], 10)
                     }
                 }
@@ -161,8 +202,9 @@
                 }
                 break
             case 'boolean':
-                // 'published|0-1': false,
-                result = parameters ? Random.bool() : template
+                // 'prop|multiple': false,
+                // 'prop|probability-probability': false,
+                result = parameters ? Random.bool(min, max, template) : template
                 break
             case 'string':
                 if (template.length) {
@@ -193,18 +235,26 @@
         Random
     */
     var Random = {
-        extend: extend
+        extend: Util.extend
     }
     // Basics
     Random.extend({
-        bool: function() {
+        bool: function(min, max, cur) {
+            if (cur !== undefined) {
+                min = typeof min !== 'undefined' && !isNaN(min) ? parseInt(min, 10) : 1
+                max = typeof max !== 'undefined' && !isNaN(max) ? parseInt(max, 10) : 1
+                return Math.random() > 1.0 / (min + max) * min ? !cur : cur
+            }
+
             return Math.random() >= 0.5
         },
+        // 自然数
         natural: function(min, max) {
             min = typeof min !== 'undefined' ? parseInt(min, 10) : 0
             max = typeof max !== 'undefined' ? parseInt(max, 10) : 9007199254740992 // 2^53
             return Math.round(Math.random() * (max - min)) + min
         },
+        // 整数
         integer: function(min, max) {
             min = typeof min !== 'undefined' ? parseInt(min, 10) : -9007199254740992
             max = typeof max !== 'undefined' ? parseInt(max, 10) : 9007199254740992 // 2^53
@@ -266,51 +316,51 @@
         patternLetters: {
             yyyy: 'getFullYear',
             yy: function(date) {
-                return ('' + date.getFullYear()).slice(2);
+                return ('' + date.getFullYear()).slice(2)
             },
             y: 'yy',
 
             MM: function(date) {
-                var m = date.getMonth() + 1;
+                var m = date.getMonth() + 1
                 return m < 10 ? '0' + m : m
             },
             M: function(date) {
-                return date.getMonth() + 1;
+                return date.getMonth() + 1
             },
 
             dd: function(date) {
-                var d = date.getDate();
-                return d < 10 ? '0' + d : d;
+                var d = date.getDate()
+                return d < 10 ? '0' + d : d
             },
             d: 'getDate',
 
             HH: function(date) {
-                var h = date.getHours();
-                return h < 10 ? '0' + h : h;
+                var h = date.getHours()
+                return h < 10 ? '0' + h : h
             },
             H: 'getHours',
             hh: function(date) {
-                var h = date.getHours() % 12;
-                return h < 10 ? '0' + h : h;
+                var h = date.getHours() % 12
+                return h < 10 ? '0' + h : h
             },
             h: function(date) {
-                return date.getHours() % 12;
+                return date.getHours() % 12
             },
 
             mm: function(date) {
-                var m = date.getMinutes();
-                return m < 10 ? '0' + m : m;
+                var m = date.getMinutes()
+                return m < 10 ? '0' + m : m
             },
             m: 'getMinutes',
 
             ss: function(date) {
-                var s = date.getSeconds();
-                return s < 10 ? '0' + s : s;
+                var s = date.getSeconds()
+                return s < 10 ? '0' + s : s
             },
             s: 'getSeconds',
 
             SS: function(date) {
-                var ms = date.getMilliseconds();
+                var ms = date.getMilliseconds()
                 return ms < 10 && '00' + ms || ms < 100 && '0' + ms || ms
             },
             S: 'getMilliseconds',
@@ -325,9 +375,9 @@
     })
     Random.extend({
         rformat: new RegExp((function() {
-            var re = [];
-            for (var i in Random.patternLetters) re.push(i);
-            return '(' + re.join('|') + ')';
+            var re = []
+            for (var i in Random.patternLetters) re.push(i)
+            return '(' + re.join('|') + ')'
         })(), 'g'),
         format: function(date, format) {
             var patternLetters = Random.patternLetters,
@@ -356,7 +406,7 @@
             return this.format(this.randomDate(), format)
         }
     })
-    // image
+    // Image
     Random.extend({
         ad_size: [
                 '300x250', '250x250', '240x400', '336x280', '180x150',
@@ -393,21 +443,33 @@
                 (text ? '&text=' + text : '')
         }
     })
-    // COLOR
+    // Color
     Random.extend({
         color: function() {
             var colour = Math.floor(Math.random() * (16 * 16 * 16 * 16 * 16 * 16 - 1)).toString(16)
             colour = "#" + ("000000" + colour).slice(-6)
-            return colour;
+            return colour
         }
     })
     // Helpers
     Random.extend({
         capitalize: function(word) {
-            return word.charAt(0).toUpperCase() + word.substr(1);
+            return word.charAt(0).toUpperCase() + word.substr(1)
         },
         pick: function(arr) {
-            return arr[this.natural(0, arr.length - 1)];
+            return arr[this.natural(0, arr.length - 1)]
+        },
+        shuffle: function(arr) {
+            var old = arr.slice(0),
+                result = [],
+                index = 0,
+                length = old.length;
+            for (var i = 0; i < length; i++) {
+                index = this.natural(0, old.length - 1)
+                result.push(old[index])
+                old.splice(index, 1)
+            }
+            return result
         }
     })
     // Text
@@ -422,7 +484,7 @@
         },
         sentence: function(len) {
             len = len || Random.natural(12, 18)
-            var arr = [];
+            var arr = []
             for (var i = 0; i < len; i++) {
                 arr.push(Random.word())
             }
@@ -455,7 +517,7 @@
                     "Brenda", "Amy", "Anna"
             ])
             return this.pick(names)
-            return this.capitalize(this.word());
+            return this.capitalize(this.word())
         },
         last: function() {
             var names = [
@@ -468,7 +530,7 @@
                     "Young", "Allen"
             ]
             return this.pick(names)
-            return this.capitalize(this.word());
+            return this.capitalize(this.word())
         },
         name: function(middle) {
             return this.first() + ' ' + (middle ? this.first() + ' ' : '') + this.last()
@@ -491,7 +553,7 @@
         },
         tlds: ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'],
         tld: function() { // Top Level Domain
-            return this.pick(this.tlds);
+            return this.pick(this.tlds)
         }
     })
     // Address TODO
@@ -589,7 +651,7 @@
                     this.string(pool, 4) + '-' +
                     this.string(pool, 4) + '-' +
                     this.string(pool, 12);
-            return guid;
+            return guid
         },
         id: function() {
             return this.string('number', 2) + this.string('number', 2) + this.string('number', 2) +
@@ -599,6 +661,7 @@
         }
     })
 
+    Mock.Util = Util
     Mock.Random = Random
 
     /*
@@ -646,15 +709,24 @@
     /*
         For Module Loader
      */
-    if (typeof define === "function") { // for seajs
+
+    // for seajs, requirejs
+    if (typeof define === "function") {
         define(function() {
             return Mock
         })
     }
-    if (typeof module !== 'undefined' && module.exports) { // for node
+
+    // for node
+    if (typeof module !== 'undefined' && module.exports) {
         module.exports = Mock
     }
-    if (typeof KISSY != 'undefined' && KISSY.add) { // for kissy
+
+    // for browser
+    global.Mock = Mock
+
+    // for kissy
+    if (typeof KISSY != 'undefined' && KISSY.add) {
         KISSY.add('components/mock/index', function(S) {
             Mock.mockjax = function mockjax(S) {
                 var _original_ajax = S.io;
@@ -688,8 +760,6 @@
         })
     }
 
-    global.Mock = Mock
 
-    return Mock
 
 })(this)

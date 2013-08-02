@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>Basic Test Suite</title>
   <script type="text/javascript" src="../src/mock.js"></script>
-  <script src="../node_modules/handlebars/dist/handlebars.js"></script>
+  <script src="http://g.tbcdn.cn/kissy/k/1.3.1/seed-min.js"></script>
   <script type="text/javascript" src="../src/mock4tpl.js"></script>
 </head>
 <body>
@@ -14,20 +14,6 @@ function heredoc(f) {
         .replace(/^[^\/]+\/\*!?/, '')
         .replace(/\*\/[^\/]+$/, '')
         .trim();
-}
-
-function run(tpl, options) {
-    // console.log()
-    // console.log(tpl);
-    // console.log(options);
-
-    var ast = Handlebars.parse(tpl);
-    // console.log(ast);
-    // console.log(JSON.stringify(ast, null, 4));
-
-    var data = Mock4Tpl.gen(ast, null, options)
-    // console.log(JSON.stringify(data, null, 4));
-    return data
 }
 var TC_CHANNEL = heredoc(function() {
     /*
@@ -102,28 +88,14 @@ var TC_CHANNEL = heredoc(function() {
 </div>
 */
 })
-var data = run(TC_CHANNEL, {
-        'list|1-3': [],
-        children: [],
-        '分组|1': ['广告投放', '淘宝站内', '淘宝站外', '直接访问'],
-        '渠道|1': ['钻石展位', '直通车', '淘宝联盟', '站内搜索', '淘金币', '聚划算', '百度搜索', '谷歌搜索', '新浪微博'],
-        'percent|1-100': 1,
-        'UV占比': '@percent%',
-        'UV|1-100000000': 1,
-        'PV|1-100000000': 1,
-        '人均页面访问数|1-100000000': 1,
-        '宝贝收藏数|1-100000000': 1,
-        '收藏率': '@percent%',
-        '成交金额|1-100000000.2': 1.0,
-        '转化率': '@INTEGER(1,100)%',
-        'srcIdLevel1|1-10': 1,
-        'srcIdLevel2|1-10': 1,
-        'vs': '@分组'
-    })
-console.log(JSON.stringify(data, null, 4))
 
-var data = run('{{#list people}}{{firstName}} {{lastName}}{{/list}}')
-console.log(data);
+KISSY.use('xtemplate', function(S, XTemplate){
+  debugger
+  var ast = XTemplate.compiler.parse('{{汉字}}')
+  console.log(JSON.stringify(ast, null, 4))
+  var data = Mock4Tpl.gen(ast, null, {})
+  console.log(JSON.stringify(data, null, 4));
+})
 
 </script>
 
