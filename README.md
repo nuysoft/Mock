@@ -84,10 +84,16 @@
 1. 60% 基于客户端模板生成模拟数据。
 1. 增加测试用例 [test/mock4tpl-node.js](https://github.com/nuysoft/Mock/blob/master/test/mock4tpl-node.js)，参考自 <http://handlebarsjs.com/>。
 
+### 2013.8.7
+1. 75% 基于客户端模板生成模拟数据。
+1. 完善测试用例 [test/mock4tpl-node.js](https://github.com/nuysoft/Mock/blob/master/test/mock4tpl-node.js)。
+1. 重构文件和目录结构，把代码模块化。
+1. 参考 Handlebars.js，引入 Jison 生成模板解析器。
+
 ## 规划
 1. √ 暴露产生随机元数据的接口。
 1. 重构项目结构，设计更好用的 API。
-1. 60% 基于客户端模板生成模拟数据。
+1. 75% 基于客户端模板生成模拟数据。
 1. 50% 提供随机图片生成服务。
 1. 30% 提供自定义模板数据的保存和访问服务。
 1. 提供真正的随即数。

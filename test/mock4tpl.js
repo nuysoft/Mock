@@ -1,4 +1,4 @@
-module('mock')
+module('mock4tpl')
 
 test('array', function() {
   function t(name, min, max) {
@@ -38,7 +38,9 @@ test('integer', function() {
     tpl[name] = value
 
     var data = Mock.mock(tpl)
-    ok(data.integer != value && data.integer >= min && data.integer <= max, name)
+    ok(data.integer != value)
+    ok(data.integer >= min)
+    ok(data.integer <= max)
   }
 
   t('integer|2-100', 1, 2, 100)
@@ -80,27 +82,4 @@ test('holder', function() {
   t('@DATE')
   t('@TIME')
   t('@DATETIME')
-})
-
-test('ajax', function() {
-  Mock.mock(/\.json/, {
-    'list|1-10': [{
-      'id|+1': 1
-    }]
-  })
-  stop()
-  $.ajax({
-    url: 'data.json',
-    dataType: 'json',
-    success: function(data) {
-      // console.log(arguments)
-      ok(data.list.length >= 1, 'data.json')
-    },
-    fail: function() {
-      ok(false, 'data.json')
-    },
-    complete: function() {
-      start()
-    }
-  })
 })

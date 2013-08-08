@@ -3,9 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>Basic Test Suite</title>
-  <script type="text/javascript" src="../src/mock.js"></script>
+  <!-- Load local QUnit. -->
+  <link rel="stylesheet" href="../node_modules/grunt-contrib-qunit/test/libs/qunit.css" media="screen">
+  <script src="../node_modules/grunt-contrib-qunit/test/libs/qunit.js"></script>
+  <!-- Load local lib and tests. -->
+  <script src="../dist/mock.js"></script>
   <script src="../node_modules/handlebars/dist/handlebars.js"></script>
-  <script type="text/javascript" src="../src/mock4tpl.js"></script>
+  <script src="../dist/mock4tpl.js"></script>
+  <script src="mock4tpl.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -120,10 +125,10 @@ var data = run(TC_CHANNEL, {
         'srcIdLevel2|1-10': 1,
         'vs': '@分组'
     })
-console.log(JSON.stringify(data, null, 4))
+// console.log(JSON.stringify(data, null, 4))
 
 var data = run('{{#list people}}{{firstName}} {{lastName}}{{/list}}')
-console.log(data);
+// console.log(data);
 
 </script>
 
