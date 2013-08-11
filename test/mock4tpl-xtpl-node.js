@@ -56,7 +56,7 @@ exports.test_loader = function(test) {
 }
 
 /*
-
+    测试用例参考自 KISSY XTemplate 的 demo：
     http://fed.ued.taobao.net/kissy-team/kissyteam/docs/html/demo/component/xtemplate/index.html#xtemplate-demo
 */
 

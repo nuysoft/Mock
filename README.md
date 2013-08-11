@@ -7,8 +7,8 @@
 基于一套数据模板语法，简化模拟数据的构造过程。
 
 ## DEMO & Test Case
-* Demo: [demo/mock.html](demo/mock.html)
-* NodeUnit: [test/mock-node.js](test/mock-node.js)
+* Demo: [demo/mock.html](demo/mock.html), [demo/mock4tpl.html](demo/mock4tpl.html)
+* NodeUnit: <test/mock-node.js>, <test/mock4tpl-node.js>, <test/mock4tpl-xtpl-node.js>
 * QUnit: [test/mock.html](test/mock.html), [test/mock.js](test/mock.js)
 
 ## 依赖 & 支持
