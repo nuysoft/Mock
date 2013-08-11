@@ -81,6 +81,8 @@ var Util = (function() {
         }
     })
 
+    Util.noop = function() {}
+
     return Util
 })()
 
@@ -372,7 +374,7 @@ var Random = (function() {
             return arr.join(' ')
         },
         /*
-            TODO 
+            TODO 支持可变的单词数
             sentence(min, max)   
             sentence(len)
         */
@@ -474,14 +476,14 @@ var Random = (function() {
             return this.pick(this.tlds)
         }
     })
-    // Address TODO
+    // Address TODO 
     Random.extend({
         areas: ['东北', '华北', '华东', '华中', '华南', '西南', '西北'],
         area: function() {
             return this.pick(this.areas)
         },
 
-        regions: [
+        /*
             // 23个省 
             '河北省', '山西省', '辽宁省', '吉林省', '黑龙江省', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省', '河南省', '湖北省', '湖南省', '广东省', '海南省', '四川省', '贵州省', '云南省', '陕西省', '甘肃省', '青海省', '台湾省',
             // 4个直辖市 
@@ -490,9 +492,19 @@ var Random = (function() {
             '广西壮族自治区', '内蒙古自治区', '西藏自治区', '宁夏回族自治区', '新疆维吾尔自治区',
             // 2个特别行政区
             '香港特别行政区', '澳门特别行政区'
+        */
+        regions: [
+                '110000 北京市', '120000 天津市', '130000 河北省', '140000 山西省', '150000 内蒙古自治区',
+                '210000 辽宁省', '220000 吉林省', '230000 黑龙江省',
+                '310000 上海市', '320000 江苏省', '330000 浙江省', '340000 安徽省', '350000 福建省', '360000 江西省', '370000 山东省',
+                '410000 河南省', '420000 湖北省', '430000 湖南省', '440000 广东省', '450000 广西壮族自治区', '460000 海南省',
+                '500000 重庆市', '510000 四川省', '520000 贵州省', '530000 云南省', '540000 西藏自治区',
+                '610000 陕西省', '620000 甘肃省', '630000 青海省', '640000 宁夏回族自治区', '650000 新疆维吾尔自治区', '650000 新疆维吾尔自治区',
+                '710000 台湾省',
+                '810000 香港特别行政区', '820000 澳门特别行政区'
         ],
         region: function() {
-            return this.pick(this.regions)
+            return this.pick(this.regions).split(' ')[1]
         },
 
 
@@ -556,13 +568,14 @@ var Random = (function() {
         d100: function() {
             return this.natural(1, 100)
         },
-        // Guid
-        guid: function() {
-            /*
+        /*
+            Guid
             http://www.broofa.com/2008/09/javascript-uuid-function/
             http://www.ietf.org/rfc/rfc4122.txt
             http://chancejs.com/#guid
         */
+        guid: function() {
+
             var pool = "ABCDEF1234567890",
                 guid = this.string(pool, 8) + '-' +
                     this.string(pool, 4) + '-' +
@@ -571,11 +584,31 @@ var Random = (function() {
                     this.string(pool, 12);
             return guid
         },
+        /*
+            [身份证](http://baike.baidu.com/view/1697.htm#4)
+                地址码 6 + 出生日期码 8 + 顺序码 3 + 校验码 1
+            [《中华人民共和国行政区划代码》国家标准(GB/T2260)](http://zhidao.baidu.com/question/1954561.html)
+        */
         id: function() {
-            return this.string('number', 2) + this.string('number', 2) + this.string('number', 2) +
-                this.natural(1900, 2100) + this.string('number', 2) + this.string('number', 2) +
-                this.string('number', 3) +
-                this.string('number', 1)
+            var id,
+                sum = 0,
+                rank = [
+                        "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2"
+                ],
+                last = [
+                        "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"
+                ];
+
+            id = this.pick(this.regions).split(' ')[0] +
+                this.date('yyyyMMdd') +
+                this.string('number', 3)
+
+            for (var i = 0; i < id.length; i++) {
+                sum += id[i] * rank[i];
+            }
+            id += last[sum % 11];
+
+            return id
         }
     })
 
@@ -590,22 +623,25 @@ var Random = (function() {
 */
 
 /*
-    name|+inc
-    name|repeat
-    name|min-max
-    name|min-max.dmin-dmax
-    name|int.dmin-dmax
+    rkey
+        name|+inc
+        name|repeat
+        name|min-max
+        name|min-max.dmin-dmax
+        name|int.dmin-dmax
 
-    1 name, 2 inc, 3 range, 4 decimal
+        1 name, 2 inc, 3 range, 4 decimal
+    rplaceholder
+        placeholder(*)
 */
 var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
     rrange = /(\d+)-?(\d+)?/,
-    rplaceholder = /@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g; // 
+    rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g; // (^(?:.|\r|\n)*?)
 
 Mock.extend = Util.extend
 
 Mock.mock = function(rurl, template) {
-    if (arguments.length === 1) return Mock.gen(rurl)
+    if (arguments.length === 1) return Handle.gen(rurl)
     Mock._mocked[rurl] = {
         rurl: rurl,
         template: template
@@ -613,7 +649,11 @@ Mock.mock = function(rurl, template) {
     return Mock
 }
 
-Mock.gen = function(template, name, obj) {
+var Handle = {
+    extend: Util.extend
+}
+
+Handle.gen = function(template, name, obj) {
     var parameters = (name = name || '').match(rkey),
 
         range = parameters && parameters[3] && parameters[3].match(rrange),
@@ -655,10 +695,6 @@ Mock.gen = function(template, name, obj) {
     return template
 }
 
-var Handle = {
-    extend: Util.extend
-}
-
 Handle.extend({
     array: function(options) {
         var result = [],
@@ -666,7 +702,7 @@ Handle.extend({
         // 'arr': [{ 'email': '@EMAIL' }, { 'email': '@EMAIL' }]
         if (!options.parameters) {
             for (i = 0; i < options.template.length; i++) {
-                result.push(Mock.gen(options.template[i]))
+                result.push(Handle.gen(options.template[i]))
             }
         } else {
             // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
@@ -678,7 +714,7 @@ Handle.extend({
                 for (i = 0; i < options.count; i++) {
                     j = 0
                     do {
-                        result.push(Mock.gen(options.template[j++]))
+                        result.push(Handle.gen(options.template[j++]))
                     } while (j < options.template.length)
                 }
             }
@@ -688,7 +724,7 @@ Handle.extend({
     object: function(options) {
         var result = {}, key, inc;
         for (key in options.template) {
-            result[key.replace(rkey, '$1')] = Mock.gen(options.template[key], key, result)
+            result[key.replace(rkey, '$1')] = Handle.gen(options.template[key], key, result)
             // 'id|+1': 1
             inc = key.match(rkey)
             if (inc && inc[2] && Util.type(options.template[key]) === 'number') {
@@ -737,6 +773,11 @@ Handle.extend({
             placeholders = result.match(rplaceholder) || [] // A-Z_0-9 > \w_
             for (i = 0; i < placeholders.length; i++) {
                 ph = placeholders[i]
+                // TODO 只有转义斜杠是偶数时，才不需要解析占位符？
+                if (/^\\/.test(ph)) {
+                    placeholders.splice(i--, 1)
+                    continue
+                }
                 result = result.replace(ph, Handle.placeholder(ph, options.obj))
             }
         } else {
@@ -799,7 +840,7 @@ Mock.mockjax = function mockjax(jQuery) {
 
     function convert(mock) {
         return function() {
-            return Mock.gen(mock.template)
+            return Mock.mock(mock.template)
         }
     }
 
@@ -842,7 +883,7 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
                 }
 
                 console.log('[mock]', options.url, '>', mock.rurl)
-                var data = Mock.gen(mock.template)
+                var data = Mock.mock(mock.template)
                 console.log('[mock]', data)
                 if (options.success) options.success(data)
                 if (options.complete) options.complete(data)

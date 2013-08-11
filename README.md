@@ -7,18 +7,22 @@
 基于一套数据模板语法，简化模拟数据的构造过程。
 
 ## DEMO & Test Case
-* Demo: [demo/mock.html](https://github.com/nuysoft/Mock/blob/master/demo/mock.html)
-* NodeUnit: [test/mock-node.js](https://github.com/nuysoft/Mock/blob/master/test/mock-node.js)
-* QUnit: [test/mock.html](https://github.com/nuysoft/Mock/blob/master/test/mock.html), [test/mock.js](https://github.com/nuysoft/Mock/blob/master/test/mock.js)
+* Demo: [demo/mock.html](demo/mock.html)
+* NodeUnit: [test/mock-node.js](test/mock-node.js)
+* QUnit: [test/mock.html](test/mock.html), [test/mock.js](test/mock.js)
 
 ## 依赖 & 支持
 * 无依赖
-* 目前支持的模块加载器：Node、SeaJS、KISSY
+* 支持的模块加载器：CommonJS、AMD、KISSY
+* 可以直接在浏览器中引入
+
 
 ## API
-* `Mock.mock(rurl, template)` 记录数据模板，拦截到 Ajax 请求时生成模拟数据并返回。
+* `Mock.mock(rurl, template)` 记录数据模板，当拦截到 Ajax 请求时生成模拟数据并返回。
 * `Mock.mock(template)` 根据数据模板生成模拟数据。
 * `Mock.Random` 生成随机元数据，参见“支持的占位符”。
+* `Mock4Tpl.mock(input, options, helpers, partials)` 基于客户端模板生成模拟数据。
+
 
 ## 语法
 
@@ -62,6 +66,7 @@
 * <https://github.com/appendto/jquery-mockjax>
 * <http://chancejs.com/>
 
+
 ## 更新日志
 
 #### 2013.7.12
@@ -82,19 +87,45 @@
 
 #### 2013.8.2
 1. 60% 基于客户端模板生成模拟数据。
-1. 增加测试用例 [test/mock4tpl-node.js](https://github.com/nuysoft/Mock/blob/master/test/mock4tpl-node.js)，参考自 <http://handlebarsjs.com/>。
+1. 增加测试用例 [test/mock4tpl-node.js](test/mock4tpl-node.js)，参考自 <http://handlebarsjs.com/>。
 
 ### 2013.8.7
 1. 75% 基于客户端模板生成模拟数据。
-1. 完善测试用例 [test/mock4tpl-node.js](https://github.com/nuysoft/Mock/blob/master/test/mock4tpl-node.js)。
+1. 完善测试用例 [test/mock4tpl-node.js](test/mock4tpl-node.js)。
 1. 重构文件和目录结构，把代码模块化。
 1. 参考 Handlebars.js，引入 Jison 生成模板解析器。
+
+### 2013.8.11
+1. 80% 基于客户端模板生成模拟数据。
+1. 完善针对 KISSY XTemplate 的测试用例 [test/mock4tpl-xtpl-node.js](test/mock4tpl-xtpl-node.js)。
+1. [Mock4Tpl](src/tpl/mock4tpl.js) 支持 Partials。
+1. Mock 支持转义 @。
+1. 更新 README.md，增加对 Mock4Tpl 的说明。
+1. 完善 [demo](demo/)。
+1. 减少 Mock、Mock4Tpl 暴漏的 API。
+
 
 ## 规划
 1. √ 暴露产生随机元数据的接口。
 1. 重构项目结构，设计更好用的 API。
-1. 75% 基于客户端模板生成模拟数据。
+1. 80% 基于客户端模板生成模拟数据。
 1. 50% 提供随机图片生成服务。
 1. 30% 提供自定义模板数据的保存和访问服务。
-1. 提供真正的随即数。
+1. 提供真正的随机数。
 1. 支持 UUID、SHA、MD5
+
+
+## TODO
+1. Handlebars vs XTemplate，测试、语法
+1. √ 占位符：支持转义 `@`
+1. 在测试用例增加期望的断言个数
+1. {{#}} {{^}} 的冲突
+1. 嵌套占位符：支持设置参数
+1. 嵌套占位符：支持为不同路径设置不同的占位符
+1. 增加对 URL 中参数 mock 的判断
+1. 如何扩展占位符
+
+
+
+
+

@@ -402,6 +402,17 @@ exports.testRandom = function(test) {
     t('area()', Random.area())
     t('region()', Random.region())
 
-    test.ok(true);
     test.done();
+}
+
+exports.test_escape = function(test) {
+    var tpl;
+
+    tpl = '\\@EMAIL'
+    test.equal(Mock.mock(tpl), tpl)
+
+    tpl = '\\\\@EMAIL' // TODO 如果有多个转义斜杠怎么办？只有奇数个转义斜杠，才会被认为是要转义 @
+    test.equal(Mock.mock(tpl), tpl)
+
+    test.done()
 }

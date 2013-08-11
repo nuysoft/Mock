@@ -41,6 +41,7 @@ ID    [^\s!"#%-,\.\/;->@\[-\^`\{-~]+/[=}\s\/.]
 <com>[\s\S]*?"--}}"              strip(0,4); this.popState(); return 'COMMENT';
 
 <mu>"{{>"                        return 'OPEN_PARTIAL';
+<mu>"{{include"                  return 'OPEN_PARTIAL';
 <mu>"{{#"                        return 'OPEN_BLOCK';
 <mu>"{{/"                        return 'OPEN_ENDBLOCK';
 <mu>"{{^"                        return 'OPEN_INVERSE';

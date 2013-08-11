@@ -68,6 +68,8 @@ var Util = (function() {
         }
     })
 
+    Util.noop = function() {}
+
     return Util
 })()
 
@@ -78,17 +80,33 @@ module.exports = Util
 if (!console.group) {
     console._log = console.log
     console._indent = ''
+    console._styles = {
+        //styles
+        'bold': ['\033[1m', '\033[22m'],
+        'italic': ['\033[3m', '\033[23m'],
+        'underline': ['\033[4m', '\033[24m'],
+        'inverse': ['\033[7m', '\033[27m'],
+        //grayscale
+        'white': ['\033[37m', '\033[39m'],
+        'grey': ['\033[90m', '\033[39m'],
+        'black': ['\033[30m', '\033[39m'],
+        //colors
+        'blue': ['\033[34m', '\033[39m'],
+        'cyan': ['\033[36m', '\033[39m'],
+        'green': ['\033[32m', '\033[39m'],
+        'magenta': ['\033[35m', '\033[39m'],
+        'red': ['\033[31m', '\033[39m'],
+        'yellow': ['\033[33m', '\033[39m']
+    }
+
     console.log = function() {
         var args = [].slice.call(arguments, 0)
+        if (args[0] === '[context]') args[0] = console._styles.green[0] + args[0] + console._styles.green[1]
+        if (args[0] === '[options]') args[0] = console._styles.yellow[0] + args[0] + console._styles.yellow[1]
         if (console._indent) args = [console._indent].concat(args)
         console._log.apply(console, args)
     }
-    console._styles = {
-        'bold': ['\x1B[1m', '\x1B[22m'],
-        'italic': ['\x1B[3m', '\x1B[23m'],
-        'underline': ['\x1B[4m', '\x1B[24m'],
-        'inverse': ['\x1B[7m', '\x1B[27m']
-    }
+
     console.group = function() {
         var args = [].slice.call(arguments, 0),
             style = console._styles.bold;

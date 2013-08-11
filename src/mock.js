@@ -11,22 +11,25 @@ var Mock = module.exports = {
 */
 
 /*
-    name|+inc
-    name|repeat
-    name|min-max
-    name|min-max.dmin-dmax
-    name|int.dmin-dmax
+    rkey
+        name|+inc
+        name|repeat
+        name|min-max
+        name|min-max.dmin-dmax
+        name|int.dmin-dmax
 
-    1 name, 2 inc, 3 range, 4 decimal
+        1 name, 2 inc, 3 range, 4 decimal
+    rplaceholder
+        placeholder(*)
 */
 var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
     rrange = /(\d+)-?(\d+)?/,
-    rplaceholder = /@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g; // 
+    rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g; // (^(?:.|\r|\n)*?)
 
 Mock.extend = Util.extend
 
 Mock.mock = function(rurl, template) {
-    if (arguments.length === 1) return Mock.gen(rurl)
+    if (arguments.length === 1) return Handle.gen(rurl)
     Mock._mocked[rurl] = {
         rurl: rurl,
         template: template
@@ -34,7 +37,11 @@ Mock.mock = function(rurl, template) {
     return Mock
 }
 
-Mock.gen = function(template, name, obj) {
+var Handle = {
+    extend: Util.extend
+}
+
+Handle.gen = function(template, name, obj) {
     var parameters = (name = name || '').match(rkey),
 
         range = parameters && parameters[3] && parameters[3].match(rrange),
@@ -76,10 +83,6 @@ Mock.gen = function(template, name, obj) {
     return template
 }
 
-var Handle = {
-    extend: Util.extend
-}
-
 Handle.extend({
     array: function(options) {
         var result = [],
@@ -87,7 +90,7 @@ Handle.extend({
         // 'arr': [{ 'email': '@EMAIL' }, { 'email': '@EMAIL' }]
         if (!options.parameters) {
             for (i = 0; i < options.template.length; i++) {
-                result.push(Mock.gen(options.template[i]))
+                result.push(Handle.gen(options.template[i]))
             }
         } else {
             // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
@@ -99,7 +102,7 @@ Handle.extend({
                 for (i = 0; i < options.count; i++) {
                     j = 0
                     do {
-                        result.push(Mock.gen(options.template[j++]))
+                        result.push(Handle.gen(options.template[j++]))
                     } while (j < options.template.length)
                 }
             }
@@ -109,7 +112,7 @@ Handle.extend({
     object: function(options) {
         var result = {}, key, inc;
         for (key in options.template) {
-            result[key.replace(rkey, '$1')] = Mock.gen(options.template[key], key, result)
+            result[key.replace(rkey, '$1')] = Handle.gen(options.template[key], key, result)
             // 'id|+1': 1
             inc = key.match(rkey)
             if (inc && inc[2] && Util.type(options.template[key]) === 'number') {
@@ -158,6 +161,11 @@ Handle.extend({
             placeholders = result.match(rplaceholder) || [] // A-Z_0-9 > \w_
             for (i = 0; i < placeholders.length; i++) {
                 ph = placeholders[i]
+                // TODO 只有转义斜杠是偶数时，才不需要解析占位符？
+                if (/^\\/.test(ph)) {
+                    placeholders.splice(i--, 1)
+                    continue
+                }
                 result = result.replace(ph, Handle.placeholder(ph, options.obj))
             }
         } else {

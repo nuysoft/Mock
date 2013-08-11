@@ -12,11 +12,12 @@
         <div class="branding">
             MOCK FOR TEMPLATE 
         </div>
-        <div class="by hide">
+        <div class="by">
             <a href="https://github.com/nuysoft/Mock" target="_blank">Github</a>
             <a href="http://nuysoft.com/2013/04/15/angry-birds-of-javascript-green-bird-mocking/" target="_blank">Doc</a>
             <a href="https://github.com/nuysoft/Mock#%E8%AF%AD%E6%B3%95" target="_blank">Syntax</a>
-            <a href="https://github.com/nuysoft/Mock/blob/master/test/mock-node.js" target="_blank">Case</a>
+            <a href="https://github.com/nuysoft/Mock/blob/master/test/" target="_blank">Case</a>
+            <a href="./mock.html">Mock'Demo</a>
         </div>
         <div class="actions">
             <a id="save" class="btn btn-small disabled" href="#"><i class="icon-ok-sign"></i> Save</a>
@@ -166,7 +167,7 @@
                 var ast, data;
                 try {
                     ast = Handlebars.parse(tpl);
-                    data = Mock4Tpl.gen(ast);
+                    data = Mock4Tpl.mock(ast);
                 } catch( error ) {
                     console.error(error);
                     data = error.toString();

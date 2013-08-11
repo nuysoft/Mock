@@ -673,62 +673,64 @@ case 4:strip(0,4); this.popState(); return 15;
 break;
 case 5:return 25;
 break;
-case 6:return 16;
+case 6:return 25;
 break;
-case 7:return 20;
+case 7:return 16;
 break;
-case 8:return 19;
+case 8:return 20;
 break;
 case 9:return 19;
 break;
-case 10:return 23;
+case 10:return 19;
 break;
-case 11:return 22;
+case 11:return 23;
 break;
-case 12:this.popState(); this.begin('com');
+case 12:return 22;
 break;
-case 13:strip(3,5); this.popState(); return 15;
+case 13:this.popState(); this.begin('com');
 break;
-case 14:return 22;
+case 14:strip(3,5); this.popState(); return 15;
 break;
-case 15:return 39;
+case 15:return 22;
 break;
-case 16:return 38;
+case 16:return 39;
 break;
 case 17:return 38;
 break;
-case 18:return 42;
+case 18:return 38;
 break;
-case 19:/*ignore whitespace*/
+case 19:return 42;
 break;
-case 20:this.popState(); return 24;
+case 20:/*ignore whitespace*/
 break;
-case 21:this.popState(); return 18;
+case 21:this.popState(); return 24;
 break;
-case 22:yy_.yytext = strip(1,2).replace(/\\"/g,'"'); return 32;
+case 22:this.popState(); return 18;
 break;
-case 23:yy_.yytext = strip(1,2).replace(/\\'/g,"'"); return 32;
+case 23:yy_.yytext = strip(1,2).replace(/\\"/g,'"'); return 32;
 break;
-case 24:return 40;
+case 24:yy_.yytext = strip(1,2).replace(/\\'/g,"'"); return 32;
 break;
-case 25:return 34;
+case 25:return 40;
 break;
 case 26:return 34;
 break;
-case 27:return 33;
+case 27:return 34;
 break;
-case 28:return 38;
+case 28:return 33;
 break;
-case 29:yy_.yytext = strip(1,2); return 38;
+case 29:return 38;
 break;
-case 30:return 'INVALID';
+case 30:yy_.yytext = strip(1,2); return 38;
 break;
-case 31:return 5;
+case 31:return 'INVALID';
+break;
+case 32:return 5;
 break;
 }
 },
-rules: [/^(?:\\\\(?=(\{\{)))/,/^(?:[^\x00]*?(?=(\{\{)))/,/^(?:[^\x00]+)/,/^(?:[^\x00]{2,}?(?=(\{\{|$)))/,/^(?:[\s\S]*?--\}\})/,/^(?:\{\{>)/,/^(?:\{\{#)/,/^(?:\{\{\/)/,/^(?:\{\{\^)/,/^(?:\{\{\s*else\b)/,/^(?:\{\{\{)/,/^(?:\{\{&)/,/^(?:\{\{!--)/,/^(?:\{\{![\s\S]*?\}\})/,/^(?:\{\{)/,/^(?:=)/,/^(?:\.(?=[}\/ ]))/,/^(?:\.\.)/,/^(?:[\/.])/,/^(?:\s+)/,/^(?:\}\}\})/,/^(?:\}\})/,/^(?:"(\\["]|[^"])*")/,/^(?:'(\\[']|[^'])*')/,/^(?:@)/,/^(?:true(?=[}\s]))/,/^(?:false(?=[}\s]))/,/^(?:-?[0-9]+(?=[}\s]))/,/^(?:([^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=[=}\s\/.])))/,/^(?:\[[^\]]*\])/,/^(?:.)/,/^(?:$)/],
-conditions: {"mu":{"rules":[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],"inclusive":false},"emu":{"rules":[3],"inclusive":false},"com":{"rules":[4],"inclusive":false},"INITIAL":{"rules":[0,1,2,31],"inclusive":true}}
+rules: [/^(?:\\\\(?=(\{\{)))/,/^(?:[^\x00]*?(?=(\{\{)))/,/^(?:[^\x00]+)/,/^(?:[^\x00]{2,}?(?=(\{\{|$)))/,/^(?:[\s\S]*?--\}\})/,/^(?:\{\{>)/,/^(?:\{\{include\b)/,/^(?:\{\{#)/,/^(?:\{\{\/)/,/^(?:\{\{\^)/,/^(?:\{\{\s*else\b)/,/^(?:\{\{\{)/,/^(?:\{\{&)/,/^(?:\{\{!--)/,/^(?:\{\{![\s\S]*?\}\})/,/^(?:\{\{)/,/^(?:=)/,/^(?:\.(?=[}\/ ]))/,/^(?:\.\.)/,/^(?:[\/.])/,/^(?:\s+)/,/^(?:\}\}\})/,/^(?:\}\})/,/^(?:"(\\["]|[^"])*")/,/^(?:'(\\[']|[^'])*')/,/^(?:@)/,/^(?:true(?=[}\s]))/,/^(?:false(?=[}\s]))/,/^(?:-?[0-9]+(?=[}\s]))/,/^(?:([^\s!"#%-,\.\/;->@\[-\^`\{-~]+(?=[=}\s\/.])))/,/^(?:\[[^\]]*\])/,/^(?:.)/,/^(?:$)/],
+conditions: {"mu":{"rules":[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32],"inclusive":false},"emu":{"rules":[3],"inclusive":false},"com":{"rules":[4],"inclusive":false},"INITIAL":{"rules":[0,1,2,32],"inclusive":true}}
 };
 return lexer;
 })();
@@ -881,60 +883,116 @@ parser.yy = AST
 // src/tpl/mock4tpl.js
 
 
-Mock4Tpl.debug = false
 /*
     Mock4Tpl.mock(input)
     Mock4Tpl.mock(input, options)
     Mock4Tpl.mock(input, options, helpers)
+    Mock4Tpl.mock(input, options, helpers, partials)
 */
-Mock4Tpl.mock = function(input, options, helpers) {
-    return Mock4Tpl.gen(input, options, helpers)
+Mock4Tpl.mock = function(input, options, helpers, partials) {
+    /*
+        // TODO 是否自动获取 helpers？
+        if(!helpers){
+            helpers = Handlebars.helpers
+            helpers = XTemplate.RunTime.commands
+        }
+        if(!partials){
+            partials = Handlebars.partials
+            partials = XTemplate.RunTime.subTpls // 全局子模板
+            partials = xtemplate.option.subTpls // 局部子模板
+        }
+        
+    */
+    return Handle.gen(input, null, options, helpers, partials)
+}
+
+var Handle = {
+    debug: Mock4Tpl.debug || false,
+    extend: Util.extend
 }
 
 /*
-    Mock4Tpl.gen(input)
-    Mock4Tpl.gen(input, options)
-    Mock4Tpl.gen(input, options, helpers)
+    Handle.gen(input, context, options, helpers, partials)
+    Handle.gen(ast, context, options, helpers, partials)
+    Handle.gen(node, context, options, helpers, partials)
 
-    Mock4Tpl.gen(ast)
-    Mock4Tpl.gen(node, result)
-    Mock4Tpl.gen(node, result, options)
-    Mock4Tpl.gen(node, result, options, helpers)
+    input      HTML 模板
+    ast        HTML 模板
+    node
+    context
+    options
+    helpers
+    partials
+
+    ## 构造路径
+    * 对于对象 
+        {
+            a: {
+                b: {
+                    c: d
+                }
+            }
+        }
+        → 
+        [ a, b, c, d]
+    * 对于数组
+        {
+            a: [{
+                    b: [{
+                            c: d
+                        }
+                    ]
+                }
+            ]
+        }
+        ->
+        [ a, [], b, [], c ]
+
  */
-Mock4Tpl.gen = function(node, result, options, helpers) {
+
+Handle.gen = function(node, context, options, helpers, partials) {
     if (Util.isString(node)) {
         var ast = Parser.parse(node)
-        var data = Mock4Tpl.gen(ast, null, result, options)
+        var data = Handle.gen(ast, context, options, helpers, partials)
         return data
     }
 
-    result = result || {}
+    context = context || [{}]
     options = options || {}
 
-    if (Mock4Tpl.debug) {
+    if (this[node.type] === Util.noop) return
+
+    options.__path = options.__path || []
+
+    if (Mock4Tpl.debug || Handle.debug) {
+        console.log()
         console.group('[' + node.type + ']', JSON.stringify(node))
-        console.log('[result]', result)
-        console.log('[options]', options)
+        // console.log('[context]', context.length, JSON.stringify(context))
+        console.log('[options]', options.__path.length, JSON.stringify(options))
     }
 
-    this[node.type](node, result, options, helpers)
+    var preLength = options.__path.length
+    this[node.type](node, context, options, helpers, partials)
+    options.__path.splice(preLength)
 
-    if (Mock4Tpl.debug) {
-        console.log('[result]', JSON.stringify(result))
+    if (Mock4Tpl.debug || Handle.debug) {
+        // console.log('[context]', context.length, JSON.stringify(context))
         console.groupEnd()
     }
 
-    return result
+    return context[context.length - 1]
 }
 
 
 /*
     name    字符串，属性名
     options 字符串或对象，数据模板
-    result  父节点
+    context 父节点，任意值
     def     默认值
 */
-Mock4Tpl.val = function(name, options, result, def) {
+Handle.val = function(name, options, context, def) {
+    if (name !== options.__path[options.__path.length - 1]) throw new Error(name + '!==' + options.__path)
+    if (Mock4Tpl.debug || Handle.debug) console.log('[options]', name, options.__path);
     if (def) def = Mock.mock(def)
     if (options) {
         var mocked = Mock.mock(options)
@@ -943,7 +1001,7 @@ Mock4Tpl.val = function(name, options, result, def) {
             return mocked[name]
         }
     }
-    if (Util.isArray(result)) return {}
+    if (Util.isArray(context[0])) return {}
     return def || (name) || Random.word()
 }
 
@@ -951,200 +1009,332 @@ Mock4Tpl.val = function(name, options, result, def) {
 /*
     AST
 */
-Mock4Tpl.program = function(node, result, options, helpers) {
+
+Handle.program = function(node, context, options, helpers, partials) {
     for (var i = 0; i < node.statements.length; i++) {
-        this.gen(node.statements[i], result, options, helpers)
+        this.gen(node.statements[i], context, options, helpers, partials)
     }
     // TODO node.inverse
 }
-Mock4Tpl.mustache = function(node, result, options, helpers) { // string id params
-    var i, len, cur, prev, type, def, val, preOptions, parts;
-    if (Util.type(result) === 'array') {
-        result.push({})
-        result = result[result.length - 1]
+
+Handle.mustache = function(node, context, options, helpers, partials) { // string id params
+    var i,
+        currentContext = context[0],
+        contextLength = context.length;
+
+    if (Util.type(currentContext) === 'array') {
+        currentContext.push({})
+        currentContext = currentContext[currentContext.length - 1]
+        context.unshift(currentContext)
     }
 
     // "isHelper": 1
+    // 为何要明确的 isHelper？因为 eligibleHelper 实在不可靠！
     if (node.isHelper || helpers && helpers[node.id.string]) {
         // node.params
         if (node.params.length === 0) {
             // TODO test_helper_this_with_register_and_holder
         } else {
             for (i = 0; i < node.params.length; i++) {
-                this.gen(node.params[i], result, options, helpers)
+                this.gen(node.params[i], context, options, helpers, partials)
             }
         }
         // node.hash
-        if (node.hash) this.gen(node.hash, result, options, helpers)
+        if (node.hash) this.gen(node.hash, context, options, helpers, partials)
     } else {
-        // @index TODO 放到 DATA 中
-        if (node.id.type === 'DATA') return
+        // node.id
+        this.gen(node.id, context, options, helpers, partials)
+        /*
+            node.id.type === 'DATA'
+            eg @index，放到 DATA 中处理 TODO 
+        */
+    }
+    if (context.length > contextLength) context.splice(0, context.length - contextLength)
+}
 
-        // node.id.parts
-        parts = node.id.parts
-        if (!parts.length) {
-            // TODO 修正父节点的类型
-        } else {
-            for (i = 0, len = parts.length; i < len; i++) {
-                cur = parts[i]
-                prev = parts[i - 1]
-                preOptions = options[prev]
+Handle.block = function(node, context, options, helpers, partials) { // mustache program inverse
+    var parts = node.mustache.id.parts,
+        i, len, cur, val, type,
+        currentContext = context[0],
+        contextLength = context.length;
 
-                def = i === len - 1 ? result[cur] || undefined : {}
-                val = this.val(cur, preOptions && preOptions[cur] ? preOptions : options, result, def)
+    if (node.inverse) {} // TODO
 
-                // if (cur in result && (Util.type(val) === Util.type(result[cur]))) continue
+    /*
+        ## 关于自定义 block
+        {{#block}}{{...}}{{/block}}
+        | helper | type     | 模板引擎的行为                              | 模拟数据      | 
+        | ------ | -------- | ----------------------------------------- | ------------ |
+        | Y      | function | 由 helper 负责返回最后的结果                 | 不处理       |
+        | N      | array    | 遍历该数组，渲染包含的 statements            | 默认为对象    |
+        | N      | object   | 把该对象作为新 context，渲染包含的 statements | 默认为对象    |
+        | N      | boolean  | 用当前 context 渲染包含的 statements         | 默认为对象    |
 
-                type = Util.type(val)
-                result[cur] = i < len - 1 && type !== 'object' && type !== 'array' ? {} :
-                    type === 'array' ? [] :
-                    val
+        ### 为什么默认为对象
+        无论默认为对象或数组，当真实数据的类型与默认数据不匹配时，模拟数据的渲染结果都会与预期不符合。
+        而把模拟数据的默认值设置为对象，则可以在渲染 object、boolean 时大致符合预期。
+        更直观（易读）的做法是
+        1. 明确指定数据的类型：数组 []、对象 {}、布尔 true/false。
+        2. 遍历数组时，用 each helper。
+        3. 为数据属性设置 Mock 参数，例如 `arr|5-10`: []。
+        然而，目前开发过程中遇到的更多的是因此数组，这不是一个好习惯，因为在理解上会造成模棱两可的印象。
+            我希望 Mock 是一个可用，并且好用的工具，除了这两个原则之外，任何固有的原则都可以放弃，
+            因此如果有任何感受和建议，请反馈给我，如果可以贡献代码就更好了。
+        
+        ### 另外，为什么称为上下文 context，而不是作用域 scope 呢？
+        在 Mock4Tpl 的模拟过程中，以及模板引擎的渲染过程中，只是在某个对象或数组上设置或设置属性，是上下文的概念，根本没有“作用域”的概念。
+            虽然从理解的角度，这两个过程与作用域极为“相似”，但是如果描述成“相似”，其实是对本质和概念的误导。
+            但是。。。好吧，确实“作用域”要更形象，更易于被不了解内部原理的人所接受。
+     */
 
-                type = Util.type(result[cur])
-                if (type === 'object' || type === 'array') result = result[cur]
+    // block.mustache
+    if (node.mustache.isHelper ||
+        helpers && helpers[node.mustache.id.string]) {
+        type = parts[0] // helper: each if unless with log
+        // 指定 Handle 为上下文是为了使用 Handle 的方法
+        val = (Helpers[type] || Helpers.custom).apply(this, arguments)
+        currentContext = context[0]
+    } else {
+        for (i = 0; i < parts.length; i++) {
+            options.__path.push(parts[i])
+
+            cur = parts[i]
+
+            val = this.val(cur, options, context, {})
+            currentContext[cur] = Util.isArray(val) && [] || val
+
+            type = Util.type(currentContext[cur])
+            if (type === 'object' || type === 'array') {
+                currentContext = currentContext[cur]
+                context.unshift(currentContext)
             }
         }
     }
 
-
-}
-Mock4Tpl.partial = function() {}
-Mock4Tpl.block = function(node, result, options, helpers) { // mustache program inverse
-    var mustache = node.mustache,
-        parts = mustache.id.parts,
-        i, j, len, cur, val, params, param, def, type;
-
-    if (node.inverse) {
-        // TODO 
-    }
-
-    // block.mustache
-    if (mustache.isHelper) {
-        // helper: each if unless with log
-        switch (parts[0]) {
-            case 'each':
-                params = mustache.params[0].parts
-                for (i = 0; i < params.length; i++) {
-                    cur = params[i]
-                    def = i === params.length - 1 ? [] : {}
-
-                    val = this.val(cur, options, result, def)
-
-                    result[cur] = Util.isArray(val) && [] || val
-
-                    type = Util.type(result[cur])
-                    if (type === 'object' || type === 'array') result = result[cur]
-                }
-                break
-            case 'if':
-            case 'unless':
-                for (i = 0; i < mustache.params.length; i++) {
-                    param = mustache.params[i]
-                    parts = param.parts
-                    for (j = 0; j < parts.length; j++) {
-                        cur = parts[j]
-                        def = j === parts.length - 1 ? '@BOOL(3,1,true)' : {}
-
-                        val = this.val(cur, options, result, def)
-                        if (j === parts.length - 1) {
-                            val = val === 'true' ? true :
-                                val === 'false' ? false : val
-                        }
-
-                        result[cur] = Util.isArray(val) ? [] : val
-
-                        type = Util.type(result[cur])
-                        if (type === 'object' || type === 'array') result = result[cur]
-                    }
-                }
-                break
-            case 'with':
-                params = mustache.params[0].parts
-                for (i = 0; i < params.length; i++) {
-                    cur = params[i]
-                    def = {}
-                    val = this.val(cur, options, result, def)
-                    result = result[cur] = val
-                }
-                break
-            case 'log': // {{log "Look at me!"}}
-                break
-            default:
-                // custom helper
-                params = mustache.params[0].parts
-                for (i = 0; i < params.length; i++) {
-                    cur = params[i]
-                    def = i === params.length - 1 ? [] : {}
-
-                    val = this.val(cur, options, result, def)
-
-                    result[cur] = Util.isArray(val) && [] || val
-
-                    type = Util.type(result[cur])
-                    if (type === 'object' || type === 'array') result = result[cur]
-                }
-                // result = result[expression] = {}
-        }
-    } else {
-        for (i = 0; i < parts.length; i++) {
-            cur = parts[i]
-
-            val = this.val(cur, options, result, {})
-            result[cur] = Util.isArray(val) && [] || val
-
-            type = Util.type(result[cur])
-            if (type === 'object' || type === 'array') result = result[cur]
-        }
-    }
     // block.program
-    if (!node.program) return
-    if (Util.type(result) === 'array') {
-        // val = this.val(cur, options, result)
-        len = val.length || Random.integer(3, 7)
-        for (i = 0; i < len; i++) {
-            if (val[i]) result.push(val[i])
-            else result.push({})
-            this.gen(node.program, result[result.length - 1], options, helpers)
-        }
-    } else this.gen(node.program, result, options, helpers)
+    if (node.program) {
+        if (Util.type(currentContext) === 'array') {
+            len = val.length || Random.integer(3, 7)
+            // Handle.program() 可以自己解析和生成数据，但是不知道该重复几次，所以这里需要循环调用
+            for (i = 0; i < len; i++) {
+                currentContext.push(typeof val[i] !== 'undefined' ? val[i] : {})
+
+                options.__path.push('[]')
+                context.unshift(currentContext[currentContext.length - 1])
+                this.gen(node.program, context, options, helpers, partials)
+                options.__path.pop()
+                context.shift()
+            }
+        } else this.gen(node.program, context, options, helpers, partials)
+    }
+
+    if (context.length > contextLength) context.splice(0, context.length - contextLength)
 }
-Mock4Tpl.content = function() {}
-Mock4Tpl.hash = function(node, result, options, helpers) {
+
+Handle.hash = function(node, context, options, helpers, partials) {
     var pairs = node.pairs,
         pair, i, j;
     for (i = 0; i < pairs.length; i++) {
         pair = pairs[i]
         for (j = 1; j < pair.length; j++) {
-            this.gen(pair[j], result, options, helpers)
+            this.gen(pair[j], context, options, helpers, partials)
         }
     }
 }
-Mock4Tpl.ID = function(node, result, options) { // , helpers
+
+Handle.ID = function(node, context, options) { // , helpers, partials
     var parts = node.parts,
-        i, cur, def, val, type;
-    for (i = 0; i < parts.length; i++) {
+        i, len, cur, prev, def, val, type, valType, preOptions,
+        currentContext = context[node.depth], // back path, eg {{../permalink}}
+        contextLength = context.length;
+
+    if (Util.isArray(currentContext)) currentContext = context[node.depth + 1]
+
+    if (!parts.length) {
+        // TODO 修正父节点的类型
+    } else {
+        for (i = 0, len = parts.length; i < len; i++) {
+            options.__path.push(parts[i])
+
+            cur = parts[i]
+            prev = parts[i - 1]
+            preOptions = options[prev]
+
+            def = i === len - 1 ? currentContext[cur] : {}
+            val = this.val(cur, /*preOptions && preOptions[cur] ? preOptions :*/ options, context, def)
+
+            type = Util.type(currentContext[cur])
+            valType = Util.type(val)
+            if (type === 'undefined') {
+                // 如果不是最后一个属性，并且当前值不是 [] 或 {}，则修正为 [] 或 {}
+                if (i < len - 1 && valType !== 'object' && valType !== 'array') {
+                    currentContext[cur] = {}
+                } else {
+                    currentContext[cur] = Util.isArray(val) && [] || val
+                }
+            } else {
+                // 已有值
+                // 如果不是最后一个属性，并且不是 [] 或 {}，则修正为 [] 或 {}
+                if (i < len - 1 && type !== 'object' && type !== 'array') {
+                    currentContext[cur] = Util.isArray(val) && [] || {}
+                }
+            }
+
+            type = Util.type(currentContext[cur])
+            if (type === 'object' || type === 'array') {
+                currentContext = currentContext[cur]
+                context.unshift(currentContext)
+            }
+        }
+    }
+    if (context.length > contextLength) context.splice(0, context.length - contextLength)
+}
+
+Handle.partial = function(node, context, options, helpers, partials) {
+    var name = node.partialName.name,
+        partial = partials && partials[name],
+        contextLength = context.length;
+
+    if (partial) Handle.gen(partial, context, options, helpers, partials)
+
+    if (context.length > contextLength) context.splice(0, context.length - contextLength)
+}
+Handle.content = Util.noop
+Handle.PARTIAL_NAME = Util.noop
+Handle.DATA = Util.noop
+Handle.STRING = Util.noop
+Handle.INTEGER = Util.noop
+Handle.BOOLEAN = Util.noop
+Handle.comment = Util.noop
+
+var Helpers = {}
+
+Helpers.each = function(node, context, options) {
+    var i, len, cur, val, parts, def, type,
+        currentContext = context[0];
+
+    parts = node.mustache.params[0].parts // each 只需要处理第一个参数，更多的参数由 each 自己处理
+    for (i = 0, len = parts.length; i < len; i++) {
+        options.__path.push(parts[i])
+
         cur = parts[i]
+        def = i === len - 1 ? [] : {}
 
-        def = i < parts.length - 1 ? {} : undefined
-        val = this.val(cur, options, result, def)
+        val = this.val(cur, options, context, def)
 
-        // 已有值
-        type = Util.type(result[cur])
-        if (type === 'undefined' ||
-            i < parts.length - 1 && type !== 'undefined' && type !== 'object' && type !== 'array') {
-            result[cur] = Util.isArray(val) && [] || val
+        currentContext[cur] = Util.isArray(val) && [] || val
+
+        type = Util.type(currentContext[cur])
+        if (type === 'object' || type === 'array') {
+            currentContext = currentContext[cur]
+            context.unshift(currentContext)
+        }
+    }
+
+    return val
+}
+
+Helpers['if'] = Helpers.unless = function(node, context, options) {
+    var params = node.mustache.params,
+        i, j, cur, val, def, type,
+        currentContext = context[0];
+
+    for (i = 0; i < params.length; i++) {
+        parts = params[i].parts
+        for (j = 0; j < parts.length; j++) {
+            if (i === 0) options.__path.push(parts[j])
+
+            cur = parts[j]
+            def = j === parts.length - 1 ? '@BOOL(2,1,true)' : {}
+
+            val = this.val(cur, options, context, def)
+            if (j === parts.length - 1) {
+                val = val === 'true' ? true :
+                    val === 'false' ? false : val
+            }
+
+            currentContext[cur] = Util.isArray(val) ? [] : val
+
+            type = Util.type(currentContext[cur])
+            if (type === 'object' || type === 'array') {
+                currentContext = currentContext[cur]
+                context.unshift(currentContext)
+            }
+        }
+    }
+    return val
+}
+
+Helpers['with'] = function(node, context, options) {
+    var i, cur, val, parts, def,
+        currentContext = context[0];
+
+    parts = node.mustache.params[0].parts
+    for (i = 0; i < parts.length; i++) {
+        options.__path.push(parts[i])
+
+        cur = parts[i]
+        def = {}
+
+        val = this.val(cur, options, context, def)
+
+        currentContext = currentContext[cur] = val
+        context.unshift(currentContext)
+    }
+    return val
+}
+
+Helpers.log = function() {
+    // {{log "Look at me!"}}
+}
+
+Helpers.custom = function(node, context, options) {
+    var i, len, cur, val, parts, def, type,
+        currentContext = context[0];
+
+    // custom helper
+    // 如果 helper 没有参数，则认为是在当前上下文中判断 helper 是否为 true
+    if (node.mustache.params.length === 0) {
+        return
+
+        // 按理说，Mock4Tpl 不需要也不应该模拟 helper 的行为（返回值），只需要处理 helper 的 params 和 statements。
+        // 之所以保留下面的代码，是为了以防需要时扩展，也就是说，如果连 helper 也需要模拟的话！
+        options.__path.push(node.mustache.id.string)
+
+        cur = node.mustache.id.string
+        def = '@BOOL(2,1,true)'
+
+        val = this.val(cur, options, context, def)
+
+        currentContext[cur] = Util.isArray(val) && [] || val
+
+        type = Util.type(currentContext[cur])
+        if (type === 'object' || type === 'array') {
+            currentContext = currentContext[cur]
+            context.unshift(currentContext)
         }
 
-        type = Util.type(val)
-        if (type === 'object' || type === 'array') result = result[cur]
+    } else {
+        parts = node.mustache.params[0].parts
+        for (i = 0, len = parts.length; i < len; i++) {
+            options.__path.push(parts[i])
+
+            cur = parts[i]
+            def = i === len - 1 ? [] : {} // 默认值也可以是 []，如果有必要的话
+
+            val = this.val(cur, options, context, def)
+
+            currentContext[cur] = Util.isArray(val) && [] || val
+
+            type = Util.type(currentContext[cur])
+            if (type === 'object' || type === 'array') {
+                currentContext = currentContext[cur]
+                context.unshift(currentContext)
+            }
+        }
     }
+    return val
 }
-Mock4Tpl.PARTIAL_NAME = function() {}
-Mock4Tpl.DATA = function() {}
-Mock4Tpl.STRING = function() {}
-Mock4Tpl.INTEGER = function() {}
-Mock4Tpl.BOOLEAN = function() {}
-Mock4Tpl.comment = function() {}
 
 
 // src/tpl/expose.js

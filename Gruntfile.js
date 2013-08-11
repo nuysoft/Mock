@@ -18,16 +18,16 @@ module.exports = function(grunt) {
             ]
         },
         nodeunit: {
-            all: ['test/*-node.js' /*, 'test/mock4xtemplate-node.js'*/ ]
+            all: ['test/mock-node.js', 'test/mock4tpl-node.js', 'test/*-node.js']
         },
         watch: {
             dev: {
-                files: ['<%= jshint.files %>', 'test/**/*.*'],
-                tasks: ['jshint', 'nodeunit', 'concat' /*, 'qunit'*/ ]
+                files: ['<%= jshint.files %>', 'src/**/parser.l', 'src/**/parser.yy', 'test/**/*.*'],
+                tasks: ['jshint', 'parser', 'nodeunit', 'concat' /*, 'qunit'*/ ]
             },
             build: {
                 files: ['<%= jshint.files %>', 'test/**/*.*'],
-                tasks: ['jshint', 'nodeunit', 'concat' /*, 'qunit'*/ ]
+                tasks: ['jshint', 'parser', 'nodeunit', 'concat' /*, 'qunit'*/ ]
             }
         },
         concat: {
@@ -103,8 +103,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat')
     grunt.loadNpmTasks('grunt-exec')
 
-    grunt.registerTask('default', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify', 'watch:dev'])
-    grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])
-    grunt.registerTask('parser', ['exec'])
+    grunt.registerTask('default', ['jshint', 'parser', 'nodeunit', 'concat' /*, 'qunit'*/ , 'uglify', 'watch:dev'])
+    grunt.registerTask('build', ['jshint', 'parser', 'nodeunit', 'concat', 'qunit', 'uglify'])
+    grunt.registerTask('parser', ['exec', 'concat:parser'])
 
 };

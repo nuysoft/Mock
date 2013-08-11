@@ -18,7 +18,7 @@ Mock.mockjax = function mockjax(jQuery) {
 
     function convert(mock) {
         return function() {
-            return Mock.gen(mock.template)
+            return Mock.mock(mock.template)
         }
     }
 
@@ -61,7 +61,7 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
                 }
 
                 console.log('[mock]', options.url, '>', mock.rurl)
-                var data = Mock.gen(mock.template)
+                var data = Mock.mock(mock.template)
                 console.log('[mock]', data)
                 if (options.success) options.success(data)
                 if (options.complete) options.complete(data)

@@ -16,7 +16,8 @@
             <a href="https://github.com/nuysoft/Mock" target="_blank">Github</a>
             <a href="http://nuysoft.com/2013/04/15/angry-birds-of-javascript-green-bird-mocking/" target="_blank">Doc</a>
             <a href="https://github.com/nuysoft/Mock#%E8%AF%AD%E6%B3%95" target="_blank">Syntax</a>
-            <a href="https://github.com/nuysoft/Mock/blob/master/test/mock-node.js" target="_blank">Case</a>
+            <a href="https://github.com/nuysoft/Mock/blob/master/test/" target="_blank">Case</a>
+            <a href="./mock4tpl.html">Mock4Tpl'Demo</a>
         </div>
         <div class="actions">
             <a id="save" class="btn btn-small disabled" href="#"><i class="icon-ok-sign"></i> Save</a>
@@ -119,13 +120,20 @@
             function handle(instance, changeObj){
                 var tpl;
                 try {
-                    tpl = new Function('return ' + instance.getValue() );
+                    tpl = instance.getValue()
+                    tpl = tpl.replace(/^([\r\n]*)/i,'')
+                            .replace(/([\r\n]*$)/i,'')
+                    if(/^\s*[\[\{\(]/.test(tpl)) {
+                        tpl = new Function('return ' + instance.getValue() );
+                        tpl = tpl()
+                    }
                 } catch( error ){
-                    console.error(error);
-                    tpl = function(){ return error.toString() }
+                    console.error(error)
+                    tpl = error.toString()
                 }
-                var data = Mock.mock(tpl())
-                result.setValue(JSON.stringify(data, null, 4));
+                var data = Mock.mock(tpl)
+                data = JSON.stringify(data, null, 4)
+                result.setValue(data);
                 return handle
             }
             editor.on('change', handle(editor));

@@ -264,6 +264,7 @@ exports.test_expression_multi_with_holder = function(test) {
         },
         prop: '@TIME'
     })
+    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.obj, 'object')
@@ -991,7 +992,7 @@ exports.test_path_nested = function(test) {
     test.done()
 }
 
-// TODO ".." 的处理和其他情况一样，需要一直持有对上一层对象的引用（../permalink "depth": 1,）
+// √".." 的处理和其他情况一样，需要一直持有对上一层对象的引用（../permalink "depth": 1,），通过跟踪 AST 路径实现
 exports.test_path_back = function(test) {
     var tpl, data, html;
 
@@ -1006,15 +1007,17 @@ exports.test_path_back = function(test) {
 </div>
          */
     })
+    // Mock4Tpl.debug = true
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
     // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
+    // Mock4Tpl.debug = false
 
     test.ok(util.isArray(data.comments))
     for (var i = 0; i < data.comments.length; i++) {
-        // test.equal(!data.comments[i].permalink) // TODO
+        test.ok(!data.comments[i].permalink) // TODO
         test.equal(data.comments[i].id, 'id')
         test.equal(data.comments[i].title, 'title')
     }
@@ -1807,10 +1810,10 @@ exports.testScene = function(test) {
     test.done()
 }
 
-
 exports.test_id_inc = function(test) {
     var tpl, data, html;
 
+    // Mock4Tpl.debug = true
     tpl = '{{#each comments}}{{id}}{{/each}}'
     data = Mock4Tpl.mock(tpl, {
         'comments|3': [],
@@ -1820,11 +1823,38 @@ exports.test_id_inc = function(test) {
     // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
+    // Mock4Tpl.debug = false
 
     test.ok(util.isArray(data.comments))
     for (var i = 1; i < data.comments.length; i++) {
         test.notEqual(data.comments[i].id, data.comments[i - 1].id)
     }
+    test.ok(true)
+    test.done()
+}
+
+exports.test_path_stack = function(test) {
+    test.expect(1)
+
+    var tpl, data;
+
+    // Mock4Tpl.debug = true
+    tpl = heredoc(function() {
+        /*
+{{#each a}}
+  {{#each b}}
+    {{#each c}}
+      {{d}}
+    {{/each}}
+  {{/each}}
+{{/each}}
+         */
+    })
+    data = Mock4Tpl.mock(tpl, {})
+    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(data, null, 4))
+    // Mock4Tpl.debug = false
+
     test.ok(true)
     test.done()
 }
