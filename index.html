@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mock by nuysoft</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Mock</h1>
+        <p>模拟请求 &amp; 模拟数据</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/nuysoft/Mock" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/nuysoft/Mock/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/nuysoft/Mock/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a name="mock---%E6%A8%A1%E6%8B%9F%E8%AF%B7%E6%B1%82--%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE" class="anchor" href="#mock---%E6%A8%A1%E6%8B%9F%E8%AF%B7%E6%B1%82--%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE"><span class="octicon octicon-link"></span></a>Mock - 模拟请求 &amp; 模拟数据</h1>
+
+<h2>
+<a name="%E6%A8%A1%E6%8B%9F%E8%AF%B7%E6%B1%82" class="anchor" href="#%E6%A8%A1%E6%8B%9F%E8%AF%B7%E6%B1%82"><span class="octicon octicon-link"></span></a>模拟请求</h2>
+
+<p>通过添加前置过滤器、重写 XHR 对象，从模拟数据中读取 URL 匹配的数据。</p>
+
+<h2>
+<a name="%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE" class="anchor" href="#%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE"><span class="octicon octicon-link"></span></a>模拟数据</h2>
+
+<p>基于一套数据模板语法，简化模拟数据的构造过程。</p>
+
+<h2>
+<a name="demo--test-case" class="anchor" href="#demo--test-case"><span class="octicon octicon-link"></span></a>DEMO &amp; Test Case</h2>
+
+<ul>
+<li>Demo: <a href="demo/mock.html">demo/mock.html</a>, <a href="demo/mock4tpl.html">demo/mock4tpl.html</a>
+</li>
+<li>NodeUnit: , , </li>
+<li>QUnit: <a href="test/mock.html">test/mock.html</a>, <a href="test/mock.js">test/mock.js</a>
+</li>
+</ul><h2>
+<a name="%E4%BE%9D%E8%B5%96--%E6%94%AF%E6%8C%81" class="anchor" href="#%E4%BE%9D%E8%B5%96--%E6%94%AF%E6%8C%81"><span class="octicon octicon-link"></span></a>依赖 &amp; 支持</h2>
+
+<ul>
+<li>无依赖</li>
+<li>支持的模块加载器：CommonJS、AMD、KISSY</li>
+<li>可以直接在浏览器中引入</li>
+</ul><h2>
+<a name="api" class="anchor" href="#api"><span class="octicon octicon-link"></span></a>API</h2>
+
+<ul>
+<li>
+<code>Mock.mock(rurl, template)</code> 记录数据模板，当拦截到 Ajax 请求时生成模拟数据并返回。</li>
+<li>
+<code>Mock.mock(template)</code> 根据数据模板生成模拟数据。</li>
+<li>
+<code>Mock.Random</code> 生成随机元数据，参见“支持的占位符”。</li>
+<li>
+<code>Mock4Tpl.mock(input, options, helpers, partials)</code> 基于客户端模板生成模拟数据。</li>
+</ul><h2>
+<a name="%E8%AF%AD%E6%B3%95" class="anchor" href="#%E8%AF%AD%E6%B3%95"><span class="octicon octicon-link"></span></a>语法</h2>
+
+<h4>
+<a name="1-%E6%AF%8F%E4%B8%AA%E5%B1%9E%E6%80%A7%E5%8C%85%E5%90%AB-3-%E9%83%A8%E5%88%86" class="anchor" href="#1-%E6%AF%8F%E4%B8%AA%E5%B1%9E%E6%80%A7%E5%8C%85%E5%90%AB-3-%E9%83%A8%E5%88%86"><span class="octicon octicon-link"></span></a>1. 每个属性包含 3 部分：</h4>
+
+<p>以 <code>'data|1-10':[{}]</code> 为例：</p>
+
+<ul>
+<li>属性名 - 例如 <code>data</code>。</li>
+<li>参数 - 指示生成数据的规则，例如 <code>|1-10</code>。</li>
+<li>属性值 - 表示初始值、占位符、类型，例如 <code>[{}]</code>。</li>
+</ul><h4>
+<a name="2-%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%AD%E6%B3%95" class="anchor" href="#2-%E6%94%AF%E6%8C%81%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="octicon octicon-link"></span></a>2. 支持的语法：</h4>
+
+<ul>
+<li>
+<code>'data|1-10':[{}]</code> 构造一个数组，含有 1-10 个元素</li>
+<li>
+<code>'data|1':[item, item, item]</code> 从数组中随机挑选一个元素做为属性值</li>
+<li>
+<code>'id|+1': 1</code> 属性 id 值自动加一，初始值为 1</li>
+<li>
+<code>'grade|1-100': 1</code> 生成一个 1-100 之间的整数</li>
+<li>
+<code>'float|1-10.1-10': 1</code> 生成一个浮点数，整数部分的范围是 1-10，保留小数点后 1-10 位小数</li>
+<li>
+<code>'star|1-10': '★'</code> 重复 1-10 次</li>
+<li>
+<code>'repeat|10': 'A'</code> 重复 10 次</li>
+<li>
+<code>'published|0-1': false</code> 随机生成一个布尔值</li>
+<li>
+<code>'email': '@EMAIL'</code> 随即生成一个 Email</li>
+<li>
+<code>'date': '@DATE'</code> 随即生成一段日期字符串，默认格式为 yyyy-MM-dd</li>
+<li>
+<code>'time': '@TIME'</code> 随机生成一段时间字符串，默认格式为 HH:mm:ss</li>
+<li>
+<code>'datetime': '@DATETIME'</code> 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss</li>
+</ul><h4>
+<a name="3-%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%A0%E4%BD%8D%E7%AC%A6" class="anchor" href="#3-%E6%94%AF%E6%8C%81%E7%9A%84%E5%8D%A0%E4%BD%8D%E7%AC%A6"><span class="octicon octicon-link"></span></a>3. 支持的占位符</h4>
+
+<ul>
+<li>
+<a href="https://github.com/BOOL" class="user-mention">@BOOL</a>, <a href="https://github.com/NATURAL" class="user-mention">@NATURAL</a>, <a href="https://github.com/INTEGER" class="user-mention">@INTEGER</a>, <a href="https://github.com/CHARACTER" class="user-mention">@CHARACTER</a>, <a href="https://github.com/STRING" class="user-mention">@STRING</a>
+</li>
+<li>
+<a href="https://github.com/DATE" class="user-mention">@DATE</a>, <a href="https://github.com/TIME" class="user-mention">@TIME</a>, @DATETIME</li>
+<li>@AD_SIZE, @SCREEN_SIZE, @VIDEO_SIZE, <a href="https://github.com/IMG" class="user-mention">@IMG</a>
+</li>
+<li><a href="https://github.com/COLOR" class="user-mention">@COLOR</a></li>
+<li>
+<a href="https://github.com/PARAGRAPH" class="user-mention">@PARAGRAPH</a>, @SENTENCE, @WORD</li>
+<li>@FIRST, @LAST, @NAME</li>
+<li>@DOMAIN, @EMAIL, @IP, @TLD</li>
+<li>@GUID, @ID</li>
+<li>TODO: @ADDRESS, @CITY, @PHONE, @AREACODE, @STREET, @STREET_SUFFIXES, @STREET_SUFFIX, @STATES, @STATE, @ZIP</li>
+</ul><h2>
+<a name="%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" class="anchor" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="octicon octicon-link"></span></a>参考资料：</h2>
+
+<ul>
+<li><a href="http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html">http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html</a></li>
+<li><a href="http://nuysoft.com/2013/04/15/angry-birds-of-javascript-green-bird-mocking/">http://nuysoft.com/2013/04/15/angry-birds-of-javascript-green-bird-mocking/</a></li>
+<li><a href="https://github.com/mennovanslooten/mockJSON">https://github.com/mennovanslooten/mockJSON</a></li>
+<li><a href="https://github.com/appendto/jquery-mockjax">https://github.com/appendto/jquery-mockjax</a></li>
+<li><a href="http://chancejs.com/">http://chancejs.com/</a></li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/nuysoft">nuysoft</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
