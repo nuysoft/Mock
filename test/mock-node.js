@@ -1,7 +1,8 @@
 var Mock = require('../src/mock'),
     Random = require('../src/Random'),
     Print = require('node-print'),
-    $ = require('jquery');
+    $ = require('jquery'),
+    util = require('util');
 
 require('../src/mockjax')
 
@@ -414,5 +415,36 @@ exports.test_escape = function(test) {
     tpl = '\\\\@EMAIL' // TODO 如果有多个转义斜杠怎么办？只有奇数个转义斜杠，才会被认为是要转义 @
     test.equal(Mock.mock(tpl), tpl)
 
+    test.done()
+}
+
+exports.test_range = function(test) {
+    var data;
+
+    data = Random.range()
+    test.ok(util.isArray(data))
+    test.equal(data.length, 0)
+    // console.log(data)
+
+    data = Random.range(10)
+    test.ok(util.isArray(data))
+    test.equal(data.length, 10)
+    // console.log(data)
+
+    data = Random.range(10, 20)
+    test.ok(util.isArray(data))
+    test.equal(data.length, 10)
+    test.equal(data[0], 10)
+    test.equal(data[9], 19)
+    // console.log(data)
+
+    data = Random.range(10, 20, 3)
+    test.ok(util.isArray(data))
+    test.equal(data.length, 4)
+    test.equal(data[0], 10)
+    test.equal(data[3], 19)
+    // console.log(data)
+
+    test.ok(true)
     test.done()
 }

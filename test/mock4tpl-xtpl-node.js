@@ -645,7 +645,7 @@ exports.test_string_sub_tpl = function(test) {
     data4xtpl = Mock4Tpl.mock(tpl4xtpl, {}, XTemplate.RunTime.commands, XTemplate.RunTime.subTpls)
     data4hdb = Mock4Tpl.mock(tpl4xtpl, {}, Handlebars.helpers, Handlebars.partials)
     test.deepEqual(data4xtpl, data4hdb)
-    // console.log(JSON.stringify(data, null, 4))
+    // console.log(JSON.stringify(data4xtpl, null, 4))
 
     html4xtpl = new XTemplate(tpl4xtpl).render(data4xtpl)
     html4hdb = Handlebars.compile(tpl4hdb)(data4hdb)
