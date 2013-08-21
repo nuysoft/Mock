@@ -30,7 +30,7 @@ function run(tpl, options) {
     // console.log(ast);
     // console.log(JSON.stringify(ast, null, 4));
 
-    var data = Mock4Tpl.gen(ast, null, options)
+    var data = Mock4Tpl.mock(ast, null, options)
     // console.log(JSON.stringify(data, null, 4));
     return data
 }

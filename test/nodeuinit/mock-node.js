@@ -1,10 +1,10 @@
-var Mock = require('../src/mock'),
-    Random = require('../src/Random'),
+var Mock = require('../../src/mock/mock'),
+    Random = require('../../src/mock/Random'),
     Print = require('node-print'),
     $ = require('jquery'),
     util = require('util');
 
-require('../src/mockjax')
+require('../../src/mock/mockjax')
 
 Mock.mockjax($)
 
@@ -286,7 +286,7 @@ exports.testRequest = function(test) {
         for (var i = 0, item; i < data.list.length; i++) {
             item = data.list[i]
             if (i > 0) test.equal(item.id, data.list[i - 1].id + 1)
-            test.ok(rEmail.test(item.email))
+            test.ok(rEmail.test(item.email), item.email)
         }
         if (false) {
             console.log();

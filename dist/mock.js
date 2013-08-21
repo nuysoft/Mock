@@ -1,4 +1,4 @@
-// src/mock-prefix.js
+// src/mock/mock-prefix.js
 /*
     Mock - 模拟请求 & 模拟数据
     https://github.com/nuysoft/Mock
@@ -10,7 +10,7 @@
 		_mocked: {}
 	}
 
-// src/util.js
+// src/mock/util.js
 
 /*
     Utilities
@@ -81,6 +81,21 @@ var Util = (function() {
         }
     })
 
+    Util.isObjectOrArray = function(value) {
+        return Util.isObject(value) || Util.isArray(value)
+    }
+
+    Util.isNumeric = function(value) {
+        return !isNaN(parseFloat(value)) && isFinite(value);
+    }
+
+    Util.heredoc = function heredoc(fn) {
+        return fn.toString()
+            .replace(/^[^\/]+\/\*!?/, '')
+            .replace(/\*\/[^\/]+$/, '')
+            .trim();
+    }
+
     Util.noop = function() {}
 
     return Util
@@ -88,7 +103,7 @@ var Util = (function() {
 
 
 
-// src/random.js
+// src/mock/random.js
 
 /*
     Random
@@ -127,7 +142,8 @@ var Random = (function() {
             return this.integer(min, max)
         },
         float: function(min, max, dmin, dmax) {
-            return this.natural(min, max) + '.' + this.natural(dmin, dmax)
+            var ret = this.integer(min, max) + '.' + this.natural(dmin, dmax)
+            return parseFloat(ret, 10)
         },
         character: function(pool) {
             var pools = {
@@ -642,7 +658,7 @@ var Random = (function() {
 })()
 
 
-// src/mock.js
+// src/mock/mock.js
 
 /*
     mock data
@@ -789,7 +805,7 @@ Handle.extend({
     },
     string: function(options) {
         var result = '',
-            i, placeholders, ph;
+            i, placeholders, ph, phed;
         if (options.template.length) {
             // 'star|1-5': '★',
             for (i = 0; i < options.count; i++) {
@@ -804,7 +820,18 @@ Handle.extend({
                     placeholders.splice(i--, 1)
                     continue
                 }
-                result = result.replace(ph, Handle.placeholder(ph, options.obj))
+                phed = Handle.placeholder(ph, options.obj)
+                if (placeholders.length === 1 && ph === result) { // 
+                    if (Util.isNumeric(phed)) {
+                        result = parseFloat(phed, 10)
+                        break
+                    }
+                    if (/^(true|false)$/.test(phed)) {
+                        result = phed === 'true' ? true : false
+                        break
+                    }
+                }
+                result = result.replace(ph, phed)
             }
         } else {
             // 'ASCII|1-10': '',
@@ -847,7 +874,7 @@ Handle.extend({
 })
 
 
-// src/mockjax.js
+// src/mock/mockjax.js
 
 /*
     mock ajax
@@ -922,9 +949,9 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
 }
 
 
-// src/expose.js
+// src/mock/expose.js
 /*
-	Expose Internal API
+    Expose Internal API
 */
 Mock.Util = Util
 Mock.Random = Random
@@ -933,29 +960,43 @@ Mock.Random = Random
     For Module Loader
 */
 if (typeof module === 'object' && module.exports) {
-	// CommonJS
-	module.exports = Mock;
+    // CommonJS
+    module.exports = Mock;
 
 } else if (typeof define === "function" && define.amd) {
-	// AMD modules
-	define(function() {
-		return Mock;
-	});
+    // AMD modules
+    define(function() {
+        return Mock;
+    });
 
 } else {
-	// other, i.e. browser
-	this.Mock = Mock;
+    // other, i.e. browser
+    this.Mock = Mock;
 }
 
 // for KISSY
 if (typeof KISSY != 'undefined') {
-	KISSY.add('components/mock/index', function(S) {
-		Mock.mockjax(S)
-		return Mock
-	}, {
-		requires: ['ajax']
-	})
+
+    /*
+        KISSY.use('components/mock/index', function(S, Mock) {
+            console.log(Mock.mock);
+        })
+    */
+    
+    KISSY.add('mock', function(S) {
+        Mock.mockjax(S)
+        return Mock
+    }, {
+        requires: ['ajax']
+    })
+
+    KISSY.add('components/mock/index', function(S) {
+        Mock.mockjax(S)
+        return Mock
+    }, {
+        requires: ['ajax']
+    })
 }
 
-// src/mock-suffix.js
+// src/mock/mock-suffix.js
 }).call(this);

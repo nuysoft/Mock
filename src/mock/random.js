@@ -38,7 +38,8 @@ var Random = (function() {
             return this.integer(min, max)
         },
         float: function(min, max, dmin, dmax) {
-            return this.natural(min, max) + '.' + this.natural(dmin, dmax)
+            var ret = this.integer(min, max) + '.' + this.natural(dmin, dmax)
+            return parseFloat(ret, 10)
         },
         character: function(pool) {
             var pools = {

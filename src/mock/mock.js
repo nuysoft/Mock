@@ -151,7 +151,7 @@ Handle.extend({
     },
     string: function(options) {
         var result = '',
-            i, placeholders, ph;
+            i, placeholders, ph, phed;
         if (options.template.length) {
             // 'star|1-5': '★',
             for (i = 0; i < options.count; i++) {
@@ -166,7 +166,18 @@ Handle.extend({
                     placeholders.splice(i--, 1)
                     continue
                 }
-                result = result.replace(ph, Handle.placeholder(ph, options.obj))
+                phed = Handle.placeholder(ph, options.obj)
+                if (placeholders.length === 1 && ph === result) { // 
+                    if (Util.isNumeric(phed)) {
+                        result = parseFloat(phed, 10)
+                        break
+                    }
+                    if (/^(true|false)$/.test(phed)) {
+                        result = phed === 'true' ? true : false
+                        break
+                    }
+                }
+                result = result.replace(ph, phed)
             }
         } else {
             // 'ASCII|1-10': '',

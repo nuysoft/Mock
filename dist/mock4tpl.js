@@ -993,7 +993,7 @@ Handle.gen = function(node, context, options, helpers, partials) {
 Handle.val = function(name, options, context, def) {
     if (name !== options.__path[options.__path.length - 1]) throw new Error(name + '!==' + options.__path)
     if (Mock4Tpl.debug || Handle.debug) console.log('[options]', name, options.__path);
-    if (def) def = Mock.mock(def)
+    if (def !== undefined) def = Mock.mock(def)
     if (options) {
         var mocked = Mock.mock(options)
         if (Util.isString(mocked)) return mocked
@@ -1002,7 +1002,7 @@ Handle.val = function(name, options, context, def) {
         }
     }
     if (Util.isArray(context[0])) return {}
-    return def || (name) || Random.word()
+    return def !== undefined ? def : (name) || Random.word()
 }
 
 
@@ -1339,36 +1339,43 @@ Helpers.custom = function(node, context, options) {
 
 // src/tpl/expose.js
 /*
-	Expose Internal API
+    Expose Internal API
 */
-Mock4Tpl.Parser = parser
+Mock4Tpl.parse = parser.parse
 Mock4Tpl.AST = AST
 
 /*
     For Module Loader
 */
 if (typeof module === 'object' && module.exports) {
-	// CommonJS
-	module.exports = Mock4Tpl;
+    // CommonJS
+    module.exports = Mock4Tpl;
 
 } else if (typeof define === "function" && define.amd) {
-	// AMD modules
-	define(function() {
-		return Mock4Tpl;
-	});
+    // AMD modules
+    define(function() {
+        return Mock4Tpl;
+    });
 
 } else {
-	// other, i.e. browser
-	this.Mock4Tpl = Mock4Tpl;
+    // other, i.e. browser
+    this.Mock4Tpl = Mock4Tpl;
 }
 
 // for KISSY
 if (typeof KISSY != 'undefined') {
-	KISSY.add('mock4tpl', function() {
-		return Mock4Tpl
-	}, {
-		requires: ['mock']
-	})
+
+    KISSY.add('mock4tpl', function() {
+        return Mock4Tpl
+    }, {
+        requires: ['mock']
+    })
+
+    KISSY.add('components/mock4tpl/index', function() {
+        return Mock4Tpl
+    }, {
+        requires: ['mock']
+    })
 }
 
 // src/tpl/mock4tpl-suffix.js

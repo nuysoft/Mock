@@ -16,13 +16,13 @@
 <body>
 
 <script type="text/javascript">
-KISSY.use('xtemplate', function(S, XTemplate){
-  debugger
-  var ast = XTemplate.compiler.parse('{{汉字}}')
-  console.log(JSON.stringify(ast, null, 4))
-  var data = Mock4Tpl.gen(ast, null, {})
-  console.log(JSON.stringify(data, null, 4));
-})
+  KISSY.use('xtemplate', function(S, XTemplate){
+    window.XTemplate = XTemplate
+    var ast = XTemplate.compiler.parse('{{abc}}')
+    console.log(JSON.stringify(ast, null, 4))
+    var data = Mock4Tpl.mock(ast, null, {})
+    console.log(JSON.stringify(data, null, 4));
+  })
 </script>
 
 </body>

@@ -1,7 +1,7 @@
 var Parser = require('./parser'),
-    Mock = require('../mock'),
-    Random = require('../random'),
-    Util = require('../util');
+    Mock = require('../mock/mock'),
+    Random = require('../mock/random'),
+    Util = require('../mock/util');
 
 var Mock4Tpl = module.exports = {
     debug: false
@@ -119,7 +119,7 @@ Handle.gen = function(node, context, options, helpers, partials) {
 Handle.val = function(name, options, context, def) {
     if (name !== options.__path[options.__path.length - 1]) throw new Error(name + '!==' + options.__path)
     if (Mock4Tpl.debug || Handle.debug) console.log('[options]', name, options.__path);
-    if (def) def = Mock.mock(def)
+    if (def !== undefined) def = Mock.mock(def)
     if (options) {
         var mocked = Mock.mock(options)
         if (Util.isString(mocked)) return mocked
@@ -128,7 +128,7 @@ Handle.val = function(name, options, context, def) {
         }
     }
     if (Util.isArray(context[0])) return {}
-    return def || (name) || Random.word()
+    return def !== undefined ? def : (name) || Random.word()
 }
 
 

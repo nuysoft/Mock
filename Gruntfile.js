@@ -5,7 +5,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             files: ['Gruntfile.js', 'package.json', 'src/**/*.js', 'test/**/*.js',
-                    '!**/*-prefix.js', '!**/*-suffix.js', '!src/tpl/parser.js', '!src/tpl/parser/parser.js'
+                    '!**/*-prefix.js', '!**/*-suffix.js', '!src/tpl/parser.js', '!src/parser/parser.js'
             ], // 
             options: {
                 jshintrc: '.jshintrc'
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
             ]
         },
         nodeunit: {
-            all: ['test/mock-node.js', 'test/mock4tpl-node.js', 'test/*-node.js']
+            all: ['test/nodeuinit/*.js']
         },
         watch: {
             dev: {
@@ -47,9 +47,10 @@ module.exports = function(grunt) {
                 }
             },
             mock: {
-                src: ['src/mock-prefix.js',
-                        'src/util.js', 'src/random.js', 'src/mock.js', 'src/mockjax.js', 'src/expose.js',
-                        'src/mock-suffix.js'
+                src: ['src/mock/mock-prefix.js',
+                        'src/mock/util.js', 'src/mock/random.js', 'src/mock/mock.js',
+                        'src/mock/mockjax.js', 'src/mock/expose.js',
+                        'src/mock/mock-suffix.js'
                 ],
                 dest: 'dist/mock.js'
             },
@@ -59,9 +60,9 @@ module.exports = function(grunt) {
                         return src
                     }
                 },
-                src: ['src/tpl/parser/parser-prefix.js',
-                        'src/tpl/parser/parser.js', 'src/tpl/parser/ast.js',
-                        'src/tpl/parser/parser-suffix.js'
+                src: ['src/parser/parser-prefix.js',
+                        'src/parser/parser.js', 'src/parser/ast.js',
+                        'src/parser/parser-suffix.js'
                 ],
                 dest: 'src/tpl/parser.js'
             },
@@ -71,6 +72,10 @@ module.exports = function(grunt) {
                         'src/tpl/mock4tpl-suffix.js'
                 ],
                 dest: 'dist/mock4tpl.js'
+            },
+            mock4xtpl: {
+                src: ['src/xtpl/mock4xtpl.js'],
+                dest: 'dist/mock4xtpl.js'
             }
         },
         uglify: {
@@ -87,10 +92,10 @@ module.exports = function(grunt) {
         },
         exec: {
             parser: {
-                command: './node_modules/.bin/jison -m js src/tpl/parser/parser.yy src/tpl/parser/parser.l'
+                command: './node_modules/.bin/jison -m js src/parser/parser.yy src/parser/parser.l'
             },
             move: {
-                command: 'mv parser.js src/tpl/parser/'
+                command: 'mv parser.js src/parser/'
             }
         }
     })

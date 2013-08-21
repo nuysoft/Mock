@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Mock4Tpl</title>
+    <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="../node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
+    <link href="../node_modules/codemirror/theme/neat.css" rel="stylesheet">
+    <link href="assets/mock.css" rel="stylesheet">
+    <!-- <script src="http://g.tbcdn.cn/kissy/k/1.3.1/seed-min.js"></script> -->
+    <script src="../node_modules/kissy/build/seed-min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="branding">
+            MOCK FOR TEMPLATE 
+        </div>
+        <div class="by">
+            <a href="https://github.com/nuysoft/Mock" target="_blank">Github</a>
+            <a href="http://nuysoft.com/2013/04/15/angry-birds-of-javascript-green-bird-mocking/" target="_blank">Doc</a>
+            <a href="https://github.com/nuysoft/Mock#%E8%AF%AD%E6%B3%95" target="_blank">Syntax</a>
+            <a href="https://github.com/nuysoft/Mock/blob/master/test/" target="_blank">Case</a>
+            <a href="./mock.html">Mock'Demo</a>
+        </div>
+        <div class="actions">
+            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-ok-sign"></i> Save</a>
+            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-eye-open"></i> Beautifier</a>
+            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-share-alt"></i> Share</a>
+            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-user"></i> Login/Sign up</a>
+        </div>
+    </div>
+    <div class="sidebar"></div>
+    <div class="content clearfix">
+        <div class="window float-left">
+            <textarea id="editor">
+{{#with data}}
+  {{#if n > ../limit/5.0}}
+    {{n+1.0}}
+  {{/if}}
+{{/with}}</textarea>
+        </div>
+        <div class="handler" id="handler_vertical" style="left: 50%;"></div>
+        <div class="window float-right">
+            <textarea id="result"></textarea>
+        </div>
+    </div>
+
+    <script src="../node_modules/jquery/tmp/jquery.js"></script>
+    <script src="../node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="../node_modules/codemirror/mode/javascript/javascript.js"></script>
+    <script src="../node_modules/codemirror/mode/css/css.js"></script>
+    <script src="../node_modules/codemirror/mode/vbscript/vbscript.js"></script>
+    <script src="../node_modules/codemirror/mode/xml/xml.js"></script>
+    <script src="../node_modules/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="../node_modules/codemirror/mode/coffeescript/coffeescript.js"></script>
+    
+    <script src="../dist/mock.js"></script>
+    <script src="../dist/mock4xtpl.js"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            $('.content').css('opacity', 1)
+            
+            var win = $(window),
+                ctns = $('.content .window'),
+                bar = $('.content .handler');
+            function resize(divide){
+                ctns.width( win.width() / 2 - 37 )
+                    .height( win.height() - 82 )
+                bar.css('left', win.width() / 2 - bar.width() / 2 )
+                return resize;
+            }
+            win.on( 'resize', resize(true) );
+            
+            // 
+            var mixedMode = {
+                name: "htmlmixed",
+                scriptTypes: [
+                    {
+                        matches: /\/x-handlebars-template|\/x-mustache/i,
+                        mode: null
+                    },
+                    {
+                        matches: /(text|application)\/(x-)?vb(a|script)/i,
+                        mode: "vbscript"
+                    }
+                ]
+            };
+
+            var editor = CodeMirror.fromTextArea($('#editor').get(0),{
+                lineNumbers: true,
+                autofocus: true,
+                mode: { name: "xml", alignCDATA: true },
+                tabMode: "indent",
+                theme: 'neat'
+            });
+
+            var result = CodeMirror.fromTextArea($('#result').get(0),{
+                readOnly: true,
+                mode: 'javascript',
+                theme: 'neat'
+            });
+
+            function handle(instance, changeObj){
+                KISSY.use('mock4xtpl', function(S, Mock4XTpl){
+                    var tpl = instance.getValue();
+                    var data;
+                    try {
+                        data = Mock4XTpl.mock(tpl);
+                    } catch( error ) {
+                        console.error(error);
+                        data = error.toString();
+                    }
+                    result.setValue(JSON.stringify(data, null, 4));
+                })
+                return handle
+            }
+            editor.on('change', handle(editor));
+
+            // 
+            $('#save').on('click', function(event){
+                try{
+                    var data = editor.getValue()
+                    new Function('return ' + data )
+                    $.ajax({
+                        url: '/save?test=true',
+                        data: {
+                            tpl: data
+                        },
+                        type: 'post',
+                        dataType: 'json'
+                    })
+                } catch(exception){
+                    alert(exception)
+                }
+            })
+        });
+    </script>
+
+</body>
+</html>
