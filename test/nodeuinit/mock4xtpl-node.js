@@ -94,7 +94,7 @@ exports.test_if = function(test) {
   has title2
 {{else}}
   not has title2
-{{/if}}'
+{{/if}}
         */
     })
     // Mock4XTpl._.debug = true

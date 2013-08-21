@@ -8,24 +8,26 @@
     <link href="assets/mock.css" rel="stylesheet">
 </head>
 <body>
-    <div class="header">
-        <div class="branding">
-            MOCK DATA 
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">MOCK DATA</a>
         </div>
-        <div class="by">
-            <a href="https://github.com/nuysoft/Mock" target="_blank">Github</a>
-            <a href="http://nuysoft.com/2013/04/15/angry-birds-of-javascript-green-bird-mocking/" target="_blank">Doc</a>
-            <a href="https://github.com/nuysoft/Mock#%E8%AF%AD%E6%B3%95" target="_blank">Syntax</a>
-            <a href="https://github.com/nuysoft/Mock/blob/master/test/" target="_blank">Case</a>
-            <a href="./mock4tpl.html">Mock4Tpl'Demo</a>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="./mock.html">Mock</a></li>
+                <li class=""><a href="./mock4tpl.html">Handlebars</a></li>
+                <li class=""><a href="./mock4xtpl.html">XTemplate</a></li>
+                <li class=""><a href="https://github.com/nuysoft/Mock">Github</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a id="save" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-ok-sign"></i> Save</a></li>
+                <li><a id="beautifier" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-eye-open"></i> Beautifier</a></li>
+                <li><a id="share" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-share-alt"></i> Share</a></li>
+                <li><a id="account" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-user"></i> Login/Sign up</a></li>
+            </ul>
         </div>
-        <div class="actions">
-            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-ok-sign"></i> Save</a>
-            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-eye-open"></i> Beautifier</a>
-            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-share-alt"></i> Share</a>
-            <a id="save" class="btn btn-small disabled" href="#"><i class="icon-user"></i> Login/Sign up</a>
-        </div>
-    </div>
+    </nav>
+
     <div class="sidebar"></div>
     <div class="content clearfix">
         <div class="window float-left">
@@ -85,50 +87,29 @@
     </div>
 
     <script src="../node_modules/jquery/tmp/jquery.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.js"></script>
     <script src="../node_modules/codemirror/lib/codemirror.js"></script>
     <script src="../node_modules/codemirror/mode/javascript/javascript.js"></script>
     <script src="../dist/mock.js"></script>
+
+    <script type="text/javascript">
+        var mode = 'javascript';
+    </script>
+    <script src="./assets/editor.js"></script>
     <script type="text/javascript">
         $(function(){
-            $('.content').css('opacity', 1)
-            
-            var win = $(window),
-                ctns = $('.content .window'),
-                bar = $('.content .handler');
-            function resize(divide){
-                ctns.width( win.width() / 2 - 37 )
-                    .height( win.height() - 82 )
-                bar.css('left', win.width() / 2 - bar.width() / 2 )
-                return resize;
-            }
-            win.on( 'resize', resize(true) );
-            
-            // 
-            var editor = CodeMirror.fromTextArea($('#editor').get(0),{
-                lineNumbers: true,
-                autofocus: true,
-                mode: 'javascript',
-                theme: 'neat'
-            });
-
-            var result = CodeMirror.fromTextArea($('#result').get(0),{
-                readOnly: true,
-                mode: 'javascript',
-                theme: 'neat'
-            });
-
-            function handle(instance, changeObj){
+            function handle(instance, changeObj) {
                 var tpl;
                 try {
                     tpl = instance.getValue()
-                    tpl = tpl.replace(/^([\r\n]*)/i,'')
-                            .replace(/([\r\n]*$)/i,'')
-                    if(/^\s*[\[\{\(]/.test(tpl)) {
-                        tpl = new Function('return ' + instance.getValue() );
+                    tpl = tpl.replace(/^([\r\n]*)/i, '')
+                        .replace(/([\r\n]*$)/i, '')
+                    if (/^\s*[\[\{\(]/.test(tpl)) {
+                        tpl = new Function('return ' + instance.getValue());
                         tpl = tpl()
                     }
-                } catch( error ){
-                    console.error(error)
+                } catch (error) {
+                    console.error(error.stack);
                     tpl = error.toString()
                 }
                 var data = Mock.mock(tpl)
@@ -136,24 +117,8 @@
                 result.setValue(data);
                 return handle
             }
-            editor.on('change', handle(editor));
 
-            $('#save').on('click', function(event){
-                try{
-                    var data = editor.getValue()
-                    new Function('return ' + data )
-                    $.ajax({
-                        url: '/save?test=true',
-                        data: {
-                            tpl: data
-                        },
-                        type: 'post',
-                        dataType: 'json'
-                    })
-                } catch(exception){
-                    alert(exception)
-                }
-            })
+            editor.on('change', handle(editor));
         });
     </script>
 
