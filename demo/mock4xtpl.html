@@ -6,34 +6,26 @@
     <link href="../node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
     <link href="../node_modules/codemirror/theme/neat.css" rel="stylesheet">
     <link href="assets/mock.css" rel="stylesheet">
-    <!-- <script src="http://g.tbcdn.cn/kissy/k/1.3.1/seed-min.js"></script> -->
-    <script src="../node_modules/kissy/build/seed-min.js"></script>
+    <script src="http://g.tbcdn.cn/kissy/k/1.3.1/seed-min.js"></script>
+    <!-- <script src="../node_modules/kissy/build/seed-min.js"></script> -->
 </head>
 <body>
     <nav class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">MOCK FOR XTEMPLATE</a>
+            <a class="navbar-brand" href="http://mockjs.com">Mock.js</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li class=""><a href="./mock.html">Mock</a></li>
-                <li class=""><a href="./mock4tpl.html">Handlebars</a></li>
-                <li class="active"><a href="./mock4xtpl.html">XTemplate</a></li>
+                <li class=""><a href="./mock.html">Data</a></li>
+                <li class=""><a href="./mock4tpl.html">Handlebars &amp; Mustache</a></li>
+                <li class="active"><a href="./mock4xtpl.html">KISS XTemplate</a></li>
                 <li class=""><a href="https://github.com/nuysoft/Mock">Github</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a id="save" class="btn btn-small" href="#">
-                    <i class="glyphicon glyphicon-ok-sign"></i> Save</a>
-                </li>
-                <li><a id="beautifier" class="btn btn-small disabled" href="#">
-                    <i class="glyphicon glyphicon-eye-open"></i> Beautifier</a>
-                </li>
-                <li><a id="share" class="btn btn-small disabled" href="#">
-                    <i class="glyphicon glyphicon-share-alt"></i> Share</a>
-                </li>
-                <li><a id="account" class="btn btn-small disabled" href="#">
-                    <i class="glyphicon glyphicon-user"></i> Login/Sign up</a>
-                </li>
+                <li><a id="save" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-ok-sign"></i> Save</a></li>
+                <li><a id="beautifier" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-eye-open"></i> Beautifier</a></li>
+                <li><a id="share" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-share-alt"></i> Share</a></li>
+                <li><a id="account" class="btn btn-small disabled" href="#"><i class="glyphicon glyphicon-user"></i> Login/Sign up</a></li>
             </ul>
         </div>
     </nav>
@@ -75,7 +67,6 @@
     <script src="../node_modules/codemirror/mode/coffeescript/coffeescript.js"></script>
     
     <script src="../dist/mock.js"></script>
-    <script src="../dist/mock4xtpl.js"></script>
     
     <script type="text/javascript">
         var mode = 'htmlmixed';
@@ -84,11 +75,11 @@
     <script type="text/javascript">
         $(function(){
             function handle(instance, changeObj){
-                KISSY.use('mock4xtpl', function(S, Mock4XTpl){
+                KISSY.use('mock', function(S, Mock){
                     var tpl = instance.getValue();
                     var data;
                     try {
-                        data = Mock4XTpl.mock(tpl);
+                        data = Mock.xtpl(tpl);
                     } catch( error ) {
                         console.error(error.stack);
                         data = error.toString();

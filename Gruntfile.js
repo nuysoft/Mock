@@ -5,8 +5,8 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             files: ['Gruntfile.js', 'package.json', 'src/**/*.js', 'test/**/*.js',
-                    '!**/*-prefix.js', '!**/*-suffix.js', '!src/tpl/parser.js', '!src/parser/parser.js'
-            ], // 
+                    '!**/*-prefix.js', '!**/*-suffix.js'
+            ],
             options: {
                 jshintrc: '.jshintrc'
             }
@@ -22,67 +22,79 @@ module.exports = function(grunt) {
         },
         watch: {
             dev: {
-                files: ['<%= jshint.files %>', 'src/**/parser.l', 'src/**/parser.yy', 'test/**/*.*'],
-                tasks: ['jshint', 'parser', 'nodeunit', 'concat' /*, 'qunit'*/ ]
+                files: ['<%= jshint.files %>', 'test/**/*.*', 'doc/**/*.md', 'doc/template.html', '!doc/index.md'],
+                tasks: ['base']
             },
-            build: {
-                files: ['<%= jshint.files %>', 'test/**/*.*'],
-                tasks: ['jshint', 'parser', 'nodeunit', 'concat' /*, 'qunit'*/ ]
-            }
+            doc: {
+                files: ['Gruntfile.js', 'doc/**/*.md', 'doc/template.html', '!doc/index.md'],
+                tasks: ['concat:doc', 'markdown:doc', 'copy:doc']
+            },
+            build: {}
         },
         concat: {
-            options: {
-                separator: '\n\n',
-                process: function(src, filepath) {
-                    var banner = '// ' + filepath + '\n';
-                    // var rbrowser = /\/\/ BEGIN\(BROWSER\)\n([.\s]*)\n\/\/ END\(BROWSER\)/mg
-                    var BEGEIN = '// BEGIN(BROWSER)',
-                        END = '// END(BROWSER)';
-                    var indexOfBEGEIN = src.indexOf(BEGEIN),
-                        indexOfEND = src.indexOf(END);
-                    if (indexOfBEGEIN != -1 && indexOfEND != -1) {
-                        return banner + src.slice(indexOfBEGEIN + BEGEIN.length, indexOfEND)
-                    }
-                    return banner + src
-                }
-            },
             mock: {
-                src: ['src/mock/mock-prefix.js',
-                        'src/mock/util.js', 'src/mock/random.js', 'src/mock/mock.js',
-                        'src/mock/mockjax.js', 'src/mock/expose.js',
-                        'src/mock/mock-suffix.js'
+                options: {
+                    separator: '\n\n',
+                    process: function(src, filepath) {
+                        var banner = '/*! ' + filepath + ' */\n';
+                        // var rbrowser = /\/\/ BEGIN\(BROWSER\)\n([.\s]*)\n\/\/ END\(BROWSER\)/mg
+                        var BEGEIN = '// BEGIN(BROWSER)',
+                            END = '// END(BROWSER)';
+                        var indexOfBEGEIN = src.indexOf(BEGEIN),
+                            indexOfEND = src.indexOf(END);
+                        if (indexOfBEGEIN != -1 && indexOfEND != -1) {
+                            return banner + src.slice(indexOfBEGEIN + BEGEIN.length, indexOfEND)
+                        }
+                        return banner + src
+                    }
+                },
+                src: ['src/mock-prefix.js',
+                        'src/util.js', 'src/random.js',
+                        'src/mock.js',
+                        'src/mockjax.js',
+                        'src/expose.js',
+                        'src/mock4tpl.js',
+                        'src/mock4xtpl.js',
+                        'src/mock-suffix.js'
                 ],
                 dest: 'dist/mock.js'
             },
-            parser: {
+            doc: {
                 options: {
-                    process: function(src) {
-                        return src
-                    }
+                    separator: '\n\n'
                 },
-                src: ['src/parser/parser-prefix.js',
-                        'src/parser/parser.js', 'src/parser/ast.js',
-                        'src/parser/parser-suffix.js'
+                src: ['doc/getting-started.md', 'doc/mock.md', 'doc/mockjax.md',
+                        'doc/mock4tpl.md',
+                        'doc/mock4xtpl.md',
+                        'doc/random.md'
                 ],
-                dest: 'src/tpl/parser.js'
-            },
-            mock4tpl: {
-                src: ['src/tpl/mock4tpl-prefix.js',
-                        'src/tpl/parser.js', 'src/tpl/mock4tpl.js', 'src/tpl/expose.js',
-                        'src/tpl/mock4tpl-suffix.js'
-                ],
-                dest: 'dist/mock4tpl.js'
-            },
-            mock4xtpl: {
-                src: ['src/xtpl/mock4xtpl.js'],
-                dest: 'dist/mock4xtpl.js'
+                dest: 'doc/index.md'
             }
+        },
+        clean: {
+            dest: ["dist/**.**"]
         },
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
-            mock: {
+            dev: {
+                options: {
+                    beautify: true,
+                    compress: false,
+                    mangle: false,
+                    preserveComments: 'some' // false all some
+                },
+                files: [{
+                        expand: true,
+                        cwd: 'dist/',
+                        src: ['**/*.js', '!**/*-min.js'],
+                        dest: 'dist/',
+                        ext: '.js'
+                    }
+                ]
+            },
+            release: {
                 expand: true,
                 cwd: 'dist/',
                 src: ['**/*.js', '!**/*-min.js'],
@@ -90,12 +102,52 @@ module.exports = function(grunt) {
                 ext: '-min.js'
             }
         },
-        exec: {
-            parser: {
-                command: './node_modules/.bin/jison -m js src/parser/parser.yy src/parser/parser.l'
+        markdown: {
+            options: {
+                template: 'doc/template.html'
             },
-            move: {
-                command: 'mv parser.js src/parser/'
+            doc: {
+                expand: true,
+                cwd: 'doc/',
+                src: ['index.md'],
+                dest: './',
+                ext: '.html'
+            }
+        },
+        copy: {
+            demo: {
+                files: [{
+                        expand: true,
+                        src: ['dist/**', 'demo/**',
+                                'node_modules/jquery/tmp/**',
+                                'node_modules/codemirror/**',
+                                'node_modules/handlebars/dist/**'
+                        ],
+                        dest: '../../nuysoft.github.com/project/mock/'
+                    }
+                ]
+            },
+            doc: {
+                files: [{
+                        expand: true,
+                        src: ['dist/**', 'demo/**',
+                                'node_modules/jquery/tmp/**',
+                                'node_modules/codemirror/**',
+                                'node_modules/handlebars/dist/**'
+                        ],
+                        dest: '../mockjs.github.com/'
+                    }, {
+                        expand: true,
+                        cwd: './',
+                        src: ['index.html'],
+                        dest: '../mockjs.github.com/'
+                    }
+                ]
+            }
+        },
+        exec: {
+            doc: {
+                command: 'node ../push'
             }
         }
     })
@@ -106,10 +158,19 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-nodeunit')
     grunt.loadNpmTasks('grunt-contrib-uglify')
     grunt.loadNpmTasks('grunt-contrib-concat')
+    grunt.loadNpmTasks('grunt-contrib-copy')
+    grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-exec')
+    grunt.loadNpmTasks('grunt-markdown');
 
-    grunt.registerTask('default', ['jshint', 'parser', 'nodeunit', 'concat' /*, 'qunit'*/ , 'uglify', 'watch:dev'])
+    grunt.registerTask('base', [
+            'jshint', 'nodeunit', 'concat:mock' /*, 'qunit'*/ ,
+            'uglify',
+            'copy:demo',
+            'doc'
+    ])
+    grunt.registerTask('default', ['base', 'watch:dev'])
+    grunt.registerTask('doc', ['concat:doc', 'markdown:doc', 'copy:doc', 'watch:doc'])
+
     grunt.registerTask('build', ['jshint', 'parser', 'nodeunit', 'concat', 'qunit', 'uglify'])
-    grunt.registerTask('parser', ['exec', 'concat:parser'])
-
 };

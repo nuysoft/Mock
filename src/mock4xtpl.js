@@ -1,23 +1,31 @@
 var KISSY = require('kissy'),
-    Mock = require('../mock/mock');
-// Random = require('../random'),
-// Util = require('../mock/util')
+    Mock = require('./mock'),
+    Random = require('./random'),
+    Util = require('./util');
 
 // KISSY.Config.debug = false
 
 // BEGIN(BROWSER)
 (function(undefined) {
+    if (typeof KISSY === 'undefined') return
 
-    var Util = Mock.Util || require('../mock/util');
-    var Random = Mock.Random || require('../mock/random');
+    var Mock4XTpl = {
+        debug: false
+    }
 
     var XTemplate;
+
     KISSY.use('xtemplate', function(S, T) {
         XTemplate = T
     })
 
-    var Mock4XTpl = {
-        debug: false
+    if (!this.Mock) module.exports = Mock4XTpl
+
+    Mock.xtpl = function(input, options, helpers, partials) {
+        return Mock4XTpl.mock(input, options, helpers, partials)
+    }
+    Mock.xparse = function(input) {
+        return XTemplate.compiler.parse(input)
     }
 
     /*
@@ -396,65 +404,6 @@ var KISSY = require('kissy'),
             typeof other.hold === 'function' && !other.hold(node, options, context, cur, val)) {
             context.splice(0, context.length - contextLength)
         }
-    }
-
-    KISSY.use('xtemplate', function(S, T) {
-        return
-        XTemplate = T
-        var tpl, ast, data;
-        tpl = '{{#a.b.c}}{{d+e}}{{/a.b.c}}'
-        ast = XTemplate.compiler.parse(tpl)
-        console.log(JSON.stringify(ast, null, 4))
-        data = Mock4XTpl.mock(ast)
-        console.log(JSON.stringify(data, null, 4))
-    })
-
-
-    /*
-    Expose Internal API
-*/
-
-    var Facade = {
-        _: Mock4XTpl,
-        mock: function(input, options, helpers, partials) {
-            return Mock4XTpl.mock(input, options, helpers, partials)
-        },
-        parse: Mock4XTpl.parse
-    }
-
-    /*
-    For Module Loader
-*/
-    if (typeof module === 'object' && module.exports) {
-        // CommonJS
-        module.exports = Facade;
-
-    } else if (typeof define === "function" && define.amd) {
-        // AMD modules
-        define(function() {
-            return Facade;
-        });
-
-    }
-    // else {
-    // other, i.e. browser
-    this.Mock4XTpl = Facade;
-    // }
-
-    // for KISSY
-    if (typeof KISSY != 'undefined') {
-
-        KISSY.add('mock4xtpl', function() {
-            return Facade
-        }, {
-            requires: ['mock', 'xtemplate']
-        })
-
-        KISSY.add('components/mock4xtpl/index', function() {
-            return Facade
-        }, {
-            requires: ['mock', 'xtemplate']
-        })
     }
 
 }).call(this);

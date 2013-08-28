@@ -1,10 +1,9 @@
-var Mock4XTpl = require('../../src/xtpl/mock4xtpl'),
-    Parser = require('../../src/tpl/parser'),
+var Mock4XTpl = require('../../src/mock4xtpl'),
     Handlebars = require('handlebars')
     KISSY = require('kissy'),
     S = KISSY,
-    Random = require('../../src/mock/random'),
-    Util = require('../../src/mock/util'),
+    Random = require('../../src/random'),
+    Util = require('../../src/util'),
     util = require('util'),
     Print = require('node-print');
 
@@ -174,7 +173,7 @@ exports.test_with = function(test) {
         */
     })
     data = Mock4XTpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(new XTemplate(tpl).render(data), Handlebars.compile(tpl)(data))
@@ -285,7 +284,7 @@ my {{title}} is {{{title}}}
         title: '<a>'
     })
     html = new XTemplate(tpl).render(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -379,7 +378,7 @@ my {{global title}}
     })
     data = Mock4XTpl.mock(tpl, {})
     html = new XTemplate(tpl).render(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -584,7 +583,7 @@ exports.test_local_block_command = function(test) {
     html = new XTemplate(tpl, {
         commands: commands
     }).render(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
     // console.log(Handlebars.compile(tpl)(data));
@@ -633,7 +632,7 @@ exports.test_end_with_command = function(test) {
     html = new XTemplate(tpl, {
         commands: commands
     }).render(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
     // console.log(Handlebars.compile(tpl)(data));
@@ -673,10 +672,10 @@ exports.test_string_sub_tpl = function(test) {
 
     tpl4xtpl = '{{include "sub-tpl-1"}}'
     tpl4hdb = '{{> sub-tpl-1}}'
-    test.deepEqual(Parser.parse(tpl4xtpl), Parser.parse(tpl4hdb))
+    // test.deepEqual(Handlebars.parse(tpl4xtpl), Handlebars.parse(tpl4hdb))
     // console.log(JSON.stringify(Mock4XTpl.parse(tpl4xtpl), null, 4));
-    // console.log(JSON.stringify(Parser.parse(tpl4xtpl), null, 4));
-    // console.log(JSON.stringify(Parser.parse(tpl4hdb), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl4xtpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl4hdb), null, 4));
 
     data4xtpl = Mock4XTpl.mock(tpl4xtpl)
     data4hdb = Mock4XTpl.mock(tpl4xtpl, {}, Handlebars.helpers, Handlebars.partials)
@@ -970,10 +969,12 @@ exports.test_mustache_array = function(test) {
 
     tpl = '{{#data}}{{name}}-{{xindex}}/{{xcount}}|{{/data}}'
 
+    // Mock4XTpl._.debug = true
     ast = Mock4XTpl.parse(tpl)
     data = Mock4XTpl.mock(tpl, {
         data: []
     })
+    // Mock4XTpl._.debug = false
     // console.log(JSON.stringify(ast, null, 4))
     // console.log(JSON.stringify(data, null, 4))
 

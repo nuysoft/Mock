@@ -1,10 +1,12 @@
-var Mock = require('../../src/mock/mock'),
-    Random = require('../../src/mock/Random'),
+var Mock = require('../../src/mock'),
+    Random = require('../../src/Random'),
     Print = require('node-print'),
     $ = require('jquery'),
     util = require('util');
 
-require('../../src/mock/mockjax')
+require('../../src/mockjax')
+require('../../src/mock4tpl')
+require('../../src/mock4xtpl')
 
 Mock.mockjax($)
 

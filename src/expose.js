@@ -9,28 +9,30 @@ Mock.Random = Random
 */
 if (typeof module === 'object' && module.exports) {
     // CommonJS
-    module.exports = Mock;
+    module.exports = Mock
 
 } else if (typeof define === "function" && define.amd) {
     // AMD modules
     define(function() {
-        return Mock;
-    });
+        return Mock
+    })
 
-} else {
-    // other, i.e. browser
-    this.Mock = Mock;
 }
+// else {
+// other, i.e. browser
+this.Mock = Mock
+this.Random = Random
+// }
 
 // for KISSY
 if (typeof KISSY != 'undefined') {
 
     /*
         KISSY.use('components/mock/index', function(S, Mock) {
-            console.log(Mock.mock);
+            console.log(Mock.mock)
         })
     */
-    
+
     KISSY.add('mock', function(S) {
         Mock.mockjax(S)
         return Mock
@@ -44,4 +46,12 @@ if (typeof KISSY != 'undefined') {
     }, {
         requires: ['ajax']
     })
+
+    KISSY.add('mock/dist/mock', function(S) {
+        Mock.mockjax(S)
+        return Mock
+    }, {
+        requires: ['ajax']
+    })
+
 }

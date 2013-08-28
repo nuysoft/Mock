@@ -1,0 +1,93 @@
+<!DOCTYPE  html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mock.js</title>
+    <link href="./demo/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+          font: 14px/1.7 'helvetica neue', 'hiragino sans gb', stheiti,'wenquanyi micro hei',\5FAE\8F6F\96C5\9ED1,\5B8B\4F53, sans-serif;
+        }
+
+        code, pre {
+            font-size: 13px;
+        }
+
+        .page-catalog > ul {
+            padding-left: 0px;
+        }
+        .page-catalog ul {
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .gist .gist-file .gist-data .line-numbers {
+            line-height: 20px;
+        }
+        .gist .gist-file .gist-data .line-data {
+            line-height: 20px;
+        }
+
+        /* Backbone.js */
+        div#sidebar {
+          background: #fff;
+          position: fixed;
+          z-index: 10;
+          top: 0; left: 0; bottom: 0;
+          width: 200px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+          padding: 15px 0 30px 30px;
+          border-right: 1px solid #bbb;
+          box-shadow: 0 0 20px #ccc; -webkit-box-shadow: 0 0 20px #ccc; -moz-box-shadow: 0 0 20px #ccc;
+        }
+        div.container {
+          position: relative;
+          width: 550px;
+          margin: 40px 0 50px 260px;
+        }
+        /* download */
+        .w250 {
+            width: 250px;
+        }
+        /* header */
+        h1, h2, h3 {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+
+        h4, h5, h6 {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="sidebar" class="interface"></div>
+    <div class="container"><%=content%></div>
+    
+    <script src="./dist/mock.js"></script>
+    
+    <script src="../node_modules/jquery/tmp/jquery.js"></script>
+    <script src="./demo/assets/catalog.js"></script>
+    
+    <script type="text/javascript">
+        $(function(){
+            return
+            function resize(){
+                var h = $(window).height() - $('.catalog').offset().top - 20
+                $('.catalog, .content').height(h)
+                return resize
+            }
+            $(window).on('resize', resize());
+        })
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            $('table').addClass('table table-bordered')
+        })
+    </script>
+  </body>
+</html>

@@ -10,13 +10,13 @@
 <body>
     <nav class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">MOCK DATA</a>
+            <a class="navbar-brand" href="http://mockjs.com">Mock.js</a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="./mock.html">Mock</a></li>
-                <li class=""><a href="./mock4tpl.html">Handlebars</a></li>
-                <li class=""><a href="./mock4xtpl.html">XTemplate</a></li>
+                <li class="active"><a href="./mock.html">Data</a></li>
+                <li class=""><a href="./mock4tpl.html">Handlebars &amp; Mustache</a></li>
+                <li class=""><a href="./mock4xtpl.html">KISS XTemplate</a></li>
                 <li class=""><a href="https://github.com/nuysoft/Mock">Github</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -33,49 +33,71 @@
         <div class="window float-left">
             <textarea id="editor">
 {
-    'orig-arr': [
-        { foo: 'foo' },
-        { bar: 'bar' },
-        { foobar: 'foobar' }
+    "orig-arr": [
+        {
+            "foo": "foo"
+        },
+        {
+            "bar": "bar"
+        },
+        {
+            "foobar": "foobar"
+        }
     ],
-    'orig-arr-holder': [
-        { 'foo|+1': '1' },
-        { 'bar': '@EMAIL' },
-        { foobar: 'foobar' }
+    "orig-arr-holder": [
+        {
+            "foo|+1": "1"
+        },
+        {
+            "bar": "@EMAIL"
+        },
+        {
+            "foobar": "foobar"
+        }
     ],
-    'data|1-10': [{
-            'id|+1': 1,
-            'grade1|1-100': 1,
-            'grade2|90-100': 1,
-            'float1|.1-10': 10,
-            'float2|1-100.1-10': 1,
-            'float3|999.1-10': 1,
-            'float4|.3-10': 123.123,
-            'star|1-5': '★',
-            'cn|1-5': '汉字',
-            'repeat|10': 'A',
-            'published|1': false,
-            'email': '@EMAIL',
-            'date': '@DATE',
-            'time': '@TIME',
-            'datetime': '@DATETIME',
-            'method|1': ['GET', 'POST', 'HEAD', 'DELETE'],
-            'size': '@AD_SIZE',
-            'img1': '@IMG(200x200)',
-            'img2': '@IMG',
-            'img3': '@IMG(@size)',
-            'img4': '@IMG(@AD_SIZE)',
-            'dummyimage': {
-                'size': '@AD_SIZE',
-                'background': '@COLOR',
-                'foreground': '@COLOR',
-                'format|1': ['png', 'gif', 'jpg'],
-                'text': '@WORD',
-                'url': 'http://dummyimage.com/@size/@background/@foreground.@format&text=@text',
+    "data|1-10": [
+        {
+            "id|+1": 1,
+            "grade1|1-100": 1,
+            "grade2|90-100": 1,
+            "float1|.1-10": 10,
+            "float2|1-100.1-10": 1,
+            "float3|999.1-10": 1,
+            "float4|.3-10": 123.123,
+            "star|1-5": "★",
+            "cn|1-5": "汉字",
+            "repeat|10": "A",
+            "published|1": false,
+            "email": "@EMAIL",
+            "date": "@DATE",
+            "time": "@TIME",
+            "datetime": "@DATETIME",
+            "method|1": [
+                "GET",
+                "POST",
+                "HEAD",
+                "DELETE"
+            ],
+            "size": "@AD_SIZE",
+            "img1": "@IMG(200x200)",
+            "img2": "@IMG",
+            "img3": "@IMG(@size)",
+            "img4": "@IMG(@AD_SIZE)",
+            "dummyimage": {
+                "size": "@AD_SIZE",
+                "background": "@COLOR",
+                "foreground": "@COLOR",
+                "format|1": [
+                    "png",
+                    "gif",
+                    "jpg"
+                ],
+                "text": "@WORD",
+                "url": "http://dummyimage.com/@size/@background/@foreground.@format&text=@text"
             },
-            'param': 'abc=123',
-            'url1': '@img3?@param',
-            'url2': '@img4?@ID&id=@id'
+            "param": "abc=123",
+            "url1": "@img3?@param",
+            "url2": "@img4?@ID&id=@id"
         }
     ]
 }</textarea>

@@ -1,10 +1,9 @@
-var Mock4Tpl = require('../../src/tpl/mock4tpl'),
-    Parser = require('../../src/tpl/parser'),
+var Mock4Tpl = require('../../src/mock4tpl'),
     Handlebars = require('handlebars')
-    Util = require('../../src/mock/util'),
+    Util = require('../../src/util'),
     util = require('util'),
     Print = require('node-print');
-var Mock4XTpl = require('../../src/xtpl/mock4xtpl'),
+var Mock4XTpl = require('../../src/mock4xtpl'),
     KISSY = require('kissy'),
     XTemplate;
 var rEmail = /[\w.]+@\w+\.\w+/,
@@ -52,9 +51,9 @@ exports.test_expression_simple_identifier = function(test) {
     var tpl, ast, data;
 
     tpl = '<h1>{{title}}</h1>'
-    ast = Parser.parse(tpl)
+    ast = Handlebars.parse(tpl)
     data = Mock4Tpl.mock(ast)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(data.title, 'title')
@@ -69,7 +68,7 @@ exports.test_expression_simple_identifier_4xtpl = function(test) {
     tpl = '<h1>{{title}}</h1>'
     ast = Mock4XTpl.parse(tpl)
     data = Mock4XTpl.mock(ast)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(data.title, 'title')
@@ -85,7 +84,7 @@ exports.test_expression_simple_identifier_with_holder = function(test) {
     data = Mock4Tpl.mock(tpl, {
         title: '@EMAIL'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(rEmail.test(data.title))
@@ -114,7 +113,7 @@ exports.test_expression_dot_path = function(test) {
 
     tpl = '<h1>{{article.title}}</h1>'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.article)
@@ -129,7 +128,7 @@ exports.test_expression_dot_path_4xtpl = function(test) {
 
     tpl = '<h1>{{article.title}}</h1>'
     data = Mock4XTpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.article)
@@ -144,7 +143,7 @@ exports.test_expression_multi_dot_path = function(test) {
 
     tpl = '<h1>{{a.b.c.d.e.f.g}}</h1>'
     data = Mock4Tpl.mock(tpl, {})
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.a.b.c.d.e.f.g)
@@ -158,7 +157,7 @@ exports.test_expression_multi_dot_path_4xtpl = function(test) {
 
     tpl = '<h1>{{a.b.c.d.e.f.g}}</h1>'
     data = Mock4XTpl.mock(tpl, {})
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.a.b.c.d.e.f.g)
@@ -174,7 +173,7 @@ exports.test_expression_dot_path_with_holder = function(test) {
     data = Mock4Tpl.mock(tpl, {
         title: '@EMAIL'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.article)
@@ -191,7 +190,7 @@ exports.test_expression_dot_path_with_holder_4xtpl = function(test) {
     data = Mock4XTpl.mock(tpl, {
         title: '@EMAIL'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.article)
@@ -208,7 +207,7 @@ exports.test_expression_dot_path_with_error_holder = function(test) {
     data = Mock4Tpl.mock(tpl, {
         article: '@EMAIL'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.article, 'object')
@@ -245,7 +244,7 @@ exports.test_expression_dot_path_with_nested_holder = function(test) {
             content: '@SENTENCE'
         }
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.article, 'object')
@@ -266,7 +265,7 @@ exports.test_expression_dot_path_with_nested_holder_4xtpl = function(test) {
             content: '@SENTENCE'
         }
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.article, 'object')
@@ -287,7 +286,7 @@ exports.test_expression_dot_path_with_nested_and_parent_holder = function(test) 
             content: '@SENTENCE'
         }
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.article, 'object')
@@ -308,7 +307,7 @@ exports.test_expression_dot_path_with_nested_and_parent_holder_4xtpl = function(
             content: '@SENTENCE'
         }
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.article, 'object')
@@ -330,7 +329,7 @@ exports.test_expression_dot_path_with_priority_holder = function(test) {
             title: '@DATE'
         }
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.article, 'object')
@@ -374,7 +373,7 @@ exports.test_expression_slash_path = function(test) {
     // test_expression_slash_path
     tpl = '<h1>{{article/title}}</h1>'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.article)
@@ -412,7 +411,7 @@ exports.test_expression_multi_slash_path = function(test) {
     // test_expression_slash_path
     tpl = '<h1>{{a/b/c/d/e/f/g}}</h1>'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.a.b.c.d.e.f.g)
@@ -450,7 +449,7 @@ exports.test_expression_triple_stash = function(test) {
 
     tpl = '<h1>{{{a.b.c.d.e.f.g}}}</h1>'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.a.b.c.d.e.f.g)
@@ -478,7 +477,7 @@ exports.test_expression_multi = function(test) {
 
     tpl = '<h1>{{obj}}: {{obj.prop}}, {{prop}}</h1>'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.obj, 'object')
@@ -515,7 +514,7 @@ exports.test_expression_multi_with_holder = function(test) {
         },
         prop: '@TIME'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.obj, 'object')
@@ -552,7 +551,7 @@ exports.test_helper_simple = function(test) {
 
     tpl = '{{{link story}}}'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.story, 'string')
@@ -582,7 +581,7 @@ exports.test_helper_simple_parameter = function(test) {
 
     tpl = '{{{link "See more..." story.url}}}'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.story, 'object')
@@ -620,7 +619,7 @@ exports.test_helper_simple_parameter_with_holder = function(test) {
         },
         url: 'mailto:@EMAIL'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.story, 'object')
@@ -660,7 +659,7 @@ exports.test_helper_dynamic_parameter = function(test) {
 
     tpl = '{{{link story.text story.url story.author.first}}}'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.story, 'object')
@@ -703,7 +702,7 @@ exports.test_helper_dynamic_parameter_with_holder = function(test) {
             price: '$@FLOAT'
         }
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.story, 'object')
@@ -746,7 +745,7 @@ exports.test_helper_hash_parameter = function(test) {
 
     tpl = '{{{link "See more..." story=story href=story.url class="story"}}}'
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.story, 'object')
@@ -782,7 +781,7 @@ exports.test_helper_hash_parameter_with_holder = function(test) {
     data = Mock4Tpl.mock(tpl, {
         url: '@URL'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.story, 'object')
@@ -830,7 +829,7 @@ exports.test_block_simple = function(test) {
 */
     })
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(data.title, 'title')
@@ -903,7 +902,7 @@ exports.test_block_simple_with_hodler = function(test) {
         'noop|1': true,
         body: '@SENTENCE'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.title, 'string')
@@ -958,7 +957,7 @@ exports.test_block_with = function(test) {
     */
     })
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(data.title, 'title')
@@ -1015,7 +1014,7 @@ exports.test_block_with_with_holder = function(test) {
         intro: '@SENTENCE',
         body: '@PARAGRAPH'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(rCapitalize.test(data.title))
@@ -1080,7 +1079,7 @@ exports.test_block_each = function(test) {
     */
     })
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(data.title, 'title')
@@ -1171,7 +1170,7 @@ exports.test_block_each_with_holder = function(test) {
         body: '@SENTENCE',
         subject: '@WORD'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(rTitle.test(data.title))
@@ -1260,7 +1259,7 @@ exports.test_block_list = function(test) {
     */
     })
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(util.isArray(data.nav))
@@ -1309,7 +1308,7 @@ exports.test_block_list_with_holder = function(test) {
         url: '@URL',
         title: '@TITLE'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(util.isArray(data.nav))
@@ -1363,7 +1362,7 @@ exports.test_block_conditional_if = function(test) {
         */
     })
     data = Mock4Tpl.mock(tpl)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.a.b)
@@ -1405,7 +1404,7 @@ exports.test_block_conditional_if_with_holder = function(test) {
     data = Mock4Tpl.mock(tpl, {
         c: '@BOOL'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(data.a)
@@ -1453,7 +1452,7 @@ exports.test_block_conditional_if_else = function(test) {
     for (var i = 0; i < 10; i++) {
         data = Mock4Tpl.mock(tpl)
         html = Handlebars.compile(tpl)(data)
-        // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+        // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
         // console.log(JSON.stringify(data, null, 4))
         // console.log(html)
 
@@ -1506,7 +1505,7 @@ exports.test_block_conditional_if_else_with_holder = function(test) {
         c: '@BOOL'
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -1565,7 +1564,7 @@ exports.test_hash_arguments_list = function(test) {
     })
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -1627,7 +1626,7 @@ exports.test_hash_arguments_list_with_holder = function(test) {
         title: '@TITLE'
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -1657,7 +1656,7 @@ exports.test_hash_arguments_list_with_holder_4xtpl = function(test) {
         url: '@URL',
         title: '@TITLE'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(util.isArray(data.nav))
@@ -1700,7 +1699,7 @@ exports.test_block_add_extra_info = function(test) {
     })
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -1767,7 +1766,7 @@ exports.test_block_add_extra_info_with_holder = function(test) {
         title: '@TITLE'
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -1819,7 +1818,7 @@ exports.test_path_simple = function(test) {
     tpl = '<p>{{name}}</p>'
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -1860,7 +1859,7 @@ exports.test_path_nested = function(test) {
     })
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -1917,7 +1916,7 @@ exports.test_path_back = function(test) {
     // Mock4Tpl.debug = true
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
     // Mock4Tpl.debug = false
@@ -1980,7 +1979,7 @@ exports.test_path_back_with_holder = function(test) {
         title: '@TITLE'
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2030,7 +2029,7 @@ exports.test_path_conflict = function(test) {
     tpl = '<p>{{./name}} or {{this/name}} or {{this.name}}</p>'
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2069,7 +2068,7 @@ exports.test_comment = function(test) {
     })
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2135,7 +2134,7 @@ exports.test_helper_context = function(test) {
     })
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2217,7 +2216,7 @@ exports.test_helper_context_with_holder = function(test) {
         'comments|3': []
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2271,7 +2270,7 @@ exports.test_helper_context_with_holder_4xtpl = function(test) {
             }
         ]
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.author, 'object')
@@ -2304,7 +2303,7 @@ exports.test_helper_this_without_register = function(test) {
     })
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2357,7 +2356,7 @@ exports.test_helper_this_with_register = function(test) {
     })
     data = Mock4Tpl.mock(tpl, {}, Handlebars.helpers)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2428,7 +2427,7 @@ exports.test_helper_this_with_register_and_holder = function(test) { // 命名�
         ]
     }, Handlebars.helpers)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2501,7 +2500,7 @@ exports.test_helper_with = function(test) {
     })
     data = Mock4Tpl.mock(tpl, {}, Handlebars.helpers)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2555,7 +2554,7 @@ exports.test_helper_each = function(test) {
         'people|1-10': ['@NAME']
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2610,7 +2609,7 @@ exports.test_helper_each_else = function(test) {
         'paragraphs|1-10': ['@SENTENCE']
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2668,7 +2667,7 @@ exports.test_helper_each_index = function(test) {
         'array|1-10': ['@SENTENCE']
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2693,7 +2692,7 @@ exports.test_helper_each_index_4xtpl = function(test) {
     data = Mock4XTpl.mock(tpl, { // 需要指定数据生成规则，否则默认为 [{},{},{}...]
         'array|1-10': ['@SENTENCE']
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(util.isArray(data.array))
@@ -2721,7 +2720,7 @@ exports.test_helper_each_key = function(test) {
         }
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2777,7 +2776,7 @@ exports.test_helper_if = function(test) {
         author: {}
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2829,7 +2828,7 @@ exports.test_helper_if_else = function(test) {
     })
     data = Mock4Tpl.mock(tpl, {})
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2877,7 +2876,7 @@ exports.test_helper_unless = function(test) {
     })
     data = Mock4Tpl.mock(tpl, {})
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2949,7 +2948,7 @@ exports.test_helper_log = function(test) {
     tpl = '{{log "Look at me!"}}'
     data = Mock4Tpl.mock(tpl, {})
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
 
@@ -2964,7 +2963,7 @@ exports.test_helper_log_4xtpl = function(test) {
 
     tpl = '{{log "Look at me!"}}'
     data = Mock4XTpl.mock(tpl, {})
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     var prop
@@ -2973,7 +2972,7 @@ exports.test_helper_log_4xtpl = function(test) {
 
     tpl = '{{log foo.bar "Look at me!"}}'
     data = Mock4XTpl.mock(tpl, {})
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     test.equal(data.foo.bar, 'bar')
 
@@ -2990,7 +2989,7 @@ exports.test_block = function(test) {
     tpl = '{{#exist}}{{title}}{{/exist}}'
     data = Mock4Tpl.mock(tpl)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html);
 
@@ -3021,7 +3020,7 @@ exports.test_block_array = function(test) {
         ]
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html);
 
@@ -3049,7 +3048,7 @@ exports.test_block_array_4xtpl = function(test) {
     test.ok(util.isArray(data.exist))
     test.equal(data.exist.length, 10)
     data.exist.forEach(function(item) {
-        test.ok(rTitle.test(item.title))
+        test.ok(rTitle.test(item.title), item.title)
     })
     test.done()
 }
@@ -3063,7 +3062,7 @@ exports.test_block_with_boolean = function(test) {
         title: '@DATETIME'
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html);
 
@@ -3080,7 +3079,7 @@ exports.test_block_with_boolean_4xtpl = function(test) {
         'exist|1': false,
         title: '@DATETIME'
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.equal(typeof data.exist, 'boolean')
@@ -3105,7 +3104,7 @@ exports.test_each_chain = function(test) {
         articles: [] // 如果不配置为 []，则 articles 默认是一个对象。
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html);
 
@@ -3138,7 +3137,7 @@ exports.test_each_chain_4xtpl = function(test) {
     data = Mock4XTpl.mock(tpl, {
         articles: []
     })
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
     test.ok(util.isArray(data.articles))
@@ -3189,7 +3188,7 @@ exports.test_complex = function(test) {
         subject: '@BOOL'
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html);
 
@@ -3385,7 +3384,7 @@ exports.testScene = function(test) {
     }
     data = Mock4Tpl.mock(tpl, options)
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html);
     // Print.pt(data.list.map(function(item, tmp) {
@@ -3425,7 +3424,7 @@ exports.test_id_inc = function(test) {
         'id|+1': 100
     })
     html = Handlebars.compile(tpl)(data)
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4))
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4))
     // console.log(JSON.stringify(data, null, 4))
     // console.log(html)
     // Mock4Tpl.debug = false
@@ -3477,7 +3476,7 @@ exports.test_path_stack = function(test) {
          */
     })
     data = Mock4Tpl.mock(tpl, {})
-    // console.log(JSON.stringify(Parser.parse(tpl), null, 4));
+    // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
     // Mock4Tpl.debug = false
 

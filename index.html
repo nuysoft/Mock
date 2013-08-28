@@ -1,0 +1,1004 @@
+<!DOCTYPE  html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mock.js</title>
+    <link href="./demo/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+          font: 14px/1.7 'helvetica neue', 'hiragino sans gb', stheiti,'wenquanyi micro hei',\5FAE\8F6F\96C5\9ED1,\5B8B\4F53, sans-serif;
+        }
+
+        code, pre {
+            font-size: 13px;
+        }
+
+        .page-catalog > ul {
+            padding-left: 0px;
+        }
+        .page-catalog ul {
+            padding-left: 20px;
+            list-style: none;
+        }
+
+        .gist .gist-file .gist-data .line-numbers {
+            line-height: 20px;
+        }
+        .gist .gist-file .gist-data .line-data {
+            line-height: 20px;
+        }
+
+        /* Backbone.js */
+        div#sidebar {
+          background: #fff;
+          position: fixed;
+          z-index: 10;
+          top: 0; left: 0; bottom: 0;
+          width: 200px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+          padding: 15px 0 30px 30px;
+          border-right: 1px solid #bbb;
+          box-shadow: 0 0 20px #ccc; -webkit-box-shadow: 0 0 20px #ccc; -moz-box-shadow: 0 0 20px #ccc;
+        }
+        div.container {
+          position: relative;
+          width: 550px;
+          margin: 40px 0 50px 260px;
+        }
+        /* download */
+        .w250 {
+            width: 250px;
+        }
+        /* header */
+        h1, h2, h3 {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+
+        h4, h5, h6 {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="sidebar" class="interface"></div>
+    <div class="container"><h2>Mock.js</h2>
+<p>Mock.js 是一款模拟数据生成器。</p>
+<h2>在线编辑器</h2>
+<ul>
+<li><a href="http://mockjs.com/demo/mock.html">Data</a></li>
+<li><a href="http://mockjs.com/demo/mock4tpl.html">Handlebars &amp; Mustache</a></li>
+<li><a href="http://mockjs.com/demo/mock4xtpl.html">KISSY XTemplate</a></li>
+</ul>
+<h2>下载</h2>
+<p>
+    <a href="./dist/mock.js" class="btn btn-primary w250">Development Version (0.1.1)</a> - <i>57kB, Uncompressed</i>
+</p>
+<p>
+    <a href="./dist/mock-min.js" class="btn btn-success w250">Production Version (0.1.1)</a> - <i>23kB, Minified</i>
+</p>
+<p>
+    <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">从 Github 获取最新版本</a>
+</p>
+
+<h2>用法</h2>
+<h3>浏览器</h3>
+<iframe width="100%" height="200" src="http://jsfiddle.net/LyDdD/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3>Node</h3>
+<pre><code>// 安装
+npm install mockjs
+
+// 使用
+var Mock = require(&#39;mockjs&#39;);
+var data = Mock.mock({
+    &#39;list|1-3&#39;: [{
+        &#39;id|+1&#39;: 1
+    }]
+});
+console.log(JSON.stringify(data, null, 4))</code></pre>
+<h3>RequireJS</h3>
+<p>todo</p>
+<h3>Sea.js</h3>
+<p>todo</p>
+<h3>KISSY</h3>
+<iframe width="100%" height="375" src="http://jsfiddle.net/5zKvf/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h2>Mock</h2>
+<h3>Mock.mock()</h3>
+<ul>
+<li>Mock.mock(template) <br>根据数据模板生成模拟数据。</li>
+<li>Mock.mock(rurl, template) <br>记录数据模板，当拦截到匹配的 Ajax 请求时，生成并返回模拟数据。</li>
+</ul>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 rurl：可选。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 <code>/\/domain\/list\.json/</code>、<code>&#39;/domian/list.json&#39;</code>。</li>
+<li>参数 template：必须。表示数据模板，可以是对象或字符串。例如 <code>{ &#39;data|1-10&#39;:[{}] }</code>、<code>&#39;@EMAIL&#39;</code>。</li>
+</ul>
+<p><strong>数据模板中的每个属性由 3 部分构成</strong>，以 <code>&#39;data|1-10&#39;:[{}]</code> 为例：</p>
+<ul>
+<li>属性名：例如 <code>data</code>。</li>
+<li>参数：指示生成数据的规则。例如 <code>|1-10</code>，指示生成的数组中含有 1 至 10 个元素。</li>
+<li>属性值：表示初始值、占位符、类型。例如 <code>[{}]</code>，表示属性值一个数组，数组中的元素是 <code>{}</code>。属性值中含有占位符时，将被替换为对应的随机数据，例如 <code>&#39;email&#39;: &#39;@EMAIL&#39;</code>，<code>&#39;@EMAIL&#39;</code>将被替换为随机生成的邮件地址。</li>
+</ul>
+<p><strong>参数和属性值部分的语法规范和示例</strong>如下所示：</p>
+<ul>
+<li><code>&#39;data|1-10&#39;:[{}]</code> 构造一个数组，含有 1-10 个元素</li>
+<li><code>&#39;data|1&#39;:[item, item, item]</code> 从数组中随机挑选一个元素做为属性值</li>
+<li><code>&#39;id|+1&#39;: 1</code> 属性 id 值自动加一，初始值为 1</li>
+<li><code>&#39;grade|1-100&#39;: 1</code> 生成一个 1-100 之间的整数</li>
+<li><code>&#39;float|1-10.1-10&#39;: 1</code> 生成一个浮点数，整数部分的范围是 1-10，保留小数点后 1-10 位小数</li>
+<li><code>&#39;star|1-10&#39;: &#39;★&#39;</code> 重复 1-10 次</li>
+<li><code>&#39;repeat|10&#39;: &#39;A&#39;</code> 重复 10 次</li>
+<li><code>&#39;published|0-1&#39;: false</code> 随机生成一个布尔值</li>
+<li><code>&#39;email&#39;: &#39;@EMAIL&#39;</code> 随即生成一个 Email</li>
+<li><code>&#39;date&#39;: &#39;@DATE&#39;</code> 随即生成一段日期字符串，默认格式为 yyyy-MM-dd</li>
+<li><code>&#39;time&#39;: &#39;@TIME&#39;</code> 随机生成一段时间字符串，默认格式为 HH:mm:ss</li>
+<li><code>&#39;datetime&#39;: &#39;@DATETIME&#39;</code> 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss</li>
+</ul>
+<p>Mock.js 的 <a href="http://mockjs.com/demo/mock.html">在线编辑器</a> 演示了完整的语法规范和占位符。</p>
+<p>下面是 Mock.mock() 的两种参数格式以及规则的使用示例：</p>
+<p><strong>示例1：</strong>Mock.mock(template)</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/VRjgz/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p><strong>示例2：</strong>Mock.mock(rurl, template)</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/n8D6k/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3>Mock.mockjax(library)</h3>
+<p>覆盖（拦截） Ajax 请求，目前内置支持 jQuery、KISSY。</p>
+<p>对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问 <a href="">这里</a>。</p>
+<p>对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问 <a href="">这里</a>。</p>
+<p>因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和本人所服务的阿里） 常用的 jQuery 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery 和 KISSY 的实现，覆盖 <code>Mock.mockjax(library)</code>。</p>
+<p>通过方法 <code>Mock.mock(rurl, template)</code> 设置的 URL 和数据模板的映射，均记录在属性 <code>Mock._mocked</code> 中，扩展时可从中获取 URL 对应的数据模板，进而生成和响应模拟数据。<code>Mock._mocked</code> 的数据结构为：</p>
+<pre><code>{
+    rurl.toString(): {
+        rurl: rurl,
+        template: template
+    },
+    ...
+}</code></pre>
+<h3>Mock.tpl(input, options, helpers, partials)</h3>
+<ul>
+<li>Mock.tpl(input)</li>
+<li>Mock.tpl(input, options)</li>
+<li>Mock.tpl(input, options, helpers)</li>
+<li>Mock.tpl(input, options, helpers, partials)</li>
+</ul>
+<p>基于 Handlebars、Mustache 的 HTML 模板生成模拟数据。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 input：必选。可以是 HTML 模板，或者经过 Handlebars 解析的语法树（<code>Handlebars.parse(input)</code>）。将基于该参数生成模拟数据。</li>
+<li>参数 options：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 <code>{ &#39;email&#39;: &#39;@EMAIL&#39; }</code>，在生成模拟数据时，所有 <code>email</code> 属性对应的值将是一个邮件地址。</li>
+<li>参数 helpers：可选。对象。表示局部 helper。全局 helper 会自动从 <code>Handlebars.helpers</code> 中读取。</li>
+<li>参数 partials：可选。对象。表示局部子模板。全局子模板会自动从 <code>Handlebars.partials</code> 中读取。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>// 基于 HTML 模板生成模拟数据
+Mock.tpl(&#39;this is {{title}}!&#39;)
+// =&gt; {title: &quot;title&quot;}
+
+// 基于 HTML 模板和数据模板生成模拟数据
+Mock.tpl(&#39;this is {{title}}!&#39;, {
+    title: &#39;@TITLE&#39;
+})
+// =&gt; {title: &quot;Guhwbgehq Isuzssx Ywvwt Dkp&quot;}
+
+// 基于 HTML 模板生成模拟数据，传入了局部命令。
+Mock.tpl(&#39;this is {{title}}!&#39;, {}, {
+    title: function(){
+        return &#39;my title&#39;
+    }
+})
+// =&gt; {title: &quot;title&quot;}
+
+// 基于 HTML 模板生成模拟数据，传入了局部子模板。
+Mock.tpl(&#39;{{&gt; &quot;sub-tpl&quot;}}&#39;, {}, {}, {
+    &#39;sub-tpl&#39;: &#39;{{title}}&#39;
+})
+// =&gt; {title: &quot;title&quot;}</code></pre>
+<p>数据模板 options 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 <code>&lt;!-- Mock {} --&gt;</code> 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。</p>
+<p><strong>示例1：</strong>在 HTML 模板中通过一个 HTML 注释集中配置数据模板。</p>
+<pre><code>var tpl = Mock.Util.heredoc(function() {
+    /*
+{{email}}{{age}}
+&lt;!-- Mock { 
+    email: &#39;@EMAIL&#39;,
+    age: &#39;@INT(1,100)&#39;
+} --&gt;
+    */
+})
+var data = Mock.tpl(tpl)
+console.log(JSON.stringify(data, null, 4))
+// =&gt;
+{
+    &quot;email&quot;: &quot;t.lee@clark.net&quot;,
+    &quot;age&quot;: 33
+}</code></pre>
+<p><strong>示例2：</strong>在 HTML 模板中通过多个 HTML 注释分散配置数据模板。</p>
+<pre><code>var tpl = Mock.Util.heredoc(function() {
+    /*
+{{email}}{{age}}
+&lt;!-- Mock { 
+    email: &#39;@EMAIL&#39;
+} --&gt;
+&lt;!-- Mock { age: &#39;@INT(1,100)&#39; } --&gt;
+    */
+})
+var data = Mock.tpl(tpl)
+console.log(JSON.stringify(data, null, 4))
+// =&gt;
+{
+    &quot;email&quot;: &quot;j.walker@brown.edu&quot;,
+    &quot;age&quot;: 83
+}</code></pre>
+<h3>Mock.xtpl(input, options, helpers, partials)</h3>
+<ul>
+<li>Mock.xtpl(input)</li>
+<li>Mock.xtpl(input, options)</li>
+<li>Mock.xtpl(input, options, helpers)</li>
+<li>Mock.xtpl(input, options, helpers, partials)</li>
+</ul>
+<p>基于 KISSY XTempalte 的 HTML 模板生成模拟数据。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 input：必选。可以是 HTML 模板，或者经过 KISSY XTempalte 解析的语法树（<code>XTemplate.compiler.parse(input)</code>）。将基于该参数生成模拟数据。</li>
+<li>参数 options：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 <code>{ &#39;email&#39;: &#39;@EMAIL&#39; }</code>，在生成模拟数据时，所有 <code>email</code> 属性对应的值将是一个邮件地址。</li>
+<li>参数 helpers：可选。对象。表示局部命令。全局命令会自动从 <code>XTemplate.RunTime.commands</code> 中读取。</li>
+<li>参数 partials：可选。对象。表示局部子模板。全局子模板会自动从 <code>XTemplate.RunTime.subTpls</code> 中读取。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>// 基于 HTML 模板生成模拟数据
+Mock.xtpl(&#39;this is {{title}}!&#39;)
+// =&gt; {title: &quot;title&quot;}
+
+// 基于 HTML 模板和数据模板生成模拟数据
+Mock.xtpl(&#39;this is {{title}}!&#39;, {
+    title: &#39;@TITLE&#39;
+})
+// =&gt; {title: &quot;Guhwbgehq Isuzssx Ywvwt Dkp&quot;}
+
+// 基于 HTML 模板生成模拟数据，传入了局部命令。
+Mock.xtpl(&#39;this is {{title}}!&#39;, {}, {
+    title: function(){
+        return &#39;my title&#39;
+    }
+})
+// =&gt; {title: &quot;title&quot;}
+
+// 基于 HTML 模板生成模拟数据，传入了局部子模板。
+Mock.xtpl(&#39;{{include &quot;sub-tpl&quot;}}&#39;, {}, {}, {
+    &#39;sub-tpl&#39;: &#39;{{title}}&#39;
+})
+// =&gt; {title: &quot;title&quot;}</code></pre>
+<p>数据模板 options 可以在调用 Mock.xtpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 <code>&lt;!-- Mock {} --&gt;</code> 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。</p>
+<p><strong>示例1：</strong>在 HTML 模板中通过一个 HTML 注释集中配置数据模板。</p>
+<pre><code>var tpl = Mock.Util.heredoc(function() {
+    /*
+{{email}}{{age}}
+&lt;!-- Mock { 
+    email: &#39;@EMAIL&#39;,
+    age: &#39;@INT(1,100)&#39;
+} --&gt;
+    */
+})
+var data = Mock.xtpl(tpl)
+console.log(JSON.stringify(data, null, 4))
+// =&gt;
+{
+    &quot;email&quot;: &quot;t.lee@clark.net&quot;,
+    &quot;age&quot;: 33
+}</code></pre>
+<p><strong>示例2：</strong>在 HTML 模板中通过多个 HTML 注释分散配置数据模板。</p>
+<pre><code>var tpl = Mock.Util.heredoc(function() {
+    /*
+{{email}}{{age}}
+&lt;!-- Mock { 
+    email: &#39;@EMAIL&#39;
+} --&gt;
+&lt;!-- Mock { age: &#39;@INT(1,100)&#39; } --&gt;
+    */
+})
+var data = Mock.xtpl(tpl)
+console.log(JSON.stringify(data, null, 4))
+// =&gt;
+{
+    &quot;email&quot;: &quot;j.walker@brown.edu&quot;,
+    &quot;age&quot;: 83
+}</code></pre>
+<h2>Mock.Random</h2>
+<p>Mock.Random 是一个工具类，用于生成各种随机数据。Mock.Random 的方法在数据模板中称为“占位符”，引用格式为 <code>@占位符(参数 [, 参数])</code> 。例如：</p>
+<pre><code>var Random = Mock.Random;
+Random.email()
+// =&gt; &quot;n.clark@miller.io&quot;
+Mock.mock(&#39;@EMAIL&#39;)
+// =&gt; &quot;y.lee@lewis.org&quot;
+Mock.mock( { email: &#39;@EMAIL&#39; } )
+// =&gt; { email: &quot;v.lewis@hall.gov&quot; }</code></pre>
+<p>可以在上面的例子中看到，直接调用 &#39;Random.email()&#39; 时方法名 <code>email()</code> 是小写的，而数据模板中的 <code>@EMAIL</code> 却是大写。这并非对数据模板中的占位符做了特殊处理，也非强制的编写方式，事实上在数据模板中使用小写的 <code>@email</code> 也可以达到同样的效果。不过，这是建议的编码风格，以便在阅读时从视觉上提高占位符的识别率，快速识别占位符和普通字符。</p>
+<p>在浏览器中，为了减少需要拼写的字符，Mock.js 把 Mock.Random 暴露给了 window 对象，使之称为全局变量，从而可以直接访问 Random。因此上面例子中的 <code>var Random = Mock.Random;</code> 可以省略。在后面的例子中，也将做同样的处理。</p>
+<blockquote>
+<p>在 Node.js 中，仍然需要通过 <code>Mock.Random</code> 访问。</p>
+</blockquote>
+<p>Mock.Random 中的方法与数据模板的 <code>@占位符</code> 一一对应，在需要时可以为 Mock.Random 扩展方法，然后在数据模板中通过 <code>@扩展方法</code> 引用。例如：</p>
+<pre><code>Random.extend({
+    constellations: [&#39;白羊座&#39;, &#39;金牛座&#39;, &#39;双子座&#39;, &#39;巨蟹座&#39;, &#39;狮子座&#39;, &#39;处女座&#39;, &#39;天秤座&#39;, &#39;天蝎座&#39;, &#39;射手座&#39;, &#39;摩羯座&#39;, &#39;水瓶座&#39;, &#39;双鱼座&#39;],
+    constellation: function(date){
+        return this.pick(this.constellations)
+    }
+})
+Random.constellation()
+// =&gt; &quot;水瓶座&quot;
+Mock.mock(&#39;@CONSTELLATION&#39;)
+// =&gt; &quot;天蝎座&quot;
+Mock.mock({ constellation: &#39;@CONSTELLATION&#39;})
+// =&gt; { constellation: &quot;射手座&quot; }</code></pre>
+<p>下面是 Mock.Random 内置支持的方法说明。</p>
+<h3>Basics</h3>
+<h4>Random.boolean(min, max, cur)</h4>
+<ul>
+<li>Random.boolean()</li>
+<li>Random.boolean(min, max, cur)</li>
+</ul>
+<p>返回一个随机的布尔值。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 min：可选。指示参数 cur 出现的概率。概率计算公式为 <code>min / (min + max)</code>。该参数的默认值为 1，即有 50% 的概率返回参数 cur。</li>
+<li>参数 max：可选。指示参数 cur 的相反值（!cur）出现的概率。概率计算公式为 <code>max / (min + max)</code>。该参数的默认值为 1，即有 50% 的概率返回参数 cur。</li>
+<li>参数 cur：可选。可选值为布尔值 true 或 false。如果未传入任何参数，则返回 true 和 false 的概率各为 50%。该参数没有默认值，在该方法的内部，依据原生方法 Math.random() 返回的（浮点）数来计算和返回布尔值，例如在最简单的情况下，返回值是表达式 <code>Math.random() &gt;= 0.5</code> 的执行结果。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.boolean()
+// =&gt; true
+Random.boolean(1, 9, true)
+// =&gt; false
+Random.bool()
+// =&gt; false
+Random.bool(1, 9, false)
+// =&gt; true</code></pre>
+<!-- 事实上，原生方法 Math.random() 返回的随机（浮点）数的分布并不均匀，是货真价实的伪随机数，将来会替换为基于 ？？ 来生成随机数。?? 对 Math.random() 的实现机制进行了分析和统计，并提供了随机数的参考实现，可以访问[这里](http://??)。
+TODO 统计 -->
+
+<h4>Random.natural(min, max)</h4>
+<ul>
+<li>Random.natural()</li>
+<li>Random.natural(min)</li>
+<li>Random.natural(min, max)</li>
+</ul>
+<p>返回一个随机的自然数（大于等于 0 的整数）。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 min：可选。指示随机自然数的最小值。默认值为 0。</li>
+<li>参数 max：可选。指示随机自然数的最小值。默认值为 9007199254740992。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.natural()
+// =&gt; 1002794054057984
+Random.natural(10000)
+// =&gt; 71529071126209
+Random.natural(60, 100)
+// =&gt; 77</code></pre>
+<h4>Random.integer(min, max)</h4>
+<ul>
+<li>Random.integer()</li>
+<li>Random.integer(min)</li>
+<li>Random.integer(min, max)</li>
+</ul>
+<p>返回一个随机的整数。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 min：可选。指示随机整数的最小值。默认值为 -9007199254740992。</li>
+<li>参数 max：可选。指示随机整数的最大值。默认值为 9007199254740992。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.integer()
+// =&gt; -3815311811805184
+Random.integer(10000)
+// =&gt; 4303764511003750
+Random.integer(60,100)
+// =&gt; 96</code></pre>
+<h4>Random.float(min, max, dmin, dmax)</h4>
+<ul>
+<li>Random.float()</li>
+<li>Random.float(min)</li>
+<li>Random.float(min, max)</li>
+<li>Random.float(min, max, dmin)</li>
+<li>Random.float(min, max, dmin, dmax)</li>
+</ul>
+<p>返回一个随机的浮点数。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 min：可选。整数部分的最小值。默认值为 -9007199254740992。</li>
+<li>参数 max：可选。整数部分的最大值。默认值为 9007199254740992。</li>
+<li>参数 dmin：可选。小数部分位数的最小值。默认值为 0。</li>
+<li>参数 dmin：可选。小数部分位数的最大值。默认值为 17。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.float()
+// =&gt; -1766114241544192.8
+Random.float(0)
+// =&gt; 556530504040448.25
+Random.float(60, 100)
+// =&gt; 82.56779679549358
+Random.float(60, 100, 3)
+// =&gt; 61.718533677927894
+Random.float(60, 100, 3, 5)
+// =&gt; 70.6849</code></pre>
+<h4>Random.character(pool)</h4>
+<p>返回一个随机字符。</p>
+<ul>
+<li>Random.character()</li>
+<li>Random.character(&#39;lower/upper/number/symbol&#39;)</li>
+<li>Random.character(pool)</li>
+</ul>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li><p>参数 pool：可选。表示字符池，将从中选择一个字符返回。</p>
+<ul>
+<li><p>如果传入 <code>&#39;lower&#39;</code> 或 <code>&#39;upper&#39;</code>、<code>&#39;number&#39;</code>、<code>&#39;symbol&#39;</code>，表示从内置的字符池从选取：</p>
+<pre><code>  {
+      lower: &quot;abcdefghijklmnopqrstuvwxyz&quot;,
+      upper: &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;,
+      number: &quot;0123456789&quot;,
+      symbol: &quot;!@#$%^&amp;*()[]&quot;
+  }</code></pre>
+</li>
+<li><p>如果未传入该参数，则从 <code>&#39;lower&#39; + &#39;upper&#39; + &#39;number&#39; + &#39;symbol&#39;</code> 中随机选取一个字符返回。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.character()
+// =&gt; &quot;P&quot;
+Random.character(&#39;lower&#39;)
+// =&gt; &quot;y&quot;
+Random.character(&#39;upper&#39;)
+// =&gt; &quot;X&quot;
+Random.character(&#39;number&#39;)
+// =&gt; &quot;1&quot;
+Random.character(&#39;symbol&#39;)
+// =&gt; &quot;&amp;&quot;
+Random.character(&#39;aeiou&#39;)
+// =&gt; &quot;u&quot;</code></pre>
+<h4>Random.string(pool, min, max)</h4>
+<p>返回一个随机字符串。</p>
+<ul>
+<li>Random.string()</li>
+<li>Random.string( length )</li>
+<li>Random.string( pool, length )</li>
+<li>Random.string( min, max )</li>
+<li>Random.string( pool, min, max )</li>
+</ul>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li><p>参数 pool：可选。表示字符池，将从中选择一个字符返回。</p>
+<ul>
+<li><p>如果传入 <code>&#39;lower&#39;</code> 或 <code>&#39;upper&#39;</code>、<code>&#39;number&#39;</code>、<code>&#39;symbol&#39;</code>，表示从内置的字符池从选取：</p>
+<pre><code>  {
+      lower: &quot;abcdefghijklmnopqrstuvwxyz&quot;,
+      upper: &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;,
+      number: &quot;0123456789&quot;,
+      symbol: &quot;!@#$%^&amp;*()[]&quot;
+  }</code></pre>
+</li>
+<li><p>如果未传入该参数，则从 <code>&#39;lower&#39; + &#39;upper&#39; + &#39;number&#39; + &#39;symbol&#39;</code> 中随机选取一个字符返回。</p>
+</li>
+</ul>
+</li>
+<li>参数 min：可选。随机字符串的最小长度。默认值为 3。</li>
+<li>参数 max：可选。随机字符串的最大长度。默认值为 7。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.string()
+// =&gt; &quot;pJjDUe&quot;
+Random.string( 5 )
+// =&gt; &quot;GaadY&quot;
+Random.string( &#39;lower&#39;, 5 )
+// =&gt; &quot;jseqj&quot;
+Random.string( 7, 10 )
+// =&gt; &quot;UuGQgSYk&quot;
+Random.string( &#39;aeiou&#39;, 1, 3 )
+// =&gt; &quot;ea&quot;</code></pre>
+<h4>Random.range(start, stop, step)</h4>
+<ul>
+<li>Random.range(stop)</li>
+<li>Random.range(start, stop)</li>
+<li>Random.range(start, stop, step)</li>
+</ul>
+<p>返回一个整型数组。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 start：必选。数组中整数的起始值。</li>
+<li>参数 stop：可选。数组中整数的结束值（不包含在返回值中）。</li>
+<li>参数 step：可选。数组中整数之间的步长。默认值为 1。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.range(10)
+// =&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+Random.range(3, 7)
+// =&gt; [3, 4, 5, 6]
+Random.range(1, 10, 2)
+// =&gt; [1, 3, 5, 7, 9]
+Random.range(1, 10, 3)
+// =&gt; [1, 4, 7]</code></pre>
+<h4>Random.date(format)</h4>
+<ul>
+<li>Random.date()</li>
+<li>Random.date(format)</li>
+</ul>
+<p>返回一个随机的日期字符串。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 format：可选。指示生成的日期字符串的格式。默认值为 <code>yyyy-MM-dd</code>。可选的占位符参考自 <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>，如下所示：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>yyyy</td>
+<td>A full numeric representation of a year, 4 digits</td>
+<td>1999 or 2003</td>
+</tr>
+<tr>
+<td>yy</td>
+<td>A two digit representation of a year</td>
+<td>99 or 03</td>
+</tr>
+<tr>
+<td>y</td>
+<td>A two digit representation of a year</td>
+<td>99 or 03</td>
+</tr>
+<tr>
+<td>MM</td>
+<td>Numeric representation of a month, with leading zeros</td>
+<td>01 to 12</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Numeric representation of a month, without leading zeros</td>
+<td>1 to 12</td>
+</tr>
+<tr>
+<td>dd</td>
+<td>Day of the month, 2 digits with leading zeros</td>
+<td>01 to 31</td>
+</tr>
+<tr>
+<td>d</td>
+<td>Day of the month without leading zeros</td>
+<td>1 to 31</td>
+</tr>
+<tr>
+<td>HH</td>
+<td>24-hour format of an hour with leading zeros</td>
+<td>00 to 23</td>
+</tr>
+<tr>
+<td>H</td>
+<td>24-hour format of an hour without leading zeros</td>
+<td>0 to 23</td>
+</tr>
+<tr>
+<td>hh</td>
+<td>12-hour format of an hour without leading zeros</td>
+<td>1 to 12</td>
+</tr>
+<tr>
+<td>h</td>
+<td>12-hour format of an hour with leading zeros</td>
+<td>01 to 12</td>
+</tr>
+<tr>
+<td>mm</td>
+<td>Minutes, with leading zeros</td>
+<td>00 to 59</td>
+</tr>
+<tr>
+<td>m</td>
+<td>Minutes, without leading zeros</td>
+<td>0 to 59</td>
+</tr>
+<tr>
+<td>ss</td>
+<td>Seconds, with leading zeros</td>
+<td>00 to 59</td>
+</tr>
+<tr>
+<td>s</td>
+<td>Seconds, without leading zeros</td>
+<td>0 to 59</td>
+</tr>
+<tr>
+<td>SS</td>
+<td>Milliseconds, with leading zeros</td>
+<td>000 to 999</td>
+</tr>
+<tr>
+<td>S</td>
+<td>Milliseconds, without leading zeros</td>
+<td>0 to 999</td>
+</tr>
+<tr>
+<td>A</td>
+<td>Uppercase Ante meridiem and Post meridiem</td>
+<td>AM or PM</td>
+</tr>
+<tr>
+<td>a</td>
+<td>Lowercase Ante meridiem and Post meridiem</td>
+<td>am or pm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.date()
+// =&gt; &quot;2002-10-23&quot;
+Random.date(&#39;yyyy-MM-dd&#39;)
+// =&gt; &quot;1983-01-29&quot;
+Random.date(&#39;yy-MM-dd&#39;)
+// =&gt; &quot;79-02-14&quot;
+Random.date(&#39;y-MM-dd&#39;)
+// =&gt; &quot;81-05-17&quot;
+Random.date(&#39;y-M-d&#39;)
+// =&gt; &quot;84-6-5&quot;</code></pre>
+<h4>Random.time(format)</h4>
+<ul>
+<li>Random.time()</li>
+<li>Random.time(format)</li>
+</ul>
+<p>返回一个随机的时间字符串。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 format：可选。指示生成的时间字符串的格式。默认值为 <code>HH:mm:ss</code>。可选的占位符参考自 <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>，请参见 <a href="#date">Random.date(format)</a>。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.time()
+// =&gt; &quot;00:14:47&quot;
+Random.time(&#39;A HH:mm:ss&#39;)
+// =&gt; &quot;PM 20:47:37&quot;
+Random.time(&#39;a HH:mm:ss&#39;)
+// =&gt; &quot;pm 17:40:00&quot;
+Random.time(&#39;HH:mm:ss&#39;)
+// =&gt; &quot;03:57:53&quot;
+Random.time(&#39;H:m:s&#39;)
+// =&gt; &quot;3:5:13&quot;</code></pre>
+<h4>Random.datetime(format)</h4>
+<ul>
+<li>Random.datetime()</li>
+<li>Random.datetime(format)</li>
+</ul>
+<p>返回一个随机的日期和时间字符串。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 format：可选。指示生成的日期和时间字符串的格式。默认值为 <code>yyyy-MM-dd HH:mm:ss</code>。可选的占位符参考自 <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>，请参见 <a href="#date">Random.date(format)</a>。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.datetime()
+// =&gt; &quot;1977-11-17 03:50:15&quot;
+Random.datetime(&#39;yyyy-MM-dd A HH:mm:ss&#39;)
+// =&gt; &quot;1976-04-24 AM 03:48:25&quot;
+Random.datetime(&#39;yy-MM-dd a HH:mm:ss&#39;)
+// =&gt; &quot;73-01-18 pm 22:12:32&quot;
+Random.datetime(&#39;y-MM-dd HH:mm:ss&#39;)
+// =&gt; &quot;79-06-24 04:45:16&quot;
+Random.datetime(&#39;y-M-d H:m:s&#39;)
+// =&gt; &quot;02-4-23 2:49:40&quot;</code></pre>
+<h4>Random.img(size, background, foreground, format, text)</h4>
+<ul>
+<li>Random.img()</li>
+<li>Random.img(size)</li>
+<li>Random.img(size, background)</li>
+<li>Random.img(size, background, text)</li>
+<li>Random.img(size, background, foreground, text)</li>
+<li>Random.img(size, background, foreground, format, text)</li>
+</ul>
+<p>生成一个随机的图片地址。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li><p>参数 size：可选。指示图片的宽高，格式为 <code>&#39;宽x高&#39;</code>。默认从下面的数组中随机读取一个：</p>
+<pre><code>  [
+      &#39;300x250&#39;, &#39;250x250&#39;, &#39;240x400&#39;, &#39;336x280&#39;, 
+      &#39;180x150&#39;, &#39;720x300&#39;, &#39;468x60&#39;, &#39;234x60&#39;, 
+      &#39;88x31&#39;, &#39;120x90&#39;, &#39;120x60&#39;, &#39;120x240&#39;, 
+      &#39;125x125&#39;, &#39;728x90&#39;, &#39;160x600&#39;, &#39;120x600&#39;, 
+      &#39;300x600&#39;
+  ]</code></pre>
+</li>
+<li><p>参数 background：可选。指示图片的背景色。默认值为 &#39;#000000&#39;。</p>
+</li>
+<li>参数 foreground：可选。指示图片的前景色（文件）。默认值为 &#39;#FFFFFF&#39;。</li>
+<li>参数 format：可选。指示图片的格式。默认值为 &#39;png&#39;，可选值包括：&#39;png&#39;、&#39;gif&#39;、&#39;jpg&#39;。</li>
+<li>参数 text：可选。指示图片上文字。默认为 &#39;&#39;。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.img()
+// =&gt; &quot;http://dummyimage.com/240x400&quot;
+Random.img(&#39;100x200&#39;)
+// =&gt; &quot;http://dummyimage.com/100x200&quot;
+Random.img(&#39;100x200&#39;, &#39;000&#39;)
+// =&gt; &quot;http://dummyimage.com/100x200/000&quot;
+Random.img(&#39;100x200&#39;, &#39;000&#39;, &#39;hello&#39;)
+// =&gt; &quot;http://dummyimage.com/100x200/000/hello&amp;text=hello&quot;
+Random.img(&#39;100x200&#39;, &#39;000&#39;, &#39;FFF&#39;, &#39;hello&#39;)
+// =&gt; &quot;http://dummyimage.com/100x200/000/FFF&amp;text=hello&quot;
+Random.img(&#39;100x200&#39;, &#39;000&#39;, &#39;FFF&#39;, &#39;png&#39;, &#39;hello&#39;)
+// =&gt; &quot;http://dummyimage.com/100x200/000/FFF.png&amp;text=hello&quot;</code></pre>
+<h3>Color</h3>
+<h4>Random.color()</h4>
+<ul>
+<li>Random.color()</li>
+</ul>
+<p>随机生成一个颜色，格式为 &#39;#RRGGBB&#39;。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.color()
+// =&gt; &quot;#3538b2&quot;</code></pre>
+<h3>Helpers</h3>
+<h4>Random.capitalize(word)</h4>
+<ul>
+<li>Random.capitalize(word)</li>
+</ul>
+<p>把字符串的第一个字母转换为大写。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.capitalize(&#39;hello&#39;)
+// =&gt; &quot;Hello&quot;</code></pre>
+<h4>Random.upper(str)</h4>
+<ul>
+<li>Random.upper(str)</li>
+</ul>
+<p>把字符串转换为大写。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.upper(&#39;hello&#39;)
+// =&gt; &quot;HELLO&quot;</code></pre>
+<h4>Random.lower(str)</h4>
+<ul>
+<li>Random.lower(str)</li>
+</ul>
+<p>把字符串转换为小写。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.lower(&#39;HELLO&#39;)
+// =&gt; &quot;hello&quot;</code></pre>
+<h4>Random.pick(arr)</h4>
+<ul>
+<li>Random.pick(arr)</li>
+</ul>
+<p>从数组中随机选取一个元素，并返回。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.pick([&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;])
+// =&gt; &quot;o&quot;</code></pre>
+<h4>Random.shuffle(arr)</h4>
+<ul>
+<li>Random.shuffle(arr)</li>
+</ul>
+<p>打乱数组中元素的顺序，并返回。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.shuffle([&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;])
+// =&gt; [&quot;o&quot;, &quot;u&quot;, &quot;e&quot;, &quot;i&quot;, &quot;a&quot;]</code></pre>
+<h3>Text</h3>
+<h4>Random.paragraph(len)</h4>
+<ul>
+<li>Random.paragraph()</li>
+<li>Random.paragraph(len)</li>
+<li>Random.paragraph(min, max)</li>
+</ul>
+<p>随机生成一段文本。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 len：可选。指示文本中句子的个数。默认值为 3 到 7 之间的随机数。</li>
+<li>参数 min：可选。指示文本中句子的最小个数。默认值为 3。</li>
+<li>参数 max：可选。指示文本中句子的最大个数。默认值为 7。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.paragraph()
+// =&gt; &quot;Yohbjjz psxwibxd jijiccj kvemj eidnus disnrst rcconm bcjrof tpzhdo ncxc yjws jnmdmty. Dkmiwza ibudbufrnh ndmcpz tomdyh oqoonsn jhoy rueieihtt vsrjpudcm sotfqsfyv mjeat shnqmslfo oirnzu cru qmpt ggvgxwv jbu kjde. Kzegfq kigj dtzdd ngtytgm comwwoox fgtee ywdrnbam utu nyvlyiv tubouw lezpkmyq fkoa jlygdgf pgv gyerges wbykcxhwe bcpmt beqtkq. Mfxcqyh vhvpovktvl hrmsgfxnt jmnhyndk qohnlmgc sicmlnsq nwku dxtbmwrta omikpmajv qda qrn cwoyfaykxa xqnbv bwbnyov hbrskzt. Pdfqwzpb hypvtknt bovxx noramu xhzam kfb ympmebhqxw gbtaszonqo zmsdgcku mjkjc widrymjzj nytudruhfr uudsitbst cgmwewxpi bye. Eyseox wyef ikdnws weoyof dqecfwokkv svyjdyulk glusauosnu achmrakky kdcfp kujrqcq xojqbxrp mpfv vmw tahxtnw fhe lcitj.&quot;
+
+Random.paragraph(2)
+// =&gt; &quot;Dlpec hnwvovvnq slfehkf zimy qpxqgy vwrbi mok wozddpol umkek nffjcmk gnqhhvm ztqkvjm kvukg dqubvqn xqbmoda. Vdkceijr fhhyemx hgkruvxuvr kuez wmkfv lusfksuj oewvvf cyw tfpo jswpseupm ypybap kwbofwg uuwn rvoxti ydpeeerf.&quot;
+
+Random.paragraph(1, 3)
+// =&gt; &quot;Qdgfqm puhxle twi lbeqjqfi bcxeeecu pqeqr srsx tjlnew oqtqx zhxhkvq pnjns eblxhzzta hifj csvndh ylechtyu.&quot;</code></pre>
+<h4>Random.sentence(len)</h4>
+<ul>
+<li>Random.sentence()</li>
+<li>Random.sentence(len)</li>
+<li>Random.sentence(min, max)</li>
+</ul>
+<p>随机生成一个句子，第一个的单词的首字母大写。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 len：可选。指示句子中单词的个数。默认值为 12 到 18 之间的随机数。</li>
+<li>参数 min：可选。指示句子中单词的最小个数。默认值为 12。</li>
+<li>参数 max：可选。指示句子中单词的最大个数。默认值为 18。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.sentence()
+// =&gt; &quot;Jovasojt qopupwh plciewh dryir zsqsvlkga yeam.&quot;
+Random.sentence(5)
+// =&gt; &quot;Fwlymyyw htccsrgdk rgemfpyt cffydvvpc ycgvno.&quot;
+Random.sentence(3, 5)
+// =&gt; &quot;Mgl qhrprwkhb etvwfbixm jbqmg.&quot;</code></pre>
+<h4>Random.word(len)</h4>
+<ul>
+<li>Random.word()</li>
+<li>Random.word(len)</li>
+<li>Random.word(min, max)</li>
+</ul>
+<p>随机生成一个单词。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 len：可选。指示单词中字符的个数。默认值为 3 到 10 之间的随机数。</li>
+<li>参数 min：可选。指示单词中字符的最小个数。默认值为 3。</li>
+<li>参数 max：可选。指示单词中字符的最大个数。默认值为 10。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.word()
+// =&gt; &quot;fxpocl&quot;
+Random.word(5)
+// =&gt; &quot;xfqjb&quot;
+Random.word(3, 5)
+// =&gt; &quot;kemh&quot;</code></pre>
+<blockquote>
+<p>目前单词中的字符是随机的小写字母，未来会根据词法生成“可读”的单词。</p>
+</blockquote>
+<h4>Random.title(len)</h4>
+<ul>
+<li>Random.title()</li>
+<li>Random.title(len)</li>
+<li>Random.title(min, max)</li>
+</ul>
+<p>随机生成一句标题，其中每个单词的首字母大写。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 len：可选。指示单词中字符的个数。默认值为 3 到 7 之间的随机数。</li>
+<li>参数 min：可选。指示单词中字符的最小个数。默认值为 3。</li>
+<li>参数 max：可选。指示单词中字符的最大个数。默认值为 7。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.title()
+// =&gt; &quot;Rduqzr Muwlmmlg Siekwvo Ktn Nkl Orn&quot;
+Random.title(5)
+// =&gt; &quot;Ahknzf Btpehy Xmpc Gonehbnsm Mecfec&quot;
+Random.title(3, 5)
+// =&gt; &quot;Hvjexiondr Pyickubll Owlorjvzys Xfnfwbfk&quot;</code></pre>
+<h3>Name</h3>
+<h4>Random.first()</h4>
+<ul>
+<li>Random.first()</li>
+</ul>
+<p>随机生成一个常见的英文名。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.first()
+// =&gt; &quot;Nancy&quot;</code></pre>
+<h4>Random.last()</h4>
+<ul>
+<li>Random.last()</li>
+</ul>
+<p>随机生成一个常见的英文姓。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.last()
+// =&gt; &quot;Martinez&quot;</code></pre>
+<h4>Random.name()</h4>
+<ul>
+<li>Random.name()</li>
+<li>Random.name(middle)</li>
+</ul>
+<p>随机生成一个常见的英文姓名。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 middle：可选。布尔值。指示是否生成中间名。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.name()
+// =&gt; &quot;Larry Wilson&quot;
+Random.name(true)
+// =&gt; &quot;Helen Carol Martinez&quot;</code></pre>
+<h3>Web</h3>
+<h4>Random.url()</h4>
+<ul>
+<li>Random.url()</li>
+</ul>
+<p>随机生成一个 URL。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.url()
+// =&gt; &quot;http://vrcq.edu/ekqtyfi&quot;</code></pre>
+<h4>Random.domain()</h4>
+<ul>
+<li>Random.domain()</li>
+</ul>
+<p>随机生成一个域名。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.domain()
+// =&gt; &quot;kozfnb.org&quot;</code></pre>
+<h4>Random.email()</h4>
+<ul>
+<li>Random.email()</li>
+</ul>
+<p>随机生成一个邮件地址。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.email()
+// =&gt; &quot;x.davis@jackson.edu&quot;</code></pre>
+<h4>Random.ip()</h4>
+<ul>
+<li>Random.ip()</li>
+</ul>
+<p>随机生成一个 IP 地址。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.ip()
+// =&gt; &quot;34.206.109.169&quot;</code></pre>
+<h4>Random.tld()</h4>
+<ul>
+<li>Random.tld()</li>
+</ul>
+<p>随机生成一个顶级域名。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.tld()
+// =&gt; &quot;net&quot;</code></pre>
+<h3>Address</h3>
+<h4>Random.area()</h4>
+<ul>
+<li>Random.area()</li>
+</ul>
+<p>随机生成一个（中国）大区。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.area()
+// =&gt; &quot;华北&quot;</code></pre>
+<h4>Random.region()</h4>
+<ul>
+<li>Random.region()</li>
+</ul>
+<p>随机生成一个（中国）省（或直辖市、自治区、特别行政区）。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.region()
+// =&gt; &quot;辽宁省&quot;</code></pre>
+<h3>Miscellaneous</h3>
+<h4>Random.guid()</h4>
+<ul>
+<li>Random.guid()</li>
+</ul>
+<p>随机生成一个 GUID。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.guid()
+// =&gt; &quot;662C63B4-FD43-66F4-3328-C54E3FF0D56E&quot;</code></pre>
+<h4>Random.id()</h4>
+<ul>
+<li>Random.id()</li>
+</ul>
+<p>随机生成一个 18 位身份证。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.id()
+// =&gt; &quot;420000200710091854&quot;</code></pre>
+</div>
+    
+    <script src="./dist/mock.js"></script>
+    
+    <script src="../node_modules/jquery/tmp/jquery.js"></script>
+    <script src="./demo/assets/catalog.js"></script>
+    
+    <script type="text/javascript">
+        $(function(){
+            return
+            function resize(){
+                var h = $(window).height() - $('.catalog').offset().top - 20
+                $('.catalog, .content').height(h)
+                return resize
+            }
+            $(window).on('resize', resize());
+        })
+    </script>
+    <script type="text/javascript">
+        $(function(){
+            $('table').addClass('table table-bordered')
+        })
+    </script>
+  </body>
+</html>
