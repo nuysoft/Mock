@@ -9,10 +9,6 @@
           font: 14px/1.7 'helvetica neue', 'hiragino sans gb', stheiti,'wenquanyi micro hei',\5FAE\8F6F\96C5\9ED1,\5B8B\4F53, sans-serif;
         }
 
-        code, pre {
-            font-size: 13px;
-        }
-
         .page-catalog > ul {
             padding-left: 0px;
         }
@@ -72,7 +68,7 @@
     
     <script src="../node_modules/jquery/tmp/jquery.js"></script>
     <script src="./demo/assets/catalog.js"></script>
-    
+
     <script type="text/javascript">
         $(function(){
             return
@@ -87,6 +83,20 @@
     <script type="text/javascript">
         $(function(){
             $('table').addClass('table table-bordered')
+        })
+    </script>
+  
+    <link href="./node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
+    <link href="./node_modules/codemirror/theme/neat.css" rel="stylesheet">
+    <script src="./node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="./node_modules/codemirror/addon/runmode/runmode.js"></script>
+    <script src="./node_modules/codemirror/mode/javascript/javascript.js"></script>
+    <script type="text/javascript">
+        $('pre').each(function(index, el){
+            $(this).hide()
+            var ctn = $('<pre class="cm-s-neat">').insertAfter(this)
+            CodeMirror.runMode($(this).find('code').text(), 'javascript',
+                     ctn.get(0));
         })
     </script>
   </body>

@@ -11,13 +11,19 @@ Mock.js 是一款模拟数据生成器。
 ## 下载
 
 <p>
-    <a href="./dist/mock.js" class="btn btn-primary w250">Development Version (0.1.1)</a> - <i>57kB, Uncompressed</i>
+    <a href="./dist/mock.js" class="btn btn-success w250">
+        Development Version (0.1.1)
+    </a> - <i>57kB, Uncompressed</i>
 </p>
 <p>
-    <a href="./dist/mock-min.js" class="btn btn-success w250">Production Version (0.1.1)</a> - <i>23kB, Minified</i>
+    <a href="./dist/mock-min.js" class="btn btn-primary w250">
+        Production Version (0.1.1)
+    </a> - <i>23kB, Minified</i>
 </p>
 <p>
-    <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">从 Github 获取最新版本</a>
+    <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">
+        从 Github 获取最新版本
+    </a> - <i>Unreleased</i>
 </p>
 
 ## 用法
@@ -87,7 +93,7 @@ todo
 
 Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整的语法规范和占位符。
 
-下面是 Mock.mock() 的两种参数格式以及规则的使用示例：
+下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：
 
 **示例1：**Mock.mock(template)
 
@@ -101,11 +107,11 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
 
 覆盖（拦截） Ajax 请求，目前内置支持 jQuery、KISSY。
 
-对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问 [这里]()。
+对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问[这里](https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L5)。
 
-对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问 [这里]()。
+对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问[这里](https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L72)。
 
-因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和本人所服务的阿里） 常用的 jQuery 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery 和 KISSY 的实现，覆盖 `Mock.mockjax(library)`。
+因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和所服务的阿里） 常用的 jQuery 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery 和 KISSY 的实现，覆盖 `Mock.mockjax(library)`。
 
 通过方法 `Mock.mock(rurl, template)` 设置的 URL 和数据模板的映射，均记录在属性 `Mock._mocked` 中，扩展时可从中获取 URL 对应的数据模板，进而生成和响应模拟数据。`Mock._mocked` 的数据结构为：
 
@@ -161,7 +167,7 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
 
 数据模板 options 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
     
-**示例1：**在 HTML 模板中通过一个 HTML 注释集中配置数据模板。
+**示例1：**在 HTML 模板中通过一个 HTML 注释**集中**配置数据模板。
 
     var tpl = Mock.Util.heredoc(function() {
         /*
@@ -180,7 +186,7 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
         "age": 33
     }
 
-**示例2：**在 HTML 模板中通过多个 HTML 注释分散配置数据模板。
+**示例2：**在 HTML 模板中通过多个 HTML 注释**分散**配置数据模板。
 
     var tpl = Mock.Util.heredoc(function() {
         /*

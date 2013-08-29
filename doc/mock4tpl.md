@@ -42,7 +42,7 @@
 
 数据模板 options 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
     
-**示例1：**在 HTML 模板中通过一个 HTML 注释集中配置数据模板。
+**示例1：**在 HTML 模板中通过一个 HTML 注释**集中**配置数据模板。
 
     var tpl = Mock.Util.heredoc(function() {
         /*
@@ -61,7 +61,7 @@
         "age": 33
     }
 
-**示例2：**在 HTML 模板中通过多个 HTML 注释分散配置数据模板。
+**示例2：**在 HTML 模板中通过多个 HTML 注释**分散**配置数据模板。
 
     var tpl = Mock.Util.heredoc(function() {
         /*

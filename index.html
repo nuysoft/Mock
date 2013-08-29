@@ -9,10 +9,6 @@
           font: 14px/1.7 'helvetica neue', 'hiragino sans gb', stheiti,'wenquanyi micro hei',\5FAE\8F6F\96C5\9ED1,\5B8B\4F53, sans-serif;
         }
 
-        code, pre {
-            font-size: 13px;
-        }
-
         .page-catalog > ul {
             padding-left: 0px;
         }
@@ -76,13 +72,19 @@
 </ul>
 <h2>下载</h2>
 <p>
-    <a href="./dist/mock.js" class="btn btn-primary w250">Development Version (0.1.1)</a> - <i>57kB, Uncompressed</i>
+    <a href="./dist/mock.js" class="btn btn-success w250">
+        Development Version (0.1.1)
+    </a> - <i>57kB, Uncompressed</i>
 </p>
 <p>
-    <a href="./dist/mock-min.js" class="btn btn-success w250">Production Version (0.1.1)</a> - <i>23kB, Minified</i>
+    <a href="./dist/mock-min.js" class="btn btn-primary w250">
+        Production Version (0.1.1)
+    </a> - <i>23kB, Minified</i>
 </p>
 <p>
-    <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">从 Github 获取最新版本</a>
+    <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">
+        从 Github 获取最新版本
+    </a> - <i>Unreleased</i>
 </p>
 
 <h2>用法</h2>
@@ -141,7 +143,7 @@ console.log(JSON.stringify(data, null, 4))</code></pre>
 <li><code>&#39;datetime&#39;: &#39;@DATETIME&#39;</code> 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss</li>
 </ul>
 <p>Mock.js 的 <a href="http://mockjs.com/demo/mock.html">在线编辑器</a> 演示了完整的语法规范和占位符。</p>
-<p>下面是 Mock.mock() 的两种参数格式以及规则的使用示例：</p>
+<p>下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：</p>
 <p><strong>示例1：</strong>Mock.mock(template)</p>
 <iframe width="100%" height="300" src="http://jsfiddle.net/VRjgz/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -150,9 +152,9 @@ console.log(JSON.stringify(data, null, 4))</code></pre>
 
 <h3>Mock.mockjax(library)</h3>
 <p>覆盖（拦截） Ajax 请求，目前内置支持 jQuery、KISSY。</p>
-<p>对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问 <a href="">这里</a>。</p>
-<p>对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问 <a href="">这里</a>。</p>
-<p>因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和本人所服务的阿里） 常用的 jQuery 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery 和 KISSY 的实现，覆盖 <code>Mock.mockjax(library)</code>。</p>
+<p>对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问<a href="https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L5">这里</a>。</p>
+<p>对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问<a href="https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L72">这里</a>。</p>
+<p>因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和所服务的阿里） 常用的 jQuery 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery 和 KISSY 的实现，覆盖 <code>Mock.mockjax(library)</code>。</p>
 <p>通过方法 <code>Mock.mock(rurl, template)</code> 设置的 URL 和数据模板的映射，均记录在属性 <code>Mock._mocked</code> 中，扩展时可从中获取 URL 对应的数据模板，进而生成和响应模拟数据。<code>Mock._mocked</code> 的数据结构为：</p>
 <pre><code>{
     rurl.toString(): {
@@ -201,7 +203,7 @@ Mock.tpl(&#39;{{&gt; &quot;sub-tpl&quot;}}&#39;, {}, {}, {
 })
 // =&gt; {title: &quot;title&quot;}</code></pre>
 <p>数据模板 options 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 <code>&lt;!-- Mock {} --&gt;</code> 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。</p>
-<p><strong>示例1：</strong>在 HTML 模板中通过一个 HTML 注释集中配置数据模板。</p>
+<p><strong>示例1：</strong>在 HTML 模板中通过一个 HTML 注释<strong>集中</strong>配置数据模板。</p>
 <pre><code>var tpl = Mock.Util.heredoc(function() {
     /*
 {{email}}{{age}}
@@ -218,7 +220,7 @@ console.log(JSON.stringify(data, null, 4))
     &quot;email&quot;: &quot;t.lee@clark.net&quot;,
     &quot;age&quot;: 33
 }</code></pre>
-<p><strong>示例2：</strong>在 HTML 模板中通过多个 HTML 注释分散配置数据模板。</p>
+<p><strong>示例2：</strong>在 HTML 模板中通过多个 HTML 注释<strong>分散</strong>配置数据模板。</p>
 <pre><code>var tpl = Mock.Util.heredoc(function() {
     /*
 {{email}}{{age}}
@@ -983,7 +985,7 @@ Random.name(true)
     
     <script src="../node_modules/jquery/tmp/jquery.js"></script>
     <script src="./demo/assets/catalog.js"></script>
-    
+
     <script type="text/javascript">
         $(function(){
             return
@@ -998,6 +1000,20 @@ Random.name(true)
     <script type="text/javascript">
         $(function(){
             $('table').addClass('table table-bordered')
+        })
+    </script>
+  
+    <link href="./node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
+    <link href="./node_modules/codemirror/theme/neat.css" rel="stylesheet">
+    <script src="./node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="./node_modules/codemirror/addon/runmode/runmode.js"></script>
+    <script src="./node_modules/codemirror/mode/javascript/javascript.js"></script>
+    <script type="text/javascript">
+        $('pre').each(function(index, el){
+            $(this).hide()
+            var ctn = $('<pre class="cm-s-neat">').insertAfter(this)
+            CodeMirror.runMode($(this).find('code').text(), 'javascript',
+                     ctn.get(0));
         })
     </script>
   </body>

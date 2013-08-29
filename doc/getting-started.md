@@ -11,13 +11,19 @@ Mock.js 是一款模拟数据生成器。
 ## 下载
 
 <p>
-    <a href="./dist/mock.js" class="btn btn-primary w250">Development Version (0.1.1)</a> - <i>57kB, Uncompressed</i>
+    <a href="./dist/mock.js" class="btn btn-success w250">
+        Development Version (0.1.1)
+    </a> - <i>57kB, Uncompressed</i>
 </p>
 <p>
-    <a href="./dist/mock-min.js" class="btn btn-success w250">Production Version (0.1.1)</a> - <i>23kB, Minified</i>
+    <a href="./dist/mock-min.js" class="btn btn-primary w250">
+        Production Version (0.1.1)
+    </a> - <i>23kB, Minified</i>
 </p>
 <p>
-    <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">从 Github 获取最新版本</a>
+    <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">
+        从 Github 获取最新版本
+    </a> - <i>Unreleased</i>
 </p>
 
 ## 用法

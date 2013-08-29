@@ -33,7 +33,7 @@
 
 Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整的语法规范和占位符。
 
-下面是 Mock.mock() 的两种参数格式以及规则的使用示例：
+下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：
 
 **示例1：**Mock.mock(template)
 
