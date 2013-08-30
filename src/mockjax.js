@@ -73,6 +73,17 @@ if (typeof jQuery != 'undefined') Mock.mockjax(jQuery)
 if (typeof KISSY != 'undefined' && KISSY.add) {
     Mock.mockjax = function mockjax(KISSY) {
         var _original_ajax = KISSY.io;
+
+        // @白汀 提交：次对象用于模拟kissy的io响应之后的传给success方法的xhr对象，只构造了部分属性，不包含实际KISSY中的完整对象。
+        var xhr = {
+            readyState: 4,
+            responseText: '',
+            responseXML: null,
+            state: 2,
+            status: 200,
+            statusText: "success",
+            timeoutTimer: null
+        };
         KISSY.io = function(options) {
             // if (options.dataType === 'json') {
             for (var surl in Mock._mocked) {
@@ -88,8 +99,8 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
                 console.log('[mock]', options.url, '>', mock.rurl)
                 var data = Mock.mock(mock.template)
                 console.log('[mock]', data)
-                if (options.success) options.success(data)
-                if (options.complete) options.complete(data)
+                if (options.success) options.success(data, 'success', xhr)
+                if (options.complete) options.complete(data, 'success', xhr)
                 return KISSY
             }
             // }

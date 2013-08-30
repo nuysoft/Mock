@@ -1,4 +1,4 @@
-/*! mockjs 28-08-2013 */
+/*! mockjs 30-08-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -645,6 +645,15 @@
     if (typeof KISSY != "undefined" && KISSY.add) {
         Mock.mockjax = function mockjax(KISSY) {
             var _original_ajax = KISSY.io;
+            var xhr = {
+                readyState: 4,
+                responseText: "",
+                responseXML: null,
+                state: 2,
+                status: 200,
+                statusText: "success",
+                timeoutTimer: null
+            };
             KISSY.io = function(options) {
                 for (var surl in Mock._mocked) {
                     var mock = Mock._mocked[surl];
@@ -657,8 +666,8 @@
                     console.log("[mock]", options.url, ">", mock.rurl);
                     var data = Mock.mock(mock.template);
                     console.log("[mock]", data);
-                    if (options.success) options.success(data);
-                    if (options.complete) options.complete(data);
+                    if (options.success) options.success(data, "success", xhr);
+                    if (options.complete) options.complete(data, "success", xhr);
                     return KISSY;
                 }
                 return _original_ajax.apply(this, arguments);
