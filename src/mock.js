@@ -654,6 +654,17 @@
         KISSY.add('components/mock/index', function(S) {
             Mock.mockjax = function mockjax(S) {
                 var _original_ajax = S.io;
+                
+                //次对象用于模拟kissy的io响应之后的传给success方法的xhr对象，只构造了部分属性，不包含实际KISSY中的完整对象。
+                var xhr = {
+                	readyState:4,
+                	responseText:'',
+                	responseXML:null,
+                	state: 2
+                	status: 200
+                	statusText: "success"
+                	timeoutTimer: null
+                };
                 S.io = function(options) {
                     // if (options.dataType === 'json') {
                     for (var surl in _mocked) {
@@ -669,8 +680,8 @@
                         console.log('[mock]', options.url, '>', mock.rurl)
                         var data = Mock.gen(mock.template)
                         console.log('[mock]', data)
-                        if (options.success) options.success(data)
-                        if (options.complete) options.complete(data)
+                        if (options.success) options.success(data, 'success', xhr)
+                        if (options.complete) options.complete(data, 'success', xhr)
                         return S
                     }
                     // }
