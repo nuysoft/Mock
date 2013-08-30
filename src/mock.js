@@ -660,9 +660,9 @@
                 	readyState:4,
                 	responseText:'',
                 	responseXML:null,
-                	state: 2
-                	status: 200
-                	statusText: "success"
+                	state: 2,
+                	status: 200,
+                	statusText: "success",
                 	timeoutTimer: null
                 };
                 S.io = function(options) {
