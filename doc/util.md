@@ -17,11 +17,11 @@
     })
     console.log(tpl)
     // =>
-    {{email}}{{age}}
+    "{{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL',
         age: '@INT(1,100)'
-    } -->
+    } -->"
 
 **相关阅读**
 

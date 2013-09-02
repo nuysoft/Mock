@@ -312,11 +312,11 @@ Mock.js 的 [在线编辑器](./demo/mock.html) 演示了完整的语法规范�
     })
     console.log(tpl)
     // =>
-    {{email}}{{age}}
+    "{{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL',
         age: '@INT(1,100)'
-    } -->
+    } -->"
 
 **相关阅读**
 
