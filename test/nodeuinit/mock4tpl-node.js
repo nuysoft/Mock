@@ -3149,6 +3149,48 @@ exports.test_each_chain_4xtpl = function(test) {
     test.done()
 }
 
+/*
+    Handlebars 不支持转义点号
+*/
+exports.test_escape_dot = function(test) {
+    var tpl, data, html;
+
+    tpl = '{{a\\.b\\.c}}' // Handlebars 不支持转义点号
+
+    try {
+        data = Mock4Tpl.mock(tpl)
+        html = Handlebars.compile(tpl)(data)
+        // console.log(JSON.stringify(Mock4Tpl.parse(tpl), null, 4))
+        // console.log(JSON.stringify(data, null, 4))
+        // console.log(html)
+        // console.log(Handlebars.compile(tpl)(data))
+    } catch (e) {
+        test.ok(e)
+        test.done()
+    }
+}
+
+/*
+    XTemplate 不支持转义点号
+*/
+exports.test_escape_dot_4xtpl = function(test) {
+    var tpl, data, html;
+
+    tpl = '{{a\\.b\\.c}}' // XTemplate 不支持转义点号
+
+    try {
+        data = Mock4XTpl.mock(tpl)
+        html = new XTemplate(tpl).render(data)
+        // console.log(JSON.stringify(Mock4XTpl.parse(tpl), null, 4))
+        // console.log(JSON.stringify(data, null, 4))
+        // console.log(html)
+        // console.log(Handlebars.compile(tpl)(data))
+    } catch (e) {
+        test.ok(e)
+        test.done()
+    }
+}
+
 exports.test_complex = function(test) {
     var tpl, data, html;
 
