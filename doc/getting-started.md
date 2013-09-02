@@ -1,12 +1,16 @@
 ## Mock.js
 
-Mock.js 是一款模拟数据生成器。
+Mock.js 是一款模拟数据生成器，提供以下模拟功能：
+
+* 根据数据模板生成模拟数据
+* 模拟 Ajax 请求，生成并返回模拟数据
+* 基于 HTML 模板生成模拟数据
 
 ## 在线编辑器
 
-* [Data](http://mockjs.com/demo/mock.html)
-* [Handlebars &amp; Mustache](http://mockjs.com/demo/mock4tpl.html)
-* [KISSY XTemplate](http://mockjs.com/demo/mock4xtpl.html)
+* [Data](./demo/mock.html)
+* [Handlebars &amp; Mustache](./demo/mock4tpl.html)
+* [KISSY XTemplate](./demo/mock4xtpl.html)
 
 ## 下载
 

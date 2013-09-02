@@ -102,6 +102,8 @@ var KISSY = require('kissy'),
         {{email}}{{age}}
         <!-- Mock { email: '@EMAIL' } -->
         <!-- Mock { age: '@INT' } -->
+
+        > 关于模板引擎的注释节点 `{{! 注释内容 }}`（不是 HTML 注释 <!-- -->）：**在 Handlebars 中，注释节点会出现在从 HTML 模板解析得到的语法树中**，因为 Mock.js 是基于 HTML 模板的语法树生成模拟数据，因此从理论上（尚未实现，原因下表），可以通过注释节点来配置数据模板，例如 `{{email}}{{! @EMAIL }}`。这种配置方式的好处有：1) 不需要敲打略显繁琐的 `{{email}}<!-- Mock { email: '@EMAIL' } -->`，2) 可以省去敲打 `email:`，3) 可以就近配置方便阅读。这种配置方式的坏处有：1) 过于零碎不易管理。另外，**KISSY XTempalte 不会把注释节点放入语法树中**。因此，暂时不提供这种配置方式。如果您有更好的想法，欢迎提交 [Issues]() 讨论。
     */
     Mock4XTpl.parseOptions = function(input, options) {
         var rComment = /<!--\s*\n*Mock\s*\n*([\w\W]+?)\s*\n*-->/g;

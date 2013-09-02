@@ -31,7 +31,7 @@
 * `'time': '@TIME'` 随机生成一段时间字符串，默认格式为 HH:mm:ss
 * `'datetime': '@DATETIME'` 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss
 
-Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整的语法规范和占位符。
+Mock.js 的 [在线编辑器](./demo/mock.html) 演示了完整的语法规范和占位符。
 
 下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：
 

@@ -3,6 +3,7 @@
 */
 Mock.Util = Util
 Mock.Random = Random
+Mock.heredoc = Util.heredoc
 
 /*
     For Module Loader
@@ -32,26 +33,12 @@ if (typeof KISSY != 'undefined') {
             console.log(Mock.mock)
         })
     */
-
-    KISSY.add('mock', function(S) {
-        Mock.mockjax(S)
-        return Mock
-    }, {
-        requires: ['ajax']
+    Util.each(['mock', 'components/mock/index', 'mock/dist/mock'], function register(name) {
+        KISSY.add(name, function(S) {
+            Mock.mockjax(S)
+            return Mock
+        }, {
+            requires: ['ajax']
+        })
     })
-
-    KISSY.add('components/mock/index', function(S) {
-        Mock.mockjax(S)
-        return Mock
-    }, {
-        requires: ['ajax']
-    })
-
-    KISSY.add('mock/dist/mock', function(S) {
-        Mock.mockjax(S)
-        return Mock
-    }, {
-        requires: ['ajax']
-    })
-
 }

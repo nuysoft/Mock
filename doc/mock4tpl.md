@@ -40,12 +40,12 @@
     })
     // => {title: "title"}
 
-数据模板 options 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
+数据模板 `options` 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置（为了避免侵入现有的代码和开发模式），格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
     
 **示例1：**在 HTML 模板中通过一个 HTML 注释**集中**配置数据模板。
 
-    var tpl = Mock.Util.heredoc(function() {
-        /*
+    var tpl = Mock.heredoc(function() {
+        /*!
     {{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL',
@@ -63,8 +63,8 @@
 
 **示例2：**在 HTML 模板中通过多个 HTML 注释**分散**配置数据模板。
 
-    var tpl = Mock.Util.heredoc(function() {
-        /*
+    var tpl = Mock.heredoc(function() {
+        /*!
     {{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL'

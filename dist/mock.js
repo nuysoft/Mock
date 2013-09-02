@@ -1,4 +1,4 @@
-/*! mockjs 30-08-2013 */
+/*! mockjs 02-09-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -64,7 +64,7 @@
             return !isNaN(parseFloat(value)) && isFinite(value);
         };
         Util.heredoc = function heredoc(fn) {
-            return fn.toString().replace(/^[^\/]+\/\*!?/, "").replace(/\*\/[^\/]+$/, "").trim();
+            return fn.toString().replace(/^[^\/]+\/\*!?/, "").replace(/\*\/[^\/]+$/, "").replace(/^[\s\xA0]+/, "").replace(/[\s\xA0]+$/, "");
         };
         Util.noop = function() {};
         return Util;
@@ -677,6 +677,7 @@
     /*! src/expose.js */
     Mock.Util = Util;
     Mock.Random = Random;
+    Mock.heredoc = Util.heredoc;
     if (typeof module === "object" && module.exports) {
         module.exports = Mock;
     } else if (typeof define === "function" && define.amd) {
@@ -687,23 +688,13 @@
     this.Mock = Mock;
     this.Random = Random;
     if (typeof KISSY != "undefined") {
-        KISSY.add("mock", function(S) {
-            Mock.mockjax(S);
-            return Mock;
-        }, {
-            requires: [ "ajax" ]
-        });
-        KISSY.add("components/mock/index", function(S) {
-            Mock.mockjax(S);
-            return Mock;
-        }, {
-            requires: [ "ajax" ]
-        });
-        KISSY.add("mock/dist/mock", function(S) {
-            Mock.mockjax(S);
-            return Mock;
-        }, {
-            requires: [ "ajax" ]
+        Util.each([ "mock", "components/mock/index", "mock/dist/mock" ], function register(name) {
+            KISSY.add(name, function(S) {
+                Mock.mockjax(S);
+                return Mock;
+            }, {
+                requires: [ "ajax" ]
+            });
         });
     }
     /*! src/mock4tpl.js */

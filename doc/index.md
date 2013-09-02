@@ -1,12 +1,16 @@
 ## Mock.js
 
-Mock.js 是一款模拟数据生成器。
+Mock.js 是一款模拟数据生成器，提供以下模拟功能：
+
+* 根据数据模板生成模拟数据
+* 模拟 Ajax 请求，生成并返回模拟数据
+* 基于 HTML 模板生成模拟数据
 
 ## 在线编辑器
 
-* [Data](http://mockjs.com/demo/mock.html)
-* [Handlebars &amp; Mustache](http://mockjs.com/demo/mock4tpl.html)
-* [KISSY XTemplate](http://mockjs.com/demo/mock4xtpl.html)
+* [Data](./demo/mock.html)
+* [Handlebars &amp; Mustache](./demo/mock4tpl.html)
+* [KISSY XTemplate](./demo/mock4xtpl.html)
 
 ## 下载
 
@@ -91,7 +95,7 @@ todo
 * `'time': '@TIME'` 随机生成一段时间字符串，默认格式为 HH:mm:ss
 * `'datetime': '@DATETIME'` 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss
 
-Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整的语法规范和占位符。
+Mock.js 的 [在线编辑器](./demo/mock.html) 演示了完整的语法规范和占位符。
 
 下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：
 
@@ -165,12 +169,12 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
     })
     // => {title: "title"}
 
-数据模板 options 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
+数据模板 `options` 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置（为了避免侵入现有的代码和开发模式），格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
     
 **示例1：**在 HTML 模板中通过一个 HTML 注释**集中**配置数据模板。
 
-    var tpl = Mock.Util.heredoc(function() {
-        /*
+    var tpl = Mock.heredoc(function() {
+        /*!
     {{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL',
@@ -188,8 +192,8 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
 
 **示例2：**在 HTML 模板中通过多个 HTML 注释**分散**配置数据模板。
 
-    var tpl = Mock.Util.heredoc(function() {
-        /*
+    var tpl = Mock.heredoc(function() {
+        /*!
     {{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL'
@@ -248,12 +252,12 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
     })
     // => {title: "title"}
 
-数据模板 options 可以在调用 Mock.xtpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
+数据模板 `options` 可以在调用 Mock.xtpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置（为了避免侵入现有的代码和开发模式），格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
     
-**示例1：**在 HTML 模板中通过一个 HTML 注释集中配置数据模板。
+**示例1：**在 HTML 模板中通过一个 HTML 注释**集中**配置数据模板。
 
-    var tpl = Mock.Util.heredoc(function() {
-        /*
+    var tpl = Mock.heredoc(function() {
+        /*!
     {{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL',
@@ -269,10 +273,10 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
         "age": 33
     }
 
-**示例2：**在 HTML 模板中通过多个 HTML 注释分散配置数据模板。
+**示例2：**在 HTML 模板中通过多个 HTML 注释**分散**配置数据模板。
 
-    var tpl = Mock.Util.heredoc(function() {
-        /*
+    var tpl = Mock.heredoc(function() {
+        /*!
     {{email}}{{age}}
     <!-- Mock { 
         email: '@EMAIL'
@@ -288,6 +292,35 @@ Mock.js 的 [在线编辑器](http://mockjs.com/demo/mock.html) 演示了完整�
         "age": 83
     }
 
+
+### Mock.heredoc(fn)
+
+* Mock.heredoc(fn)
+
+以直观、舒适、安全的方式书写（多行）HTML 模板。
+
+**使用示例**如下所示：
+
+    var tpl = Mock.heredoc(function() {
+        /*!
+    {{email}}{{age}}
+    <!-- Mock { 
+        email: '@EMAIL',
+        age: '@INT(1,100)'
+    } -->
+        */
+    })
+    console.log(tpl)
+    // =>
+    {{email}}{{age}}
+    <!-- Mock { 
+        email: '@EMAIL',
+        age: '@INT(1,100)'
+    } -->
+
+**相关阅读**
+
+* [Creating multiline strings in JavaScript](http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript)、
 
 ## Mock.Random
 

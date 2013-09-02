@@ -217,7 +217,7 @@ exports.test_with_path = function(test) {
     TODO 关于注释节点
     注释节点不会出现在渲染结果中，但至少应该保留在语法树中。
     Mock 工具为了避免侵入现有的代码和模式，在 HTML 模板的注释中保存数据配置，例如：
-        {{title}}{{! @EMAIL }}
+        {{title}}{{! @TITLE }}
         {{email}}{{! @EMAIL }}
     
     http://nuysoft.com/project/mock4tpl.html

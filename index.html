@@ -63,12 +63,17 @@
   <body>
     <div id="sidebar" class="interface"></div>
     <div class="container"><h2>Mock.js</h2>
-<p>Mock.js 是一款模拟数据生成器。</p>
+<p>Mock.js 是一款模拟数据生成器，提供以下模拟功能：</p>
+<ul>
+<li>根据数据模板生成模拟数据</li>
+<li>模拟 Ajax 请求，生成并返回模拟数据</li>
+<li>基于 HTML 模板生成模拟数据</li>
+</ul>
 <h2>在线编辑器</h2>
 <ul>
-<li><a href="http://mockjs.com/demo/mock.html">Data</a></li>
-<li><a href="http://mockjs.com/demo/mock4tpl.html">Handlebars &amp; Mustache</a></li>
-<li><a href="http://mockjs.com/demo/mock4xtpl.html">KISSY XTemplate</a></li>
+<li><a href="./demo/mock.html">Data</a></li>
+<li><a href="./demo/mock4tpl.html">Handlebars &amp; Mustache</a></li>
+<li><a href="./demo/mock4xtpl.html">KISSY XTemplate</a></li>
 </ul>
 <h2>下载</h2>
 <p>
@@ -142,7 +147,7 @@ console.log(JSON.stringify(data, null, 4))</code></pre>
 <li><code>&#39;time&#39;: &#39;@TIME&#39;</code> 随机生成一段时间字符串，默认格式为 HH:mm:ss</li>
 <li><code>&#39;datetime&#39;: &#39;@DATETIME&#39;</code> 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss</li>
 </ul>
-<p>Mock.js 的 <a href="http://mockjs.com/demo/mock.html">在线编辑器</a> 演示了完整的语法规范和占位符。</p>
+<p>Mock.js 的 <a href="./demo/mock.html">在线编辑器</a> 演示了完整的语法规范和占位符。</p>
 <p>下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：</p>
 <p><strong>示例1：</strong>Mock.mock(template)</p>
 <iframe width="100%" height="300" src="http://jsfiddle.net/VRjgz/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
@@ -202,10 +207,10 @@ Mock.tpl(&#39;{{&gt; &quot;sub-tpl&quot;}}&#39;, {}, {}, {
     &#39;sub-tpl&#39;: &#39;{{title}}&#39;
 })
 // =&gt; {title: &quot;title&quot;}</code></pre>
-<p>数据模板 options 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 <code>&lt;!-- Mock {} --&gt;</code> 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。</p>
+<p>数据模板 <code>options</code> 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置（为了避免侵入现有的代码和开发模式），格式为 <code>&lt;!-- Mock {} --&gt;</code> 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。</p>
 <p><strong>示例1：</strong>在 HTML 模板中通过一个 HTML 注释<strong>集中</strong>配置数据模板。</p>
-<pre><code>var tpl = Mock.Util.heredoc(function() {
-    /*
+<pre><code>var tpl = Mock.heredoc(function() {
+    /*!
 {{email}}{{age}}
 &lt;!-- Mock { 
     email: &#39;@EMAIL&#39;,
@@ -221,8 +226,8 @@ console.log(JSON.stringify(data, null, 4))
     &quot;age&quot;: 33
 }</code></pre>
 <p><strong>示例2：</strong>在 HTML 模板中通过多个 HTML 注释<strong>分散</strong>配置数据模板。</p>
-<pre><code>var tpl = Mock.Util.heredoc(function() {
-    /*
+<pre><code>var tpl = Mock.heredoc(function() {
+    /*!
 {{email}}{{age}}
 &lt;!-- Mock { 
     email: &#39;@EMAIL&#39;
@@ -276,10 +281,10 @@ Mock.xtpl(&#39;{{include &quot;sub-tpl&quot;}}&#39;, {}, {}, {
     &#39;sub-tpl&#39;: &#39;{{title}}&#39;
 })
 // =&gt; {title: &quot;title&quot;}</code></pre>
-<p>数据模板 options 可以在调用 Mock.xtpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置，格式为 <code>&lt;!-- Mock {} --&gt;</code> 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。</p>
-<p><strong>示例1：</strong>在 HTML 模板中通过一个 HTML 注释集中配置数据模板。</p>
-<pre><code>var tpl = Mock.Util.heredoc(function() {
-    /*
+<p>数据模板 <code>options</code> 可以在调用 Mock.xtpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置（为了避免侵入现有的代码和开发模式），格式为 <code>&lt;!-- Mock {} --&gt;</code> 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。</p>
+<p><strong>示例1：</strong>在 HTML 模板中通过一个 HTML 注释<strong>集中</strong>配置数据模板。</p>
+<pre><code>var tpl = Mock.heredoc(function() {
+    /*!
 {{email}}{{age}}
 &lt;!-- Mock { 
     email: &#39;@EMAIL&#39;,
@@ -294,9 +299,9 @@ console.log(JSON.stringify(data, null, 4))
     &quot;email&quot;: &quot;t.lee@clark.net&quot;,
     &quot;age&quot;: 33
 }</code></pre>
-<p><strong>示例2：</strong>在 HTML 模板中通过多个 HTML 注释分散配置数据模板。</p>
-<pre><code>var tpl = Mock.Util.heredoc(function() {
-    /*
+<p><strong>示例2：</strong>在 HTML 模板中通过多个 HTML 注释<strong>分散</strong>配置数据模板。</p>
+<pre><code>var tpl = Mock.heredoc(function() {
+    /*!
 {{email}}{{age}}
 &lt;!-- Mock { 
     email: &#39;@EMAIL&#39;
@@ -311,6 +316,32 @@ console.log(JSON.stringify(data, null, 4))
     &quot;email&quot;: &quot;j.walker@brown.edu&quot;,
     &quot;age&quot;: 83
 }</code></pre>
+<h3>Mock.heredoc(fn)</h3>
+<ul>
+<li>Mock.heredoc(fn)</li>
+</ul>
+<p>以直观、舒适、安全的方式书写（多行）HTML 模板。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>var tpl = Mock.heredoc(function() {
+    /*!
+{{email}}{{age}}
+&lt;!-- Mock { 
+    email: &#39;@EMAIL&#39;,
+    age: &#39;@INT(1,100)&#39;
+} --&gt;
+    */
+})
+console.log(tpl)
+// =&gt;
+{{email}}{{age}}
+&lt;!-- Mock { 
+    email: &#39;@EMAIL&#39;,
+    age: &#39;@INT(1,100)&#39;
+} --&gt;</code></pre>
+<p><strong>相关阅读</strong></p>
+<ul>
+<li><a href="http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript">Creating multiline strings in JavaScript</a>、</li>
+</ul>
 <h2>Mock.Random</h2>
 <p>Mock.Random 是一个工具类，用于生成各种随机数据。Mock.Random 的方法在数据模板中称为“占位符”，引用格式为 <code>@占位符(参数 [, 参数])</code> 。例如：</p>
 <pre><code>var Random = Mock.Random;

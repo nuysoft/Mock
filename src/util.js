@@ -76,11 +76,33 @@ var Util = (function() {
         return !isNaN(parseFloat(value)) && isFinite(value);
     }
 
+    /*
+        ### Mock.heredoc(fn)
+
+        * Mock.mockjax(fn)
+
+        以直观、安全的方式书写（多行）HTML 模板。
+
+        **使用示例**如下所示：
+
+            var tpl = Mock.heredoc(function() {
+                /*!
+            {{email}}{{age}}
+            <!-- Mock { 
+                email: '@EMAIL',
+                age: '@INT(1,100)'
+            } -->
+                *\/
+            })
+        
+        **相关阅读**
+        * [Creating multiline strings in JavaScript](http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript)、
+    */
     Util.heredoc = function heredoc(fn) {
         return fn.toString()
             .replace(/^[^\/]+\/\*!?/, '')
             .replace(/\*\/[^\/]+$/, '')
-            .trim();
+            .replace(/^[\s\xA0]+/, '').replace(/[\s\xA0]+$/, '') // .trim()
     }
 
     Util.noop = function() {}

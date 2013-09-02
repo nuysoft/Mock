@@ -66,6 +66,7 @@ module.exports = function(grunt) {
                 src: ['doc/getting-started.md', 'doc/mock.md', 'doc/mockjax.md',
                         'doc/mock4tpl.md',
                         'doc/mock4xtpl.md',
+                        'doc/util.md',
                         'doc/random.md'
                 ],
                 dest: 'doc/index.md'
@@ -166,11 +167,11 @@ module.exports = function(grunt) {
     grunt.registerTask('base', [
             'jshint', 'nodeunit', 'concat:mock' /*, 'qunit'*/ ,
             'uglify',
-            'copy:demo',
-            'doc'
-    ])
+            'doc-base'
+    ]) // 'copy:demo',
     grunt.registerTask('default', ['base', 'watch:dev'])
-    grunt.registerTask('doc', ['concat:doc', 'markdown:doc', 'copy:doc', 'watch:doc'])
+    grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc'])
+    grunt.registerTask('doc', ['doc-base', 'watch:doc'])
 
     grunt.registerTask('build', ['jshint', 'parser', 'nodeunit', 'concat', 'qunit', 'uglify'])
 };

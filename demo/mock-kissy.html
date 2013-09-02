@@ -3,6 +3,7 @@
 <head>
     <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <script type="text/javascript" src="http://a.tbcdn.cn/s/kissy/1.3.0/seed.js"></script>
+    <!-- <script src="../node_modules/kissy/build/seed-min.js"></script> -->
     <script src="../dist/mock.js"></script>
     <title>Mock</title>
 </head>
@@ -12,13 +13,13 @@
         <h2>1. 设置模拟数据</h2>
         <pre id="data">
 Mock.mock('foo.json', {
-  'list|1-3':[{
+  'list|3-5':[{
     'id|+1': 1,
     'name': '@First @Last'
   }]
 });
 Mock.mock('bar.json', {
-  'list|1-3':[{
+  'list|3-5':[{
     'id|+1': 100,
     'email': '@EMAIL'
   }]
