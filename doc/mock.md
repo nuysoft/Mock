@@ -37,8 +37,8 @@ Mock.js 的 [在线编辑器](./demo/mock.html) 演示了完整的语法规范�
 
 **示例1：**Mock.mock(template)
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/VRjgz/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" src="http://jsfiddle.net/Y3rg6/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例2：**Mock.mock(rurl, template)
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/n8D6k/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" src="http://jsfiddle.net/BeENf/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
