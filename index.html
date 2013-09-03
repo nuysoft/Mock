@@ -94,26 +94,28 @@
 
 <h2>用法</h2>
 <h3>浏览器</h3>
-<iframe width="100%" height="200" src="http://jsfiddle.net/LyDdD/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="200" src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<h3>Node</h3>
+<h3>Node (CommonJS)</h3>
 <pre><code>// 安装
 npm install mockjs
 
 // 使用
 var Mock = require(&#39;mockjs&#39;);
 var data = Mock.mock({
-    &#39;list|1-3&#39;: [{
+    &#39;list|1-10&#39;: [{
         &#39;id|+1&#39;: 1
     }]
 });
 console.log(JSON.stringify(data, null, 4))</code></pre>
-<h3>RequireJS</h3>
-<p>todo</p>
-<h3>Sea.js</h3>
-<p>todo</p>
+<h3>RequireJS (AMD)</h3>
+<iframe width="100%" height="350" src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3>Sea.js (CMD)</h3>
+<iframe width="100%" height="350" src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
 <h3>KISSY</h3>
-<iframe width="100%" height="375" src="http://jsfiddle.net/5zKvf/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <h2>Mock</h2>
 <h3>Mock.mock()</h3>

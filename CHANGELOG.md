@@ -1,5 +1,10 @@
 # Changelog
 
+### 2013.9.3
+1. 文档增加用法示例：Sea.js (CMD)、RequireJS (AMD)
+2. 增加对 CMD 规范的支持
+3. 生成 SourceMap 文件 `dist/mock-min.map`
+
 ### 2013.8.21
 1. 100% 基于客户端模板生成模拟数据，支持 KISSY XTemplate。
 1. 调整文件结构。

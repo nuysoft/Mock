@@ -1,4 +1,4 @@
-/*! mockjs 02-09-2013 */
+/*! mockjs 03-09-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -681,6 +681,10 @@
     if (typeof module === "object" && module.exports) {
         module.exports = Mock;
     } else if (typeof define === "function" && define.amd) {
+        define(function() {
+            return Mock;
+        });
+    } else if (typeof define === "function" && define.cmd) {
         define(function() {
             return Mock;
         });

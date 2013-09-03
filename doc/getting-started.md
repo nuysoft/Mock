@@ -34,9 +34,9 @@ Mock.js 是一款模拟数据生成器，提供以下模拟功能：
 
 ### 浏览器
 
-<iframe width="100%" height="200" src="http://jsfiddle.net/LyDdD/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="200" src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-### Node
+### Node (CommonJS)
 
     // 安装
     npm install mockjs
@@ -44,20 +44,20 @@ Mock.js 是一款模拟数据生成器，提供以下模拟功能：
     // 使用
     var Mock = require('mockjs');
     var data = Mock.mock({
-        'list|1-3': [{
+        'list|1-10': [{
             'id|+1': 1
         }]
     });
     console.log(JSON.stringify(data, null, 4))
 
-### RequireJS
+### RequireJS (AMD)
 
-todo
+<iframe width="100%" height="350" src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-### Sea.js
+### Sea.js (CMD)
 
-todo
+<iframe width="100%" height="350" src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### KISSY
 
-<iframe width="100%" height="375" src="http://jsfiddle.net/5zKvf/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>

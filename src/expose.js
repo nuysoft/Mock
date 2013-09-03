@@ -18,6 +18,12 @@ if (typeof module === 'object' && module.exports) {
         return Mock
     })
 
+} else if (typeof define === "function" && define.cmd) {
+    // CMD modules
+    define(function() {
+        return Mock
+    })
+
 }
 // else {
 // other, i.e. browser
@@ -25,7 +31,7 @@ this.Mock = Mock
 this.Random = Random
 // }
 
-// for KISSY
+// For KISSY
 if (typeof KISSY != 'undefined') {
 
     /*
