@@ -1,5 +1,5 @@
 var Mock = require('../../src/mock'),
-    Random = require('../../src/Random'),
+    Random = require('../../src/random'),
     Print = require('node-print'),
     $ = require('jquery'),
     util = require('util');
