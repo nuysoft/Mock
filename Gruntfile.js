@@ -175,6 +175,7 @@ module.exports = function(grunt) {
             'uglify',
             'doc-base'
     ]) // 'copy:demo',
+    grunt.registerTask('travis', ['jshint', 'nodeunit'])
     grunt.registerTask('default', ['base', 'watch:dev'])
     grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc'])
     grunt.registerTask('doc', ['doc-base', 'watch:doc'])

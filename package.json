@@ -40,7 +40,7 @@
   },
   "main": "./dist/mock.js",
   "scripts": {
-    "test": "grunt base"
+    "test": "grunt travis --verbose"
   },
   "licenses": [{
       "type": "MIT",
