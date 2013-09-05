@@ -5,10 +5,10 @@
   "version": "0.1.1",
   "homepage": "http://mockjs.com/",
   "keywords": [
-    "mock",
-    "mockJSON",
-    "mockAjax",
-    "mockTempalte"
+      "mock",
+      "mockJSON",
+      "mockAjax",
+      "mockTempalte"
   ],
   "author": "nuysoft@gmail.com",
   "dependencies": {},
@@ -39,8 +39,10 @@
     "url": "git://github.com/nuysoft/Mock.git"
   },
   "main": "./dist/mock.js",
-  "licenses": [
-    {
+  "scripts": {
+    "test": "grunt base"
+  },
+  "licenses": [{
       "type": "MIT",
       "url": "https://github.com/nuysoft/node-print/blob/master/README.md"
     }

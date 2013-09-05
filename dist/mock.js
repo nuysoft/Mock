@@ -1,4 +1,4 @@
-/*! mockjs 03-09-2013 */
+/*! mockjs 05-09-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
