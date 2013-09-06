@@ -1,5 +1,9 @@
 # Changelog
 
+### 3013.9.6
+1. 增加占位符 @DATAIMAGE
+2. 解析占位符时**完全**忽略大小写
+
 ### 2013.9.3
 1. 文档增加用法示例：Sea.js (CMD)、RequireJS (AMD)
 2. 增加对 CMD 规范的支持

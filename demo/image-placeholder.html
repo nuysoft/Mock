@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Image Placeholder</title>
+  <link href="assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <script src="../node_modules/jquery/tmp/jquery.js"></script>
+  <script src="../dist/mock.js"></script>
+  <script src="../node_modules/handlebars/dist/handlebars.js"></script>
+  <script type="text/javascript">
+    var tpl = Mock.heredoc(function(){
+      /*
+      {{#list}}
+        <img src="{{.}}">
+      {{/list}}
+      */
+    })
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Image Placeholder</h1>
+    <hr>
+  
+    <h2>@IMAGE(size)</h2>
+    <div class="row">
+      <div class="col-md-3" id="img"></div>
+      <div class="col-md-8"><pre><code></code></pre></div>
+    </div>
+    <script type="text/javascript">
+var tpl = '<img src="{{.}}">'
+var data = Mock.mock('@IMAGE(200x100)')
+$('#img').html(Handlebars.compile(tpl)(data))
+    </script>
+    <script type="text/javascript">
+      var code = $('#img').parent('div').next().text()
+      code = $.trim(code)
+      $('#img').next().find('code').text(code)
+    </script>
+
+    <h2>@DATAIMAGE(size)</h2>
+    <div class="row">
+      <div class="col-md-3" id="dataimage"></div>
+      <div class="col-md-8"><pre><code></code></pre></div>
+    </div>
+    <script type="text/javascript">
+var tpl = '<img src="{{.}}">'
+var data = Mock.mock('@DATAIMAGE(200x100)')
+$('#dataimage').html(Handlebars.compile(tpl)(data))
+    </script>
+    <script type="text/javascript">
+      var code = $('#dataimage').parent('div').next().text()
+      code = $.trim(code)
+      $('#dataimage').next().find('code').text(code)
+    </script>
+  </div>
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-27059428-2', 'mockjs.com');
+    ga('send', 'pageview');
+  </script>
+
+</body>
+</html>

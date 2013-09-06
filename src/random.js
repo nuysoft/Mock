@@ -628,7 +628,7 @@ var Random = (function() {
                 Random.img('100x200', '000', 'FFF', 'png', 'hello')
                 // => "http://dummyimage.com/100x200/000/FFF.png&text=hello"
         */
-        img: function(size, background, foreground, format, text) {
+        image: function(size, background, foreground, format, text) {
             if (arguments.length === 4) {
                 text = format
                 format = undefined
@@ -645,6 +645,201 @@ var Random = (function() {
                 (foreground ? '/' + foreground : '') +
                 (format ? '.' + format : '') +
                 (text ? '&text=' + text : '')
+        },
+        img: function(size, background, foreground, format, text) {
+            return this.image(size, background, foreground, format, text)
+        }
+    })
+    Random.extend({
+        /*
+            
+        */
+        brandColors: {
+            '4ormat': '#fb0a2a',
+            '500px': '#02adea',
+            'About.me (blue)': '#00405d',
+            'About.me (yellow)': '#ffcc33',
+            'Addvocate': '#ff6138',
+            'Adobe': '#ff0000',
+            'Aim': '#fcd20b',
+            'Amazon': '#e47911',
+            'Android': '#a4c639',
+            'Angie\'s List': '#7fbb00',
+            'AOL': '#0060a3',
+            'Atlassian': '#003366',
+            'Behance': '#053eff',
+            'Big Cartel': '#97b538',
+            'bitly': '#ee6123',
+            'Blogger': '#fc4f08',
+            'Boeing': '#0039a6',
+            'Booking.com': '#003580',
+            'Carbonmade': '#613854',
+            'Cheddar': '#ff7243',
+            'Code School': '#3d4944',
+            'Delicious': '#205cc0',
+            'Dell': '#3287c1',
+            'Designmoo': '#e54a4f',
+            'Deviantart': '#4e6252',
+            'Designer News': '#2d72da',
+            'Devour': '#fd0001',
+            'DEWALT': '#febd17',
+            'Disqus (blue)': '#59a3fc',
+            'Disqus (orange)': '#db7132',
+            'Dribbble': '#ea4c89',
+            'Dropbox': '#3d9ae8',
+            'Drupal': '#0c76ab',
+            'Dunked': '#2a323a',
+            'eBay': '#89c507',
+            'Ember': '#f05e1b',
+            'Engadget': '#00bdf6',
+            'Envato': '#528036',
+            'Etsy': '#eb6d20',
+            'Evernote': '#5ba525',
+            'Fab.com': '#dd0017',
+            'Facebook': '#3b5998',
+            'Firefox': '#e66000',
+            'Flickr (blue)': '#0063dc',
+            'Flickr (pink)': '#ff0084',
+            'Forrst': '#5b9a68',
+            'Foursquare': '#25a0ca',
+            'Garmin': '#007cc3',
+            'GetGlue': '#2d75a2',
+            'Gimmebar': '#f70078',
+            'GitHub': '#171515',
+            'Google Blue': '#0140ca',
+            'Google Green': '#16a61e',
+            'Google Red': '#dd1812',
+            'Google Yellow': '#fcca03',
+            'Google+': '#dd4b39',
+            'Grooveshark': '#f77f00',
+            'Groupon': '#82b548',
+            'Hacker News': '#ff6600',
+            'HelloWallet': '#0085ca',
+            'Heroku (light)': '#c7c5e6',
+            'Heroku (dark)': '#6567a5',
+            'HootSuite': '#003366',
+            'Houzz': '#73ba37',
+            'HTML5': '#ec6231',
+            'IKEA': '#ffcc33',
+            'IMDb': '#f3ce13',
+            'Instagram': '#3f729b',
+            'Intel': '#0071c5',
+            'Intuit': '#365ebf',
+            'Kickstarter': '#76cc1e',
+            'kippt': '#e03500',
+            'Kodery': '#00af81',
+            'LastFM': '#c3000d',
+            'LinkedIn': '#0e76a8',
+            'Livestream': '#cf0005',
+            'Lumo': '#576396',
+            'Mixpanel': '#a086d3',
+            'Meetup': '#e51937',
+            'Nokia': '#183693',
+            'NVIDIA': '#76b900',
+            'Opera': '#cc0f16',
+            'Path': '#e41f11',
+            'PayPal (dark)': '#1e477a',
+            'PayPal (light)': '#3b7bbf',
+            'Pinboard': '#0000e6',
+            'Pinterest': '#c8232c',
+            'PlayStation': '#665cbe',
+            'Pocket': '#ee4056',
+            'Prezi': '#318bff',
+            'Pusha': '#0f71b4',
+            'Quora': '#a82400',
+            'QUOTE.fm': '#66ceff',
+            'Rdio': '#008fd5',
+            'Readability': '#9c0000',
+            'Red Hat': '#cc0000',
+            'Resource': '#7eb400',
+            'Rockpack': '#0ba6ab',
+            'Roon': '#62b0d9',
+            'RSS': '#ee802f',
+            'Salesforce': '#1798c1',
+            'Samsung': '#0c4da2',
+            'Shopify': '#96bf48',
+            'Skype': '#00aff0',
+            'Snagajob': '#f47a20',
+            'Softonic': '#008ace',
+            'SoundCloud': '#ff7700',
+            'Space Box': '#f86960',
+            'Spotify': '#81b71a',
+            'Sprint': '#fee100',
+            'Squarespace': '#121212',
+            'StackOverflow': '#ef8236',
+            'Staples': '#cc0000',
+            'Status Chart': '#d7584f',
+            'Stripe': '#008cdd',
+            'StudyBlue': '#00afe1',
+            'StumbleUpon': '#f74425',
+            'T-Mobile': '#ea0a8e',
+            'Technorati': '#40a800',
+            'The Next Web': '#ef4423',
+            'Treehouse': '#5cb868',
+            'Trulia': '#5eab1f',
+            'Tumblr': '#34526f',
+            'Twitch.tv': '#6441a5',
+            'Twitter': '#00acee',
+            'TYPO3': '#ff8700',
+            'Ubuntu': '#dd4814',
+            'Ustream': '#3388ff',
+            'Verizon': '#ef1d1d',
+            'Vimeo': '#86c9ef',
+            'Vine': '#00a478',
+            'Virb': '#06afd8',
+            'Virgin Media': '#cc0000',
+            'Wooga': '#5b009c',
+            'WordPress (blue)': '#21759b',
+            'WordPress (orange)': '#d54e21',
+            'WordPress (grey)': '#464646',
+            'Wunderlist': '#2b88d9',
+            'XBOX': '#9bc848',
+            'XING': '#126567',
+            'Yahoo!': '#720e9e',
+            'Yandex': '#ffcc00',
+            'Yelp': '#c41200',
+            'YouTube': '#c4302b',
+            'Zalongo': '#5498dc',
+            'Zendesk': '#78a300',
+            'Zerply': '#9dcc7a',
+            'Zootool': '#5e8b1d'
+        },
+        brands: function() {
+            var brands = [];
+            for (var b in this.brandColors) {
+                brands.push(b)
+            }
+            return brands
+        },
+        dataImageHolder: function(size) {
+            return 'holder.js/' + size
+        },
+        dataImage: function(size) {
+            var canvas = (typeof document !== 'undefined') && document.createElement('canvas'),
+                ctx = canvas && canvas.getContext && canvas.getContext("2d");
+            if (!canvas || !ctx) return ''
+
+            if (!size) size = this.pick(this.ad_size)
+            size = size.split('x')
+
+            var width = parseInt(size[0], 10),
+                height = parseInt(size[1], 10),
+                background = this.brandColors[this.pick(this.brands())],
+                foreground = '#FFF',
+                text_height = 12,
+                text = width + 'x' + height,
+                font = 'sans-serif';
+
+            canvas.width = width
+            canvas.height = height
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.fillStyle = background
+            ctx.fillRect(0, 0, width, height)
+            ctx.fillStyle = foreground
+            ctx.font = "bold " + text_height + "px " + font
+            ctx.fillText(text, (width / 2), (height / 2), width)
+            return canvas.toDataURL("image/png")
         }
     })
     /*
@@ -919,7 +1114,7 @@ var Random = (function() {
                 max = parseInt(max, 10)
                 len = Random.natural(min, max)
             }
-           
+
             for (var i = 0; i < len; i++) {
                 result.push(this.capitalize(this.word()))
             }
@@ -1196,7 +1391,7 @@ var Random = (function() {
             return 'todo'
         }
     })
-    
+
     /*
         #### Miscellaneous
     */

@@ -5,16 +5,16 @@
   "version": "0.1.1",
   "homepage": "http://mockjs.com/",
   "keywords": [
-      "mock",
-      "mockJSON",
-      "mockAjax",
-      "mockTempalte"
+    "mock",
+    "mockJSON",
+    "mockAjax",
+    "mockTempalte"
   ],
   "author": "nuysoft@gmail.com",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.0",
-    "grunt-contrib-jshint": "~0.1.1",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-qunit": "~0.2.1",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-nodeunit": "~0.1.2",
@@ -42,7 +42,8 @@
   "scripts": {
     "test": "grunt travis --verbose"
   },
-  "licenses": [{
+  "licenses": [
+    {
       "type": "MIT",
       "url": "https://github.com/nuysoft/node-print/blob/master/README.md"
     }

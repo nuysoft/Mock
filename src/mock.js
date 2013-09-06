@@ -230,16 +230,22 @@ Handle.extend({
 })
 
 Handle.extend({
+    _all: function() {
+        var re = {};
+        for (var key in Random) re[key.toLowerCase()] = key
+        return re
+    },
     placeholder: function(placeholder, obj) {
         // 1 key, 2 params
         rplaceholder.exec('')
         var parts = rplaceholder.exec(placeholder),
             key = parts && parts[1],
             lkey = key && key.toLowerCase(),
+            okey = this._all()[lkey],
             params = parts && parts[2] ? parts[2].split(/,\s*/) : []
         if (obj && (key in obj)) return obj[key]
 
-        if (!(key in Random) && !(lkey in Random)) return placeholder
+        if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder
 
         for (var i = 0; i < params.length; i++) {
             rplaceholder.exec('')
@@ -248,7 +254,7 @@ Handle.extend({
             }
         }
 
-        var handle = Random[key] || Random[lkey]
+        var handle = Random[key] || Random[lkey] || Random[okey]
         switch (Util.type(handle)) {
             case 'array':
                 return Random.pick(handle)
