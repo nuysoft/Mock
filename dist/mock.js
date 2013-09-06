@@ -263,14 +263,17 @@
                     text = format;
                     format = undefined;
                 }
-                if (arguments.length === 3) text = foreground;
+                if (arguments.length === 3) {
+                    text = foreground;
+                    foreground = undefined;
+                }
                 if (!size) size = this.pick(this.ad_size);
                 if (background && ~background.indexOf("#")) background = background.slice(1);
                 if (foreground && ~foreground.indexOf("#")) foreground = foreground.slice(1);
                 return "http://dummyimage.com/" + size + (background ? "/" + background : "") + (foreground ? "/" + foreground : "") + (format ? "." + format : "") + (text ? "&text=" + text : "");
             },
-            img: function(size, background, foreground, format, text) {
-                return this.image(size, background, foreground, format, text);
+            img: function() {
+                return this.image.apply(this, arguments);
             }
         });
         Random.extend({
@@ -434,12 +437,13 @@
             dataImageHolder: function(size) {
                 return "holder.js/" + size;
             },
-            dataImage: function(size) {
+            dataImage: function(size, text) {
                 var canvas = typeof document !== "undefined" && document.createElement("canvas"), ctx = canvas && canvas.getContext && canvas.getContext("2d");
                 if (!canvas || !ctx) return "";
                 if (!size) size = this.pick(this.ad_size);
+                text = text !== undefined ? text : size;
                 size = size.split("x");
-                var width = parseInt(size[0], 10), height = parseInt(size[1], 10), background = this.brandColors[this.pick(this.brands())], foreground = "#FFF", text_height = 12, text = width + "x" + height, font = "sans-serif";
+                var width = parseInt(size[0], 10), height = parseInt(size[1], 10), background = this.brandColors[this.pick(this.brands())], foreground = "#FFF", text_height = 14, font = "sans-serif";
                 canvas.width = width;
                 canvas.height = height;
                 ctx.textAlign = "center";

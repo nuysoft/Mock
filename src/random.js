@@ -591,8 +591,6 @@ var Random = (function() {
         /*
             ##### Random.img(size, background, foreground, format, text)
     
-            生成一个随机的图片地址。
-
             * Random.img()
             * Random.img(size)
             * Random.img(size, background)
@@ -600,40 +598,58 @@ var Random = (function() {
             * Random.img(size, background, foreground, text)
             * Random.img(size, background, foreground, format, text)
 
-            参数的含义和默认值如下所示：
-            * 参数 size：可选。指示图片的宽高，格式为 '宽x高'。默认从下面的数组中随机读取一个：
-                [
-                    '300x250', '250x250', '240x400', '336x280', '180x150',
-                    '720x300', '468x60', '234x60', '88x31', '120x90',
-                    '120x60', '120x240', '125x125', '728x90', '160x600',
-                    '120x600', '300x600'
-                ]
+            生成一个随机的图片地址。
+
+            **参数的含义和默认值**如下所示：
+
+            * 参数 size：可选。指示图片的宽高，格式为 `'宽x高'`。默认从下面的数组中随机读取一个：
+
+                    [
+                        '300x250', '250x250', '240x400', '336x280', 
+                        '180x150', '720x300', '468x60', '234x60', 
+                        '88x31', '120x90', '120x60', '120x240', 
+                        '125x125', '728x90', '160x600', '120x600', 
+                        '300x600'
+                    ]
+
             * 参数 background：可选。指示图片的背景色。默认值为 '#000000'。
             * 参数 foreground：可选。指示图片的前景色（文件）。默认值为 '#FFFFFF'。
-            * 参数 format：可选。指示图片的格式。默认值为 'png'，可选值包括：'png'、''、''。
+            * 参数 format：可选。指示图片的格式。默认值为 'png'，可选值包括：'png'、'gif'、'jpg'。
             * 参数 text：可选。指示图片上文字。默认为 ''。
-    
-            使用示例如下所示：
+
+            **使用示例**如下所示：
                 
                 Random.img()
-                // => "http://dummyimage.com/240x400"
-                Random.img('100x200')
-                // => "http://dummyimage.com/100x200"
-                Random.img('100x200', '000')
-                // => "http://dummyimage.com/100x200/000"
-                Random.img('100x200', '000', 'hello')
-                // => "http://dummyimage.com/100x200/000/hello&text=hello"
-                Random.img('100x200', '000', 'FFF', 'hello')
-                // => "http://dummyimage.com/100x200/000/FFF&text=hello"
-                Random.img('100x200', '000', 'FFF', 'png', 'hello')
-                // => "http://dummyimage.com/100x200/000/FFF.png&text=hello"
+                // => "http://dummyimage.com/125x125"
+                Random.img('200x100')
+                // => "http://dummyimage.com/200x100"
+                Random.img('200x100', '#fb0a2a')
+                // => "http://dummyimage.com/200x100/fb0a2a"
+                Random.img('200x100', '#02adea', 'hello')
+                // => "http://dummyimage.com/200x100/02adea&text=hello"
+                Random.img('200x100', '#00405d', '#FFF', 'mock')
+                // => "http://dummyimage.com/200x100/00405d/FFF&text=mock"
+                Random.img('200x100', '#ffcc33', '#FFF', 'png', 'js')
+                // => "http://dummyimage.com/200x100/ffcc33/FFF.png&text=js"
+
+            生成的路径所对应的图片如下所示：
+
+            ![](http://dummyimage.com/125x125)
+            ![](http://dummyimage.com/200x100)
+            ![](http://dummyimage.com/200x100/fb0a2a)
+            ![](http://dummyimage.com/200x100/02adea&text=hello)
+            ![](http://dummyimage.com/200x100/00405d/FFF&text=mock)
+            ![](http://dummyimage.com/200x100/ffcc33/FFF.png&text=js)
         */
         image: function(size, background, foreground, format, text) {
             if (arguments.length === 4) {
                 text = format
                 format = undefined
             }
-            if (arguments.length === 3) text = foreground
+            if (arguments.length === 3) {
+                text = foreground
+                foreground = undefined
+            }
             if (!size) size = this.pick(this.ad_size)
 
             if (background && ~background.indexOf('#')) background = background.slice(1)
@@ -646,13 +662,22 @@ var Random = (function() {
                 (format ? '.' + format : '') +
                 (text ? '&text=' + text : '')
         },
-        img: function(size, background, foreground, format, text) {
-            return this.image(size, background, foreground, format, text)
+        img: function() {
+            return this.image.apply(this, arguments)
         }
     })
     Random.extend({
         /*
-            
+            BrandColors
+            http://brandcolors.net/
+            A collection of major brand color codes curated by Galen Gidman.
+            大牌公司的颜色集合
+
+            // 获取品牌和颜色
+            $('h2').each(function(index, item){
+                item = $(item)
+                console.log('\'' + item.text() + '\'', ':', '\'' + item.next().text() + '\'', ',')
+            })
         */
         brandColors: {
             '4ormat': '#fb0a2a',
@@ -814,20 +839,25 @@ var Random = (function() {
         dataImageHolder: function(size) {
             return 'holder.js/' + size
         },
-        dataImage: function(size) {
+        /*
+            https://github.com/imsky/holder
+            Holder renders image placeholders entirely on the client side.
+        */
+        dataImage: function(size, text) {
             var canvas = (typeof document !== 'undefined') && document.createElement('canvas'),
                 ctx = canvas && canvas.getContext && canvas.getContext("2d");
             if (!canvas || !ctx) return ''
 
             if (!size) size = this.pick(this.ad_size)
+            text = text !== undefined ? text : size
+
             size = size.split('x')
 
             var width = parseInt(size[0], 10),
                 height = parseInt(size[1], 10),
                 background = this.brandColors[this.pick(this.brands())],
                 foreground = '#FFF',
-                text_height = 12,
-                text = width + 'x' + height,
+                text_height = 14,
                 font = 'sans-serif';
 
             canvas.width = width
