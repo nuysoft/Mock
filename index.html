@@ -14,7 +14,7 @@
         }
         .page-catalog ul {
             padding-left: 20px;
-            list-style: none;
+            /*list-style: none;*/
         }
 
         .gist .gist-file .gist-data .line-numbers {
@@ -30,7 +30,7 @@
           position: fixed;
           z-index: 10;
           top: 0; left: 0; bottom: 0;
-          width: 200px;
+          width: 220px;
           overflow-y: auto;
           overflow-x: hidden;
           -webkit-overflow-scrolling: touch;
@@ -40,8 +40,8 @@
         }
         div.container {
           position: relative;
-          width: 550px;
-          margin: 40px 0 50px 260px;
+          width: 600px;
+          margin: 40px 0 50px 280px;
         }
         /* download */
         .w250 {
@@ -74,6 +74,8 @@
 <li>基于 HTML 模板生成模拟数据</li>
 </ul>
 <h2>在线编辑器</h2>
+<!-- 没有 Live Demo 的库都是耍流氓  -->
+
 <ul>
 <li><a href="./demo/mock.html">Data</a></li>
 <li><a href="./demo/mock4tpl.html">Handlebars &amp; Mustache</a></li>
@@ -83,18 +85,27 @@
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
         Development Version (0.1.1)
-    </a> - <i>57kB, Uncompressed</i>
+    </a> - <i>65kB, Uncompressed</i>
 </p>
 <p>
     <a href="./dist/mock-min.js" class="btn btn-primary w250">
         Production Version (0.1.1)
-    </a> - <i>23kB, Minified</i>
+    </a> - <i>27kB, Minified</i>
 </p>
 <p>
     <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">
         从 Github 获取最新版本
     </a> - <i>Unreleased</i>
 </p>
+
+<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+
+<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+
+<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe>
 
 <h2>用法</h2>
 <h3>浏览器</h3>
@@ -112,6 +123,12 @@ var data = Mock.mock({
     }]
 });
 console.log(JSON.stringify(data, null, 4))</code></pre>
+<h3>Bower</h3>
+<p>If you&#39;d like to use <a href="http://bower.io/">bower</a>, it&#39;s as easy as:</p>
+<pre><code>npm install -g bower
+bower install --save mockjs
+
+&lt;script type=&quot;text/javascript&quot; src=&quot;./bower_components/mockjs/dist/mock.js&quot;&gt;&lt;/script&gt;</code></pre>
 <h3>RequireJS (AMD)</h3>
 <iframe width="100%" height="350" src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
