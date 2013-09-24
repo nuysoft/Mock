@@ -32,13 +32,13 @@ Mock.js 是一款模拟数据生成器，提供以下模拟功能：
 </p>
 
 <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+  allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
 
 <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe>
+<!-- <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe> -->
 
 ## 用法
 

@@ -36,6 +36,7 @@ $(function() {
      */
 
     $('#save').on('click', function(event) {
+        return
         try {
             var data = editor.getValue()
             new Function('return ' + data)

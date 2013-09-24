@@ -32,13 +32,13 @@ Mock.js 是一款模拟数据生成器，提供以下模拟功能：
 </p>
 
 <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+  allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
 
 <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe>
+<!-- <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe> -->
 
 ## 用法
 
@@ -107,13 +107,13 @@ If you'd like to use [bower](http://bower.io/), it's as easy as:
 * `'id|+1': 1` 属性 id 值自动加一，初始值为 1
 * `'grade|1-100': 1` 生成一个 1-100 之间的整数
 * `'float|1-10.1-10': 1` 生成一个浮点数，整数部分的范围是 1-10，保留小数点后 1-10 位小数
-* `'star|1-10': '★'` 重复 1-10 次
-* `'repeat|10': 'A'` 重复 10 次
-* `'published|0-1': false` 随机生成一个布尔值
+* `'star|1-10': '★'` 生成一个字符串，重复 1-10 次 `'★'`
+* `'repeat|10': 'A'` 生成一个字符串，重复 10 次 `'A'`
+* `'published|1': false` 随机生成一个布尔值
 * `'email': '@EMAIL'` 随即生成一个 Email
-* `'date': '@DATE'` 随即生成一段日期字符串，默认格式为 yyyy-MM-dd
-* `'time': '@TIME'` 随机生成一段时间字符串，默认格式为 HH:mm:ss
-* `'datetime': '@DATETIME'` 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss
+* `'date': '@DATE'` 随即生成一段日期字符串，默认格式为 `yyyy-MM-dd`
+* `'time': '@TIME'` 随机生成一段时间字符串，默认格式为 `HH:mm:ss`
+* `'datetime': '@DATETIME'` 随机生成一段时间字符串，默认格式为 `yyyy-MM-dd HH:mm:ss`
 
 Mock.js 的 [在线编辑器](./demo/mock.html) 演示了完整的语法规范和占位符。
 
@@ -376,6 +376,8 @@ Mock.Random 中的方法与数据模板的 `@占位符` 一一对应，在需要
     // => { constellation: "射手座" }
 
 下面是 Mock.Random 内置支持的方法说明。
+
+**你可以打开控制台，随意地试验这些方法。**
 
 ### Basics
 
@@ -674,6 +676,8 @@ TODO 统计 -->
     // => "79-06-24 04:45:16"
     Random.datetime('y-M-d H:m:s')
     // => "02-4-23 2:49:40"
+
+### Image
 
 #### Random.image(size, background, foreground, format, text)
 

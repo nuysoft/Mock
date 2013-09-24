@@ -33,6 +33,8 @@ Mock.Random 中的方法与数据模板的 `@占位符` 一一对应，在需要
 
 下面是 Mock.Random 内置支持的方法说明。
 
+**你可以打开控制台，随意地试验这些方法。**
+
 ### Basics
 
 #### Random.boolean(min, max, cur)
@@ -330,6 +332,8 @@ TODO 统计 -->
     // => "79-06-24 04:45:16"
     Random.datetime('y-M-d H:m:s')
     // => "02-4-23 2:49:40"
+
+### Image
 
 #### Random.image(size, background, foreground, format, text)
 

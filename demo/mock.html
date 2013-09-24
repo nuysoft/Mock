@@ -34,7 +34,7 @@
         <div class="window float-left">
             <textarea id="editor">
 {
-    "orig-arr": [
+    "origArray": [
         {
             "foo": "foo"
         },
@@ -45,7 +45,7 @@
             "foobar": "foobar"
         }
     ],
-    "orig-arr-holder": [
+    "origArrayWithHolder": [
         {
             "foo|+1": "1"
         },
@@ -143,6 +143,17 @@
             }
 
             editor.on('change', handle(editor));
+
+            $('#save').on('click', function(event) {
+                $.ajax({
+                    url: 'http://localhost:3000/save',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        tpl: editor.getValue()
+                    }
+                })
+            })
         });
     </script>
     

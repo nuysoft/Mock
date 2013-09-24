@@ -100,13 +100,13 @@
 </p>
 
 <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
+  allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
 
 <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe>
+<!-- <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
+  allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe> -->
 
 <h2>用法</h2>
 <h3>浏览器</h3>
@@ -163,13 +163,13 @@ bower install --save mockjs
 <li><code>&#39;id|+1&#39;: 1</code> 属性 id 值自动加一，初始值为 1</li>
 <li><code>&#39;grade|1-100&#39;: 1</code> 生成一个 1-100 之间的整数</li>
 <li><code>&#39;float|1-10.1-10&#39;: 1</code> 生成一个浮点数，整数部分的范围是 1-10，保留小数点后 1-10 位小数</li>
-<li><code>&#39;star|1-10&#39;: &#39;★&#39;</code> 重复 1-10 次</li>
-<li><code>&#39;repeat|10&#39;: &#39;A&#39;</code> 重复 10 次</li>
-<li><code>&#39;published|0-1&#39;: false</code> 随机生成一个布尔值</li>
+<li><code>&#39;star|1-10&#39;: &#39;★&#39;</code> 生成一个字符串，重复 1-10 次 <code>&#39;★&#39;</code></li>
+<li><code>&#39;repeat|10&#39;: &#39;A&#39;</code> 生成一个字符串，重复 10 次 <code>&#39;A&#39;</code></li>
+<li><code>&#39;published|1&#39;: false</code> 随机生成一个布尔值</li>
 <li><code>&#39;email&#39;: &#39;@EMAIL&#39;</code> 随即生成一个 Email</li>
-<li><code>&#39;date&#39;: &#39;@DATE&#39;</code> 随即生成一段日期字符串，默认格式为 yyyy-MM-dd</li>
-<li><code>&#39;time&#39;: &#39;@TIME&#39;</code> 随机生成一段时间字符串，默认格式为 HH:mm:ss</li>
-<li><code>&#39;datetime&#39;: &#39;@DATETIME&#39;</code> 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss</li>
+<li><code>&#39;date&#39;: &#39;@DATE&#39;</code> 随即生成一段日期字符串，默认格式为 <code>yyyy-MM-dd</code></li>
+<li><code>&#39;time&#39;: &#39;@TIME&#39;</code> 随机生成一段时间字符串，默认格式为 <code>HH:mm:ss</code></li>
+<li><code>&#39;datetime&#39;: &#39;@DATETIME&#39;</code> 随机生成一段时间字符串，默认格式为 <code>yyyy-MM-dd HH:mm:ss</code></li>
 </ul>
 <p>Mock.js 的 <a href="./demo/mock.html">在线编辑器</a> 演示了完整的语法规范和占位符。</p>
 <p>下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：</p>
@@ -394,6 +394,7 @@ Mock.mock(&#39;@CONSTELLATION&#39;)
 Mock.mock({ constellation: &#39;@CONSTELLATION&#39;})
 // =&gt; { constellation: &quot;射手座&quot; }</code></pre>
 <p>下面是 Mock.Random 内置支持的方法说明。</p>
+<p><strong>你可以打开控制台，随意地试验这些方法。</strong></p>
 <h3>Basics</h3>
 <h4>Random.boolean(min, max, cur)</h4>
 <ul>
@@ -751,6 +752,7 @@ Random.datetime(&#39;y-MM-dd HH:mm:ss&#39;)
 // =&gt; &quot;79-06-24 04:45:16&quot;
 Random.datetime(&#39;y-M-d H:m:s&#39;)
 // =&gt; &quot;02-4-23 2:49:40&quot;</code></pre>
+<h3>Image</h3>
 <h4>Random.image(size, background, foreground, format, text)</h4>
 <ul>
 <li>Random.image()</li>
