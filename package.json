@@ -22,6 +22,7 @@
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-connect": "~0.5.0",
     "grunt-markdown": "~0.4.0",
     "grunt-exec": "~0.4.2",
     "jquery": "~1.8.3",
