@@ -1,5 +1,8 @@
 ## Mock.js
 
+[![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
+[![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs)
+
 Mock.js 是一款模拟数据生成器，提供以下模拟功能：
 
 * 根据数据模板生成模拟数据
