@@ -39,13 +39,12 @@ exports.testBasic = function(test) {
 
 exports.testOrigArray = function(test) {
     var arr = [{
-            foo: 'foo'
-        }, {
-            bar: 'bar'
-        }, {
-            foobar: 'foobar'
-        }
-    ];
+        foo: 'foo'
+    }, {
+        bar: 'bar'
+    }, {
+        foobar: 'foobar'
+    }];
     var data = Mock.mock({
         arr: arr
     })
@@ -91,7 +90,12 @@ exports.testPick = function(test) {
 
     target('opt|1', [1, 2, 4, 8])
     target('opt|1', ['GET', 'POST', 'HEAD', 'DELETE'])
-    target('opt|1', [{ // 对备选元素不再做解析
+    test.done();
+}
+
+exports.testPickObject = function(test) {
+    var tpl = {
+        'opt|1': [{ // 对备选元素不再做解析
             method: 'GET'
         }, {
             method: 'POST'
@@ -99,10 +103,16 @@ exports.testPick = function(test) {
             method: 'HEAD'
         }, {
             method: 'DELETE'
+        }]
+    }
+    var data = Mock.mock(tpl)
+    test.equal(typeof data.opt, typeof tpl['opt|1'][0])
+    for (var i = 0; i < tpl['opt|1'].length; i++) {
+        if(data.opt.method === tpl['opt|1'][i].method){
+            test.done();
+            break;
         }
-    ])
-
-    test.done();
+    }
 }
 
 exports.testFloat = function(test) {
@@ -210,17 +220,16 @@ exports.testHolder = function(test) {
 exports.testComplex = function(test) {
     var tpl = {
         'list|1-5': [{
-                'id|+1': 1,
-                'grade|1-100': 1,
-                'float|1-100.1-10': 1,
-                'star|1-5': '★',
-                'published|1': false,
-                'email': '@EMAIL',
-                'date': '@DATE(HH:mm:ss)', // 属性 date 与 time 的格式互换
-                'time': '@TIME(yyyy-MM-dd)',
-                'datetime': '@DATETIME'
-            }
-        ]
+            'id|+1': 1,
+            'grade|1-100': 1,
+            'float|1-100.1-10': 1,
+            'star|1-5': '★',
+            'published|1': false,
+            'email': '@EMAIL',
+            'date': '@DATE(HH:mm:ss)', // 属性 date 与 time 的格式互换
+            'time': '@TIME(yyyy-MM-dd)',
+            'datetime': '@DATETIME'
+        }]
     };
 
     function validator(list) {
@@ -276,10 +285,9 @@ exports.testRequest = function(test) {
 
     Mock.mock(/\.json/, {
         'list|1-10': [{
-                'id|+1': 1,
-                'email': '@EMAIL'
-            }
-        ]
+            'id|+1': 1,
+            'email': '@EMAIL'
+        }]
     })
 
     function validator(data) {

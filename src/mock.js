@@ -136,8 +136,25 @@ Handle.extend({
         } else {
             // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
             if (options.count === 1 && options.template.length > 1) {
-                // 对备选元素不再做解析
-                result = Random.pick(options.template)
+                // 
+                /*
+                    对备选元素不再做解析？为什么呢？应该解析！！！
+                    例如下面的数据模板，希望从数组中选取一个元素作为属性值：
+                    {
+                        'opt|1': [{
+                                method: 'GET'
+                            }, {
+                                method: 'POST'
+                            }, {
+                                method: 'HEAD'
+                            }, {
+                                method: 'DELETE'
+                            }
+                        ]
+                    }
+                    如果对备选元素不做解析，则返回的是备选元素之一；如果对备选元素进行解析，则会返回备选元素之一的副本，因此需要特别注意。
+                */
+                result = Random.pick(Handle.gen(options.template))
             } else {
                 // 'data|1-10': [{}]
                 for (i = 0; i < options.count; i++) {
@@ -214,7 +231,9 @@ Handle.extend({
                         break
                     }
                     if (/^(true|false)$/.test(phed)) {
-                        result = phed === 'true' ? true : false
+                        result = phed === 'true' ? true :
+                            phed === 'false' ? false :
+                            phed // 已经是布尔值
                         break
                     }
                 }

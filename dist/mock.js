@@ -1,4 +1,4 @@
-/*! mockjs 09-09-2013 */
+/*! mockjs 24-09-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -691,7 +691,7 @@
                 }
             } else {
                 if (options.count === 1 && options.template.length > 1) {
-                    result = Random.pick(options.template);
+                    result = Random.pick(Handle.gen(options.template));
                 } else {
                     for (i = 0; i < options.count; i++) {
                         j = 0;
@@ -755,7 +755,7 @@
                             break;
                         }
                         if (/^(true|false)$/.test(phed)) {
-                            result = phed === "true" ? true : false;
+                            result = phed === "true" ? true : phed === "false" ? false : phed;
                             break;
                         }
                     }
