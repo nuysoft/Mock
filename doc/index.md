@@ -3,7 +3,7 @@
 [![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
 [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs)
 
-Mock.js 是一款模拟数据生成器，提供以下模拟功能：
+Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，提供以下模拟功能：
 
 * 根据数据模板生成模拟数据
 * 模拟 Ajax 请求，生成并返回模拟数据
@@ -495,7 +495,7 @@ TODO 统计 -->
 
 **参数的含义和默认值**如下所示：
 
-* 参数 pool：可选。表示字符池，将从中选择一个字符返回。
+* 参数 pool：可选。字符串。表示字符池，将从中选择一个字符返回。
     * 如果传入 `'lower'` 或 `'upper'`、`'number'`、`'symbol'`，表示从内置的字符池从选取：
 
             {
@@ -534,7 +534,7 @@ TODO 统计 -->
 
 **参数的含义和默认值**如下所示：
 
-* 参数 pool：可选。表示字符池，将从中选择一个字符返回。
+* 参数 pool：可选。字符串。表示字符池，将从中选择一个字符返回。
     * 如果传入 `'lower'` 或 `'upper'`、`'number'`、`'symbol'`，表示从内置的字符池从选取：
     
             {
