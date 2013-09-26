@@ -9,128 +9,102 @@
   <!-- Load local lib and tests. -->
   <script src="../dist/mock.js"></script>
   <script src="../node_modules/handlebars/dist/handlebars.js"></script>
-  <script src="../dist/mock4tpl.js"></script>
-  <script src="mock4tpl.js"></script>
 </head>
 <body>
-<script type="text/javascript">
-function heredoc(f) {
-    return f.toString()
-        .replace(/^[^\/]+\/\*!?/, '')
-        .replace(/\*\/[^\/]+$/, '')
-        .trim();
-}
-
-function run(tpl, options) {
-    // console.log()
-    // console.log(tpl);
-    // console.log(options);
-
-    var ast = Handlebars.parse(tpl);
-    // console.log(ast);
-    // console.log(JSON.stringify(ast, null, 4));
-
-    var data = Mock4Tpl.mock(ast, null, options)
-    // console.log(JSON.stringify(data, null, 4));
-    return data
-}
-var TC_CHANNEL = heredoc(function() {
-    /*
-<div class="dropdown" style="text-align:left; width:210px; height: 24px; line-height: 24px; float:right; margin-bottom:10px;">
-  <span class="dropdown-hd" id="datepicker">
-    选择日期
-  </span>
-</div>
-
+  <script type="text/javascript">
+    var tpl = Mock.heredoc(function() {
+      /*
 <div bx-tmpl="list" bx-datakey="list">
   <table class="table" bx-name="tables" bx-path="brix/gallery/tables/" id="tables">
     <thead>
       <tr>
-        <th width="15"></th>
-        <th class="left">访问来源</th>
-        <th class="left" width="200px">UV占比</th>
-        <th class="left">UV</th>
-        <th class="left">PV</th>
-        <th class="left">人均页面访问数</th>
-        <th class="left">宝贝收藏数</th>
-        <th class="left">收藏率</th>
-        <th class="left">成交金额</th>
-        <th class="left">转化率</th>
-        <th class="left">操作</th>
+        <th></th>
+        <th>访问来源</th>
+        <th width="200px">UV占比</th>
+        <th>UV</th>
+        <th>PV</th>
+        <th>人均页面访问数</th>
+        <th>宝贝收藏数</th>
+        <th>收藏率</th>
+        <th>成交金额</th>
+        <th>转化率</th>
+        <th>操作</th>
       </tr>
     </thead>
     <tbody>
-      {{#list}}
+      {{#each list}}
       <tr class="tr-parent bold">
-        <td class="left"><i mx-click="toggle" class="J_expendCollapse icon-expend"></i></td>
-        <td class="left">{{分组}}</td>
-        <td class="left font-tahoma">
+        <td><i mx-click="toggle" class="J_expendCollapse icon-expend"></i></td>
+        <td>{{id}} {{分组}}</td>
+        <td>
           <span class="process-parent" style="width: {{UV占比}}px;"></span>
           {{UV占比}}%
         </td>
-        <td class="left font-tahoma">{{UV}}</td>
-        <td class="left font-tahoma">{{PV}}</td>
-        <td class="left font-tahoma">{{人均页面访问数}}</td>
-        <td class="left font-tahoma">{{宝贝收藏数}}</td>
-        <td class="left font-tahoma">{{收藏率}}</td>
-        <td class="left font-tahoma">{{成交金额}}</td>
-        <td class="left font-tahoma">{{转化率}}</td>
-        <td class="left">
+        <td>{{UV}}</td>
+        <td>{{PV}}</td>
+        <td>{{人均页面访问数}}</td>
+        <td>{{宝贝收藏数}}</td>
+        <td>{{收藏率}}</td>
+        <td>{{成交金额}}</td>
+        <td>{{转化率}}</td>
+        <td>
         </td>
       </tr>
-      {{#children}}
+      {{#each children}}
       <tr class="tr-child">
-        <td class="left noline"></td>
-        <td class="left">{{渠道}}</td>
-        <td class="left font-tahoma">
+        <td></td>
+        <td>{{渠道}}</td>
+        <td>
           <span class="process-child" style="width: {{UV占比}}px;"></span>
           {{UV占比}}%
         </td>
-        <td class="left font-tahoma">{{UV}}</td>
-        <td class="left font-tahoma">{{PV}}</td>
-        <td class="left font-tahoma">{{人均页面访问数}}</td>
-        <td class="left font-tahoma">{{宝贝收藏数}}</td>
-        <td class="left font-tahoma">{{收藏率}}</td>
-        <td class="left font-tahoma">{{成交金额}}</td>
-        <td class="left font-tahoma">{{转化率}}</td>
-        <td class="left">
+        <td>{{UV}}</td>
+        <td>{{PV}}</td>
+        <td>{{人均页面访问数}}</td>
+        <td>{{宝贝收藏数}}</td>
+        <td>{{收藏率}}</td>
+        <td>{{成交金额}}</td>
+        <td>{{转化率}}</td>
+        <td>
           <div class="operation">
             <a href="javascript:" mx-click="perspective{ srcIdLevel1:{{srcIdLevel1}},srcIdLevel2:{{srcIdLevel2}},channel:{{渠道}},vs:{{vs}} }" class="mr10">透视分析</a>
           </div>
         </td>
       </tr>
-      {{/children}}
-      {{/list}}
-
+      {{/each}}
+      {{/each}}
     </tbody>
   </table>
 </div>
-*/
-})
-var data = run(TC_CHANNEL, {
-        'list|1-3': [],
-        children: [],
-        '分组|1': ['广告投放', '淘宝站内', '淘宝站外', '直接访问'],
-        '渠道|1': ['钻石展位', '直通车', '淘宝联盟', '站内搜索', '淘金币', '聚划算', '百度搜索', '谷歌搜索', '新浪微博'],
-        'percent|1-100': 1,
-        'UV占比': '@percent%',
-        'UV|1-100000000': 1,
-        'PV|1-100000000': 1,
-        '人均页面访问数|1-100000000': 1,
-        '宝贝收藏数|1-100000000': 1,
-        '收藏率': '@percent%',
-        '成交金额|1-100000000.2': 1.0,
-        '转化率': '@INTEGER(1,100)%',
-        'srcIdLevel1|1-10': 1,
-        'srcIdLevel2|1-10': 1,
-        'vs': '@分组'
+<!-- Mock {
+    'id|+1': 1,
+    'list|1-5': [],
+    'children|1-5': [],
+    '分组|1': '@AREA',
+    '渠道|1': '@REGION',
+    'percent|1-100': 1,
+    'UV占比|1-100': 1,
+    'UV|1-100000000': 1,
+    'PV|1-100000000': 1,
+    '人均页面访问数|1-100000000': 1,
+    '宝贝收藏数|1-100000000': 1,
+    '收藏率': '@percent%',
+    '成交金额|1-100000000.2': 1.0,
+    '转化率': '@INTEGER(1,100)%',
+    'srcIdLevel1|1-10': 1,
+    'srcIdLevel2|1-10': 1,
+    'vs': '@渠道'
+}
+-->
+    */
     })
-// console.log(JSON.stringify(data, null, 4))
-
-var data = run('{{#list people}}{{firstName}} {{lastName}}{{/list}}')
-// console.log(data);
-
-</script>
-
+    test('mock4tpl', function() {
+      var data = Mock.tpl(tpl);
+      ok(data.list.length)
+    })
+  </script>
+  
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div
 </body>
 </html>

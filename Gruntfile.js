@@ -14,6 +14,7 @@ module.exports = function(grunt) {
         qunit: {
             files: ['test/mock.html', 'test/mock-*.html',
                 'test/mock4tpl.html', 'test/mock4tpl-*.html',
+                'test/mock4xtpl.html', 'test/mock4xtpl-*.html',
                 'test/**/*.html'
             ]
         },
@@ -177,11 +178,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-markdown');
 
     grunt.registerTask('base', [
-        'jshint', 'nodeunit', 'concat:mock' /*, 'qunit'*/ ,
+        'jshint', 'nodeunit', 'concat:mock', 'qunit',
         'uglify',
         'doc-base'
     ]) // 'copy:demo',
-    grunt.registerTask('travis', ['jshint', 'nodeunit']) // grunt travis --verbose
+    grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']) // grunt travis --verbose
     grunt.registerTask('default', ['base', 'watch:dev'])
     grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc'])
     grunt.registerTask('doc', ['doc-base', 'watch:doc'])
