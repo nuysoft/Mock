@@ -144,7 +144,7 @@ module.exports = function(grunt) {
                 }, {
                     expand: true,
                     cwd: './',
-                    src: ['index.html'],
+                    src: ['index.html', 'mockjs.png'],
                     dest: '../mockjs.github.com/'
                 }]
             }
