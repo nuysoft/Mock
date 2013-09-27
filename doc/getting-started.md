@@ -65,7 +65,7 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，提供以�
 
 ### Bower
 
-If you'd like to use [bower](http://bower.io/), it's as easy as:
+<!-- If you'd like to use [bower](http://bower.io/), it's as easy as: -->
     
     npm install -g bower
     bower install --save mockjs
