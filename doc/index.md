@@ -1,4 +1,7 @@
-## Mock.js
+<!-- ## Mock.js -->
+
+<h2 class="hide" href="#">Mock.js</h2>
+<img src="mockjs.png" wid>
 
 [![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
 [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs)

@@ -101,7 +101,7 @@ function hhtml(tree, level) {
         tree[i].el.html(prefix + tree[i].el.text());
         text = tree[i].el.text();
         text = anchor(text)
-        text = '<a href="#' + text + '">' + text + '</a>';
+        text = '<a href="' + (tree[i].el.attr('href') || '#' + text) + '">' + text + '</a>';
         if (tree[i].level <= level) html += '<li>' + text + '</li>';
         if (level) {
             if (tree[i].level < level && tree[i].children) html += hhtml(tree[i].children, level);
@@ -128,7 +128,11 @@ $(function() {
 
     // 插入锚点
     headers.each(function(index, elem) {
-        $(elem).before($('<a>').attr('name', anchor($(elem).text())))
+        $(elem).before(
+            $('<a>').attr('name',
+                anchor($(elem).attr('href') || $(elem).text())
+            )
+        )
     });
     // 回到顶部
     // headers.append(' <small><a href="#">⬆</a></small>');
