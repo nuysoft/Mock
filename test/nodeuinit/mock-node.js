@@ -108,7 +108,7 @@ exports.testPickObject = function(test) {
     var data = Mock.mock(tpl)
     test.equal(typeof data.opt, typeof tpl['opt|1'][0])
     for (var i = 0; i < tpl['opt|1'].length; i++) {
-        if(data.opt.method === tpl['opt|1'][i].method){
+        if (data.opt.method === tpl['opt|1'][i].method) {
             test.done();
             break;
         }
@@ -281,7 +281,7 @@ exports.testComplex = function(test) {
 
 exports.testRequest = function(test) {
     var count = 0,
-        i, jqxhr;
+        i, opt;
 
     Mock.mock(/\.json/, {
         'list|1-10': [{
@@ -298,9 +298,12 @@ exports.testRequest = function(test) {
             if (i > 0) test.equal(item.id, data.list[i - 1].id + 1)
             test.ok(rEmail.test(item.email), item.email)
         }
-        if (false) {
-            console.log();
-            Print.pt(data.list)
+        if (true) {
+            console.log('testRequest ' + count);
+
+            // console.log();
+            // console.log(count);
+            // Print.pt(data.list)
         }
     }
 
@@ -314,11 +317,12 @@ exports.testRequest = function(test) {
     }
 
     for (i = 0; i < 1000; i++) {
-        jqxhr = $.ajax({
+        opt = {
             url: 'data.json',
             dataType: 'json'
-        })
-        jqxhr.done(success)
+        }
+        $.ajax(opt)
+            .done(success)
             .complete(complete)
     }
 }
