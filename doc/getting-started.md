@@ -6,7 +6,7 @@
 [![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
 [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs)
 
-Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，提供以下模拟功能：
+Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮助前端攻城师独立于后端进行开发，帮助编写单元测试。提供了以下模拟功能：
 
 * 根据数据模板生成模拟数据
 * 模拟 Ajax 请求，生成并返回模拟数据
