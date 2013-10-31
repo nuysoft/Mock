@@ -88,6 +88,19 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 <iframe width="100%" height="400" src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
+<!-- 
+Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里同学可以直接加载 `gallery/Mock/0.1.1/index`：
+
+    KISSY.use('gallery/Mock/0.1.1/index', function(S, Mock){
+        var data = Mock.mock({
+            'list|1-10': [{
+                'id|+1': 1
+            }]
+        });
+        console.log(JSON.stringify(data, null, 4)))
+    })
+ -->
+
 ## Mock
 
 ### Mock.mock()

@@ -1,4 +1,4 @@
-/*! mockjs 30-09-2013 */
+/*! mockjs 31-10-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -648,10 +648,15 @@
     /*! src/mock.js */
     var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /(\d+)-?(\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g;
     Mock.extend = Util.extend;
-    Mock.mock = function(rurl, template) {
+    Mock.mock = function(rurl, rtype, template) {
         if (arguments.length === 1) return Handle.gen(rurl);
+        if (arguments.length === 2) {
+            template = rtype;
+            rtype = undefined;
+        }
         Mock._mocked[rurl] = {
             rurl: rurl,
+            rtype: rtype,
             template: template
         };
         return Mock;
@@ -883,7 +888,7 @@
     this.Mock = Mock;
     this.Random = Random;
     if (typeof KISSY != "undefined") {
-        Util.each([ "mock", "components/mock/index", "mock/dist/mock" ], function register(name) {
+        Util.each([ "mock", "components/mock/index", "mock/dist/mock", "gallery/Mock/0.1.1/index" ], function register(name) {
             KISSY.add(name, function(S) {
                 Mock.mockjax(S);
                 return Mock;
@@ -1201,6 +1206,7 @@
             }
             context = context || [ {} ];
             options = options || {};
+            node.type = node.type;
             if (this[node.type] === Util.noop) return;
             options.__path = options.__path || [];
             if (Mock4XTpl.debug) {

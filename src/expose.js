@@ -41,7 +41,10 @@ if (typeof KISSY != 'undefined') {
             console.log(Mock.mock)
         })
     */
-    Util.each(['mock', 'components/mock/index', 'mock/dist/mock'], function register(name) {
+    Util.each([
+        'mock', 'components/mock/index', 'mock/dist/mock',
+        'gallery/Mock/0.1.1/index'
+    ], function register(name) {
         KISSY.add(name, function(S) {
             Mock.mockjax(S)
             return Mock

@@ -69,10 +69,15 @@ Mock.extend = Util.extend
 
     <iframe width="100%" height="300" src="http://jsfiddle.net/n8D6k/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 */
-Mock.mock = function(rurl, template) {
+Mock.mock = function(rurl, rtype, template) {
     if (arguments.length === 1) return Handle.gen(rurl)
+    if (arguments.length === 2) {
+        template = rtype
+        rtype = undefined
+    }
     Mock._mocked[rurl] = {
         rurl: rurl,
+        rtype: rtype,
         template: template
     }
     return Mock

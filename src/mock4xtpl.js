@@ -65,6 +65,8 @@ var KISSY = require('kissy'),
         context = context || [{}]
         options = options || {}
 
+        node.type = node.type
+
         if (this[node.type] === Util.noop) return
 
         options.__path = options.__path || []

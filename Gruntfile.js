@@ -147,6 +147,15 @@ module.exports = function(grunt) {
                     src: ['index.html', 'mockjs.png'],
                     dest: '../mockjs.github.com/'
                 }]
+            },
+            kissy: {
+                files: [{
+                    src: ['dist/mock.js'],
+                    dest: '../kissy-gallery/Mock/0.1.1/build/index.js'
+                }, {
+                    src: ['dist/mock-min.js'],
+                    dest: '../kissy-gallery/Mock/0.1.1/build/index-min.js'
+                }]
             }
         },
         exec: {
@@ -184,7 +193,7 @@ module.exports = function(grunt) {
     ]) // 'copy:demo',
     grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']) // grunt travis --verbose
     grunt.registerTask('default', ['base', 'watch:dev'])
-    grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc'])
+    grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc', 'copy:kissy'])
     grunt.registerTask('doc', ['doc-base', 'watch:doc'])
 
     grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])
