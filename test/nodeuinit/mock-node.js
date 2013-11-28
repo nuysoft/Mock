@@ -1,5 +1,6 @@
 var Mock = require('../../src/mock'),
     Random = require('../../src/random'),
+    Util = require('../../src/util'),
     Print = require('node-print'),
     $ = require('jquery'),
     util = require('util');
@@ -9,6 +10,20 @@ require('../../src/mock4tpl')
 require('../../src/mock4xtpl')
 
 Mock.mockjax($)
+
+// http://www.network-science.de/ascii/ doom
+console.log(Util.heredoc(function() {
+    /*
+___  ___              _        _      
+|  \/  |             | |      (_)     
+| .  . |  ___    ___ | | __    _  ___ 
+| |\/| | / _ \  / __|| |/ /   | |/ __|
+| |  | || (_) || (__ |   <  _ | |\__ \
+\_|  |_/ \___/  \___||_|\_\(_)| ||___/
+                             _/ |     
+                            |__/      
+     */
+}));
 
 function range(input, min, max) {
     return input >= min && input <= max

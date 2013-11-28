@@ -66,6 +66,7 @@ var KISSY = require('kissy'),
         options = options || {}
 
         node.type = node.type
+        // for (var n in node) node[n] = node[n]
 
         if (this[node.type] === Util.noop) return
 
@@ -287,25 +288,25 @@ var KISSY = require('kissy'),
 
     Mock4XTpl.multiplicativeExpression =
         Mock4XTpl.additiveExpression = function(node, context, options, helpers, partials, other) {
-        // TODO 如果参与运算是数值型，默认为整数或浮点数
-        this.gen(node.op1, context, options, helpers, partials, Util.extend({}, other, {
-            def: function() {
-                return node.op2.type === 'number' ?
-                    node.op2.value.indexOf('.') > -1 ?
-                    Random.float(-Math.pow(10, 10), Math.pow(10, 10), 1, Math.pow(10, 6)) :
-                    Random.integer() :
-                    undefined
-            }()
-        }))
-        this.gen(node.op2, context, options, helpers, partials, Util.extend({}, other, {
-            def: function() {
-                return node.op1.type === 'number' ?
-                    node.op1.value.indexOf('.') > -1 ?
-                    Random.float(-Math.pow(10, 10), Math.pow(10, 10), 1, Math.pow(10, 6)) :
-                    Random.integer() :
-                    undefined
-            }()
-        }))
+            // TODO 如果参与运算是数值型，默认为整数或浮点数
+            this.gen(node.op1, context, options, helpers, partials, Util.extend({}, other, {
+                def: function() {
+                    return node.op2.type === 'number' ?
+                        node.op2.value.indexOf('.') > -1 ?
+                        Random.float(-Math.pow(10, 10), Math.pow(10, 10), 1, Math.pow(10, 6)) :
+                        Random.integer() :
+                        undefined
+                }()
+            }))
+            this.gen(node.op2, context, options, helpers, partials, Util.extend({}, other, {
+                def: function() {
+                    return node.op1.type === 'number' ?
+                        node.op1.value.indexOf('.') > -1 ?
+                        Random.float(-Math.pow(10, 10), Math.pow(10, 10), 1, Math.pow(10, 6)) :
+                        Random.integer() :
+                        undefined
+                }()
+            }))
     }
 
     Mock4XTpl.relationalExpression = function(node, context, options, helpers, partials, other) {

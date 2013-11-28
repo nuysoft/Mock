@@ -134,11 +134,11 @@ var Mock = require('./mock'),
     }
 
     /*
-    name    字符串，属性名
-    options 字符串或对象，数据模板
-    context 父节点，任意值
-    def     默认值
-*/
+        name    字符串，属性名
+        options 字符串或对象，数据模板
+        context 父节点，任意值
+        def     默认值
+    */
     Handle.val = function(name, options, context, def) {
         if (name !== options.__path[options.__path.length - 1]) throw new Error(name + '!==' + options.__path)
         if (Mock4Tpl.debug || Handle.debug) console.log('[options]', name, options.__path);
@@ -156,8 +156,8 @@ var Mock = require('./mock'),
 
 
     /*
-    AST
-*/
+        AST
+    */
 
     Handle.program = function(node, context, options, helpers, partials) {
         for (var i = 0; i < node.statements.length; i++) {
@@ -194,9 +194,9 @@ var Mock = require('./mock'),
             // node.id
             this.gen(node.id, context, options, helpers, partials)
             /*
-            node.id.type === 'DATA'
-            eg @index，放到 DATA 中处理 TODO 
-        */
+                node.id.type === 'DATA'
+                eg @index，放到 DATA 中处理 TODO 
+            */
         }
         if (context.length > contextLength) context.splice(0, context.length - contextLength)
     }

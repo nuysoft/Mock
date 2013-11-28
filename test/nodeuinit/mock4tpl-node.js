@@ -66,8 +66,11 @@ exports.test_expression_simple_identifier_4xtpl = function(test) {
     var tpl, ast, data;
 
     tpl = '<h1>{{title}}</h1>'
+    // Mock4XTpl.debug = true
     ast = Mock4XTpl.parse(tpl)
+    // console.log(JSON.stringify(ast, null, 4));
     data = Mock4XTpl.mock(ast)
+    // Mock4XTpl.debug = false
     // console.log(JSON.stringify(Handlebars.parse(tpl), null, 4));
     // console.log(JSON.stringify(data, null, 4))
 

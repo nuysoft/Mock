@@ -62,13 +62,21 @@ exports.test_loader = function(test) {
 exports.test_variable = function(test) {
     var tpl, ast, data;
 
-    tpl = 'this is {{title}}!'
-    // Mock4XTpl._.debug = true
+    tpl = 'this is {{title}} {{a.b.c}}!'
+    // Mock4XTpl.debug = true
     ast = XTemplate.compiler.parse(tpl)
-    data = Mock4XTpl.mock(tpl)
-    // Mock4XTpl._.debug = false
+    data = Mock4XTpl.mock(ast || tpl)
+    // Mock4XTpl.debug = false
     // console.log(JSON.stringify(ast, null, 4));
     // console.log(JSON.stringify(data, null, 4))
+
+    // XTemplate.compiler._parse = XTemplate.compiler.parse
+    // XTemplate.compiler.parse = function(){
+    //     return ast
+    // }
+    // console.log(new XTemplate(tpl).render(data))
+    // XTemplate.compiler.parse = XTemplate.compiler._parse
+    // delete XTemplate.compiler._parse
 
     test.equal(data.title, 'title')
     test.done()
@@ -978,7 +986,7 @@ exports.test_mustache_array = function(test) {
     // console.log(JSON.stringify(ast, null, 4))
     // console.log(JSON.stringify(data, null, 4))
 
-    data.data.forEach(function(item){
+    data.data.forEach(function(item) {
         test.equal(item.name, 'name')
     })
 
