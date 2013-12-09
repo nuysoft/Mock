@@ -388,11 +388,84 @@ Mock.mock(&#39;@EMAIL&#39;)
 // =&gt; &quot;y.lee@lewis.org&quot;
 Mock.mock( { email: &#39;@EMAIL&#39; } )
 // =&gt; { email: &quot;v.lewis@hall.gov&quot; }</code></pre>
-<p>可以在上面的例子中看到，直接调用 &#39;Random.email()&#39; 时方法名 <code>email()</code> 是小写的，而数据模板中的 <code>@EMAIL</code> 却是大写。这并非对数据模板中的占位符做了特殊处理，也非强制的编写方式，事实上在数据模板中使用小写的 <code>@email</code> 也可以达到同样的效果。不过，这是建议的编码风格，以便在阅读时从视觉上提高占位符的识别率，快速识别占位符和普通字符。</p>
+<p>可以在上面的例子中看到，直接调用 &#39;Random.email()&#39; 时方法名 <code>email()</code> 是小写的，而数据模板中的 <code>@EMAIL</code> 却是大写。这并非对数据模板中的占位符做了特殊处理，也非强制的编写方式，事实上在数据模板中使用小写的 <code>@email</code> 也可以达到同样的效果。不过，这是建议的编码风格，以便在阅读时从视觉上提高占位符的识别度，快速识别占位符和普通字符。</p>
 <p>在浏览器中，为了减少需要拼写的字符，Mock.js 把 Mock.Random 暴露给了 window 对象，使之称为全局变量，从而可以直接访问 Random。因此上面例子中的 <code>var Random = Mock.Random;</code> 可以省略。在后面的例子中，也将做同样的处理。</p>
 <blockquote>
 <p>在 Node.js 中，仍然需要通过 <code>Mock.Random</code> 访问。</p>
 </blockquote>
+<p>Mock.Random 提供的完整方法（占位符）如下：</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Basics</td>
+<td>boolean natural integer float character string range date time datetime</td>
+</tr>
+<tr>
+<td>Image</td>
+<td>image dataImage</td>
+</tr>
+<tr>
+<td>Color</td>
+<td>color</td>
+</tr>
+<tr>
+<td>Text</td>
+<td>paragraph sentence word title</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>first last name</td>
+</tr>
+<tr>
+<td>Web</td>
+<td>url domain email ip tld</td>
+</tr>
+<tr>
+<td>Address</td>
+<td>area region</td>
+</tr>
+<tr>
+<td>Helpers</td>
+<td>capitalize upper lower pick shuffle</td>
+</tr>
+<tr>
+<td>Miscellaneous</td>
+<td>guid id</td>
+</tr>
+</tbody>
+</table>
+<script id="fixPlaceholderLink" type="text/javascript">
+    $('#fixPlaceholderLink').prev('table')
+        .find('td:nth-child(1)').each(function(index, td) {
+            $(td).contents().wrapAll(
+                $('<a>').attr('href', '#' + $(td).text())
+            )
+        })
+        .end()
+        .find('td:nth-child(2)').each(function(index, td) {
+            var methods = $(td).text().split(' ')
+            var links = $()
+            $(methods).each(function(mindex, m) {
+                links.push(
+                    $('<a>').attr('href', '#' + m).text(m)[0]
+                )
+                if (mindex < methods.length - 1) {
+                    links.push(
+                        $('<span>').text(', ')[0]
+                    )
+                }
+            })
+            $(td).empty().append(links)
+        })
+        .end()
+</script>
+
 <p>Mock.Random 中的方法与数据模板的 <code>@占位符</code> 一一对应，在需要时可以为 Mock.Random 扩展方法，然后在数据模板中通过 <code>@扩展方法</code> 引用。例如：</p>
 <pre><code>Random.extend({
     constellations: [&#39;白羊座&#39;, &#39;金牛座&#39;, &#39;双子座&#39;, &#39;巨蟹座&#39;, &#39;狮子座&#39;, &#39;处女座&#39;, &#39;天秤座&#39;, &#39;天蝎座&#39;, &#39;射手座&#39;, &#39;摩羯座&#39;, &#39;水瓶座&#39;, &#39;双鱼座&#39;],

@@ -10,11 +10,51 @@ Mock.Random 是一个工具类，用于生成各种随机数据。Mock.Random �
     Mock.mock( { email: '@EMAIL' } )
     // => { email: "v.lewis@hall.gov" }
 
-可以在上面的例子中看到，直接调用 'Random.email()' 时方法名 `email()` 是小写的，而数据模板中的 `@EMAIL` 却是大写。这并非对数据模板中的占位符做了特殊处理，也非强制的编写方式，事实上在数据模板中使用小写的 `@email` 也可以达到同样的效果。不过，这是建议的编码风格，以便在阅读时从视觉上提高占位符的识别率，快速识别占位符和普通字符。
+可以在上面的例子中看到，直接调用 'Random.email()' 时方法名 `email()` 是小写的，而数据模板中的 `@EMAIL` 却是大写。这并非对数据模板中的占位符做了特殊处理，也非强制的编写方式，事实上在数据模板中使用小写的 `@email` 也可以达到同样的效果。不过，这是建议的编码风格，以便在阅读时从视觉上提高占位符的识别度，快速识别占位符和普通字符。
 
 在浏览器中，为了减少需要拼写的字符，Mock.js 把 Mock.Random 暴露给了 window 对象，使之称为全局变量，从而可以直接访问 Random。因此上面例子中的 `var Random = Mock.Random;` 可以省略。在后面的例子中，也将做同样的处理。
 
 > 在 Node.js 中，仍然需要通过 `Mock.Random` 访问。
+
+Mock.Random 提供的完整方法（占位符）如下：
+
+| Type          | Method
+| ------------- | -------------------------------------------------------------------------
+| Basics        | boolean natural integer float character string range date time datetime
+| Image         | image dataImage
+| Color         | color
+| Text          | paragraph sentence word title
+| Name          | first last name
+| Web           | url domain email ip tld
+| Address       | area region
+| Helpers       | capitalize upper lower pick shuffle
+| Miscellaneous | guid id
+
+<script id="fixPlaceholderLink" type="text/javascript">
+    $('#fixPlaceholderLink').prev('table')
+        .find('td:nth-child(1)').each(function(index, td) {
+            $(td).contents().wrapAll(
+                $('<a>').attr('href', '#' + $(td).text())
+            )
+        })
+        .end()
+        .find('td:nth-child(2)').each(function(index, td) {
+            var methods = $(td).text().split(' ')
+            var links = $()
+            $(methods).each(function(mindex, m) {
+                links.push(
+                    $('<a>').attr('href', '#' + m).text(m)[0]
+                )
+                if (mindex < methods.length - 1) {
+                    links.push(
+                        $('<span>').text(', ')[0]
+                    )
+                }
+            })
+            $(td).empty().append(links)
+        })
+        .end()
+</script>
 
 Mock.Random 中的方法与数据模板的 `@占位符` 一一对应，在需要时可以为 Mock.Random 扩展方法，然后在数据模板中通过 `@扩展方法` 引用。例如：
 
