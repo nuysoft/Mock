@@ -9,7 +9,7 @@ var Util = (function() {
         var target = arguments[0] || {},
             i = 1,
             length = arguments.length,
-            options, name, src, copy
+            options, name, src, copy, clone
 
         if (length === 1) {
             target = this
