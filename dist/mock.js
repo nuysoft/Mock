@@ -1,4 +1,4 @@
-/*! mockjs 05-12-2013 */
+/*! mockjs 15-12-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -9,7 +9,7 @@
     var Util = function() {
         var Util = {};
         Util.extend = function extend() {
-            var target = arguments[0] || {}, i = 1, length = arguments.length, options, name, src, copy;
+            var target = arguments[0] || {}, i = 1, length = arguments.length, options, name, src, copy, clone;
             if (length === 1) {
                 target = this;
                 i = 0;
