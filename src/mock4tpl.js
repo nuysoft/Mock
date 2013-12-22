@@ -385,7 +385,7 @@ var Mock = require('./mock'),
 
     Helpers['if'] = Helpers.unless = function(node, context, options) {
         var params = node.mustache.params,
-            i, j, cur, val, def, type,
+            i, j, cur, val, parts, def, type,
             currentContext = context[0];
 
         for (i = 0; i < params.length; i++) {

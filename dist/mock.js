@@ -1,4 +1,4 @@
-/*! mockjs 15-12-2013 */
+/*! mockjs 22-12-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -1102,7 +1102,7 @@
             return val;
         };
         Helpers["if"] = Helpers.unless = function(node, context, options) {
-            var params = node.mustache.params, i, j, cur, val, def, type, currentContext = context[0];
+            var params = node.mustache.params, i, j, cur, val, parts, def, type, currentContext = context[0];
             for (i = 0; i < params.length; i++) {
                 parts = params[i].parts;
                 for (j = 0; j < parts.length; j++) {
