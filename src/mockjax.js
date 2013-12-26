@@ -26,6 +26,7 @@ var Mock = require('./mock');
 */
 // for jQuery
 Mock.mockjax = function mockjax(jQuery) {
+
     function mockxhr() {
         return {
             open: jQuery.noop,
@@ -38,7 +39,9 @@ Mock.mockjax = function mockjax(jQuery) {
 
     function convert(mock) {
         return function() {
-            return Mock.mock(mock.template)
+            return Mock.mock(
+                Util.isFunction(mock.template) ? mock.template() : mock.template
+            )
         }
     }
 
