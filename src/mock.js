@@ -36,6 +36,9 @@ Mock.extend = Util.extend
     * Mock.mock(template) 根据数据模板生成模拟数据。
     * Mock.mock(rurl, template) 记录数据模板，当拦截到匹配的 Ajax 请求时，生成并返回模拟数据。
 
+    * Mock.mock(rurl, rtype, template)
+    * Mock.mock(rurl, rtype, function)
+
     参数的含义如下所示：
     * 参数 rurl：可选。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 `/\/domain\/list\.json/`、`'/domian/list.json'`。
     * 参数 template：必须。表示数据模板，可以是对象或字符串。例如 `{ 'data|1-10':[{}] }`、`'@EMAIL'`。
@@ -75,7 +78,7 @@ Mock.mock = function(rurl, rtype, template) {
         template = rtype
         rtype = undefined
     }
-    Mock._mocked[rurl] = {
+    Mock._mocked[rurl + (rtype || '')] = {
         rurl: rurl,
         rtype: rtype,
         template: template
