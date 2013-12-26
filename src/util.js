@@ -62,7 +62,7 @@ var Util = (function() {
         return (obj === null || obj === undefined) ? String(obj) : Object.prototype.toString.call(obj).match(/\[object (\w+)\]/)[1].toLowerCase()
     }
 
-    Util.each('String Object Array'.split(' '), function(value) {
+    Util.each('String Object Array RegExp Function'.split(' '), function(value) {
         Util['is' + value] = function(obj) {
             return Util.type(obj) === value.toLowerCase()
         }
