@@ -392,7 +392,7 @@ Mock.mock(&#39;@EMAIL&#39;)
 Mock.mock( { email: &#39;@EMAIL&#39; } )
 // =&gt; { email: &quot;v.lewis@hall.gov&quot; }</code></pre>
 <p>可以在上面的例子中看到，直接调用 &#39;Random.email()&#39; 时方法名 <code>email()</code> 是小写的，而数据模板中的 <code>@EMAIL</code> 却是大写。这并非对数据模板中的占位符做了特殊处理，也非强制的编写方式，事实上在数据模板中使用小写的 <code>@email</code> 也可以达到同样的效果。不过，这是建议的编码风格，以便在阅读时从视觉上提高占位符的识别度，快速识别占位符和普通字符。</p>
-<p>在浏览器中，为了减少需要拼写的字符，Mock.js 把 Mock.Random 暴露给了 window 对象，使之称为全局变量，从而可以直接访问 Random。因此上面例子中的 <code>var Random = Mock.Random;</code> 可以省略。在后面的例子中，也将做同样的处理。</p>
+<p>在浏览器中，为了减少需要拼写的字符，Mock.js 把 Mock.Random 暴露给了 window 对象，使之成为全局变量，从而可以直接访问 Random。因此上面例子中的 <code>var Random = Mock.Random;</code> 可以省略。在后面的例子中，也将做同样的处理。</p>
 <blockquote>
 <p>在 Node.js 中，仍然需要通过 <code>Mock.Random</code> 访问。</p>
 </blockquote>

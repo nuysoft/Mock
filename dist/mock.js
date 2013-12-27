@@ -1,4 +1,4 @@
-/*! mockjs 26-12-2013 */
+/*! mockjs 27-12-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -646,7 +646,7 @@
         return Random;
     }();
     /*! src/mock.js */
-    var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /(\d+)-?(\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g;
+    var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /(\d+)-?(\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g;
     Mock.extend = Util.extend;
     Mock.mock = function(rurl, rtype, template) {
         if (arguments.length === 1) return Handle.gen(rurl);

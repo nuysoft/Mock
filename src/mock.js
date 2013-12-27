@@ -19,12 +19,15 @@ var Mock = module.exports = {
         name|int.dmin-dmax
 
         1 name, 2 inc, 3 range, 4 decimal
+
     rplaceholder
         placeholder(*)
+
+    [正则查看工具](http://www.regexper.com/)
 */
 var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
     rrange = /(\d+)-?(\d+)?/,
-    rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.+?)\))?/g; // (^(?:.|\r|\n)*?)
+    rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g; // (^(?:.|\r|\n)*?)
 
 Mock.extend = Util.extend
 
