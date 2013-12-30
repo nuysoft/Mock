@@ -1151,3 +1151,22 @@ TODO 统计 -->
 
     Random.id()
     // => "420000200710091854"
+
+#### Random.increment(step)
+
+生成一个全局的自增整数。
+
+* Random.increment(step)
+
+参数的含义和默认值如下所示：
+
+* 参数 step：可选。整数自增的步长。默认值为 1。
+
+使用示例如下所示：
+
+    Random.increment()
+    // => 1
+    Random.increment(100)
+    // => 101
+    Random.increment(1000)
+    // => 1101

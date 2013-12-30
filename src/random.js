@@ -577,20 +577,20 @@ var Random = (function() {
     */
     Random.extend({
         ad_size: [
-                '300x250', '250x250', '240x400', '336x280', '180x150',
-                '720x300', '468x60', '234x60', '88x31', '120x90',
-                '120x60', '120x240', '125x125', '728x90', '160x600',
-                '120x600', '300x600'
+            '300x250', '250x250', '240x400', '336x280', '180x150',
+            '720x300', '468x60', '234x60', '88x31', '120x90',
+            '120x60', '120x240', '125x125', '728x90', '160x600',
+            '120x600', '300x600'
         ],
         screen_size: [
-                '320x200', '320x240', '640x480', '800x480', '800x480',
-                '1024x600', '1024x768', '1280x800', '1440x900', '1920x1200',
-                '2560x1600'
+            '320x200', '320x240', '640x480', '800x480', '800x480',
+            '1024x600', '1024x768', '1280x800', '1440x900', '1920x1200',
+            '2560x1600'
         ],
         video_size: ['720x480', '768x576', '1280x720', '1920x1080'],
         /*
             ##### Random.img(size, background, foreground, format, text)
-    
+
             * Random.img()
             * Random.img(size)
             * Random.img(size, background)
@@ -1171,21 +1171,21 @@ var Random = (function() {
             var names = [
                 // male
                 "James", "John", "Robert", "Michael", "William",
-                    "David", "Richard", "Charles", "Joseph", "Thomas",
-                    "Christopher", "Daniel", "Paul", "Mark", "Donald",
-                    "George", "Kenneth", "Steven", "Edward", "Brian",
-                    "Ronald", "Anthony", "Kevin", "Jason", "Matthew",
-                    "Gary", "Timothy", "Jose", "Larry", "Jeffrey",
-                    "Frank", "Scott", "Eric"
+                "David", "Richard", "Charles", "Joseph", "Thomas",
+                "Christopher", "Daniel", "Paul", "Mark", "Donald",
+                "George", "Kenneth", "Steven", "Edward", "Brian",
+                "Ronald", "Anthony", "Kevin", "Jason", "Matthew",
+                "Gary", "Timothy", "Jose", "Larry", "Jeffrey",
+                "Frank", "Scott", "Eric"
             ].concat([
                 // female
                 "Mary", "Patricia", "Linda", "Barbara", "Elizabeth",
-                    "Jennifer", "Maria", "Susan", "Margaret", "Dorothy",
-                    "Lisa", "Nancy", "Karen", "Betty", "Helen",
-                    "Sandra", "Donna", "Carol", "Ruth", "Sharon",
-                    "Michelle", "Laura", "Sarah", "Kimberly", "Deborah",
-                    "Jessica", "Shirley", "Cynthia", "Angela", "Melissa",
-                    "Brenda", "Amy", "Anna"
+                "Jennifer", "Maria", "Susan", "Margaret", "Dorothy",
+                "Lisa", "Nancy", "Karen", "Betty", "Helen",
+                "Sandra", "Donna", "Carol", "Ruth", "Sharon",
+                "Michelle", "Laura", "Sarah", "Kimberly", "Deborah",
+                "Jessica", "Shirley", "Cynthia", "Angela", "Melissa",
+                "Brenda", "Amy", "Anna"
             ])
             return this.pick(names)
             return this.capitalize(this.word())
@@ -1204,13 +1204,13 @@ var Random = (function() {
         */
         last: function() {
             var names = [
-                    "Smith", "Johnson", "Williams", "Brown", "Jones",
-                    "Miller", "Davis", "Garcia", "Rodriguez", "Wilson",
-                    "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez",
-                    "Moore", "Martin", "Jackson", "Thompson", "White",
-                    "Lopez", "Lee", "Gonzalez", "Harris", "Clark",
-                    "Lewis", "Robinson", "Walker", "Perez", "Hall",
-                    "Young", "Allen"
+                "Smith", "Johnson", "Williams", "Brown", "Jones",
+                "Miller", "Davis", "Garcia", "Rodriguez", "Wilson",
+                "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez",
+                "Moore", "Martin", "Jackson", "Thompson", "White",
+                "Lopez", "Lee", "Gonzalez", "Harris", "Clark",
+                "Lewis", "Robinson", "Walker", "Perez", "Hall",
+                "Young", "Allen"
             ]
             return this.pick(names)
             return this.capitalize(this.word())
@@ -1356,14 +1356,14 @@ var Random = (function() {
             '香港特别行政区', '澳门特别行政区'
         */
         regions: [
-                '110000 北京市', '120000 天津市', '130000 河北省', '140000 山西省', '150000 内蒙古自治区',
-                '210000 辽宁省', '220000 吉林省', '230000 黑龙江省',
-                '310000 上海市', '320000 江苏省', '330000 浙江省', '340000 安徽省', '350000 福建省', '360000 江西省', '370000 山东省',
-                '410000 河南省', '420000 湖北省', '430000 湖南省', '440000 广东省', '450000 广西壮族自治区', '460000 海南省',
-                '500000 重庆市', '510000 四川省', '520000 贵州省', '530000 云南省', '540000 西藏自治区',
-                '610000 陕西省', '620000 甘肃省', '630000 青海省', '640000 宁夏回族自治区', '650000 新疆维吾尔自治区', '650000 新疆维吾尔自治区',
-                '710000 台湾省',
-                '810000 香港特别行政区', '820000 澳门特别行政区'
+            '110000 北京市', '120000 天津市', '130000 河北省', '140000 山西省', '150000 内蒙古自治区',
+            '210000 辽宁省', '220000 吉林省', '230000 黑龙江省',
+            '310000 上海市', '320000 江苏省', '330000 浙江省', '340000 安徽省', '350000 福建省', '360000 江西省', '370000 山东省',
+            '410000 河南省', '420000 湖北省', '430000 湖南省', '440000 广东省', '450000 广西壮族自治区', '460000 海南省',
+            '500000 重庆市', '510000 四川省', '520000 贵州省', '530000 云南省', '540000 西藏自治区',
+            '610000 陕西省', '620000 甘肃省', '630000 青海省', '640000 宁夏回族自治区', '650000 新疆维吾尔自治区', '650000 新疆维吾尔自治区',
+            '710000 台湾省',
+            '810000 香港特别行政区', '820000 澳门特别行政区'
         ],
         /*
             ##### Random.region()
@@ -1491,10 +1491,10 @@ var Random = (function() {
             var id,
                 sum = 0,
                 rank = [
-                        "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2"
+                    "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2"
                 ],
                 last = [
-                        "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"
+                    "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"
                 ];
 
             id = this.pick(this.regions).split(' ')[0] +
@@ -1507,6 +1507,36 @@ var Random = (function() {
             id += last[sum % 11];
 
             return id
+        },
+
+        /*
+            自增主键
+            auto increment primary key
+
+            ##### Random.increment()
+
+            生成一个全局的自增整数。
+
+            * Random.increment(step)
+
+            参数的含义和默认值如下所示：
+            * 参数 step：可选。整数自增的步长。默认值为 1。
+
+            使用示例如下所示：
+
+                Random.increment()
+                // => 1
+                Random.increment(100)
+                // => 101
+                Random.increment(1000)
+                // => 1101
+        */
+        autoIncrementInteger: 0,
+        increment: function(step) {
+            return this.autoIncrementInteger += (+step || 1)
+        },
+        inc: function(step) {
+            return this.increment(step)
         }
     })
 

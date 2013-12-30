@@ -1,4 +1,4 @@
-/*! mockjs 27-12-2013 */
+/*! mockjs 30-12-2013 */
 /*! src/mock-prefix.js */
 (function(undefined) {
     var Mock = {
@@ -641,6 +641,13 @@
                 }
                 id += last[sum % 11];
                 return id;
+            },
+            autoIncrementInteger: 0,
+            increment: function(step) {
+                return this.autoIncrementInteger += +step || 1;
+            },
+            inc: function(step) {
+                return this.increment(step);
             }
         });
         return Random;

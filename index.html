@@ -1179,6 +1179,22 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.id()
 // =&gt; &quot;420000200710091854&quot;</code></pre>
+<h4>Random.increment(step)</h4>
+<p>生成一个全局的自增整数。</p>
+<ul>
+<li>Random.increment(step)</li>
+</ul>
+<p>参数的含义和默认值如下所示：</p>
+<ul>
+<li>参数 step：可选。整数自增的步长。默认值为 1。</li>
+</ul>
+<p>使用示例如下所示：</p>
+<pre><code>Random.increment()
+// =&gt; 1
+Random.increment(100)
+// =&gt; 101
+Random.increment(1000)
+// =&gt; 1101</code></pre>
 </div>
     
     <script src="./demo/assets/catalog.js"></script>

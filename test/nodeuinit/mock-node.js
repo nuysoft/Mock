@@ -477,3 +477,10 @@ exports.test_range = function(test) {
     test.ok(true)
     test.done()
 }
+
+exports.test_increment = function(test) {
+    test.equal(Random.increment(1), 1)
+    test.equal(Random.increment(2), 3)
+    test.equal(Random.increment(3), 6)
+    test.done()
+}
