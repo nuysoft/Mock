@@ -15,7 +15,8 @@ module.exports = function(grunt) {
             files: ['test/mock.html', 'test/mock-*.html',
                 'test/mock4tpl.html', 'test/mock4tpl-*.html',
                 'test/mock4xtpl.html', 'test/mock4xtpl-*.html',
-                'test/**/*.html'
+                'test/**/*.html',
+                '!test/mock4xtpl.html'
             ]
         },
         nodeunit: {
