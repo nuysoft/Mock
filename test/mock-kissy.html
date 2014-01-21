@@ -20,10 +20,13 @@
             }
         }
     })
+    test('preheat', function() {
+      ok(true)
+    })
     test('mock-kissy', function() {
       stop()
       // 加载 Mock
-      KISSY.use(['node', 'mock'], function (S, _, Mock) {
+      KISSY.use(['mock'], function (S, Mock) {
         // 使用 Mock
         var data = Mock.mock({
             'list|1-10': [{

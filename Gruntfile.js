@@ -12,11 +12,11 @@ module.exports = function(grunt) {
             }
         },
         qunit: {
-            files: ['test/mock.html', 'test/mock-*.html',
+            files: [
+                'test/mock.html', 'test/mock-*.html',
                 'test/mock4tpl.html', 'test/mock4tpl-*.html',
                 'test/mock4xtpl.html', 'test/mock4xtpl-*.html',
-                'test/**/*.html',
-                '!test/mock4xtpl.html'
+                'test/**/*.html'
             ]
         },
         nodeunit: {
