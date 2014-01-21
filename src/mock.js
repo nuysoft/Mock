@@ -93,7 +93,7 @@ var Handle = {
     extend: Util.extend
 }
 
-Handle.gen = function(template, name, obj) {
+Handle.gen = function(template, name, obj, templateContext) {
     var parameters = (name = name || '').match(rkey),
 
         range = parameters && parameters[3] && parameters[3].match(rrange),
@@ -116,6 +116,7 @@ Handle.gen = function(template, name, obj) {
         result = Handle[type]({
             type: type,
             template: template,
+            templateContext: templateContext || template,
             name: name,
             obj: obj,
 
@@ -181,7 +182,7 @@ Handle.extend({
     object: function(options) {
         var result = {}, key, inc;
         for (key in options.template) {
-            result[key.replace(rkey, '$1')] = Handle.gen(options.template[key], key, result)
+            result[key.replace(rkey, '$1')] = Handle.gen(options.template[key], key, result, options.template)
             // 'id|+1': 1
             inc = key.match(rkey)
             if (inc && inc[2] && Util.type(options.template[key]) === 'number') {
@@ -235,7 +236,7 @@ Handle.extend({
                     placeholders.splice(i--, 1)
                     continue
                 }
-                phed = Handle.placeholder(ph, options.obj)
+                phed = Handle.placeholder(ph, options.obj, options.templateContext)
                 if (placeholders.length === 1 && ph === result) { // 
                     if (Util.isNumeric(phed)) {
                         result = parseFloat(phed, 10)
@@ -265,7 +266,7 @@ Handle.extend({
         for (var key in Random) re[key.toLowerCase()] = key
         return re
     },
-    placeholder: function(placeholder, obj) {
+    placeholder: function(placeholder, obj, templateContext) {
         // 1 key, 2 params
         rplaceholder.exec('')
         var parts = rplaceholder.exec(placeholder),
@@ -273,7 +274,16 @@ Handle.extend({
             lkey = key && key.toLowerCase(),
             okey = this._all()[lkey],
             params = parts && parts[2] ? parts[2].split(/,\s*/) : []
+
         if (obj && (key in obj)) return obj[key]
+
+        if (templateContext &&
+            (typeof templateContext === 'object') &&
+            (key in templateContext)
+        ) {
+            templateContext[key] = Handle.gen(templateContext[key], key, obj, templateContext)
+            return templateContext[key]
+        }
 
         if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder
 

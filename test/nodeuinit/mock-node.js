@@ -314,7 +314,7 @@ exports.testRequest = function(test) {
             test.ok(rEmail.test(item.email), item.email)
         }
         if (true) {
-            console.log('testRequest ' + count);
+            // console.log('testRequest ' + count);
 
             // console.log();
             // console.log(count);
@@ -482,5 +482,16 @@ exports.test_increment = function(test) {
     test.equal(Random.increment(1), 1)
     test.equal(Random.increment(2), 3)
     test.equal(Random.increment(3), 6)
+    test.done()
+}
+
+exports.test_reference = function(test){
+    var tpl = {
+        name: '@first @last',
+        first: 'fffff',
+        last: 'lllll'
+    }
+    var data = Mock.mock(tpl)
+    test.equal(data.name, 'fffff lllll')
     test.done()
 }
