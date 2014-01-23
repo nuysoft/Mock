@@ -196,7 +196,7 @@ module.exports = function(grunt) {
     grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']) // grunt travis --verbose
     grunt.registerTask('default', ['base', 'watch:dev'])
     grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc', 'copy:kissy'])
-    grunt.registerTask('doc', ['doc-base', 'watch:doc'])
+    grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc'])
 
     grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])
 };
