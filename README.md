@@ -29,3 +29,7 @@ Make sure the problem you're addressing is reproducible. Use <http://jsbin.com/>
 ## License
 Mock.js is available under the terms of the [MIT License](./MIT-LICENSE.txt).
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nuysoft/mock/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
