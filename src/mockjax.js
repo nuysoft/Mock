@@ -109,6 +109,11 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
             // }
             return _original_ajax.apply(this, arguments)
         }
+
+        // 还原 KISSY.io 上的属性
+        for(var name in _original_ajax) {
+            KISSY.io[name] = _original_ajax[name]
+        }
     }
 }
 // END(BROWSER)

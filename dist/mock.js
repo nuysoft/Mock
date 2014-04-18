@@ -1,5 +1,5 @@
 /*! src/mock-prefix.js */
-/*
+/*!
     Mock - 模拟请求 & 模拟数据
     https://github.com/nuysoft/Mock
     墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
@@ -2082,6 +2082,11 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
             }
             // }
             return _original_ajax.apply(this, arguments)
+        }
+
+        // 还原 KISSY.io 上的属性
+        for(var name in _original_ajax) {
+            KISSY.io[name] = _original_ajax[name]
         }
     }
 }
