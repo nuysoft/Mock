@@ -279,7 +279,8 @@ Handle.extend({
 
         if (templateContext &&
             (typeof templateContext === 'object') &&
-            (key in templateContext)
+            (key in templateContext) &&
+            (placeholder !== templateContext[key]) // fix #15
         ) {
             templateContext[key] = Handle.gen(templateContext[key], key, obj, templateContext)
             return templateContext[key]

@@ -9,10 +9,10 @@
 
 **参数的含义和默认值**如下所示：
 
-* 参数 input：必选。可以是 HTML 模板，或者经过 KISSY XTempalte 解析的语法树（`XTemplate.compiler.parse(input)`）。将基于该参数生成模拟数据。
-* 参数 options：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
-* 参数 helpers：可选。对象。表示局部命令。全局命令会自动从 `XTemplate.RunTime.commands` 中读取。
-* 参数 partials：可选。对象。表示局部子模板。全局子模板会自动从 `XTemplate.RunTime.subTpls` 中读取。
+* **参数 input**：必选。可以是 HTML 模板，或者经过 KISSY XTempalte 解析的语法树（`XTemplate.compiler.parse(input)`）。将基于该参数生成模拟数据。
+* **参数 options**：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
+* **参数 helpers**：可选。对象。表示局部命令。全局命令会自动从 `XTemplate.RunTime.commands` 中读取。
+* **参数 partials**：可选。对象。表示局部子模板。全局子模板会自动从 `XTemplate.RunTime.subTpls` 中读取。
 
 **使用示例**如下所示：
 

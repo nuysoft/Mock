@@ -109,8 +109,8 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 
 **参数的含义和默认值**如下所示：
 
-* 参数 rurl：可选。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 `/\/domain\/list\.json/`、`'/domian/list.json'`。
-* 参数 template：必须。表示数据模板，可以是对象或字符串。例如 `{ 'data|1-10':[{}] }`、`'@EMAIL'`。
+* **参数 rurl**：可选。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 `/\/domain\/list\.json/`、`'/domian/list.json'`。
+* **参数 template**：必须。表示数据模板，可以是对象或字符串。例如 `{ 'data|1-10':[{}] }`、`'@EMAIL'`。
 
 **数据模板中的每个属性由 3 部分构成**，以 `'data|1-10':[{}]` 为例：
 
@@ -176,10 +176,10 @@ Mock.js 的 [在线编辑器](./demo/mock.html) 演示了完整的语法规范�
 
 **参数的含义和默认值**如下所示：
 
-* 参数 input：必选。可以是 HTML 模板，或者经过 Handlebars 解析的语法树（`Handlebars.parse(input)`）。将基于该参数生成模拟数据。
-* 参数 options：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
-* 参数 helpers：可选。对象。表示局部 helper。全局 helper 会自动从 `Handlebars.helpers` 中读取。
-* 参数 partials：可选。对象。表示局部子模板。全局子模板会自动从 `Handlebars.partials` 中读取。
+* **参数 input**：必选。可以是 HTML 模板，或者经过 Handlebars 解析的语法树（`Handlebars.parse(input)`）。将基于该参数生成模拟数据。
+* **参数 options**：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
+* **参数 helpers**：可选。对象。表示局部 helper。全局 helper 会自动从 `Handlebars.helpers` 中读取。
+* **参数 partials**：可选。对象。表示局部子模板。全局子模板会自动从 `Handlebars.partials` 中读取。
 
 **使用示例**如下所示：
 
@@ -259,10 +259,10 @@ Mock.js 的 [在线编辑器](./demo/mock.html) 演示了完整的语法规范�
 
 **参数的含义和默认值**如下所示：
 
-* 参数 input：必选。可以是 HTML 模板，或者经过 KISSY XTempalte 解析的语法树（`XTemplate.compiler.parse(input)`）。将基于该参数生成模拟数据。
-* 参数 options：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
-* 参数 helpers：可选。对象。表示局部命令。全局命令会自动从 `XTemplate.RunTime.commands` 中读取。
-* 参数 partials：可选。对象。表示局部子模板。全局子模板会自动从 `XTemplate.RunTime.subTpls` 中读取。
+* **参数 input**：必选。可以是 HTML 模板，或者经过 KISSY XTempalte 解析的语法树（`XTemplate.compiler.parse(input)`）。将基于该参数生成模拟数据。
+* **参数 options**：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
+* **参数 helpers**：可选。对象。表示局部命令。全局命令会自动从 `XTemplate.RunTime.commands` 中读取。
+* **参数 partials**：可选。对象。表示局部子模板。全局子模板会自动从 `XTemplate.RunTime.subTpls` 中读取。
 
 **使用示例**如下所示：
 
