@@ -13,7 +13,7 @@ var Mock = require('./mock');
     因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和本人所服务的阿里） 常用的 jQuery 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery 和 KISSY 的实现，覆盖 Mock.mockjax(library)。
 
     通过方法 Mock.mock(rurl, template) 设置的 URL 和数据模板的映射，均记录在属性 Mock._mocked 中，扩展时可从中获取 URL 对应的数据模板，进而生成和响应模拟数据。Mock._mocked 的数据结构为：
-    
+
         {
             rurl.toString(): {
                 rurl: rurl,
@@ -71,6 +71,52 @@ Mock.mockjax = function mockjax(jQuery) {
 }
 
 if (typeof jQuery != 'undefined') Mock.mockjax(jQuery)
+
+// for Zepto
+// 因为 Zepto 并没有实现类似 jQuery.ajaxPrefilter 等预处理函数
+// 所以将和 KISSY 类似直接粗暴处理
+if (typeof Zepto != 'undefined') {
+    Mock.mockjax = function(Zepto) {
+        var __original_ajax = Zepto.ajax
+        var xhr = {
+            readyState: 4,
+            responseText: '',
+            responseXML: null,
+            state: 2,
+            status: 200,
+            statusText: "success",
+            timeoutTimer: null
+        }
+
+        /**
+         * @param options
+         * return xhr
+         */
+        Zepto.ajax = function(options) {
+            for (var surl in Mock._mocked) {
+                var mock = Mock._mocked[surl]
+
+                if (Zepto.type(mock.rurl) === 'string') {
+                    if (mock.rurl !== options.url) continue
+                }
+                if (Zepto.type(mock.rurl) === 'regexp') {
+                    if (!mock.rurl.test(options.url)) continue
+                }
+
+                console.log('[mock]', options.url, '>', mock.rurl)
+                var data = Mock.mock(mock.template)
+                console.log('[mock]', data)
+                if (options.success) options.success(data, xhr, options)
+                if (options.complete) options.complete(xhr.status, xhr, options)
+                return xhr
+            }
+
+            return __original_ajax.call(Zepto, options)
+        }
+    }
+
+    Mock.mockjax(Zepto)
+}
 
 // for KISSY
 if (typeof KISSY != 'undefined' && KISSY.add) {

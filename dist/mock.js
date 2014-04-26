@@ -1,4 +1,4 @@
-/*! mockjs 22-04-2014 */
+/*! mockjs 26-04-2014 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -855,6 +855,39 @@
         return Mock;
     };
     if (typeof jQuery != "undefined") Mock.mockjax(jQuery);
+    if (typeof Zepto != "undefined") {
+        Mock.mockjax = function(Zepto) {
+            var __original_ajax = Zepto.ajax;
+            var xhr = {
+                readyState: 4,
+                responseText: "",
+                responseXML: null,
+                state: 2,
+                status: 200,
+                statusText: "success",
+                timeoutTimer: null
+            };
+            Zepto.ajax = function(options) {
+                for (var surl in Mock._mocked) {
+                    var mock = Mock._mocked[surl];
+                    if (Zepto.type(mock.rurl) === "string") {
+                        if (mock.rurl !== options.url) continue;
+                    }
+                    if (Zepto.type(mock.rurl) === "regexp") {
+                        if (!mock.rurl.test(options.url)) continue;
+                    }
+                    console.log("[mock]", options.url, ">", mock.rurl);
+                    var data = Mock.mock(mock.template);
+                    console.log("[mock]", data);
+                    if (options.success) options.success(data, xhr, options);
+                    if (options.complete) options.complete(xhr.status, xhr, options);
+                    return xhr;
+                }
+                return __original_ajax.call(Zepto, options);
+            };
+        };
+        Mock.mockjax(Zepto);
+    }
     if (typeof KISSY != "undefined" && KISSY.add) {
         Mock.mockjax = function mockjax(KISSY) {
             var _original_ajax = KISSY.io;
