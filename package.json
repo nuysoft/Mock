@@ -32,7 +32,8 @@
     "node-print": "~0.0.4",
     "codemirror": "~3.18.0",
     "grunt-contrib-qunit": "~0.3.0",
-    "grunt-contrib-nodeunit": "~0.2.1"
+    "grunt-contrib-nodeunit": "~0.2.1",
+    "zepto": "0.0.4"
   },
   "repository": {
     "type": "git",
