@@ -9,19 +9,20 @@ require('../../src/mockjax')
 require('../../src/mock4tpl')
 require('../../src/mock4xtpl')
 
+Mock.Util = Util
 Mock.mockjax($)
 
 // http://www.network-science.de/ascii/ doom
 console.log(Util.heredoc(function() {
     /*
-___  ___              _        _      
-|  \/  |             | |      (_)     
-| .  . |  ___    ___ | | __    _  ___ 
+___  ___              _        _
+|  \/  |             | |      (_)
+| .  . |  ___    ___ | | __    _  ___
 | |\/| | / _ \  / __|| |/ /   | |/ __|
 | |  | || (_) || (__ |   <  _ | |\__ \
 \_|  |_/ \___/  \___||_|\_\(_)| ||___/
-                             _/ |     
-                            |__/      
+                             _/ |
+                            |__/
      */
 }));
 

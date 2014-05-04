@@ -24,53 +24,31 @@ var Mock = require('./mock');
 
     如果业务和场景需要，可以联系 [@墨智]()、[nuysoft](nuysoft@gmail.com) 提供对特定库的内置支持，不过最酷的做法是开发人员能够为 Mock.js 贡献代码。
 */
+
+
 // for jQuery
 Mock.mockjax = function mockjax(jQuery) {
-
-    function mockxhr() {
-        return {
-            open: jQuery.noop,
-            send: jQuery.noop,
-            getAllResponseHeaders: jQuery.noop,
-            readyState: 4,
-            status: 200
-        }
-    }
-
-    function convert(mock) {
-        return function() {
-            return Mock.mock(
-                jQuery.isFunction(mock.template) ? mock.template() : mock.template
-            )
-        }
-    }
-
     function prefilter(options) {
-        for (var surl in Mock._mocked) {
-            var mock = Mock._mocked[surl]
+        var mock = Mock.mockjax.match(options)
 
-            if (jQuery.type(mock.rurl) === 'string') {
-                if (mock.rurl !== options.url) continue
-            }
-            if (jQuery.type(mock.rurl) === 'regexp') {
-                if (!mock.rurl.test(options.url)) continue
-            }
-
-            options.dataFilter = convert(mock)
-            options.converters['text json'] = convert(mock)
-            options.xhr = mockxhr
-            break
+        if (!mock) {
+            return
         }
+
+        options.xhr                     = Mock.mockjax.xhr
+        options.dataFilter              = Mock.mockjax.convert(mock)
+        options.converters['text json'] = Mock.mockjax.convert(mock)
     }
 
-    jQuery.ajaxPrefilter("*", prefilter)
-    jQuery.ajaxPrefilter("json", prefilter)
-    jQuery.ajaxPrefilter("jsonp", prefilter)
+    jQuery.ajaxPrefilter("*"     , prefilter)
+    jQuery.ajaxPrefilter("json"  , prefilter)
+    jQuery.ajaxPrefilter("jsonp" , prefilter)
 
     return Mock
 }
 
 if (typeof jQuery != 'undefined') Mock.mockjax(jQuery)
+
 
 // for Zepto
 // 因为 Zepto 并没有实现类似 jQuery.ajaxPrefilter 等预处理函数
@@ -78,40 +56,28 @@ if (typeof jQuery != 'undefined') Mock.mockjax(jQuery)
 if (typeof Zepto != 'undefined') {
     Mock.mockjax = function(Zepto) {
         var __original_ajax = Zepto.ajax
-        var xhr = {
-            readyState: 4,
-            responseText: '',
-            responseXML: null,
-            state: 2,
-            status: 200,
-            statusText: "success",
-            timeoutTimer: null
-        }
 
         /**
          * @param options
          * return xhr
          */
         Zepto.ajax = function(options) {
-            for (var surl in Mock._mocked) {
-                var mock = Mock._mocked[surl]
+            var mock = Mock.mockjax.match(options)
 
-                if (Zepto.type(mock.rurl) === 'string') {
-                    if (mock.rurl !== options.url) continue
-                }
-                if (Zepto.type(mock.rurl) === 'regexp') {
-                    if (!mock.rurl.test(options.url)) continue
-                }
-
-                console.log('[mock]', options.url, '>', mock.rurl)
-                var data = Mock.mock(mock.template)
-                console.log('[mock]', data)
-                if (options.success) options.success(data, xhr, options)
-                if (options.complete) options.complete(xhr.status, xhr, options)
-                return xhr
+            if (!mock) {
+                return __original_ajax.apply(Zepto, arguments)
             }
 
-            return __original_ajax.call(Zepto, options)
+            var xhr = Mock.mockjax.xhr()
+            var data = Mock.mockjax.convert(mock)()
+
+            console.log('[mock]', options.url, '>', mock.rurl)
+            console.log('[mock]', data)
+
+            if (options.success) options.success(data, xhr.status, xhr)
+            if (options.complete) options.complete(xhr, xhr.status)
+
+            return xhr
         }
     }
 
@@ -121,39 +87,25 @@ if (typeof Zepto != 'undefined') {
 // for KISSY
 if (typeof KISSY != 'undefined' && KISSY.add) {
     Mock.mockjax = function mockjax(KISSY) {
-        var _original_ajax = KISSY.io;
+        var _original_ajax = KISSY.io
 
-        // @白汀 提交：次对象用于模拟kissy的io响应之后的传给success方法的xhr对象，只构造了部分属性，不包含实际KISSY中的完整对象。
-        var xhr = {
-            readyState: 4,
-            responseText: '',
-            responseXML: null,
-            state: 2,
-            status: 200,
-            statusText: "success",
-            timeoutTimer: null
-        };
         KISSY.io = function(options) {
-            // if (options.dataType === 'json') {
-            for (var surl in Mock._mocked) {
-                var mock = Mock._mocked[surl];
+            var mock = Mock.mockjax.match(options)
 
-                if (KISSY.type(mock.rurl) === 'string') {
-                    if (mock.rurl !== options.url) continue
-                }
-                if (KISSY.type(mock.rurl) === 'regexp') {
-                    if (!mock.rurl.test(options.url)) continue
-                }
-
-                console.log('[mock]', options.url, '>', mock.rurl)
-                var data = Mock.mock(mock.template)
-                console.log('[mock]', data)
-                if (options.success) options.success(data, 'success', xhr)
-                if (options.complete) options.complete(data, 'success', xhr)
-                return KISSY
+            if (!mock) {
+                return _original_ajax.apply(this, arguments)
             }
-            // }
-            return _original_ajax.apply(this, arguments)
+
+            var xhr = Mock.mockjax.xhr()
+            var data = Mock.mockjax.convert(mock)()
+
+            console.log('[mock]', options.url, '>', mock.rurl)
+            console.log('[mock]', data)
+
+            if (options.success) options.success(data, 'success', xhr)
+            if (options.complete) options.complete(data, 'success', xhr)
+
+            return KISSY
         }
 
         // 还原 KISSY.io 上的属性
@@ -162,4 +114,64 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
         }
     }
 }
+
+
+// 公共流程部件
+
+/**
+ * 合并了 jQuery 和 KISSY 的 xhr 属性
+ * @白汀 提交：次对象用于模拟kissy的io响应之后的传给success方法
+ * 的xhr对象，只构造了部分属性，不包含实际KISSY中的完整对象。
+ */
+Mock.mockjax.xhr = function() {
+    return {
+        statusText: "success",
+        responseText: '',
+        responseXML: null,
+        timeoutTimer: null,
+        open: Mock.Util.noop,
+        send: Mock.Util.noop,
+        getAllResponseHeaders: Mock.Util.noop,
+        state: 2,
+        readyState: 4,
+        status: 200
+    }
+}
+
+/**
+ * @param {Object} mock Mock._mocked 对象
+ * return Function
+ */
+Mock.mockjax.convert = function(mock) {
+    return function() {
+        return Mock.mock(
+            Mock.Util.isFunction(mock.template) ? mock.template() : mock.template
+        )
+    }
+}
+
+/**
+ * @param {Object} options  Ajax options    调用 ajax 时的参数
+ * return Object | Null 返回找到的匹配对象
+ */
+Mock.mockjax.match = function(options) {
+    for (var surl in Mock._mocked) {
+        var mock = Mock._mocked[surl]
+
+        if (Mock.Util.type(mock.rurl) === 'string' &&
+            mock.rurl !== options.url) {
+                continue
+        }
+
+        if (Mock.Util.type(mock.rurl) === 'regexp' &&
+            !mock.rurl.test(options.url)) {
+                continue
+        }
+
+        return mock
+    }
+
+    return null
+}
+
 // END(BROWSER)

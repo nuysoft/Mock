@@ -1,4 +1,4 @@
-/*! mockjs 26-04-2014 */
+/*! mockjs 04-05-2014 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -820,34 +820,16 @@
     });
     /*! src/mockjax.js */
     Mock.mockjax = function mockjax(jQuery) {
-        function mockxhr() {
-            return {
-                open: jQuery.noop,
-                send: jQuery.noop,
-                getAllResponseHeaders: jQuery.noop,
-                readyState: 4,
-                status: 200
-            };
-        }
-        function convert(mock) {
-            return function() {
-                return Mock.mock(jQuery.isFunction(mock.template) ? mock.template() : mock.template);
-            };
-        }
         function prefilter(options) {
-            for (var surl in Mock._mocked) {
-                var mock = Mock._mocked[surl];
-                if (jQuery.type(mock.rurl) === "string") {
-                    if (mock.rurl !== options.url) continue;
-                }
-                if (jQuery.type(mock.rurl) === "regexp") {
-                    if (!mock.rurl.test(options.url)) continue;
-                }
-                options.dataFilter = convert(mock);
-                options.converters["text json"] = convert(mock);
-                options.xhr = mockxhr;
-                break;
+            var mock = Mock.mockjax.match(options);
+            if (!mock) {
+                return;
             }
+            options.xhr = Mock.mockjax.xhr;
+            options.dataFilter = Mock.mockjax.convert(mock);
+            options.converters["text json"] = Mock.mockjax.convert(mock);
+            options.converters["text script"] = Mock.mockjax.convert(mock);
+            options.converters["script json"] = Mock.mockjax.convert(mock);
         }
         jQuery.ajaxPrefilter("*", prefilter);
         jQuery.ajaxPrefilter("json", prefilter);
@@ -858,32 +840,18 @@
     if (typeof Zepto != "undefined") {
         Mock.mockjax = function(Zepto) {
             var __original_ajax = Zepto.ajax;
-            var xhr = {
-                readyState: 4,
-                responseText: "",
-                responseXML: null,
-                state: 2,
-                status: 200,
-                statusText: "success",
-                timeoutTimer: null
-            };
             Zepto.ajax = function(options) {
-                for (var surl in Mock._mocked) {
-                    var mock = Mock._mocked[surl];
-                    if (Zepto.type(mock.rurl) === "string") {
-                        if (mock.rurl !== options.url) continue;
-                    }
-                    if (Zepto.type(mock.rurl) === "regexp") {
-                        if (!mock.rurl.test(options.url)) continue;
-                    }
-                    console.log("[mock]", options.url, ">", mock.rurl);
-                    var data = Mock.mock(mock.template);
-                    console.log("[mock]", data);
-                    if (options.success) options.success(data, xhr, options);
-                    if (options.complete) options.complete(xhr.status, xhr, options);
-                    return xhr;
+                var mock = Mock.mockjax.match(options);
+                if (!mock) {
+                    return __original_ajax.apply(Zepto, arguments);
                 }
-                return __original_ajax.call(Zepto, options);
+                var xhr = Mock.mockjax.xhr();
+                var data = Mock.mockjax.convert(mock)();
+                console.log("[mock]", options.url, ">", mock.rurl);
+                console.log("[mock]", data);
+                if (options.success) options.success(data, xhr.status, xhr);
+                if (options.complete) options.complete(xhr, xhr.status);
+                return xhr;
             };
         };
         Mock.mockjax(Zepto);
@@ -891,38 +859,56 @@
     if (typeof KISSY != "undefined" && KISSY.add) {
         Mock.mockjax = function mockjax(KISSY) {
             var _original_ajax = KISSY.io;
-            var xhr = {
-                readyState: 4,
-                responseText: "",
-                responseXML: null,
-                state: 2,
-                status: 200,
-                statusText: "success",
-                timeoutTimer: null
-            };
             KISSY.io = function(options) {
-                for (var surl in Mock._mocked) {
-                    var mock = Mock._mocked[surl];
-                    if (KISSY.type(mock.rurl) === "string") {
-                        if (mock.rurl !== options.url) continue;
-                    }
-                    if (KISSY.type(mock.rurl) === "regexp") {
-                        if (!mock.rurl.test(options.url)) continue;
-                    }
-                    console.log("[mock]", options.url, ">", mock.rurl);
-                    var data = Mock.mock(mock.template);
-                    console.log("[mock]", data);
-                    if (options.success) options.success(data, "success", xhr);
-                    if (options.complete) options.complete(data, "success", xhr);
-                    return KISSY;
+                var mock = Mock.mockjax.match(options);
+                if (!mock) {
+                    return _original_ajax.apply(this, arguments);
                 }
-                return _original_ajax.apply(this, arguments);
+                var xhr = Mock.mockjax.xhr();
+                var data = Mock.mockjax.convert(mock)();
+                console.log("[mock]", options.url, ">", mock.rurl);
+                console.log("[mock]", data);
+                if (options.success) options.success(data, "success", xhr);
+                if (options.complete) options.complete(data, "success", xhr);
+                return KISSY;
             };
             for (var name in _original_ajax) {
                 KISSY.io[name] = _original_ajax[name];
             }
         };
     }
+    Mock.mockjax.xhr = function() {
+        return {
+            statusText: "success",
+            responseText: "",
+            responseXML: null,
+            timeoutTimer: null,
+            open: Mock.Util.noop,
+            send: Mock.Util.noop,
+            getAllResponseHeaders: Mock.Util.noop,
+            state: 2,
+            readyState: 4,
+            status: 200
+        };
+    };
+    Mock.mockjax.convert = function(mock) {
+        return function() {
+            return Mock.mock(Mock.Util.isFunction(mock.template) ? mock.template() : mock.template);
+        };
+    };
+    Mock.mockjax.match = function(options) {
+        for (var surl in Mock._mocked) {
+            var mock = Mock._mocked[surl];
+            if (Mock.Util.type(mock.rurl) === "string" && mock.rurl !== options.url) {
+                continue;
+            }
+            if (Mock.Util.type(mock.rurl) === "regexp" && !mock.rurl.test(options.url)) {
+                continue;
+            }
+            return mock;
+        }
+        return null;
+    };
     /*! src/expose.js */
     Mock.Util = Util;
     Mock.Random = Random;
