@@ -1,4 +1,4 @@
-/*! mockjs 03-05-2014 */
+/*! mockjs 04-05-2014 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -828,6 +828,8 @@
             options.xhr = Mock.mockjax.xhr;
             options.dataFilter = Mock.mockjax.convert(mock);
             options.converters["text json"] = Mock.mockjax.convert(mock);
+            options.converters["text script"] = Mock.mockjax.convert(mock);
+            options.converters["script json"] = Mock.mockjax.convert(mock);
         }
         jQuery.ajaxPrefilter("*", prefilter);
         jQuery.ajaxPrefilter("json", prefilter);
