@@ -17,3 +17,5 @@
         },
         ...
     }
+
+<!-- 感谢 @麦少 同学对 Mock.mockjax(library) 的重构，并增加了对 Zepto.js 的支持。 -->
