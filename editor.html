@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Mock.js Service</title>
+    
+    <link  href="/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <script src="/bower_components/jquery/jquery.js"></script>
+    <script src="/dist/mock.js"></script>
+    <link  href="/bower_components/codemirror/lib/codemirror.css" rel="stylesheet">
+    <link  href="/bower_components/codemirror/theme/neat.css" rel="stylesheet">
+    <script src="/bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="/bower_components/codemirror/mode/javascript/javascript.js"></script>
+
+    <link  href="/editor/editor.css" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <!--  -->
+        <div class="brand">
+            <div class="logo">
+                <a href="/"><i class="iconlogo">&#x3435;</i></a>
+            </div>
+            <div class="name">Mock.js</div>
+        </div>
+        <!--  -->
+        <ul class="nav navbar-right">
+            <li><a href="#help" class="help"><i class="glyphicon glyphicon-question-sign"></i> Help</a></li>
+            <li><a href="javascript:void('About');" class="about"><i class="glyphicon glyphicon-info-sign"></i> About</a></li>
+            <li><a href="javascript:void('Login/Sign up');" class="account"><i class="glyphicon glyphicon-user"></i> Login/Sign up</a></li>
+        </ul>
+        <!--  -->
+        <ul class="nav">
+            <!-- <li><a class="save" href="javascript:;"><i class="glyphicon glyphicon-floppy-save"></i> Save</a></li> -->
+            <!-- <li><a class="update" href="javascript:;">Update</a></li> -->
+            <li><a class="tidy" href="javascript:;"><i class="glyphicon glyphicon-eye-open"></i> Tidy</a></li>
+            <!-- <li><a class="share" href="javascript:;"><i class="glyphicon glyphicon-share-alt"></i> Share</a></li> -->
+        </ul>
+    </div>
+    <div class="viewport">
+        <div class="box template pull-left">
+            <textarea name="tpl"></textarea>
+        </div>
+        <div class="box result pull-left">
+            <textarea name="data"></textarea>
+            <span class="badge"></span>
+        </div>
+        <div class="sidebar pull-left">
+            <div class="help">
+                <div class="content">
+                    <h3>示例 Demo</h3>
+                    <ul>
+                        <li><a href="javascript:;" class="importSyntaxExample">导入语法示例</a></li>
+                        <li><a href="javascript:;" class="importPlaceholderExample">导入占位符示例</a></li>
+                    </ul>
+                    <h3>语法 Syntax</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Syntax</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>String</td>
+                                <td>
+                                    <p><code>'name|min-max': 'value'</code></p>
+                                    <p><code>'name|count': 'value'</code></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Number</td>
+                                <td>
+                                    <p><code>'name|+1': 100</code></p>
+                                    <p><code>'name|1-100': 100</code></p>
+                                    <p><code>'name|1-100.1-10</code></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Boolean</td>
+                                <td>
+                                    <p><code>'name|1': value</code></p>
+                                    <p><code>'name|min-max': value</code></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Object</td>
+                                <td>
+                                    <p><code>'name|min-max': {}</code></p>
+                                    <p><code>'name|count': {}</code></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Array</td>
+                                <td>
+                                    <p><code>'name|1': [{}, {} ...]</code></p>
+                                    <p><code>'name|min-max': [{}, {} ...]</code></p>
+                                    <p><code>'name|count': [{}, {} ...]</code></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Function</td>
+                                <td>
+                                    <p><code>'name': function(){}</code></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>占位符 Placeholder</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Placeholder</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Basics</td>
+                                <td><p>boolean, natural, integer, float, character, string, range, date, time, datetime, now</p></td>
+                            </tr>
+                            <tr>
+                                <td>Image</td>
+                                <td><p>image, dataImage</p></td>
+                            </tr>
+                            <tr>
+                                <td>Color</td>
+                                <td><p>color</td>
+                            </tr>
+                            <tr>
+                                <td>Text</td>
+                                <td><p>paragraph, sentence, word, title</p></td>
+                            </tr>
+                            <tr>
+                                <td>Name</td>
+                                <td><p>first, last, name</p></td>
+                            </tr>
+                            <tr>
+                                <td>Web</td>
+                                <td><p>url, domain, email, ip, tld</p></td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td><p>area, region</p></td>
+                            </tr>
+                            <tr>
+                                <td>Helpers</td>
+                                <td><p>capitalize, upper, lower, pick, shuffle</p></td>
+                            </tr>
+                            <tr>
+                                <td>Miscellaneous</td>
+                                <td><p>guid, id</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="about">
+                <div class="content">
+                    <h3>About</h3>
+                    <p>TODO</p>
+                </div>
+            </div>
+            <div class="account">
+                <div class="content">
+                    <h3>Account</h3>
+                    <p>TODO</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/editor/editor.js"></script>
+</body>
+</html>

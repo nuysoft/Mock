@@ -1,4 +1,4 @@
-/*! mockjs 22-04-2014 */
+/*! mockjs 09-05-2014 19:46:15 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -7,7 +7,7 @@
 */
 (function(undefined) {
     var Mock = {
-        version: "0.1.1",
+        version: "0.1.2",
         _mocked: {}
     };
     /*! src/util.js */
@@ -67,6 +67,20 @@
         };
         Util.isNumeric = function(value) {
             return !isNaN(parseFloat(value)) && isFinite(value);
+        };
+        Util.keys = function(obj) {
+            var keys = [];
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) keys.push(key);
+            }
+            return keys;
+        };
+        Util.values = function(obj) {
+            var values = [];
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) values.push(obj[key]);
+            }
+            return values;
         };
         Util.heredoc = function heredoc(fn) {
             return fn.toString().replace(/^[^\/]+\/\*!?/, "").replace(/\*\/[^\/]+$/, "").replace(/^[\s\xA0]+/, "").replace(/[\s\xA0]+$/, "");
@@ -165,6 +179,7 @@
                     start = 0;
                 }
                 step = arguments[2] || 1;
+                start = +start, stop = +stop, step = +step;
                 var len = Math.max(Math.ceil((stop - start) / step), 0);
                 var idx = 0;
                 var range = new Array(len);
@@ -226,7 +241,8 @@
                 },
                 a: function(date) {
                     return date.getHours() < 12 ? "am" : "pm";
-                }
+                },
+                T: "getTime"
             }
         });
         Random.extend({
@@ -257,6 +273,42 @@
             datetime: function(format) {
                 format = format || "yyyy-MM-dd HH:mm:ss";
                 return this.format(this.randomDate(), format);
+            },
+            now: function(unit, format) {
+                if (arguments.length === 1) {
+                    if (!/year|month|week|day|hour|minute|second|week/.test(unit)) {
+                        format = unit;
+                        unit = "";
+                    }
+                }
+                unit = (unit || "").toLowerCase();
+                format = format || "yyyy-MM-dd HH:mm:ss";
+                var date = new Date();
+                switch (unit) {
+                  case "year":
+                    date.setMonth(0);
+
+                  case "month":
+                    date.setDate(1);
+
+                  case "week":
+                  case "day":
+                    date.setHours(0);
+
+                  case "hour":
+                    date.setMinutes(0);
+
+                  case "minute":
+                    date.setSeconds(0);
+
+                  case "second":
+                    date.setMilliseconds(0);
+                }
+                switch (unit) {
+                  case "week":
+                    date.setDate(date.getDate() - date.getDay());
+                }
+                return this.format(date, format);
             }
         });
         Random.extend({
@@ -470,18 +522,20 @@
         });
         Random.extend({
             capitalize: function(word) {
-                return word.charAt(0).toUpperCase() + word.substr(1);
+                return (word + "").charAt(0).toUpperCase() + (word + "").substr(1);
             },
             upper: function(str) {
-                return str.toUpperCase();
+                return (str + "").toUpperCase();
             },
             lower: function(str) {
-                return str.toLowerCase();
+                return (str + "").toLowerCase();
             },
             pick: function(arr) {
+                arr = arr || [];
                 return arr[this.natural(0, arr.length - 1)];
             },
             shuffle: function(arr) {
+                arr = arr || [];
                 var old = arr.slice(0), result = [], index = 0, length = old.length;
                 for (var i = 0; i < length; i++) {
                     index = this.natural(0, old.length - 1);
@@ -661,7 +715,9 @@
     var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /(\d+)-?(\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g;
     Mock.extend = Util.extend;
     Mock.mock = function(rurl, rtype, template) {
-        if (arguments.length === 1) return Handle.gen(rurl);
+        if (arguments.length === 1) {
+            return Handle.gen(rurl);
+        }
         if (arguments.length === 2) {
             template = rtype;
             rtype = undefined;
@@ -676,42 +732,71 @@
     var Handle = {
         extend: Util.extend
     };
-    Handle.gen = function(template, name, obj, templateContext) {
-        var parameters = (name = name || "").match(rkey), range = parameters && parameters[3] && parameters[3].match(rrange), min = range && parseInt(range[1], 10), max = range && parseInt(range[2], 10), count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1, decimal = parameters && parameters[4] && parameters[4].match(rrange), dmin = decimal && parseInt(decimal[1], 10), dmax = decimal && parseInt(decimal[2], 10), dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : 0, point = parameters && parameters[4], type = Util.type(template), result;
+    Handle.rule = function(name) {
+        name = (name || "") + "";
+        var parameters = (name || "").match(rkey), range = parameters && parameters[3] && parameters[3].match(rrange), min = range && parseInt(range[1], 10), max = range && parseInt(range[2], 10), count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1, decimal = parameters && parameters[4] && parameters[4].match(rrange), dmin = decimal && parseInt(decimal[1], 10), dmax = decimal && parseInt(decimal[2], 10), dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : 0, point = parameters && parameters[4];
+        return {
+            parameters: parameters,
+            range: range,
+            min: min,
+            max: max,
+            count: count,
+            decimal: decimal,
+            dmin: dmin,
+            dmax: dmax,
+            dcount: dcount,
+            point: point
+        };
+    };
+    Handle.gen = function(template, name, context) {
+        name = name = (name || "") + "";
+        context = context || {};
+        context = {
+            path: context.path || [],
+            templatePath: context.templatePath || [],
+            currentContext: context.currentContext,
+            templateCurrentContext: context.templateCurrentContext || template,
+            root: context.root,
+            templateRoot: context.templateRoot
+        };
+        var rule = Handle.rule(name);
+        var type = Util.type(template);
         if (Handle[type]) {
-            result = Handle[type]({
+            return Handle[type]({
                 type: type,
                 template: template,
-                templateContext: templateContext || template,
                 name: name,
-                obj: obj,
-                parameters: parameters,
-                range: range,
-                min: min,
-                max: max,
-                count: count,
-                decimal: decimal,
-                dmin: dmin,
-                dmax: dmax,
-                dcount: dcount,
-                point: point
+                parsedName: name ? name.replace(rkey, "$1") : name,
+                rule: rule,
+                context: context
             });
-            return result;
         }
         return template;
     };
     Handle.extend({
         array: function(options) {
             var result = [], i, j;
-            if (!options.parameters) {
+            if (!options.rule.parameters) {
                 for (i = 0; i < options.template.length; i++) {
-                    result.push(Handle.gen(options.template[i]));
+                    options.context.path.push(i);
+                    result.push(Handle.gen(options.template[i], i, {
+                        currentContext: result,
+                        templateCurrentContext: options.template,
+                        path: options.context.path
+                    }));
+                    options.context.path.pop();
                 }
             } else {
-                if (options.count === 1 && options.template.length > 1) {
-                    result = Random.pick(Handle.gen(options.template));
+                if (options.rule.count === 1 && options.template.length > 1) {
+                    options.context.path.push(options.name);
+                    result = Random.pick(Handle.gen(options.template, undefined, {
+                        currentContext: result,
+                        templateCurrentContext: options.template,
+                        path: options.context.path
+                    }));
+                    options.context.path.pop();
                 } else {
-                    for (i = 0; i < options.count; i++) {
+                    for (i = 0; i < options.rule.count; i++) {
                         j = 0;
                         do {
                             result.push(Handle.gen(options.template[j++]));
@@ -722,41 +807,65 @@
             return result;
         },
         object: function(options) {
-            var result = {}, key, inc;
-            for (key in options.template) {
-                result[key.replace(rkey, "$1")] = Handle.gen(options.template[key], key, result, options.template);
-                inc = key.match(rkey);
-                if (inc && inc[2] && Util.type(options.template[key]) === "number") {
-                    options.template[key] += parseInt(inc[2], 10);
+            var result = {}, keys, key, parsedKey, inc, i;
+            if (options.rule.min) {
+                keys = Util.keys(options.template);
+                keys = Random.shuffle(keys);
+                keys = keys.slice(0, options.rule.count);
+                for (i = 0; i < keys.length; i++) {
+                    key = keys[i];
+                    parsedKey = key.replace(rkey, "$1");
+                    options.context.path.push(parsedKey);
+                    result[parsedKey] = Handle.gen(options.template[key], key, {
+                        currentContext: result,
+                        templateCurrentContext: options.template,
+                        path: options.context.path
+                    });
+                    options.context.path.pop();
+                }
+            } else {
+                for (key in options.template) {
+                    parsedKey = key.replace(rkey, "$1");
+                    options.context.path.push(parsedKey);
+                    result[parsedKey] = Handle.gen(options.template[key], key, {
+                        currentContext: result,
+                        templateCurrentContext: options.template,
+                        path: options.context.path
+                    });
+                    options.context.path.pop();
+                    inc = key.match(rkey);
+                    if (inc && inc[2] && Util.type(options.template[key]) === "number") {
+                        options.template[key] += parseInt(inc[2], 10);
+                    }
                 }
             }
             return result;
         },
         number: function(options) {
             var result, parts, i;
-            if (options.point) {
+            if (options.rule.point) {
                 options.template += "";
                 parts = options.template.split(".");
-                parts[0] = options.range ? options.count : parts[0];
-                parts[1] = (parts[1] || "").slice(0, options.dcount);
-                for (i = 0; parts[1].length < options.dcount; i++) {
+                parts[0] = options.rule.range ? options.rule.count : parts[0];
+                parts[1] = (parts[1] || "").slice(0, options.rule.dcount);
+                for (i = 0; parts[1].length < options.rule.dcount; i++) {
                     parts[1] += Random.character("number");
                 }
                 result = parseFloat(parts.join("."), 10);
             } else {
-                result = options.range && !options.parameters[2] ? options.count : options.template;
+                result = options.rule.range && !options.rule.parameters[2] ? options.rule.count : options.template;
             }
             return result;
         },
         "boolean": function(options) {
             var result;
-            result = options.parameters ? Random.bool(options.min, options.max, options.template) : options.template;
+            result = options.rule.parameters ? Random.bool(options.rule.min, options.rule.max, options.template) : options.template;
             return result;
         },
         string: function(options) {
             var result = "", i, placeholders, ph, phed;
             if (options.template.length) {
-                for (i = 0; i < options.count; i++) {
+                for (i = 0; i < options.rule.count; i++) {
                     result += options.template;
                 }
                 placeholders = result.match(rplaceholder) || [];
@@ -766,8 +875,10 @@
                         placeholders.splice(i--, 1);
                         continue;
                     }
-                    phed = Handle.placeholder(ph, options.obj, options.templateContext);
-                    if (placeholders.length === 1 && ph === result) {
+                    phed = Handle.placeholder(ph, options.context.currentContext, options.context.templateCurrentContext);
+                    if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) {
+                        result = phed;
+                        break;
                         if (Util.isNumeric(phed)) {
                             result = parseFloat(phed, 10);
                             break;
@@ -780,9 +891,12 @@
                     result = result.replace(ph, phed);
                 }
             } else {
-                result = options.range ? Random.string(options.count) : options.template;
+                result = options.rule.range ? Random.string(options.rule.count) : options.template;
             }
             return result;
+        },
+        "function": function(options) {
+            return options.template.call(options.context.currentContext);
         }
     });
     Handle.extend({
@@ -793,10 +907,18 @@
         },
         placeholder: function(placeholder, obj, templateContext) {
             rplaceholder.exec("");
-            var parts = rplaceholder.exec(placeholder), key = parts && parts[1], lkey = key && key.toLowerCase(), okey = this._all()[lkey], params = parts && parts[2] ? parts[2].split(/,\s*/) : [];
+            var parts = rplaceholder.exec(placeholder), key = parts && parts[1], lkey = key && key.toLowerCase(), okey = this._all()[lkey], params = parts && parts[2] || "";
+            try {
+                eval("!function(){ params = [].splice.call(arguments, 0 ) }(" + params + ")");
+            } catch (e) {
+                params = parts[2].split(/,\s*/);
+            }
             if (obj && key in obj) return obj[key];
             if (templateContext && typeof templateContext === "object" && key in templateContext && placeholder !== templateContext[key]) {
-                templateContext[key] = Handle.gen(templateContext[key], key, obj, templateContext);
+                templateContext[key] = Handle.gen(templateContext[key], key, {
+                    currentContext: obj,
+                    templateCurrentContext: templateContext
+                });
                 return templateContext[key];
             }
             if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder;

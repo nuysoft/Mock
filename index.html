@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Mock.js</title>
     <meta name="keywords" content="模拟数据生成器，模拟数据，模拟请求，Simulation Data Generator" />
+    <link rel="icon" href="/favicon.ico">
     <link href="./demo/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -43,6 +44,7 @@
           position: relative;
           width: 600px;
           margin: 40px 0 50px 280px;
+          padding-right: 40px;
         }
         /* download */
         .w250 {
@@ -80,6 +82,7 @@
             speak: none;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            color: #08C;
         }
     </style>
   </head>
@@ -92,8 +95,11 @@
     <div class="container"><!-- ## Mock.js -->
 
 <p><h2 class="hide" href="#">Mock.js</h2>
-<img src="mockjs.png" wid></p>
-<!-- <i class="iconlogo">&#x3435;</i> -->
+<img class="hide" src="mockjs.png" wid></p>
+<h1 style="color: #428BCA; margin-bottom: 30px;">
+    <i class="iconlogo" style="font-size: 80px;">&#x3435;</i>
+    <span>Mock.js</span>
+</h1>
 
 <p><a href="http://travis-ci.org/nuysoft/Mock"><img src="https://api.travis-ci.org/nuysoft/Mock.png?branch=master" alt="Build Status"></a>
 <!-- [![GitHub version](https://badge.fury.io/gh/nuysoft%2FMock.png)](http://badge.fury.io/gh/nuysoft%2FMock) -->
@@ -110,20 +116,20 @@
 <!-- 没有 Live Demo 的库都是耍流氓  -->
 
 <ul>
-<li><a href="./demo/mock.html">Data</a></li>
+<li><a href="./editor.html#help">数据模板编辑器</a></li>
 <li><a href="./demo/mock4tpl.html">Handlebars &amp; Mustache</a></li>
 <li><a href="./demo/mock4xtpl.html">KISSY XTemplate</a></li>
 </ul>
 <h2>下载</h2>
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
-        Development Version (0.1.1)
-    </a> - <i>65kB, Uncompressed</i>
+        Development Version (0.1.2)
+    </a> - <i>71kB, Uncompressed</i>
 </p>
 <p>
     <a href="./dist/mock-min.js" class="btn btn-primary w250">
-        Production Version (0.1.1)
-    </a> - <i>27kB, Minified</i>
+        Production Version (0.1.2)
+    </a> - <i>31kB, Minified</i>
 </p>
 <p>
     <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">
@@ -179,40 +185,129 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 -->
 
 
-<h2>Mock</h2>
-<h3>Mock.mock()</h3>
+<h2>语法规范</h2>
+<p>Mock.js 的语法规范包括两部分：</p>
+<ol>
+<li>数据模板定义（Data Temaplte Definition，DTD）</li>
+<li>数据占位符定义（Data Placeholder Definition，DPD）</li>
+</ol>
+<h3>数据模板定义 DTD</h3>
+<p><strong>数据模板中的每个属性由 3 部分构成：属性名、生成规则、属性值：</strong></p>
+<pre><code>// 属性名   name
+// 生成规则 rule
+// 属性值   value
+&#39;name|rule&#39;: value</code></pre>
+<p><strong>注意：</strong></p>
 <ul>
-<li>Mock.mock(template) <br>根据数据模板生成模拟数据。</li>
-<li>Mock.mock(rurl, template) <br>记录数据模板，当拦截到匹配的 Ajax 请求时，生成并返回模拟数据。</li>
+<li>属性名 和 生成规则 之间用 <code>|</code> 分隔。</li>
+<li>生成规则 是可选的。</li>
+<li>生成规则 有 7 种格式：<ol>
+<li><code>&#39;name|min-max&#39;: value</code></li>
+<li><code>&#39;name|count&#39;: value</code></li>
+<li><code>&#39;name|min-max.dmin-dmax&#39;: value</code></li>
+<li><code>&#39;name|min-max.dcount&#39;: value</code></li>
+<li><code>&#39;name|count.dmin-dmax&#39;: value</code></li>
+<li><code>&#39;name|count.dcount&#39;: value</code></li>
+<li><code>&#39;name|+step&#39;: value</code></li>
+</ol>
+</li>
+<li><strong>生成规则 的 含义 需要依赖 属性值 才能确定。</strong></li>
+<li>属性值 中可以含有 <code>@占位符</code>。</li>
+<li>属性值 还指定了最终值的初始值和类型。</li>
+</ul>
+<p><strong>生成规则和示例：</strong></p>
+<ol>
+<li>属性值是字符串 <strong>String</strong><ol>
+<li><code>&#39;name|min-max&#39;: &#39;value&#39;</code> 通过重复 <code>&#39;value&#39;</code> 生成一个字符串，重复次数大于等于 <code>min</code>，小于等于 <code>max</code>。</li>
+<li><code>&#39;name|count&#39;: &#39;value&#39;</code> 通过重复 <code>&#39;value&#39;</code> 生成一个字符串，重复次数等于 <code>count</code>。</li>
+</ol>
+</li>
+<li><p>属性值是数字 <strong>Number</strong></p>
+<ol>
+<li><code>&#39;name|+1&#39;: 100</code> 属性值自动加 1，初始值为 100</li>
+<li><code>&#39;name|1-100&#39;: 100</code> 生成一个大于等于 1、小于等于 100 的整数，属性值 100 只用来确定类型。</li>
+<li><p><code>&#39;name|1-100.1-10&#39;: 100</code> 生成一个浮点数，整数部分大于等于 1、小于等于 100，小数部分保留 1 到 10 位。</p>
+<pre><code> {
+     &#39;number1|1-100.1-10&#39;: 1,
+     &#39;number2|123.1-10&#39;: 1,
+     &#39;number3|123.3&#39;: 1,
+     &#39;number4|123.10&#39;: 1.123
+ }
+ // =&gt;
+ {
+     &quot;number1&quot;: 12.92,
+     &quot;number2&quot;: 123.51,
+     &quot;number3&quot;: 123.777,
+     &quot;number4&quot;: 123.1231091814
+ }</code></pre>
+</li>
+</ol>
+</li>
+<li>属性值是布尔型 <strong>Boolean</strong><ol>
+<li><code>&#39;name|1&#39;: value</code> 随机生成一个布尔值，值为 true 的概率是 1/2，值为 false 的概率是 1/2。</li>
+<li><code>&#39;name|min-max&#39;: value</code> 随机生成一个布尔值，值为 <code>value</code> 的概率是 <code>min / (min + max)</code>，值为 <code>!value</code> 的概率是 <code>max / (min + max)</code>。</li>
+</ol>
+</li>
+<li>属性值是对象 <strong>Object</strong><ol>
+<li><code>&#39;name|min-max&#39;: {}</code> 从属性值 <code>{}</code> 中随机选取 <code>min</code> 到 <code>max</code> 个属性。</li>
+<li><code>&#39;name|count&#39;: {}</code> 从属性值 <code>{}</code> 中随机选取 <code>count</code> 个属性。</li>
+</ol>
+</li>
+<li>属性值是数组 <strong>Array</strong><ol>
+<li><code>&#39;name|1&#39;: [{}, {} ...]</code> 从属性值 <code>[{}, {} ...]</code> 中随机选取 1 个元素，作为最终值。</li>
+<li><code>&#39;name|min-max&#39;: [{}, {} ...]</code> 通过重复属性值 <code>[{}, {} ...]</code> 生成一个新数组，重复次数大于等于 <code>min</code>，小于等于 <code>max</code>。</li>
+<li><code>&#39;name|count&#39;: [{}, {} ...]</code> 通过重复属性值 <code>[{}, {} ...]</code> 生成一个新数组，重复次数为 <code>count</code>。</li>
+</ol>
+</li>
+<li><p>属性值是数组 <strong>Function</strong></p>
+<p> <code>&#39;name&#39;: function(){}</code> 执行函数 <code>function(){}</code>，取其返回值作为最终的属性值，上下文为 <code>&#39;name&#39;</code> 所在的对象。</p>
+</li>
+</ol>
+<h3>数据占位符定义 DPD</h3>
+<p>占位符 只是在属性值字符串中占个位置，并不出现在最终的属性值中。占位符 的格式为：</p>
+<pre><code>@占位符
+@占位符(参数 [, 参数])</code></pre>
+<p><strong>注意：</strong></p>
+<ol>
+<li>用 <code>@</code> 来标识其后的字符串是 占位符。</li>
+<li>占位符 引用的是 <code>Mock.Random</code> 中的方法。</li>
+<li>通过 <code>Mock.Random.extend()</code> 来扩展自定义占位符。</li>
+</ol>
+<hr>
+<h2>Mock</h2>
+<h3>Mock.mock( rurl?, rtype?, template|function() )</h3>
+<p>根据数据模板生成模拟数据。</p>
+<ul>
+<li><p><strong>Mock.mock( template )</strong></p>
+<p>  根据数据模板生成模拟数据。</p>
+</li>
+<li><p><strong>Mock.mock( rurl, template )</strong></p>
+<p>  记录数据模板。当拦截到匹配 <code>rurl</code> 的 Ajax 请求时，将根据数据模板 <code>template</code> 生成模拟数据，并作为响应数据返回。</p>
+</li>
+<li><p><strong>Mock.mock( rurl, function() )</strong></p>
+<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rurl</code> 的 Ajax 请求时，函数 <code>function()</code> 将被执行，并把执行结果作为响应数据返回。</p>
+</li>
+<li><p><strong>Mock.mock( rtype, template )</strong></p>
+<p>  记录数据模板。当拦截到匹配 <code>rtype</code> 的 Ajax 请求时，将根据数据模板 <code>template</code> 生成模拟数据，并作为响应数据返回。</p>
+</li>
+<li><p><strong>Mock.mock( rtype, function() )</strong></p>
+<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rtype</code> 的 Ajax 请求时，函数 <code>function()</code> 将被执行，并把执行结果作为响应数据返回。</p>
+</li>
+<li><p><strong>Mock.mock( rurl, rtype, template )</strong></p>
+<p>  记录数据模板。当拦截到匹配 <code>rurl</code> 和 <code>rtype</code> 的 Ajax 请求时，将根据数据模板 <code>template</code> 生成模拟数据，并作为响应数据返回。</p>
+</li>
+<li><p><strong>Mock.mock( rurl, rtype, function() )</strong></p>
+<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rurl</code> 和 <code>rtype</code> 的 Ajax 请求时，函数 <code>function()</code> 将被执行，并把执行结果作为响应数据返回。</p>
+</li>
 </ul>
 <p><strong>参数的含义和默认值</strong>如下所示：</p>
 <ul>
 <li><strong>参数 rurl</strong>：可选。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 <code>/\/domain\/list\.json/</code>、<code>&#39;/domian/list.json&#39;</code>。</li>
-<li><strong>参数 template</strong>：必须。表示数据模板，可以是对象或字符串。例如 <code>{ &#39;data|1-10&#39;:[{}] }</code>、<code>&#39;@EMAIL&#39;</code>。</li>
+<li><strong>参数 rtype</strong>：可选。表示需要拦截的 Ajax 请求类型。例如 <code>GET</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code> 等。</li>
+<li><strong>参数 template</strong>：可选。表示数据模板，可以是对象或字符串。例如 <code>{ &#39;data|1-10&#39;:[{}] }</code>、<code>&#39;@EMAIL&#39;</code>。</li>
+<li><strong>参数 function()</strong>：可选。表示用于生成响应数据的函数。</li>
 </ul>
-<p><strong>数据模板中的每个属性由 3 部分构成</strong>，以 <code>&#39;data|1-10&#39;:[{}]</code> 为例：</p>
-<ul>
-<li>属性名：例如 <code>data</code>。</li>
-<li>参数：指示生成数据的规则。例如 <code>|1-10</code>，指示生成的数组中含有 1 至 10 个元素。</li>
-<li>属性值：表示初始值、占位符、类型。例如 <code>[{}]</code>，表示属性值一个数组，数组中的元素是 <code>{}</code>。属性值中含有占位符时，将被替换为对应的随机数据，例如 <code>&#39;email&#39;: &#39;@EMAIL&#39;</code>，<code>&#39;@EMAIL&#39;</code>将被替换为随机生成的邮件地址。</li>
-</ul>
-<p><strong>参数和属性值部分的语法规范和示例</strong>如下所示：</p>
-<ul>
-<li><code>&#39;data|1-10&#39;:[{}]</code> 构造一个数组，含有 1-10 个元素</li>
-<li><code>&#39;data|1&#39;:[item, item, item]</code> 从数组中随机挑选一个元素做为属性值</li>
-<li><code>&#39;id|+1&#39;: 1</code> 属性 id 值自动加一，初始值为 1</li>
-<li><code>&#39;grade|1-100&#39;: 1</code> 生成一个 1-100 之间的整数</li>
-<li><code>&#39;float|1-10.1-10&#39;: 1</code> 生成一个浮点数，整数部分的范围是 1-10，保留小数点后 1-10 位小数</li>
-<li><code>&#39;star|1-10&#39;: &#39;★&#39;</code> 生成一个字符串，重复 1-10 次 <code>&#39;★&#39;</code></li>
-<li><code>&#39;repeat|10&#39;: &#39;A&#39;</code> 生成一个字符串，重复 10 次 <code>&#39;A&#39;</code></li>
-<li><code>&#39;published|1-2&#39;: false</code> 随机生成一个布尔值，值为 false 的概率是 1/3，值为 true 的概率是 2/3</li>
-<li><code>&#39;email&#39;: &#39;@EMAIL&#39;</code> 随即生成一个 Email</li>
-<li><code>&#39;date&#39;: &#39;@DATE&#39;</code> 随即生成一段日期字符串，默认格式为 <code>yyyy-MM-dd</code></li>
-<li><code>&#39;time&#39;: &#39;@TIME&#39;</code> 随机生成一段时间字符串，默认格式为 <code>HH:mm:ss</code></li>
-<li><code>&#39;datetime&#39;: &#39;@DATETIME&#39;</code> 随机生成一段时间字符串，默认格式为 <code>yyyy-MM-dd HH:mm:ss</code></li>
-</ul>
-<p>Mock.js 的 <a href="./demo/mock.html">在线编辑器</a> 演示了完整的语法规范和占位符。</p>
-<p>下面是 Mock.mock() 的两种参数格式以及语法规范的使用示例：</p>
+<p>下面是 Mock.mock() 的几种参数格式以及语法规范的使用示例：</p>
 <p><strong>示例1：</strong>Mock.mock(template)</p>
 <iframe width="100%" height="300" src="http://jsfiddle.net/Y3rg6/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -431,7 +526,7 @@ Mock.mock( { email: &#39;@EMAIL&#39; } )
 <tbody>
 <tr>
 <td>Basics</td>
-<td>boolean natural integer float character string range date time datetime</td>
+<td>boolean natural integer float character string range date time datetime now</td>
 </tr>
 <tr>
 <td>Image</td>
@@ -810,6 +905,11 @@ Random.range(1, 10, 3)
 <td>Lowercase Ante meridiem and Post meridiem</td>
 <td>am or pm</td>
 </tr>
+<tr>
+<td>T</td>
+<td>Milliseconds, since 1970-1-1 00:00:00 UTC</td>
+<td>759883437303</td>
+</tr>
 </tbody>
 </table>
 <p><strong>使用示例</strong>如下所示：</p>
@@ -865,6 +965,46 @@ Random.datetime(&#39;y-MM-dd HH:mm:ss&#39;)
 // =&gt; &quot;79-06-24 04:45:16&quot;
 Random.datetime(&#39;y-M-d H:m:s&#39;)
 // =&gt; &quot;02-4-23 2:49:40&quot;</code></pre>
+<h4>Random.now(unit, format)</h4>
+<ul>
+<li>Ranndom.now(unit, format)</li>
+<li>Ranndom.now()</li>
+<li>Ranndom.now(format)</li>
+<li>Ranndom.now(unit)</li>
+</ul>
+<p>返回当前的日期和时间字符串。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 unit：可选。表示时间单元，用于对当前日期和时间进行格式化。可选值有：<code>year</code>、<code>month</code>、<code>week</code>、<code>day</code>、<code>hour</code>、<code>minute</code>、<code>second</code>、<code>week</code>，默认不会格式化。</li>
+<li>参数 format：可选。指示生成的日期和时间字符串的格式。默认值为 <code>yyyy-MM-dd HH:mm:ss</code>。可选的占位符参考自 <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>，请参见 <a href="#date">Random.date(format)</a>。</li>
+</ul>
+<blockquote>
+<p>Random.now() 的实现参考了 (Moment.js)[<a href="http://momentjs.cn/docs/#/manipulating/start-of/]。">http://momentjs.cn/docs/#/manipulating/start-of/]。</a></p>
+</blockquote>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.now()
+// =&gt; &quot;2014-04-29 20:08:38 &quot;
+Random.now(&#39;day&#39;, &#39;yyyy-MM-dd HH:mm:ss SS&#39;)
+// =&gt; &quot;2014-04-29 00:00:00 000&quot;
+Random.now(&#39;day&#39;)
+// =&gt; &quot;2014-04-29 00:00:00 &quot;
+Random.now(&#39;yyyy-MM-dd HH:mm:ss SS&#39;)
+// =&gt; &quot;2014-04-29 20:08:38 157&quot;
+
+Random.now(&#39;year&#39;)
+// =&gt; &quot;2014-01-01 00:00:00&quot;
+Random.now(&#39;month&#39;)
+// =&gt; &quot;2014-04-01 00:00:00&quot;
+Random.now(&#39;week&#39;)
+// =&gt; &quot;2014-04-27 00:00:00&quot;
+Random.now(&#39;day&#39;)
+// =&gt; &quot;2014-04-29 00:00:00&quot;
+Random.now(&#39;hour&#39;)
+// =&gt; &quot;2014-04-29 20:00:00&quot;
+Random.now(&#39;minute&#39;)
+// =&gt; &quot;2014-04-29 20:08:00&quot;
+Random.now(&#39;second&#39;)
+// =&gt; &quot;2014-04-29 20:08:38&quot;</code></pre>
 <h3>Image</h3>
 <h4>Random.image(size, background, foreground, format, text)</h4>
 <ul>

@@ -3,7 +3,8 @@ var Mock = require('../../src/mock'),
     Util = require('../../src/util'),
     Print = require('node-print'),
     $ = require('jquery'),
-    util = require('util');
+    util = require('util'),
+    _ = require('underscore');
 
 require('../../src/mockjax')
 require('../../src/mock4tpl')
@@ -108,9 +109,9 @@ exports.testPick = function(test) {
     test.done();
 }
 
-exports.testPickObject = function(test) {
+exports.testPickObjectFromArray = function(test) {
     var tpl = {
-        'opt|1': [{ // 对备选元素不再做解析
+        'opt|1': [{ // 对备选元素会再次做解析
             method: 'GET'
         }, {
             method: 'POST'
@@ -128,6 +129,28 @@ exports.testPickObject = function(test) {
             break;
         }
     }
+}
+
+exports.testPickFromObject = function(test) {
+    var tpl = {
+        'pick1|1': {
+            get: '@URL',
+            post: '@URL',
+            head: '@URL',
+            put: '@URL',
+            'delete': '@URL'
+        }
+    }
+    tpl['pick2|2'] = tpl['pick1|1']
+    tpl['pick3|3'] = tpl['pick1|1']
+    tpl['pick6|6'] = tpl['pick1|1']
+
+    var data = Mock.mock(tpl)
+    test.equal(1, _.keys(data.pick1).length)
+    test.equal(2, _.keys(data.pick2).length)
+    test.equal(3, _.keys(data.pick3).length)
+    test.equal(5, _.keys(data.pick6).length)
+    test.done()
 }
 
 exports.testFloat = function(test) {
@@ -222,6 +245,17 @@ exports.testBoolean = function(test) {
     }
     test.ok(range(count, 300, 700), count) // 可能会失败，但是仍在预期范围内，因为结果毕竟是随机的。
     test.done();
+}
+exports.testFunction = function(test) {
+    var tpl = {
+        prop: 'hello',
+        fn: function(root, path) {
+            return this.prop
+        }
+    }
+    var data = Mock.mock(tpl)
+    test.equal('hello', data.fn)
+    test.done()
 }
 exports.testHolder = function(test) {
     test.ok(rEmail.test(Mock.mock('@EMAIL')))
@@ -385,6 +419,34 @@ exports.testRandom = function(test) {
     t('datetime("yy-MM-dd HH:mm:ss")', Random.datetime("yy-MM-dd HH:mm:ss"))
     t('datetime("y-MM-dd HH:mm:ss")', Random.datetime("y-MM-dd HH:mm:ss"))
     t('datetime("y-M-d H:m:s")', Random.datetime("y-M-d H:m:s"))
+    // yyyy-MM-dd HH:mm:ss
+    t('now("year")', Random.now('year'), function(result) {
+        return Random.format(new Date(), 'yyyy-01-01 00:00:00') === result
+    })
+    t('now("month")', Random.now('month'), function(result) {
+        return Random.format(new Date(), 'yyyy-MM-01 00:00:00') === result
+    })
+    t('now("day")', Random.now('day'), function(result) {
+        return Random.format(new Date(), 'yyyy-MM-dd 00:00:00') === result
+    })
+    t('now("hour")', Random.now('hour'), function(result) {
+        return Random.format(new Date(), 'yyyy-MM-dd HH:00:00') === result
+    })
+    t('now("minute")', Random.now('minute'), function(result) {
+        return Random.format(new Date(), 'yyyy-MM-dd HH:mm:00') === result
+    })
+    t('now("second")', Random.now('second', 'yyyy-MM-dd HH:mm:ss SS'), function(result) {
+        return Random.format(new Date(), 'yyyy-MM-dd HH:mm:ss 000') === result
+    })
+    t('now("week")', Random.now('week', 'yyyy-MM-dd HH:mm:ss SS'), function(result) {
+        var date = new Date()
+        date.setDate(date.getDate() - date.getDay())
+        return Random.format(date, 'yyyy-MM-dd 00:00:00 000') === result
+    })
+    t('now("yyyy-MM-dd HH:mm:ss SS")', Random.now("yyyy-MM-dd HH:mm:ss SS"), function(result) {
+        test.equal(Random.format(new Date(), 'yyyy-MM-dd HH:mm:ss SS'), result)
+        return true
+    })
 
     // Image
     t('img()', Random.img())
@@ -485,7 +547,7 @@ exports.test_increment = function(test) {
     test.done()
 }
 
-exports.test_reference = function(test){
+exports.test_reference = function(test) {
     var tpl = {
         name: '@first @last',
         first: 'fffff',

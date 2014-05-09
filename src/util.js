@@ -73,7 +73,22 @@ var Util = (function() {
     }
 
     Util.isNumeric = function(value) {
-        return !isNaN(parseFloat(value)) && isFinite(value);
+        return !isNaN(parseFloat(value)) && isFinite(value)
+    }
+
+    Util.keys = function(obj) {
+        var keys = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) keys.push(key)
+        }
+        return keys;
+    }
+    Util.values = function(obj) {
+        var values = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) values.push(obj[key])
+        }
+        return values;
     }
 
     /*
@@ -99,6 +114,9 @@ var Util = (function() {
         * [Creating multiline strings in JavaScript](http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript)、
     */
     Util.heredoc = function heredoc(fn) {
+        // 1. 移除起始的 function(){ /*!
+        // 2. 移除末尾的 */ }
+        // 3. 移除起始和末尾的空格
         return fn.toString()
             .replace(/^[^\/]+\/\*!?/, '')
             .replace(/\*\/[^\/]+$/, '')

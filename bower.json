@@ -1,0 +1,21 @@
+{
+  "name": "Mock.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/nuysoft/MockService",
+  "authors": [
+    "nuysoft <nuysoft@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.3",
+    "codemirror": "~3.20.0"
+  }
+}

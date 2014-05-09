@@ -66,11 +66,15 @@ module.exports = function(grunt) {
                 options: {
                     separator: '\n\n'
                 },
-                src: ['doc/getting-started.md', 'doc/mock.md', 'doc/mockjax.md',
+                src: ['doc/getting-started.md',
+                    'doc/spec.md',
+                    'doc/mock.md',
+                    'doc/mockjax.md',
                     'doc/mock4tpl.md',
                     'doc/mock4xtpl.md',
                     'doc/util.md',
-                    'doc/random.md'
+                    'doc/random.md',
+                    'doc/other.md'
                 ],
                 dest: 'doc/index.md'
             }
@@ -80,7 +84,7 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n'
             },
             dev: {
                 options: {
@@ -140,13 +144,15 @@ module.exports = function(grunt) {
                     src: ['dist/**', 'demo/**',
                         'node_modules/jquery/tmp/**',
                         'node_modules/codemirror/**',
-                        'node_modules/handlebars/dist/**'
+                        'node_modules/handlebars/dist/**',
+                        'bower_components/**',
+                        'editor/**',
                     ],
                     dest: '../mockjs.github.com/'
                 }, {
                     expand: true,
                     cwd: './',
-                    src: ['index.html', 'mockjs.png'],
+                    src: ['index.html', 'favicon.ico', 'editor.html'],
                     dest: '../mockjs.github.com/'
                 }]
             },
@@ -194,7 +200,7 @@ module.exports = function(grunt) {
         'doc-base'
     ]) // 'copy:demo',
     grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']) // grunt travis --verbose
-    grunt.registerTask('default', ['base', 'watch:dev'])
+    grunt.registerTask('default', ['base', 'connect', 'watch:dev'])
     grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc', 'copy:kissy'])
     grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc'])
 

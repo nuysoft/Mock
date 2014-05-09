@@ -2,6 +2,7 @@
 .*.swp
 .idea
 node_modules
+bower_components
 build
 *.TODO
 PLAN.md

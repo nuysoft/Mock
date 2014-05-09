@@ -34,49 +34,24 @@ Mock.extend = Util.extend
 /*
     ## Mock
 
-    ### Mock.mock()
+    ### Mock.mock( rurl?, rtype?, template|function() )
 
-    * Mock.mock(template) 根据数据模板生成模拟数据。
-    * Mock.mock(rurl, template) 记录数据模板，当拦截到匹配的 Ajax 请求时，生成并返回模拟数据。
+    根据数据模板生成模拟数据。
 
-    * Mock.mock(rurl, rtype, template)
-    * Mock.mock(rurl, rtype, function)
-
-    参数的含义如下所示：
-    * 参数 rurl：可选。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 `/\/domain\/list\.json/`、`'/domian/list.json'`。
-    * 参数 template：必须。表示数据模板，可以是对象或字符串。例如 `{ 'data|1-10':[{}] }`、`'@EMAIL'`。
-
-    数据模板中的每个属性由 3 部分构成，以 `'data|1-10':[{}]` 为例：
-
-    * 属性名：例如 `data`。
-    * 参数：指示生成数据的规则。例如 `|1-10`，指示生成的数组中含有 1 至 10 个元素。
-    * 属性值：表示初始值、占位符、类型。例如 `[{}]`，表示属性值一个数组，数组中的元素是 `{}`。属性值中含有占位符时，将被替换为对应的随机数据，例如 `'email': '@EMAIL'`，`'@EMAIL'`将被替换为随机生成的邮件地址。
-
-    参数和属性值部分的语法规范和示例如下：
-
-    * `'data|1-10':[{}]` 构造一个数组，含有 1-10 个元素
-    * `'data|1':[item, item, item]` 从数组中随机挑选一个元素做为属性值
-    * `'id|+1': 1` 属性 id 值自动加一，初始值为 1
-    * `'grade|1-100': 1` 生成一个 1-100 之间的整数
-    * `'float|1-10.1-10': 1` 生成一个浮点数，整数部分的范围是 1-10，保留小数点后 1-10 位小数
-    * `'star|1-10': '★'` 重复 1-10 次
-    * `'repeat|10': 'A'` 重复 10 次
-    * `'published|0-1': false` 随机生成一个布尔值
-    * `'email': '@EMAIL'` 随即生成一个 Email
-    * `'date': '@DATE'` 随即生成一段日期字符串，默认格式为 yyyy-MM-dd
-    * `'time': '@TIME'` 随机生成一段时间字符串，默认格式为 HH:mm:ss
-    * `'datetime': '@DATETIME'` 随机生成一段时间字符串，默认格式为 yyyy-MM-dd HH:mm:ss
-    
-    Mock.js 的 [在线编辑器](http://nuysoft.com/project/mock/demo/mock.html) 演示了完整的语法规范和占位符。
-
-    下面是 Mock.mock() 的两种参数格式以及规则的使用示例：
-
-    <iframe width="100%" height="300" src="http://jsfiddle.net/VRjgz/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
-
-    <iframe width="100%" height="300" src="http://jsfiddle.net/n8D6k/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    * Mock.mock( template )
+    * Mock.mock( rurl, template )
+    * Mock.mock( rurl, function() )
+    * Mock.mock( rtype, template )
+    * Mock.mock( rtype, function() )
+    * Mock.mock( rurl, rtype, template )
+    * Mock.mock( rurl, rtype, function() )
 */
 Mock.mock = function(rurl, rtype, template) {
-    if (arguments.length === 1) return Handle.gen(rurl)
+    // Mock.mock(template)
+    if (arguments.length === 1) {
+        return Handle.gen(rurl)
+    }
+    // Mock.mock(rurl, template)
     if (arguments.length === 2) {
         template = rtype
         rtype = undefined
@@ -93,8 +68,10 @@ var Handle = {
     extend: Util.extend
 }
 
-Handle.gen = function(template, name, obj, templateContext) {
-    var parameters = (name = name || '').match(rkey),
+Handle.rule = function(name) {
+    name = (name || '') + ''
+
+    var parameters = (name || '').match(rkey),
 
         range = parameters && parameters[3] && parameters[3].match(rrange),
         min = range && parseInt(range[1], 10), // || 1
@@ -108,30 +85,70 @@ Handle.gen = function(template, name, obj, templateContext) {
         // int || dmin-dmax || 0
         dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : 0,
 
-        point = parameters && parameters[4],
-        type = Util.type(template),
-        result;
+        point = parameters && parameters[4];
+
+    return {
+        parameters: parameters,
+        range: range,
+        min: min,
+        max: max,
+        count: count,
+        decimal: decimal,
+        dmin: dmin,
+        dmax: dmax,
+        dcount: dcount,
+        point: point
+    }
+}
+
+/*
+    template        属性值（即数据模板）
+    name            属性名
+    context         数据上下文，生成后的数据
+    templateContext 模板上下文，
+
+    Handle.gen(template, name, options)
+    context
+        currentContext, templateCurrentContext, 
+        path, templatePath
+        root, templateRoot
+*/
+Handle.gen = function(template, name, context) {
+    name = name = (name || '') + ''
+
+    context = context || {}
+    context = {
+        // 当前访问路径，只有属性名，不包括生成规则
+        path: context.path || [],
+        templatePath: context.templatePath || [],
+        // 最终属性值的上下文
+        currentContext: context.currentContext,
+        // 属性值模板的上下文
+        templateCurrentContext: context.templateCurrentContext || template,
+        root: context.root,
+        templateRoot: context.templateRoot
+    }
+    // console.log('path:', path.join('.'), template)
+
+    var rule = Handle.rule(name)
+    var type = Util.type(template)
 
     if (Handle[type]) {
-        result = Handle[type]({
+        return Handle[type]({
+            // 属性值类型
             type: type,
+            // 属性值模板
             template: template,
-            templateContext: templateContext || template,
+            // 属性名 + 生成规则
             name: name,
-            obj: obj,
+            // 属性名
+            parsedName: name ? name.replace(rkey, '$1') : name,
 
-            parameters: parameters,
-            range: range,
-            min: min,
-            max: max,
-            count: count,
-            decimal: decimal,
-            dmin: dmin,
-            dmax: dmax,
-            dcount: dcount,
-            point: point
+            // 解析后的生成规则
+            rule: rule,
+            // 相关上下文
+            context: context
         })
-        return result
     }
     return template
 }
@@ -141,37 +158,36 @@ Handle.extend({
         var result = [],
             i, j;
         // 'arr': [{ 'email': '@EMAIL' }, { 'email': '@EMAIL' }]
-        if (!options.parameters) {
+        if (!options.rule.parameters) {
             for (i = 0; i < options.template.length; i++) {
-                result.push(Handle.gen(options.template[i]))
+                options.context.path.push(i)
+                result.push(
+                    Handle.gen(options.template[i], i, {
+                        currentContext: result,
+                        templateCurrentContext: options.template,
+                        path: options.context.path
+                    })
+                )
+                options.context.path.pop()
             }
         } else {
             // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
-            if (options.count === 1 && options.template.length > 1) {
-                // 
-                /*
-                    对备选元素不再做解析？为什么呢？应该解析！！！
-                    例如下面的数据模板，希望从数组中选取一个元素作为属性值：
-                    {
-                        'opt|1': [{
-                                method: 'GET'
-                            }, {
-                                method: 'POST'
-                            }, {
-                                method: 'HEAD'
-                            }, {
-                                method: 'DELETE'
-                            }
-                        ]
-                    }
-                    如果对备选元素不做解析，则返回的是备选元素之一；如果对备选元素进行解析，则会返回备选元素之一的副本，因此需要特别注意。
-                */
-                result = Random.pick(Handle.gen(options.template))
+            if (options.rule.count === 1 && options.template.length > 1) {
+                // fix #17
+                options.context.path.push(options.name)
+                result = Random.pick(Handle.gen(options.template, undefined, {
+                    currentContext: result,
+                    templateCurrentContext: options.template,
+                    path: options.context.path
+                }))
+                options.context.path.pop()
             } else {
                 // 'data|1-10': [{}]
-                for (i = 0; i < options.count; i++) {
+                for (i = 0; i < options.rule.count; i++) {
+                    // 'data|1-10': [{}, {}]
                     j = 0
                     do {
+                        // 'data|1-10': []
                         result.push(Handle.gen(options.template[j++]))
                     } while (j < options.template.length)
                 }
@@ -180,35 +196,63 @@ Handle.extend({
         return result
     },
     object: function(options) {
-        var result = {}, key, inc;
-        for (key in options.template) {
-            result[key.replace(rkey, '$1')] = Handle.gen(options.template[key], key, result, options.template)
-            // 'id|+1': 1
-            inc = key.match(rkey)
-            if (inc && inc[2] && Util.type(options.template[key]) === 'number') {
-                options.template[key] += parseInt(inc[2], 10)
+        var result = {}, keys, key, parsedKey, inc, i;
+
+        // 'obj|min-max': {}
+        if (options.rule.min) {
+            keys = Util.keys(options.template)
+            keys = Random.shuffle(keys)
+            keys = keys.slice(0, options.rule.count)
+            for (i = 0; i < keys.length; i++) {
+                key = keys[i]
+                parsedKey = key.replace(rkey, '$1')
+                options.context.path.push(parsedKey)
+                result[parsedKey] = Handle.gen(options.template[key], key, {
+                    currentContext: result,
+                    templateCurrentContext: options.template,
+                    path: options.context.path
+                })
+                options.context.path.pop()
+            }
+
+        } else {
+            // 'obj': {}
+            for (key in options.template) {
+                parsedKey = key.replace(rkey, '$1')
+                options.context.path.push(parsedKey)
+                result[parsedKey] = Handle.gen(options.template[key], key, {
+                    currentContext: result,
+                    templateCurrentContext: options.template,
+                    path: options.context.path
+                })
+                options.context.path.pop()
+                // 'id|+1': 1
+                inc = key.match(rkey)
+                if (inc && inc[2] && Util.type(options.template[key]) === 'number') {
+                    options.template[key] += parseInt(inc[2], 10)
+                }
             }
         }
         return result
     },
     number: function(options) {
         var result, parts, i;
-        if (options.point) { // float
+        if (options.rule.point) { // float
             options.template += ''
             parts = options.template.split('.')
             // 'float1|.1-10': 10,
             // 'float2|1-100.1-10': 1,
             // 'float3|999.1-10': 1,
             // 'float4|.3-10': 123.123,
-            parts[0] = options.range ? options.count : parts[0]
-            parts[1] = (parts[1] || '').slice(0, options.dcount)
-            for (i = 0; parts[1].length < options.dcount; i++) {
+            parts[0] = options.rule.range ? options.rule.count : parts[0]
+            parts[1] = (parts[1] || '').slice(0, options.rule.dcount)
+            for (i = 0; parts[1].length < options.rule.dcount; i++) {
                 parts[1] += Random.character('number')
             }
             result = parseFloat(parts.join('.'), 10)
         } else { // integer
             // 'grade1|1-100': 1,
-            result = options.range && !options.parameters[2] ? options.count : options.template
+            result = options.rule.range && !options.rule.parameters[2] ? options.rule.count : options.template
         }
         return result
     },
@@ -216,7 +260,7 @@ Handle.extend({
         var result;
         // 'prop|multiple': false, 当前值是相反值的概率倍数
         // 'prop|probability-probability': false, 当前值与相反值的概率
-        result = options.parameters ? Random.bool(options.min, options.max, options.template) : options.template
+        result = options.rule.parameters ? Random.bool(options.rule.min, options.rule.max, options.template) : options.template
         return result
     },
     string: function(options) {
@@ -224,7 +268,7 @@ Handle.extend({
             i, placeholders, ph, phed;
         if (options.template.length) {
             // 'star|1-5': '★',
-            for (i = 0; i < options.count; i++) {
+            for (i = 0; i < options.rule.count; i++) {
                 result += options.template
             }
             // 'email|1-10': '@EMAIL, ',
@@ -236,8 +280,12 @@ Handle.extend({
                     placeholders.splice(i--, 1)
                     continue
                 }
-                phed = Handle.placeholder(ph, options.obj, options.templateContext)
-                if (placeholders.length === 1 && ph === result) { // 
+                phed = Handle.placeholder(ph, options.context.currentContext, options.context.templateCurrentContext)
+                // 只有一个占位符，并且没有其他字符
+                if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) { // 
+                    result = phed
+                    break
+
                     if (Util.isNumeric(phed)) {
                         result = parseFloat(phed, 10)
                         break
@@ -254,9 +302,12 @@ Handle.extend({
         } else {
             // 'ASCII|1-10': '',
             // 'ASCII': '',
-            result = options.range ? Random.string(options.count) : options.template
+            result = options.rule.range ? Random.string(options.rule.count) : options.template
         }
         return result
+    },
+    'function': function(options) {
+        return options.template.call(options.context.currentContext)
     }
 })
 
@@ -273,16 +324,26 @@ Handle.extend({
             key = parts && parts[1],
             lkey = key && key.toLowerCase(),
             okey = this._all()[lkey],
-            params = parts && parts[2] ? parts[2].split(/,\s*/) : []
+            params = parts && parts[2] || ''
+
+        try {
+            /* jshint -W061 */
+            eval('!function(){ params = [].splice.call(arguments, 0 ) }(' + params + ')')
+        } catch (e) {
+            params = parts[2].split(/,\s*/);
+        }
 
         if (obj && (key in obj)) return obj[key]
 
         if (templateContext &&
             (typeof templateContext === 'object') &&
             (key in templateContext) &&
-            (placeholder !== templateContext[key]) // fix #15
+            (placeholder !== templateContext[key]) // fix #15 避免自己依赖自己
         ) {
-            templateContext[key] = Handle.gen(templateContext[key], key, obj, templateContext)
+            templateContext[key] = Handle.gen(templateContext[key], key, {
+                currentContext: obj,
+                templateCurrentContext: templateContext
+            })
             return templateContext[key]
         }
 

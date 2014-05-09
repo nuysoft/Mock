@@ -1,6 +1,13 @@
 # Changelog
 
-### 3013.9.6
+### 2014.5.9 V0.1.2
+1. [+] 支持 [`Mock.mock(rurl, rtype, template)`](http://mockjs.com/#mock)
+2. [+] 支持 [`'name|min-max': {}`、`'name|count': {}`](http://mockjs.com/#语法规范)
+3. [+] 支持 [`'name': function(){}`](http://mockjs.com/#语法规范)
+4. [+] 新增占位符 [@NOW](http://mockjs.com/#now)
+5. [+] 更新了 [语法规范](http://mockjs.com/#语法规范)
+
+### 2013.9.6
 1. 增加占位符 @DATAIMAGE
 2. 解析占位符时**完全**忽略大小写
 

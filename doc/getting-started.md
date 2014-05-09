@@ -1,9 +1,12 @@
 <!-- ## Mock.js -->
 
 <h2 class="hide" href="#">Mock.js</h2>
-<img src="mockjs.png" wid>
+<img class="hide" src="mockjs.png" wid>
 
-<!-- <i class="iconlogo">&#x3435;</i> -->
+<h1 style="color: #428BCA; margin-bottom: 30px;">
+    <i class="iconlogo" style="font-size: 80px;">&#x3435;</i>
+    <span>Mock.js</span>
+</h1>
 
 [![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
 <!-- [![GitHub version](https://badge.fury.io/gh/nuysoft%2FMock.png)](http://badge.fury.io/gh/nuysoft%2FMock) -->
@@ -20,7 +23,7 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 ## 在线编辑器 
 <!-- 没有 Live Demo 的库都是耍流氓  -->
 
-* [Data](./demo/mock.html)
+* [数据模板编辑器](./editor.html#help)
 * [Handlebars &amp; Mustache](./demo/mock4tpl.html)
 * [KISSY XTemplate](./demo/mock4xtpl.html)
 
@@ -28,13 +31,13 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
-        Development Version (0.1.1)
-    </a> - <i>65kB, Uncompressed</i>
+        Development Version (0.1.2)
+    </a> - <i>71kB, Uncompressed</i>
 </p>
 <p>
     <a href="./dist/mock-min.js" class="btn btn-primary w250">
-        Production Version (0.1.1)
-    </a> - <i>27kB, Minified</i>
+        Production Version (0.1.2)
+    </a> - <i>31kB, Minified</i>
 </p>
 <p>
     <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">

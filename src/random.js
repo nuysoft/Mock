@@ -353,6 +353,8 @@ var Random = (function() {
             }
             step = arguments[2] || 1;
 
+            start = +start, stop = +stop, step = +step
+
             var len = Math.max(Math.ceil((stop - start) / step), 0);
             var idx = 0;
             var range = new Array(len);
@@ -426,7 +428,8 @@ var Random = (function() {
             },
             a: function(date) {
                 return date.getHours() < 12 ? 'am' : 'pm'
-            }
+            },
+            T: 'getTime'
         }
     })
     Random.extend({
@@ -570,6 +573,48 @@ var Random = (function() {
         datetime: function(format) {
             format = format || 'yyyy-MM-dd HH:mm:ss'
             return this.format(this.randomDate(), format)
+        },
+        /*
+            Ranndom.now(unit, format)
+            Ranndom.now()
+            Ranndom.now(unit)
+            Ranndom.now(format)
+
+            参考自 http://momentjs.cn/docs/#/manipulating/start-of/
+        */
+        now: function(unit, format) {
+            if (arguments.length === 1) {
+                if (!/year|month|week|day|hour|minute|second|week/.test(unit)) {
+                    format = unit
+                    unit = ''
+                }
+            }
+            unit = (unit || '').toLowerCase()
+            format = format || 'yyyy-MM-dd HH:mm:ss'
+
+            var date = new Date()
+            /* jshint -W086 */
+            switch (unit) {
+                case 'year':
+                    date.setMonth(0)
+                case 'month':
+                    date.setDate(1)
+                case 'week':
+                case 'day':
+                    date.setHours(0)
+                case 'hour':
+                    date.setMinutes(0)
+                case 'minute':
+                    date.setSeconds(0)
+                case 'second':
+                    date.setMilliseconds(0)
+            }
+            switch (unit) {
+                case 'week':
+                    date.setDate(date.getDate() - date.getDay())
+            }
+
+            return this.format(date, format)
         }
     })
     /*
@@ -911,7 +956,7 @@ var Random = (function() {
                 // => "Hello"
         */
         capitalize: function(word) {
-            return word.charAt(0).toUpperCase() + word.substr(1)
+            return (word + '').charAt(0).toUpperCase() + (word + '').substr(1)
         },
         /*
             ##### Random.upper(str)
@@ -926,7 +971,7 @@ var Random = (function() {
                 // => "HELLO"
         */
         upper: function(str) {
-            return str.toUpperCase()
+            return (str + '').toUpperCase()
         },
         /*
             ##### Random.lower(str)
@@ -939,7 +984,7 @@ var Random = (function() {
                 // => "hello"
         */
         lower: function(str) {
-            return str.toLowerCase()
+            return (str + '').toLowerCase()
         },
         /*
             ##### Random.pick(arr)
@@ -954,6 +999,7 @@ var Random = (function() {
                 // => "o"
         */
         pick: function(arr) {
+            arr = arr || []
             return arr[this.natural(0, arr.length - 1)]
         },
         /*
@@ -970,6 +1016,7 @@ var Random = (function() {
                 // => ["o", "u", "e", "i", "a"]
         */
         shuffle: function(arr) {
+            arr = arr || []
             var old = arr.slice(0),
                 result = [],
                 index = 0,
