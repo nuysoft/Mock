@@ -329,15 +329,7 @@ exports.testComplex = function(test) {
 }
 
 exports.testRequest = function(test) {
-    var count = 0,
-        i, opt;
-
-    Mock.mock(/\.json/, {
-        'list|1-10': [{
-            'id|+1': 1,
-            'email': '@EMAIL'
-        }]
-    })
+    var count = 0;
 
     function validator(data) {
         test.ok(data.list)
@@ -346,13 +338,6 @@ exports.testRequest = function(test) {
             item = data.list[i]
             if (i > 0) test.equal(item.id, data.list[i - 1].id + 1)
             test.ok(rEmail.test(item.email), item.email)
-        }
-        if (true) {
-            // console.log('testRequest ' + count);
-
-            // console.log();
-            // console.log(count);
-            // Print.pt(data.list)
         }
     }
 
@@ -365,15 +350,154 @@ exports.testRequest = function(test) {
         if (count === 1000) test.done()
     }
 
+    // 拦截所有 .json 请求
+    Mock.mock(/hello.json/, {
+        'list|1-10': [{
+            'id|+1': 1,
+            'email': '@EMAIL'
+        }]
+    })
+
     for (i = 0; i < 1000; i++) {
-        opt = {
-            url: 'data.json',
+        $.ajax({
+            url: 'hello.json',
             dataType: 'json'
-        }
-        $.ajax(opt)
-            .done(success)
-            .complete(complete)
+        }).done(success).complete(complete)
     }
+}
+
+exports.testRequestType = function(test) {
+    var count = 0;
+
+    function success(data) {
+        count++
+    }
+
+    function complete() {
+        if (count === 2) test.done()
+    }
+
+    Mock.mock(/type.json/, 'get', {
+        'list|1-10': [{
+            'id|+1': 1,
+            'email': '@EMAIL',
+            type: 'get'
+        }]
+    })
+    Mock.mock(/type.json/, 'post', {
+        'list|1-10': [{
+            'id|+1': 1,
+            'email': '@EMAIL',
+            type: 'post'
+        }]
+    })
+
+    $.ajax({
+        url: 'type.json',
+        type: 'get',
+        dataType: 'json'
+    }).done(function(data) {
+        success(data)
+        test.equal(data.list[0].type, 'get')
+    }).complete(complete)
+
+    $.ajax({
+        url: 'type.json',
+        type: 'post',
+        dataType: 'json'
+    }).done(function(data) {
+        success(data)
+        test.equal(data.list[0].type, 'post')
+    }).complete(complete)
+
+}
+
+exports.testRequestFunction = function(test) {
+    var count = 0;
+
+    function success(data) {
+        count++
+    }
+
+    function complete() {
+        if (count === 2) test.done()
+    }
+
+    Mock.mock(/fn\.json/, function() {
+        return {
+            type: 'fn'
+        }
+    })
+
+    $.ajax({
+        url: 'fn.json',
+        dataType: 'json'
+    }).done(function(data) {
+        success(data)
+        test.equal(data.type, 'fn')
+    }).complete(complete)
+
+    $.ajax({
+        url: 'fn.json',
+        dataType: 'json'
+    }).done(function(data) {
+        success(data)
+        test.equal(data.type, 'fn')
+    }).complete(complete)
+
+}
+
+exports.testRequestTypeFunction = function(test) {
+    Mock._mocked = {}
+    
+    var count = 0;
+
+    function success(data) {
+        count++
+    }
+
+    function complete() {
+        if (count === 3) test.done()
+    }
+
+    Mock.mock(/fn\.json/, /get/, function() {
+        return {
+            type: 'get'
+        }
+    })
+    Mock.mock(/fn\.json/, /post|put/, function(options) {
+        return {
+            type: options.type.toLowerCase()
+        }
+    })
+
+    $.ajax({
+        url: 'fn.json',
+        type: 'get',
+        dataType: 'json'
+    }).done(function(data) {
+        success(data)
+        test.equal(data.type, 'get')
+    }).complete(complete)
+
+    $.ajax({
+        url: 'fn.json',
+        type: 'post',
+        dataType: 'json'
+    }).done(function(data) {
+        success(data)
+        test.equal(data.type, 'post')
+    }).complete(complete)
+
+    $.ajax({
+        url: 'fn.json',
+        type: 'put',
+        dataType: 'json'
+    }).done(function(data) {
+        success(data)
+        test.equal(data.type, 'put')
+    }).complete(complete)
+
 }
 
 exports.testRandom = function(test) {
