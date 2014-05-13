@@ -41,8 +41,6 @@ Mock.extend = Util.extend
     * Mock.mock( template )
     * Mock.mock( rurl, template )
     * Mock.mock( rurl, function() )
-    * Mock.mock( rtype, template )
-    * Mock.mock( rtype, function() )
     * Mock.mock( rurl, rtype, template )
     * Mock.mock( rurl, rtype, function() )
 */
