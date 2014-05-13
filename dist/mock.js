@@ -1,4 +1,4 @@
-/*! mockjs 09-05-2014 20:13:11 */
+/*! mockjs 13-05-2014 14:00:06 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -951,27 +951,31 @@
                 status: 200
             };
         }
-        function convert(mock) {
+        function convert(item, options) {
             return function() {
-                return Mock.mock(jQuery.isFunction(mock.template) ? mock.template() : mock.template);
+                return jQuery.isFunction(item.template) ? item.template(options) : Mock.mock(item.template);
             };
         }
-        function prefilter(options) {
-            for (var surl in Mock._mocked) {
-                var mock = Mock._mocked[surl];
-                if (jQuery.type(mock.rurl) === "string") {
-                    if (mock.rurl !== options.url) continue;
+        function prefilter(options, originalOptions, jqXHR) {
+            function match(expected, actual) {
+                if (jQuery.type(expected) === "string") {
+                    return expected === actual;
                 }
-                if (jQuery.type(mock.rurl) === "regexp") {
-                    if (!mock.rurl.test(options.url)) continue;
+                if (jQuery.type(expected) === "regexp") {
+                    return expected.test(actual);
                 }
-                options.dataFilter = convert(mock);
-                options.converters["text json"] = convert(mock);
-                options.xhr = mockxhr;
-                break;
+            }
+            for (var sUrlType in Mock._mocked) {
+                var item = Mock._mocked[sUrlType];
+                if ((!item.rurl || match(item.rurl, options.url)) && (!item.rtype || match(item.rtype, options.type.toLowerCase()))) {
+                    options.dataFilter = convert(item, options);
+                    options.converters["text json"] = convert(item, options);
+                    options.converters["text jsonp"] = convert(item, options);
+                    options.xhr = mockxhr;
+                    break;
+                }
             }
         }
-        jQuery.ajaxPrefilter("*", prefilter);
         jQuery.ajaxPrefilter("json", prefilter);
         jQuery.ajaxPrefilter("jsonp", prefilter);
         return Mock;
