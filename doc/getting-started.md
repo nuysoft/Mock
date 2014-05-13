@@ -110,3 +110,5 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
     // 执行
     $ random url
     // => http://rmcpx.org/funzwc
+
+---

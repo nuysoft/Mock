@@ -111,6 +111,7 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
     $ random url
     // => http://rmcpx.org/funzwc
 
+---
 
 ## 语法规范
 
