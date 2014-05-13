@@ -101,3 +101,12 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 
 <iframe width="100%" height="400" src="http://jsfiddle.net/8VNQQ/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 -->
+
+### Random CLI
+
+    // 安装
+    npm install mockjs -g
+
+    // 执行
+    $ random url
+    // => http://rmcpx.org/funzwc

@@ -1,4 +1,4 @@
-/*! mockjs 13-05-2014 14:00:06 */
+/*! mockjs 13-05-2014 19:33:58 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -490,9 +490,6 @@
                     brands.push(b);
                 }
                 return brands;
-            },
-            dataImageHolder: function(size) {
-                return "holder.js/" + size;
             },
             dataImage: function(size, text) {
                 var canvas = typeof document !== "undefined" && document.createElement("canvas"), ctx = canvas && canvas.getContext && canvas.getContext("2d");

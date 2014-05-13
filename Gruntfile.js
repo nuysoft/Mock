@@ -1,6 +1,9 @@
 'use strict';
 module.exports = function(grunt) {
 
+    // Displays the execution time of grunt tasks. Can help when optimizing build times.
+    require('time-grunt')(grunt)
+
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         jshint: {

@@ -881,12 +881,13 @@ var Random = (function() {
             }
             return brands
         },
-        dataImageHolder: function(size) {
-            return 'holder.js/' + size
-        },
         /*
             https://github.com/imsky/holder
             Holder renders image placeholders entirely on the client side.
+
+            dataImageHolder: function(size) {
+                return 'holder.js/' + size
+            },
         */
         dataImage: function(size, text) {
             var canvas = (typeof document !== 'undefined') && document.createElement('canvas'),
