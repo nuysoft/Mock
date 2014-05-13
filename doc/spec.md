@@ -80,6 +80,26 @@ Mock.js 的语法规范包括两部分：
 
 1. 用 `@` 来标识其后的字符串是 占位符。
 2. 占位符 引用的是 `Mock.Random` 中的方法。
-2. 通过 `Mock.Random.extend()` 来扩展自定义占位符。
+3. 通过 `Mock.Random.extend()` 来扩展自定义占位符。
+4. 占位符 也可以引用 数据模板 中的属性。
+5. 占位符 会优先引用 数据模板 中的属性。
+
+        {
+            name: {
+                first: '@FIRST',
+                middle: '@FIRST',
+                last: '@LAST',
+                full: '@first @middle @last'
+            }
+        }
+        // =>
+        {
+            "name": {
+                "first": "Charles",
+                "middle": "Brenda",
+                "last": "Lopez",
+                "full": "Charles Brenda Lopez"
+            }
+        }
 
 ---

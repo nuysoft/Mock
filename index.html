@@ -42,7 +42,7 @@
         }
         div.container {
           position: relative;
-          width: 600px;
+          width: 700px;
           margin: 40px 0 50px 280px;
           padding-right: 40px;
         }
@@ -274,10 +274,30 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 <li>用 <code>@</code> 来标识其后的字符串是 占位符。</li>
 <li>占位符 引用的是 <code>Mock.Random</code> 中的方法。</li>
 <li>通过 <code>Mock.Random.extend()</code> 来扩展自定义占位符。</li>
+<li>占位符 也可以引用 数据模板 中的属性。</li>
+<li><p>占位符 会优先引用 数据模板 中的属性。</p>
+<pre><code> {
+     name: {
+         first: &#39;@FIRST&#39;,
+         middle: &#39;@FIRST&#39;,
+         last: &#39;@LAST&#39;,
+         full: &#39;@first @middle @last&#39;
+     }
+ }
+ // =&gt;
+ {
+     &quot;name&quot;: {
+         &quot;first&quot;: &quot;Charles&quot;,
+         &quot;middle&quot;: &quot;Brenda&quot;,
+         &quot;last&quot;: &quot;Lopez&quot;,
+         &quot;full&quot;: &quot;Charles Brenda Lopez&quot;
+     }
+ }</code></pre>
+</li>
 </ol>
 <hr>
 <h2>Mock</h2>
-<h3>Mock.mock( rurl?, rtype?, template|function() )</h3>
+<h3>Mock.mock( rurl?, rtype?, template|function(options) )</h3>
 <p>根据数据模板生成模拟数据。</p>
 <ul>
 <li><p><strong>Mock.mock( template )</strong></p>
@@ -286,20 +306,14 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 <li><p><strong>Mock.mock( rurl, template )</strong></p>
 <p>  记录数据模板。当拦截到匹配 <code>rurl</code> 的 Ajax 请求时，将根据数据模板 <code>template</code> 生成模拟数据，并作为响应数据返回。</p>
 </li>
-<li><p><strong>Mock.mock( rurl, function() )</strong></p>
-<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rurl</code> 的 Ajax 请求时，函数 <code>function()</code> 将被执行，并把执行结果作为响应数据返回。</p>
-</li>
-<li><p><strong>Mock.mock( rtype, template )</strong></p>
-<p>  记录数据模板。当拦截到匹配 <code>rtype</code> 的 Ajax 请求时，将根据数据模板 <code>template</code> 生成模拟数据，并作为响应数据返回。</p>
-</li>
-<li><p><strong>Mock.mock( rtype, function() )</strong></p>
-<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rtype</code> 的 Ajax 请求时，函数 <code>function()</code> 将被执行，并把执行结果作为响应数据返回。</p>
+<li><p><strong>Mock.mock( rurl, function(options) )</strong></p>
+<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rurl</code> 的 Ajax 请求时，函数 <code>function(options)</code> 将被执行，并把执行结果作为响应数据返回。</p>
 </li>
 <li><p><strong>Mock.mock( rurl, rtype, template )</strong></p>
 <p>  记录数据模板。当拦截到匹配 <code>rurl</code> 和 <code>rtype</code> 的 Ajax 请求时，将根据数据模板 <code>template</code> 生成模拟数据，并作为响应数据返回。</p>
 </li>
-<li><p><strong>Mock.mock( rurl, rtype, function() )</strong></p>
-<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rurl</code> 和 <code>rtype</code> 的 Ajax 请求时，函数 <code>function()</code> 将被执行，并把执行结果作为响应数据返回。</p>
+<li><p><strong>Mock.mock( rurl, rtype, function(options) )</strong></p>
+<p>  记录用于生成响应数据的函数。当拦截到匹配 <code>rurl</code> 和 <code>rtype</code> 的 Ajax 请求时，函数 <code>function(options)</code> 将被执行，并把执行结果作为响应数据返回。</p>
 </li>
 </ul>
 <p><strong>参数的含义和默认值</strong>如下所示：</p>
@@ -307,28 +321,43 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 <li><strong>参数 rurl</strong>：可选。表示需要拦截的 URL，可以是 URL 字符串或 URL 正则。例如 <code>/\/domain\/list\.json/</code>、<code>&#39;/domian/list.json&#39;</code>。</li>
 <li><strong>参数 rtype</strong>：可选。表示需要拦截的 Ajax 请求类型。例如 <code>GET</code>、<code>POST</code>、<code>PUT</code>、<code>DELETE</code> 等。</li>
 <li><strong>参数 template</strong>：可选。表示数据模板，可以是对象或字符串。例如 <code>{ &#39;data|1-10&#39;:[{}] }</code>、<code>&#39;@EMAIL&#39;</code>。</li>
-<li><strong>参数 function()</strong>：可选。表示用于生成响应数据的函数。</li>
+<li><strong>参数 function(options)</strong>：可选。表示用于生成响应数据的函数。</li>
+<li><strong>参数 options</strong>：指向本次请求的 Ajax 选项集。</li>
 </ul>
-<p>下面是 Mock.mock() 的几种参数格式以及语法规范的使用示例：</p>
-<p><strong>示例1：</strong>Mock.mock(template)</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/Y3rg6/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<p>下面是 Mock.mock() 的 5 种参数格式以及语法规范的使用示例：</p>
+<p><strong>示例1：</strong>Mock.mock( template )</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/Y3rg6/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<p><strong>示例2：</strong>Mock.mock(rurl, template)</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/BeENf/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<p><strong>示例2：</strong>Mock.mock( rurl, template )</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/BeENf/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p><strong>示例3：</strong>Mock.mock( rurl, function(options) )</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/2s5t5/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p><strong>示例4：</strong>Mock.mock( rurl, rtype, template )</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/Eq68p/2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p><strong>示例5：</strong>Mock.mock( rurl, rtype, function(options) )</p>
+<iframe width="100%" height="300" src="http://jsfiddle.net/6dpV5/4/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+
 
 <h3>Mock.mockjax(library)</h3>
-<p>覆盖（拦截） Ajax 请求，目前内置支持 jQuery、KISSY。</p>
+<p>覆盖（拦截） Ajax 请求，目前内置支持 jQuery、Zepto、KISSY。</p>
 <p>对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问<a href="https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L5">这里</a>。</p>
 <p>对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问<a href="https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L72">这里</a>。</p>
-<p>因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和所服务的阿里） 常用的 jQuery 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery 和 KISSY 的实现，覆盖 <code>Mock.mockjax(library)</code>。</p>
-<p>通过方法 <code>Mock.mock(rurl, template)</code> 设置的 URL 和数据模板的映射，均记录在属性 <code>Mock._mocked</code> 中，扩展时可从中获取 URL 对应的数据模板，进而生成和响应模拟数据。<code>Mock._mocked</code> 的数据结构为：</p>
+<p>因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和所服务的阿里） 常用的 jQuery、Zepto 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery、Zepto 和 KISSY 的实现，覆盖 <code>Mock.mockjax(library)</code>。</p>
+<p>通过方法 <code>Mock.mock( rurl, rtype, template|function(options) )</code> 设置的 URL 和数据模板的映射，均记录在属性 <code>Mock._mocked</code> 中，扩展时可从中获取 URL 对应的数据模板，进而生成和响应模拟数据。<code>Mock._mocked</code> 的数据结构为：</p>
 <pre><code>{
-    rurl.toString(): {
+    (rurl + rtype): {
         rurl: rurl,
+        rtype: rtype,
         template: template
     },
     ...
 }</code></pre>
+<!-- 如果业务和场景需要，可以联系 [@墨智]()、[nuysoft](nuysoft@gmail.com) 提供对特定库的内置支持，不过最酷的做法是开发人员能够为 Mock.js 贡献代码。 -->
 <!-- 感谢 @麦少 同学对 Mock.mockjax(library) 的重构，并增加了对 Zepto.js 的支持。 -->
 
 <h3>Mock.tpl(input, options, helpers, partials)</h3>
