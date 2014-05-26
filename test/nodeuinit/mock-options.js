@@ -4,6 +4,7 @@ var Mock4XTpl = require('../../src/mock4xtpl'),
 
 var XTemplate;
 exports.setUp = function(callback) {
+    KISSY.Config.debug = false
     KISSY.use('xtemplate', function(S, T) {
         XTemplate = T
         callback()

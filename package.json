@@ -25,7 +25,7 @@
     "grunt-contrib-connect": "~0.5.0",
     "grunt-markdown": "~0.4.0",
     "grunt-exec": "~0.4.2",
-    "jquery": "~1.8.3",
+    "jquery": "~2.1.1",
     "handlebars": "~1.0.12",
     "underscore": "~1.5.1",
     "jison": "~0.4.10",
@@ -36,7 +36,10 @@
     "grunt-contrib-qunit": "~0.3.0",
     "grunt-contrib-nodeunit": "~0.2.1",
     "zepto": "0.0.4",
-    "time-grunt": "~0.3.1"
+    "time-grunt": "~0.3.1",
+    "grunt-cleaver": "~0.3.2",
+    "jsdom": "~0.10.5",
+    "xmlhttprequest": "~1.6.0"
   },
   "repository": {
     "type": "git",

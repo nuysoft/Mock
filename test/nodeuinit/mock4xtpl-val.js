@@ -1,6 +1,7 @@
-var Mock4XTpl = require('../../src/mock4xtpl');
+var Mock4XTpl = require('../../src/mock4xtpl')
+var KISSY = require('kissy')
 
-require('node-print')
+KISSY.Config.debug = false
 
 var object = {
     a: {
@@ -38,18 +39,16 @@ exports.test_simple = function(test) {
     */
     ret = Mock4XTpl.parseVal(path = 'a.b', object)
     test.deepEqual(ret, [{
-            "c": {
-                "d": "d-1"
-            }
+        "c": {
+            "d": "d-1"
         }
-    ])
+    }])
     // console.log(path.red, JSON.stringify(ret, null, 4))
 
     ret = Mock4XTpl.parseVal(path = 'a.b.c', object)
     test.deepEqual(ret, [{
-            "d": "d-1"
-        }
-    ])
+        "d": "d-1"
+    }])
     // console.log(path.red, JSON.stringify(ret, null, 4))
 
     ret = Mock4XTpl.parseVal(path = 'a.b.c.d', object)
@@ -65,9 +64,8 @@ exports.test_simple = function(test) {
     */
     ret = Mock4XTpl.parseVal(path = 'b.c', object)
     test.deepEqual(ret, [{
-            "d": "d-2"
-        }
-    ])
+        "d": "d-2"
+    }])
     // console.log(path.red, JSON.stringify(ret, null, 4))
 
     /*
@@ -75,9 +73,8 @@ exports.test_simple = function(test) {
     */
     ret = Mock4XTpl.parseVal(path = 'a.c', object)
     test.deepEqual(ret, [{
-            "d": "d-1"
-        }
-    ])
+        "d": "d-1"
+    }])
     // console.log(path.red, JSON.stringify(ret, null, 4))
 
     /*
@@ -85,11 +82,10 @@ exports.test_simple = function(test) {
     */
     ret = Mock4XTpl.parseVal(path = 'c', object)
     test.deepEqual(ret, [{
-            "d": "d-1"
-        }, {
-            "d": "d-2"
-        }
-    ])
+        "d": "d-1"
+    }, {
+        "d": "d-2"
+    }])
     // console.log(path.red, JSON.stringify(ret, null, 4))
 
     ret = Mock4XTpl.parseVal(path = 'd', object)

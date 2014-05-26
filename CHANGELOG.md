@@ -1,5 +1,11 @@
 # Changelog
 
+### 2014.5.26 V0.1.2
+
+1. [!] 重构 Mock.mockjax()
+2. [!] 更新 package.json/devDependencies
+3. [+] 增加 懒懒交流会 PPT
+
 ### 2014.5.9 V0.1.2
 1. [+] 支持 [`Mock.mock(rurl, rtype, template)`](http://mockjs.com/#mock)
 2. [+] 支持 [`'name|min-max': {}`、`'name|count': {}`](http://mockjs.com/#语法规范)

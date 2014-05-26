@@ -2,13 +2,20 @@ var Mock = require('../../src/mock'),
     Random = require('../../src/random'),
     Util = require('../../src/util'),
     Print = require('node-print'),
-    $ = require('jquery'),
+    jsdom = require("jsdom"),
+    XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest,
+    $ = require('jquery')(jsdom.jsdom().createWindow()),
     util = require('util'),
     _ = require('underscore');
 
 require('../../src/mockjax')
 require('../../src/mock4tpl')
 require('../../src/mock4xtpl')
+
+$.support.cors = true
+$.ajaxSettings.xhr = function() {
+    return new XMLHttpRequest
+}
 
 Mock.mockjax($)
 
@@ -346,7 +353,7 @@ exports.testRequest = function(test) {
         count++
     }
 
-    function complete() {
+    function complete(jqXHR, textStatus) {
         if (count === 1000) test.done()
     }
 
@@ -449,7 +456,7 @@ exports.testRequestFunction = function(test) {
 
 exports.testRequestTypeFunction = function(test) {
     Mock._mocked = {}
-    
+
     var count = 0;
 
     function success(data) {

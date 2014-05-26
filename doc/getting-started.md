@@ -54,6 +54,10 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 <!-- <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe> -->
 
+## 分享文档
+
+* [懒懒交流会 2014.5.30](/doc/lanlan.html)
+
 ## 用法
 
 ### 浏览器

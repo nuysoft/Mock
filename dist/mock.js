@@ -1,4 +1,4 @@
-/*! mockjs 13-05-2014 19:33:58 */
+/*! mockjs 26-05-2014 21:58:52 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -938,43 +938,55 @@
         }
     });
     /*! src/mockjax.js */
+    function find(options) {
+        for (var sUrlType in Mock._mocked) {
+            var item = Mock._mocked[sUrlType];
+            if ((!item.rurl || match(item.rurl, options.url)) && (!item.rtype || match(item.rtype, options.type.toLowerCase()))) {
+                return item;
+            }
+        }
+        function match(expected, actual) {
+            if (Util.type(expected) === "string") {
+                return expected === actual;
+            }
+            if (Util.type(expected) === "regexp") {
+                return expected.test(actual);
+            }
+        }
+    }
+    function convert(item, options) {
+        return Util.isFunction(item.template) ? item.template(options) : Mock.mock(item.template);
+    }
     Mock.mockjax = function mockjax(jQuery) {
         function mockxhr() {
             return {
-                open: jQuery.noop,
-                send: jQuery.noop,
-                getAllResponseHeaders: jQuery.noop,
                 readyState: 4,
-                status: 200
-            };
-        }
-        function convert(item, options) {
-            return function() {
-                return jQuery.isFunction(item.template) ? item.template(options) : Mock.mock(item.template);
+                status: 200,
+                statusText: "",
+                open: jQuery.noop,
+                send: function() {
+                    this.onload();
+                },
+                setRequestHeader: jQuery.noop,
+                getAllResponseHeaders: jQuery.noop,
+                getResponseHeader: jQuery.noop,
+                statusCode: jQuery.noop,
+                abort: jQuery.noop
             };
         }
         function prefilter(options, originalOptions, jqXHR) {
-            function match(expected, actual) {
-                if (jQuery.type(expected) === "string") {
-                    return expected === actual;
-                }
-                if (jQuery.type(expected) === "regexp") {
-                    return expected.test(actual);
-                }
+            var item = find(options);
+            if (item) {
+                options.dataFilter = options.converters["text json"] = options.converters["text jsonp"] = options.converters["text script"] = options.converters["script json"] = function() {
+                    return convert(item, options);
+                };
+                options.xhr = mockxhr;
             }
-            for (var sUrlType in Mock._mocked) {
-                var item = Mock._mocked[sUrlType];
-                if ((!item.rurl || match(item.rurl, options.url)) && (!item.rtype || match(item.rtype, options.type.toLowerCase()))) {
-                    options.dataFilter = convert(item, options);
-                    options.converters["text json"] = convert(item, options);
-                    options.converters["text jsonp"] = convert(item, options);
-                    options.xhr = mockxhr;
-                    break;
-                }
-            }
+            return "json";
         }
         jQuery.ajaxPrefilter("json", prefilter);
         jQuery.ajaxPrefilter("jsonp", prefilter);
+        jQuery.ajaxPrefilter("script", prefilter);
         return Mock;
     };
     if (typeof jQuery != "undefined") Mock.mockjax(jQuery);
@@ -991,17 +1003,9 @@
                 timeoutTimer: null
             };
             Zepto.ajax = function(options) {
-                for (var surl in Mock._mocked) {
-                    var mock = Mock._mocked[surl];
-                    if (Zepto.type(mock.rurl) === "string") {
-                        if (mock.rurl !== options.url) continue;
-                    }
-                    if (Zepto.type(mock.rurl) === "regexp") {
-                        if (!mock.rurl.test(options.url)) continue;
-                    }
-                    console.log("[mock]", options.url, ">", mock.rurl);
-                    var data = Mock.mock(mock.template);
-                    console.log("[mock]", data);
+                var item = find(options);
+                if (item) {
+                    var data = Mock.mock(item.template);
                     if (options.success) options.success(data, xhr, options);
                     if (options.complete) options.complete(xhr.status, xhr, options);
                     return xhr;
@@ -1024,20 +1028,12 @@
                 timeoutTimer: null
             };
             KISSY.io = function(options) {
-                for (var surl in Mock._mocked) {
-                    var mock = Mock._mocked[surl];
-                    if (KISSY.type(mock.rurl) === "string") {
-                        if (mock.rurl !== options.url) continue;
-                    }
-                    if (KISSY.type(mock.rurl) === "regexp") {
-                        if (!mock.rurl.test(options.url)) continue;
-                    }
-                    console.log("[mock]", options.url, ">", mock.rurl);
-                    var data = Mock.mock(mock.template);
-                    console.log("[mock]", data);
-                    if (options.success) options.success(data, "success", xhr);
-                    if (options.complete) options.complete(data, "success", xhr);
-                    return KISSY;
+                var item = find(options);
+                if (item) {
+                    var data = Mock.mock(item.template);
+                    if (options.success) options.success(data, xhr, options);
+                    if (options.complete) options.complete(xhr.status, xhr, options);
+                    return xhr;
                 }
                 return _original_ajax.apply(this, arguments);
             };
@@ -1064,7 +1060,7 @@
     this.Mock = Mock;
     this.Random = Random;
     if (typeof KISSY != "undefined") {
-        Util.each([ "mock", "components/mock/index", "mock/dist/mock", "gallery/Mock/0.1.1/index", "gallery/Mock/0.1.2/index" ], function register(name) {
+        Util.each([ "mock", "components/mock/", "mock/dist/mock", "gallery/Mock/0.1.1/", "gallery/Mock/0.1.2/", "gallery/Mock/0.1.3/" ], function register(name) {
             KISSY.add(name, function(S) {
                 Mock.mockjax(S);
                 return Mock;

@@ -1,6 +1,37 @@
 var Mock = require('./mock');
+var Util = require('./util')
 
 // BEGIN(BROWSER)
+
+function find(options) {
+
+    for (var sUrlType in Mock._mocked) {
+        var item = Mock._mocked[sUrlType]
+        if (
+            (!item.rurl || match(item.rurl, options.url)) &&
+            (!item.rtype || match(item.rtype, options.type.toLowerCase()))
+        ) {
+            // console.log("[mock]", options.url, ">", item.rurl)
+            return item
+        }
+    }
+
+    function match(expected, actual) {
+        if (Util.type(expected) === 'string') {
+            return expected === actual
+        }
+        if (Util.type(expected) === 'regexp') {
+            return expected.test(actual)
+        }
+    }
+
+}
+
+function convert(item, options) {
+    return Util.isFunction(item.template) ?
+        item.template(options) : Mock.mock(item.template)
+}
+
 /*
     ### Mock.mockjax(library)
 
@@ -12,49 +43,39 @@ Mock.mockjax = function mockjax(jQuery) {
 
     function mockxhr() {
         return {
-            open: jQuery.noop,
-            send: jQuery.noop,
-            getAllResponseHeaders: jQuery.noop,
             readyState: 4,
-            status: 200
-        }
-    }
-
-    function convert(item, options) {
-        return function() {
-            return jQuery.isFunction(item.template) ?
-                item.template(options) : Mock.mock(item.template)
+            status: 200,
+            statusText: '',
+            open: jQuery.noop,
+            send: function() {
+                this.onload()
+            },
+            setRequestHeader: jQuery.noop,
+            getAllResponseHeaders: jQuery.noop,
+            getResponseHeader: jQuery.noop,
+            statusCode: jQuery.noop,
+            abort: jQuery.noop
         }
     }
 
     function prefilter(options, originalOptions, jqXHR) {
-
-        function match(expected, actual) {
-            if (jQuery.type(expected) === 'string') {
-                return expected === actual
+        var item = find(options)
+        if (item) {
+            options.dataFilter =
+                options.converters['text json'] =
+                options.converters['text jsonp'] =
+                options.converters["text script"] =
+                options.converters["script json"] = function() {
+                    return convert(item, options)
             }
-            if (jQuery.type(expected) === 'regexp') {
-                return expected.test(actual)
-            }
+            options.xhr = mockxhr
         }
-
-        for (var sUrlType in Mock._mocked) {
-            var item = Mock._mocked[sUrlType]
-            if (
-                (!item.rurl || match(item.rurl, options.url)) &&
-                (!item.rtype || match(item.rtype, options.type.toLowerCase()))
-            ) {
-                options.dataFilter = convert(item, options)
-                options.converters['text json'] = convert(item, options)
-                options.converters['text jsonp'] = convert(item, options)
-                options.xhr = mockxhr
-                break
-            }
-        }
+        return 'json'
     }
 
     jQuery.ajaxPrefilter("json", prefilter)
     jQuery.ajaxPrefilter("jsonp", prefilter)
+    jQuery.ajaxPrefilter("script", prefilter)
 
     return Mock
 }
@@ -78,29 +99,14 @@ if (typeof Zepto != 'undefined') {
             timeoutTimer: null
         }
 
-        /**
-         * @param options
-         * return xhr
-         */
         Zepto.ajax = function(options) {
-            for (var surl in Mock._mocked) {
-                var mock = Mock._mocked[surl]
-
-                if (Zepto.type(mock.rurl) === 'string') {
-                    if (mock.rurl !== options.url) continue
-                }
-                if (Zepto.type(mock.rurl) === 'regexp') {
-                    if (!mock.rurl.test(options.url)) continue
-                }
-
-                console.log('[mock]', options.url, '>', mock.rurl)
-                var data = Mock.mock(mock.template)
-                console.log('[mock]', data)
+            var item = find(options)
+            if (item) {
+                var data = Mock.mock(item.template)
                 if (options.success) options.success(data, xhr, options)
                 if (options.complete) options.complete(xhr.status, xhr, options)
                 return xhr
             }
-
             return __original_ajax.call(Zepto, options)
         }
     }
@@ -113,7 +119,7 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
     Mock.mockjax = function mockjax(KISSY) {
         var _original_ajax = KISSY.io;
 
-        // @白汀 提交：次对象用于模拟kissy的io响应之后的传给success方法的xhr对象，只构造了部分属性，不包含实际KISSY中的完整对象。
+        // @白汀 提交：此对象用于模拟 KISSY.io 响应之后的传给 success 方法的 xhr 对象，只构造了部分属性，不包含实际 KISSY 中的完整对象。
         var xhr = {
             readyState: 4,
             responseText: '',
@@ -123,26 +129,15 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
             statusText: "success",
             timeoutTimer: null
         };
+
         KISSY.io = function(options) {
-            // if (options.dataType === 'json') {
-            for (var surl in Mock._mocked) {
-                var mock = Mock._mocked[surl];
-
-                if (KISSY.type(mock.rurl) === 'string') {
-                    if (mock.rurl !== options.url) continue
-                }
-                if (KISSY.type(mock.rurl) === 'regexp') {
-                    if (!mock.rurl.test(options.url)) continue
-                }
-
-                console.log('[mock]', options.url, '>', mock.rurl)
-                var data = Mock.mock(mock.template)
-                console.log('[mock]', data)
-                if (options.success) options.success(data, 'success', xhr)
-                if (options.complete) options.complete(data, 'success', xhr)
-                return KISSY
+            var item = find(options)
+            if (item) {
+                var data = Mock.mock(item.template)
+                if (options.success) options.success(data, xhr, options)
+                if (options.complete) options.complete(xhr.status, xhr, options)
+                return xhr
             }
-            // }
             return _original_ajax.apply(this, arguments)
         }
 
@@ -150,6 +145,7 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
         for (var name in _original_ajax) {
             KISSY.io[name] = _original_ajax[name]
         }
+
     }
 }
 // END(BROWSER)

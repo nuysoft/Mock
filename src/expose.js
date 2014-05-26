@@ -35,16 +35,16 @@ this.Random = Random
 
 // For KISSY
 if (typeof KISSY != 'undefined') {
-
     /*
         KISSY.use('components/mock/index', function(S, Mock) {
             console.log(Mock.mock)
         })
     */
     Util.each([
-        'mock', 'components/mock/index', 'mock/dist/mock',
-        'gallery/Mock/0.1.1/index',
-        'gallery/Mock/0.1.2/index'
+        'mock', 'components/mock/', 'mock/dist/mock',
+        'gallery/Mock/0.1.1/',
+        'gallery/Mock/0.1.2/',
+        'gallery/Mock/0.1.3/',
     ], function register(name) {
         KISSY.add(name, function(S) {
             Mock.mockjax(S)

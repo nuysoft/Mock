@@ -3,8 +3,6 @@ var KISSY = require('kissy'),
     Random = require('./random'),
     Util = require('./util');
 
-// KISSY.Config.debug = false
-
 // BEGIN(BROWSER)
 (function(undefined) {
     if (typeof KISSY === 'undefined') return
@@ -111,7 +109,8 @@ var KISSY = require('kissy'),
     Mock4XTpl.parseOptions = function(input, options) {
         var rComment = /<!--\s*\n*Mock\s*\n*([\w\W]+?)\s*\n*-->/g;
         var comments = input.match(rComment),
-            ret = {}, i, ma, option;
+            ret = {},
+            i, ma, option;
         for (i = 0; comments && i < comments.length; i++) {
             rComment.lastIndex = 0
             ma = rComment.exec(comments[i])
@@ -150,12 +149,12 @@ var KISSY = require('kissy'),
         function query(prop, set) {
             var ret = [];
             for (var i = 0; i < set.length; i++) {
-                if (typeof set[i] !== 'object') continue
-                if (prop in set[i]) ret.push(set[i][prop])
+                if (typeof set [i] !== 'object') continue
+                if (prop in set [i]) ret.push(set [i][prop])
                 else {
-                    ret.push.apply(ret, Util.isArray(set[i]) ?
-                        queryArray(prop, set[i]) :
-                        queryObject(prop, set[i]))
+                    ret.push.apply(ret, Util.isArray(set [i]) ?
+                        queryArray(prop, set [i]) :
+                        queryObject(prop, set [i]))
                 }
             }
             return ret
@@ -375,7 +374,7 @@ var KISSY = require('kissy'),
         for (i = 0, len = parts.length; i < len; i++) {
             /*
                 TODO 过滤掉 this、内置占位符（xindex、xcount、xkey）、helper，
-                然而万全之策是先检查 options 中是否存在对应的配置，如果没有则忽略，如果有责生成。
+                然而万全之策是先检查 options 中是否存在对应的配置，如果没有则忽略，如果有则生成。
                 不过，在应用中不建议覆盖内置占位符。
                 TODO 遇到 xindex、xcount 要修正为数组
                 TODO 遇到 xkey 要修正为对象

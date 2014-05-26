@@ -104,3 +104,26 @@ test('ajax', function() {
     }
   })
 })
+
+// @麦少 提供的 TC
+test('jsonp', function() {
+  Mock.mock(/\.json/, {
+    'list|1-10': [{
+      'id|+1': 1
+    }]
+  })
+  stop()
+  $.ajax({
+    url: 'data.json',
+    dataType: 'jsonp',
+    success: function(data) {
+      ok(data.list.length >= 1, 'data.json')
+    },
+    fail: function() {
+      ok(false, 'data.json')
+    },
+    complete: function() {
+      start()
+    }
+  })
+})

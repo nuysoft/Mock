@@ -33,7 +33,7 @@ module.exports = function(grunt) {
             },
             doc: {
                 files: ['Gruntfile.js', 'doc/**/*.md', 'doc/template.html', '!doc/index.md'],
-                tasks: ['concat:doc', 'markdown:doc', 'copy:doc']
+                tasks: ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc']
             },
             build: {}
         },
@@ -129,6 +129,15 @@ module.exports = function(grunt) {
                 ext: '.html'
             }
         },
+        cleaver: {
+            lanlan: {
+                expand: true,
+                cwd: 'doc/',
+                src: ['lanlan.md'],
+                dest: 'doc/',
+                ext: '.htm'
+            }
+        },
         copy: {
             demo: {
                 files: [{
@@ -195,7 +204,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-contrib-connect')
     grunt.loadNpmTasks('grunt-exec')
-    grunt.loadNpmTasks('grunt-markdown');
+    grunt.loadNpmTasks('grunt-markdown')
+    grunt.loadNpmTasks('grunt-cleaver')
 
     grunt.registerTask('base', [
         'jshint', 'nodeunit', 'concat:mock', 'qunit',
@@ -204,7 +214,7 @@ module.exports = function(grunt) {
     ]) // 'copy:demo',
     grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']) // grunt travis --verbose
     grunt.registerTask('default', ['base', 'connect', 'watch:dev'])
-    grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'copy:doc', 'copy:kissy'])
+    grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc', 'copy:kissy'])
     grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc'])
 
     grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])

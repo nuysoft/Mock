@@ -14,8 +14,9 @@
     "tests"
   ],
   "devDependencies": {
-    "jquery": "~2.0.3",
-    "bootstrap": "~3.0.3",
-    "codemirror": "~3.20.0"
+    "jquery": "~2.1.1",
+    "bootstrap": "",
+    "codemirror": "~3.20.0",
+    "highlightjs": "~8.0.0"
   }
 }
