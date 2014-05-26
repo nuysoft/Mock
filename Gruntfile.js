@@ -153,7 +153,7 @@ module.exports = function(grunt) {
             doc: {
                 files: [{
                     expand: true,
-                    src: ['dist/**', 'demo/**',
+                    src: ['dist/**', 'demo/**', 'doc/**',
                         'node_modules/jquery/tmp/**',
                         'node_modules/codemirror/**',
                         'node_modules/handlebars/dist/**',

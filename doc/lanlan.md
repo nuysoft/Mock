@@ -96,6 +96,8 @@ controls: true
 
 [mockjs.com](http://mockjs.com/)
 
+[![](../demo/assets/doc.png)](/doc/lanlan.html)
+
 <!-- 数据模板编辑器 -->
 
 --
