@@ -1,4 +1,4 @@
-title: Mock.js123
+title: Mock.js
 author:
   name: 墨智 / 高云
   email: mozhi.gyy@alibaba-inc.com

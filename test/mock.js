@@ -89,7 +89,7 @@ test('ajax', function() {
         }]
     })
     stop()
-    if ($.ajax) {
+    if ($) {
         $.ajax({
             url: 'data.json',
             dataType: 'json',
@@ -117,7 +117,7 @@ test('jsonp', function() {
         }]
     })
     stop()
-    if ($.ajax) {
+    if ($) {
         $.ajax({
             url: 'data.json',
             dataType: 'jsonp',
