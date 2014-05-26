@@ -105,6 +105,7 @@ test('ajax', function() {
             }
         })
     } else {
+        expect(0)
         start()
     }
 })
@@ -132,6 +133,7 @@ test('jsonp', function() {
             }
         })
     } else {
+        expect(0)
         start()
     }
 })
