@@ -57,5 +57,8 @@
       "type": "MIT",
       "url": "https://github.com/nuysoft/node-print/blob/master/README.md"
     }
-  ]
+  ],
+  "spm": {
+    "main": "dist/mock.js"
+  }
 }
