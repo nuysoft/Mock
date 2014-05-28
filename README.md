@@ -3,6 +3,7 @@
 [![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
 [![GitHub version](https://badge.fury.io/gh/nuysoft%2FMock.png)](http://badge.fury.io/gh/nuysoft%2FMock)
 [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs)
+[![spm package](http://spmjs.io/badge/mockjs)](http://spmjs.io/package/mockjs)
 [![Dependency Status](https://gemnasium.com/nuysoft/Mock.png)](https://gemnasium.com/nuysoft/Mock)
 [![Bower version](https://badge.fury.io/bo/mockjs.png)](http://badge.fury.io/bo/mockjs)
 [![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png)](https://github.com/nuysoft/Mock/)
