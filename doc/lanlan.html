@@ -394,7 +394,19 @@ pre .chunk {
   </div>
 
 <div id="wrapper">
-    <section class="slide"><style type="text/css">
+    <section class="slide"><!-- 
+    随堂问题：
+
+    我在分享的过程中会做一些提问和调查，需要各位的配合，我会根据你们的回答调整分享的内容。
+
+    * 使用过 Mock.js 的请举一下手
+    * 使用过 RAP（阿里妈妈）、IF（天猫）、中途岛（淘宝）、River（集团）之一的请举一下手
+    * 了解过 http://json-schema.org/ 的请举一下手
+    * 访问过 http://www.json-generator.com/ 的请举一下手
+
+ -->
+
+<style type="text/css">
     @font-face {
         font-family: 'logo';
         src: url('../demo/assets/font_1390195988_9420388.eot'); /* IE9*/
@@ -469,10 +481,25 @@ pre .chunk {
 
 <p><em>蓝色 Logo 出自设计师 @山峰，图片来自 <a href="http://baike.baidu.com/view/260039.htm">刺豚_百度百科</a>。</em></p>
 <!--  --></section>
-    <section class="slide"><h3 id="-">开始之前</h3>
+    <section class="slide"><style>
+    .question {
+        font-size: 250%;
+        font-weight: bold;
+    }
+</style>
+
+<h3 id="-">开始之前</h3>
 <p><a href="http://mockjs.com/">mockjs.com</a></p>
 <p><a href="/doc/lanlan.html"><img src="../demo/assets/doc.png" alt=""></a></p>
 <!-- 数据模板编辑器 --></section>
+    <section class="slide"><h3 id="-">开始之前 - ？</h3>
+<p class="question">Mock.js</p></section>
+    <section class="slide"><h3 id="-">开始之前 - ？</h3>
+<p class="question">RAP、IF、River、中途岛</p></section>
+    <section class="slide"><h3 id="-">开始之前 - ？</h3>
+<p class="question"><a href="http://json-schema.org/">json-schema.org</a></p></section>
+    <section class="slide"><h3 id="-">开始之前 - ？</h3>
+<p class="question"><a href="http://www.json-generator.com/">json-generator.com</a></p></section>
     <section class="slide"><h3 id="-">内容</h3>
 <ul>
 <li>Mock.js 是什么  <!-- 
@@ -532,21 +559,29 @@ sucess(data)</code></pre>
 <p><span class="label label-danger mr10 mb10">Warning</span> 测试用例单一</p>
 </section>
     <section class="slide"><h3 id="mock-js-">Mock.js 是什么</h3>
-<p><span class="label label-success mr10 mb10">期望1</span> 引入方便，用法简单</p>
-<p><span class="label label-success mr10 mb10">期望2</span> 数据类型丰富</p>
+<p><span class="label label-success mr10 mb10">期望1</span> 生成随机数据</p>
+<p><span class="label label-success mr10 mb10">期望2</span> 拦截 Ajax 请求</p>
+</section>
+    <section class="slide"><h3 id="mock-js-">Mock.js 是什么</h3>
 <p><span class="label label-success mr10 mb10">期望3</span> 开发无侵入</p>
-<p><span class="label label-success mr10 mb10">期望4</span> 文档一定要详细</p>
+<p><span class="label label-success mr10 mb10">期望4</span> 引入方便，用法简单</p>
+<p><span class="label label-success mr10 mb10">期望5</span> 数据类型丰富</p>
+<p><span class="label label-success mr10 mb10">期望6</span> 符合直觉的接口</p>
+<p><span class="label label-success mr10 mb10">期望7</span> 一目了然的文档</p>
+</section>
+    <section class="slide"><h3 id="mock-js-">Mock.js 是什么</h3>
+<h1 id="-span-class-label-label-success-mr10-mb10-span-span-class-label-label-success-mr10-mb10-span-"><span class="label label-success mr10 mb10">可用</span> <span class="label label-success mr10 mb10">好用</span></h1>
 </section>
     <section class="slide"><h3 id="mock-js-">Mock.js 是什么</h3>
 <p>一款模拟数据生成器。</p>
-<p><span class="label label-success mr10 mb10">功能1</span> 基于 数据模板 生成 模拟数据</p>
-<p><span class="label label-success mr10 mb10">功能2</span> 类型丰富的 随机数据</p>
-<p><span class="label label-success mr10 mb10">功能3</span> 模拟 Ajax 请求</p>
-<p><span class="label label-success mr10 mb10">功能4</span> <del>基于 HTML 模板生成模拟数据</del></p>
+<p><span class="label label-success mr10 mb10">功能 1</span> 基于 数据模板 生成 模拟数据</p>
+<p><span class="label label-success mr10 mb10">功能 2</span> 类型丰富的 随机数据</p>
+<p><span class="label label-success mr10 mb10">功能 3</span> 模拟 Ajax 请求</p>
+<p><span class="label label-success mr10 mb10">功能 4</span> <del>基于 HTML 模板生成模拟数据</del></p>
 </section>
     <section class="slide"><h3 id="mock-js-">Mock.js 是什么</h3>
-<p><span class="label label-primary mr10 mb10">价值1</span> 前端攻城师独立于后端进行开发</p>
-<p><span class="label label-primary mr10 mb10">价值2</span> 提高单元测试覆盖率</p>
+<p><span class="label label-primary mr10 mb10">价值 1</span> 前端攻城师独立于后端进行开发</p>
+<p><span class="label label-primary mr10 mb10">价值 2</span> 提高单元测试覆盖率</p>
 </section>
     <section class="slide"><h3 id="-">快速开始</h3>
 <p><span class="label label-success mr10 mb10">第 1 步</span> 安装 Mock.js</p>
@@ -588,8 +623,8 @@ console.log(
     <section class="slide"><h3 id="-">快速开始</h3>
 <p><span class="label label-success mr10 mb10">发起 Ajax 请求</span></p>
 <pre><code>$.ajax({
-    url: &#39;hello.json&#39;
-    dataType: &#39;json&#39;,
+    url: &#39;hello.json&#39;,
+    dataType: &#39;json&#39;
 }).done(function(data, status, xhr){
     console.log(
         JSON.stringify(data, null, 4)
@@ -609,7 +644,7 @@ console.log(
 }</code></pre>
 </section>
     <section class="slide"><h3 id="-">数据模板</h3>
-<p>每个属性由 3 部分构成：</p>
+<p>每个属性由 <span class="label label-success">3</span> 部分构成：</p>
 <pre><code>// 属性名   name
 // 生成规则 rule
 // 属性值   value
@@ -747,10 +782,10 @@ if(mock) KISSY.use(&#39;app/models/data&#39;)</code></pre>
     <section class="slide"><h3 id="-">问答</h3>
 <ol>
 <li><p>你如何看待 JSON Schema？</p>
-<p> 非常不友好。</p>
+<p> 看上去很美。</p>
 </li>
 <li><p>Mock.js 如何协同 RAP（阿里妈妈）、IF（天猫）、中途岛（淘宝）、River（集团）？</p>
-<p> RAP、中途岛、River 目前基于 Mock.js 生成随机数据。</p>
+<p> 目前 RAP、中途岛、River 基于 Mock.js 生成随机数据。</p>
 </li>
 </ol>
 </section>
@@ -759,6 +794,7 @@ if(mock) KISSY.use(&#39;app/models/data&#39;)</code></pre>
     <i class="iconlogo" style="font-size: 1000%;">&#x3435;</i>
     <span style="position: absolute; left: 40%; top: 5%; font-size: 200%;">？</span>
 </p></section>
+    <section class="slide"><h1 class="mock_color">求 Star</h1></section>
     <section class="slide"><h3 id="-">没有了</h3>
 <p style="text-align: center; font-size: 64px;">谢谢各位的聆听</p>
 
