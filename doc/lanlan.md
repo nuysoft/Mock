@@ -462,7 +462,7 @@ controls: true
 
 <span class="label label-success mb10">Mock.Random.extend()</span>
 
-    Random.extend({
+    Mock.Random.extend({
         hero: function() {
             return this.pick([
                 '盖伦 德玛西亚',
