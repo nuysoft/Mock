@@ -1,4 +1,4 @@
-/*! mockjs 30-05-2014 18:26:39 */
+/*! mockjs 09-06-2014 16:18:29 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -821,7 +821,16 @@
                     options.context.path.pop();
                 }
             } else {
-                for (key in options.template) {
+                keys = Util.keys(options.template);
+                keys.sort(function(a, b) {
+                    var afn = typeof options.template[a] === "function";
+                    var bfn = typeof options.template[b] === "function";
+                    if (afn === bfn) return 0;
+                    if (afn && !bfn) return 1;
+                    if (!afn && bfn) return -1;
+                });
+                for (i = 0; i < keys.length; i++) {
+                    key = keys[i];
                     parsedKey = key.replace(rkey, "$1");
                     options.context.path.push(parsedKey);
                     result[parsedKey] = Handle.gen(options.template[key], key, {

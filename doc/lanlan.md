@@ -524,6 +524,11 @@ controls: true
     var mock = ~location.search.indexOf('mock')
     if(mock) KISSY.use('app/models/data')
 
+<!-- 
+    // protocol://host:port/pathname?search&mock
+    // http://host:port/index.html?mock
+ -->
+
 --
 
 ### 未来规划

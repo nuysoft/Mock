@@ -264,6 +264,22 @@ exports.testFunction = function(test) {
     test.equal('hello', data.fn)
     test.done()
 }
+exports.testDisorderlyFunction = function(test) {
+    var tpl = {
+        xfn2: function() {
+            return this.x * 2
+        },
+        x: 1,
+        xfn4: function() {
+            return this.x * 4
+        }
+    }
+    var data = Mock.mock(tpl)
+    test.equal('1', data.x)
+    test.equal('2', data.xfn2)
+    test.equal('4', data.xfn4)
+    test.done()
+}
 exports.testHolder = function(test) {
     test.ok(rEmail.test(Mock.mock('@EMAIL')))
     test.ok(rDate.test(Mock.mock('@DATE')))

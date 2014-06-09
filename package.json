@@ -2,7 +2,7 @@
   "name": "mockjs",
   "title": "Mock.js",
   "description": "模拟请求 & 模拟数据",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "homepage": "http://mockjs.com/",
   "keywords": [
     "mock",
