@@ -373,7 +373,7 @@ exports.testRequest = function(test) {
         if (count === 1000) test.done()
     }
 
-    // 拦截所有 .json 请求
+    // 拦截 hello.json 请求
     Mock.mock(/hello.json/, {
         'list|1-10': [{
             'id|+1': 1,
@@ -697,10 +697,58 @@ exports.test_increment = function(test) {
 exports.test_reference = function(test) {
     var tpl = {
         name: '@first @last',
-        first: 'fffff',
-        last: 'lllll'
+        first: 'fffffirst',
+        last: 'lllllast'
     }
     var data = Mock.mock(tpl)
-    test.equal(data.name, 'fffff lllll')
+    test.equal(data.name, 'fffffirst lllllast')
     test.done()
 }
+
+// #25 改变了非函数属性的顺序，查找起来不方便
+exports.test_key_order = function(test) {
+    var tpl = {
+        fn: function() {},
+        first: '',
+        second: '',
+        third: ''
+    }
+    var data = Mock.mock(tpl)
+    var keys = _.keys(data)
+    test.equal('first', keys[0])
+    test.equal('second', keys[1])
+    test.equal('third', keys[2])
+    test.equal('fn', keys[3])
+    test.done()
+}
+
+// #26 生成规则 支持 负数，例如 number|-100-100
+exports.test_negative_number = function(test) {
+    var data
+
+    data = Mock.mock({
+        'number|-10--5': 1
+    })
+    test.ok(range(data.number, -10, -5), data.number)
+
+    data = Mock.mock({
+        'number|-5--10': 1
+    })
+    test.ok(range(data.number, -10, -5), data.number)
+
+    test.done()
+}
+
+// #23 Mock.mockjax 导致 $.getScript 不执行回调
+/*
+    $.getScript('/test/nodeunit/noop.js', function(script, textStatus, jqXHR) {
+        console.log(arguments)
+    })
+*/
+
+// #22 步加载js文件的时候发现问题
+/*
+    $('<div>').load('/test/nodeunit/noop.html', function(responseText, textStatus, jqXHR) {
+        console.log(arguments)
+    })
+*/

@@ -19,6 +19,7 @@
     "codemirror": "~3.20.0",
     "highlightjs": "~8.0.0",
     "kissy": "~1.4.3",
-    "seajs": "*"
+    "seajs": "*",
+    "js-beautify": "~1.5.1"
   }
 }

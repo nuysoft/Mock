@@ -24,9 +24,11 @@ var Mock = module.exports = {
         placeholder(*)
 
     [正则查看工具](http://www.regexper.com/)
+
+    #26 生成规则 支持 负数，例如 number|-100-100
 */
-var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/,
-    rrange = /(\d+)-?(\d+)?/,
+var rkey = /(.+)\|(?:\+(\d+)|([\+\-]?\d+-?[\+\-]?\d*)?(?:\.(\d+-?\d*))?)/,
+    rrange = /([\+\-]?\d+)-?([\+\-]?\d+)?/,
     rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g; // (^(?:.|\r|\n)*?)
 
 Mock.extend = Util.extend
@@ -195,7 +197,7 @@ Handle.extend({
     },
     object: function(options) {
         var result = {},
-            keys, key, parsedKey, inc, i;
+            keys, fnKeys, key, parsedKey, inc, i;
 
         // 'obj|min-max': {}
         if (options.rule.min) {
@@ -216,6 +218,15 @@ Handle.extend({
 
         } else {
             // 'obj': {}
+            keys = []
+            fnKeys = [] // #25 改变了非函数属性的顺序，查找起来不方便
+            for (key in options.template) {
+                (typeof options.template[key] === 'function' ? fnKeys : keys).push(key)
+            }
+            keys = keys.concat(fnKeys)
+
+            /*
+            会改变非函数属性的顺序
             keys = Util.keys(options.template)
             keys.sort(function(a, b) {
                 var afn = typeof options.template[a] === 'function'
@@ -224,6 +235,8 @@ Handle.extend({
                 if (afn && !bfn) return 1
                 if (!afn && bfn) return -1
             })
+            */
+
             for (i = 0; i < keys.length; i++) {
                 key = keys[i]
                 parsedKey = key.replace(rkey, '$1')
@@ -334,13 +347,25 @@ Handle.extend({
             okey = this._all()[lkey],
             params = parts && parts[2] || ''
 
+        // 解析占位符的参数
         try {
+            // 1. 尝试保持参数的类型
+            /*
+                #24 [Window Firefox 30.0 引用 占位符 抛错](https://github.com/nuysoft/Mock/issues/24)
+                [BX9056: 各浏览器下 window.eval 方法的执行上下文存在差异](http://www.w3help.org/zh-cn/causes/BX9056)
+                应该属于 Window Firefox 30.0 的 BUG
+            */
             /* jshint -W061 */
-            eval('!function(){ params = [].splice.call(arguments, 0 ) }(' + params + ')')
-        } catch (e) {
-            params = parts[2].split(/,\s*/);
+            params = eval('(function(){ return [].splice.call(arguments, 0 ) })(' + params + ')')
+        } catch (error) {
+            // 2. 如果失败，只能解析为字符串
+            // console.error(error)
+            // if (error instanceof ReferenceError) params = parts[2].split(/,\s*/);
+            // else throw error
+            params = parts[2].split(/,\s*/)
         }
 
+        // 占位符优先引用数据模板中的属性
         if (obj && (key in obj)) return obj[key]
 
         if (templateContext &&

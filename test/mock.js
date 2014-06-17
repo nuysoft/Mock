@@ -19,7 +19,7 @@ test('float', function() {
         tpl[name] = value
 
         var data = Mock.mock(tpl)
-        ok(data.float >= min && data.float < max, name)
+        ok(data.float >= min && data.float < max, name + ' ' + data.float)
 
         var sfloat = data.float + '',
             decimal = sfloat.slice(sfloat.indexOf('.') + 1);

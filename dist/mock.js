@@ -1,4 +1,4 @@
-/*! mockjs 09-06-2014 16:18:29 */
+/*! mockjs 18-06-2014 04:36:07 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -709,7 +709,7 @@
         return Random;
     }();
     /*! src/mock.js */
-    var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /(\d+)-?(\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g;
+    var rkey = /(.+)\|(?:\+(\d+)|([\+\-]?\d+-?[\+\-]?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /([\+\-]?\d+)-?([\+\-]?\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g;
     Mock.extend = Util.extend;
     Mock.mock = function(rurl, rtype, template) {
         if (arguments.length === 1) {
@@ -804,7 +804,7 @@
             return result;
         },
         object: function(options) {
-            var result = {}, keys, key, parsedKey, inc, i;
+            var result = {}, keys, fnKeys, key, parsedKey, inc, i;
             if (options.rule.min) {
                 keys = Util.keys(options.template);
                 keys = Random.shuffle(keys);
@@ -821,14 +821,12 @@
                     options.context.path.pop();
                 }
             } else {
-                keys = Util.keys(options.template);
-                keys.sort(function(a, b) {
-                    var afn = typeof options.template[a] === "function";
-                    var bfn = typeof options.template[b] === "function";
-                    if (afn === bfn) return 0;
-                    if (afn && !bfn) return 1;
-                    if (!afn && bfn) return -1;
-                });
+                keys = [];
+                fnKeys = [];
+                for (key in options.template) {
+                    (typeof options.template[key] === "function" ? fnKeys : keys).push(key);
+                }
+                keys = keys.concat(fnKeys);
                 for (i = 0; i < keys.length; i++) {
                     key = keys[i];
                     parsedKey = key.replace(rkey, "$1");
@@ -915,8 +913,8 @@
             rplaceholder.exec("");
             var parts = rplaceholder.exec(placeholder), key = parts && parts[1], lkey = key && key.toLowerCase(), okey = this._all()[lkey], params = parts && parts[2] || "";
             try {
-                eval("!function(){ params = [].splice.call(arguments, 0 ) }(" + params + ")");
-            } catch (e) {
+                params = eval("(function(){ return [].splice.call(arguments, 0 ) })(" + params + ")");
+            } catch (error) {
                 params = parts[2].split(/,\s*/);
             }
             if (obj && key in obj) return obj[key];
@@ -990,12 +988,10 @@
                     return convert(item, options);
                 };
                 options.xhr = mockxhr;
+                if (originalOptions.dataType !== "script") return "json";
             }
-            return "json";
         }
-        jQuery.ajaxPrefilter("json", prefilter);
-        jQuery.ajaxPrefilter("jsonp", prefilter);
-        jQuery.ajaxPrefilter("script", prefilter);
+        jQuery.ajaxPrefilter("json jsonp script", prefilter);
         return Mock;
     };
     if (typeof jQuery != "undefined") Mock.mockjax(jQuery);
