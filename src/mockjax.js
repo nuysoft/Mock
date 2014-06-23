@@ -48,7 +48,7 @@ Mock.mockjax = function mockjax(jQuery) {
             statusText: '',
             open: jQuery.noop,
             send: function() {
-                this.onload()
+                if (this.onload) this.onload()
             },
             setRequestHeader: jQuery.noop,
             getAllResponseHeaders: jQuery.noop,

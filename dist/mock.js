@@ -1,4 +1,4 @@
-/*! mockjs 18-06-2014 04:36:07 */
+/*! mockjs 23-06-2014 15:57:37 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -7,7 +7,7 @@
 */
 (function(undefined) {
     var Mock = {
-        version: "0.1.2",
+        version: "0.1.5",
         _mocked: {}
     };
     /*! src/util.js */
@@ -972,7 +972,7 @@
                 statusText: "",
                 open: jQuery.noop,
                 send: function() {
-                    this.onload();
+                    if (this.onload) this.onload();
                 },
                 setRequestHeader: jQuery.noop,
                 getAllResponseHeaders: jQuery.noop,

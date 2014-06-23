@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             files: ['Gruntfile.js', 'package.json', 'src/**/*.js', 'test/**/*.js',
-                '!src/xhr.js',
+                '!src/xhr.js', '!src/MockHttpRequest.js',
                 '!**/*-prefix.js', '!**/*-suffix.js'
             ],
             options: {
@@ -36,11 +36,12 @@ module.exports = function(grunt) {
             files: [
                 'test/**/*.html',
                 '!test/mock4xtpl.html',
-                '!test/**/noop.*'
+                '!test/**/noop.*',
+                '!test/xhr.html'
             ]
         },
         nodeunit: {
-            all: ['test/nodeunit/*.js' , '!test/**/noop.*']
+            all: ['test/nodeunit/*.js', '!test/**/noop.*']
         },
         watch: {
             dev: {
@@ -73,6 +74,7 @@ module.exports = function(grunt) {
                 src: ['src/mock-prefix.js',
                     'src/util.js', 'src/random.js',
                     'src/mock.js',
+                    // 'src/xhr.js',
                     'src/mockjax.js',
                     'src/expose.js',
                     'src/mock4tpl.js',
