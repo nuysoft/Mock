@@ -2,7 +2,7 @@
 
 ### 2014.6.23 V0.1.5
 
-1. [!] 修复 #28 #29，因为 jQuery 每个版本在 Ajax 实现上有些差异，导致在拦截 Ajax 请求时出现了兼容性问题（例如，方法 `xhr.onload()` 访问不到）。本次测试并通过的 jQuery 版本有：
+1. [!] 修复 #28 #29，因为 jQuery 每个版本在 Ajax 实现上有些差异，导致在拦截 Ajax 请求时出现了兼容性问题（例如，方法 `xhr.onload()` 访问不到）。本次[测试](http://jsfiddle.net/8y8Fz/)并通过的 jQuery 版本有：
 
 	* jQuery 2.1.0
 	* jQuery 2.0.2
