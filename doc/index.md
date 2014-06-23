@@ -31,12 +31,12 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
-        Development Version (0.1.4)
+        Development Version (0.1.5)
     </a> - <i>71kB, Uncompressed</i>
 </p>
 <p>
     <a href="./dist/mock-min.js" class="btn btn-primary w250">
-        Production Version (0.1.4)
+        Production Version (0.1.5)
     </a> - <i>31kB, Minified</i>
 </p>
 <p>
