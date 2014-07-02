@@ -36,22 +36,22 @@
 
 **示例1：**Mock.mock( template )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/Y3rg6/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/Y3rg6/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例2：**Mock.mock( rurl, template )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/BeENf/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/BeENf/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例3：**Mock.mock( rurl, function(options) )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/2s5t5/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/2s5t5/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例4：**Mock.mock( rurl, rtype, template )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/Eq68p/2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/Eq68p/2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例5：**Mock.mock( rurl, rtype, function(options) )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/6dpV5/4/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/6dpV5/4/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 

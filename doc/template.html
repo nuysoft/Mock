@@ -5,7 +5,7 @@
     <title>Mock.js</title>
     <meta name="keywords" content="模拟数据生成器，模拟数据，模拟请求，Simulation Data Generator" />
     <link rel="icon" href="/favicon.ico">
-    <link href="./demo/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link  href="./bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
         body {
           font: 14px/1.7 'helvetica neue', 'hiragino sans gb', stheiti,'wenquanyi micro hei',\5FAE\8F6F\96C5\9ED1,\5B8B\4F53, sans-serif;
@@ -89,13 +89,13 @@
   <body>
     <div id="sidebar" class="interface"></div>
   
-    <script src="./bower_components/jquery/jquery.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
     <script src="./dist/mock.js"></script>
     
     
     <div class="container"><%=content%></div>
     
-    <script src="./demo/assets/catalog.js"></script>
+    <script src="./doc/catalog.js"></script>
 
     <script type="text/javascript">
         $(function(){
@@ -112,13 +112,18 @@
         $(function(){
             $('table').addClass('table table-bordered')
         })
+        $(window).on('load', function(){
+            $('[data-src]').attr('src', function(){
+                // return $(this).attr('data-src')
+            })
+        })
     </script>
   
-    <link href="./node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
-    <link href="./node_modules/codemirror/theme/neat.css" rel="stylesheet">
-    <script src="./node_modules/codemirror/lib/codemirror.js"></script>
-    <script src="./node_modules/codemirror/addon/runmode/runmode.js"></script>
-    <script src="./node_modules/codemirror/mode/javascript/javascript.js"></script>
+    <link  href="./bower_components/codemirror/lib/codemirror.css" rel="stylesheet">
+    <link  href="./bower_components/codemirror/theme/neat.css" rel="stylesheet">
+    <script src="./bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="./bower_components/codemirror/addon/runmode/runmode.js"></script>
+    <script src="./bower_components/codemirror/mode/javascript/javascript.js"></script>
     <script type="text/javascript">
         $('pre').each(function(index, el){
             $(this).hide()

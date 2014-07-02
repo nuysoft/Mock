@@ -1,18 +1,15 @@
 <!-- ## Mock.js -->
 
-<h2 class="hide" href="#">Mock.js</h2>
-<img class="hide" src="mockjs.png" wid>
-
 <h1 style="color: #428BCA; margin-bottom: 30px;">
     <i class="iconlogo" style="font-size: 80px;">&#x3435;</i>
     <span>Mock.js</span>
 </h1>
 
-[![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
+<a href="http://travis-ci.org/nuysoft/Mock"><img data-src="https://api.travis-ci.org/nuysoft/Mock.png?branch=master" alt="Build Status"></a>
 <!-- [![GitHub version](https://badge.fury.io/gh/nuysoft%2FMock.png)](http://badge.fury.io/gh/nuysoft%2FMock) -->
 <!-- [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs) -->
 <!-- [![Bower version](https://badge.fury.io/bo/mockjs.png)](http://badge.fury.io/bo/mockjs) -->
-[![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png)](https://github.com/nuysoft/Mock/)
+<a href="https://github.com/nuysoft/Mock/"><img data-src="https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png" alt="Views in the last 24 hours"></a>
 
 Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮助前端攻城师独立于后端进行开发，帮助编写单元测试。提供了以下模拟功能：
 
@@ -45,10 +42,10 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
     </a> - <i>Unreleased</i>
 </p>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
+<iframe data-src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
+<iframe data-src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
 
 <!-- <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
@@ -62,7 +59,7 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 ### 浏览器
 
-<iframe width="100%" height="200" src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="200" data-src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Node (CommonJS)
 
@@ -90,15 +87,15 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 ### RequireJS (AMD)
 
-<iframe width="100%" height="350" src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="350" data-src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Sea.js (CMD)
 
-<iframe width="100%" height="350" src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="350" data-src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### KISSY
 
-<iframe width="100%" height="400" src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" data-src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <!-- 
 Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里同学可以直接加载 `gallery/Mock/0.1.1/index`：
@@ -262,23 +259,23 @@ Mock.js 的语法规范包括两部分：
 
 **示例1：**Mock.mock( template )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/Y3rg6/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/Y3rg6/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例2：**Mock.mock( rurl, template )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/BeENf/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/BeENf/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例3：**Mock.mock( rurl, function(options) )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/2s5t5/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/2s5t5/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例4：**Mock.mock( rurl, rtype, template )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/Eq68p/2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/Eq68p/2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 **示例5：**Mock.mock( rurl, rtype, function(options) )
 
-<iframe width="100%" height="300" src="http://jsfiddle.net/6dpV5/4/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/6dpV5/4/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
 
@@ -892,7 +889,7 @@ TODO 统计 -->
 * 参数 unit：可选。表示时间单元，用于对当前日期和时间进行格式化。可选值有：`year`、`month`、`week`、`day`、`hour`、`minute`、`second`、`week`，默认不会格式化。
 * 参数 format：可选。指示生成的日期和时间字符串的格式。默认值为 `yyyy-MM-dd HH:mm:ss`。可选的占位符参考自 [Ext.Date](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date)，请参见 [Random.date(format)](#date)。
 
-> Random.now() 的实现参考了 (Moment.js)[http://momentjs.cn/docs/#/manipulating/start-of/]。
+> `Random.now()` 的实现参考了 [Moment.js](http://momentjs.cn/docs/#/manipulating/start-of/)。
 
 **使用示例**如下所示：
     
@@ -969,12 +966,12 @@ TODO 统计 -->
 
 生成的路径所对应的图片如下所示：
 
-![](http://dummyimage.com/125x125)
-![](http://dummyimage.com/200x100)
-![](http://dummyimage.com/200x100/fb0a2a)
-![](http://dummyimage.com/200x100/02adea&text=Hello)
-![](http://dummyimage.com/200x100/00405d/FFF&text=Mock.js)
-![](http://dummyimage.com/200x100/ffcc33/FFF.png&text=!)
+<img data-src="http://dummyimage.com/125x125" alt="">
+<img data-src="http://dummyimage.com/200x100" alt="">
+<img data-src="http://dummyimage.com/200x100/fb0a2a" alt="">
+<img data-src="http://dummyimage.com/200x100/02adea&amp;text=Hello" alt="">
+<img data-src="http://dummyimage.com/200x100/00405d/FFF&amp;text=Mock.js" alt="">
+<img data-src="http://dummyimage.com/200x100/ffcc33/FFF.png&amp;text=!" alt="">
 
 #### Random.dataImage(size, text)
 
@@ -1035,7 +1032,36 @@ TODO 统计 -->
 **使用示例**如下所示：
 
     Random.color()
-    // => "#3538b2"
+    // => "#3538B2"
+
+下面是一些随机生成的颜色：
+
+<div id="color100" class="color_100"></div>
+<style type="text/css">
+    .circle {
+        display: inline-block;
+        width: 5em;
+        height: 5em;
+        border-radius: 50%;
+        margin: 0 1em 1em 0;
+        line-height: 5em;
+        vertical-align: middle;
+        text-align: center;
+        color: #FFF;
+    }
+</style>
+<script>
+    $(function(){
+        var container = $('#color100')
+        var color
+        for (var i = 0; i < 35; i++) {
+            color = Random.color()
+            $('<span class="circle"></span>')
+                .css('background-color', color)
+                .appendTo(container)
+        }  
+    })
+</script>
 
 ### Helpers
 
@@ -1216,7 +1242,7 @@ TODO 统计 -->
     Random.last()
     // => "Martinez"
 
-#### Random.name()
+#### Random.name(middle)
 
 * Random.name()
 * Random.name(middle)
@@ -1233,6 +1259,39 @@ TODO 统计 -->
     // => "Larry Wilson"
     Random.name(true)
     // => "Helen Carol Martinez"
+
+#### Random.cfirst()
+
+* Random.cfirst()
+
+随机生成一个常见的中文名。
+
+**使用示例**如下所示：
+
+    Random.first()
+    // => "曹"
+
+#### Random.clast()
+
+* Random.clast()
+
+随机生成一个常见的中文姓。
+
+**使用示例**如下所示：
+
+    Random.clast()
+    // => "艳"
+
+#### Random.cname()
+
+* Random.cname()
+
+随机生成一个常见的中文姓名。
+
+**使用示例**如下所示：
+
+    Random.cname()
+    // => "袁军"
 
 ### Web
 
@@ -1258,6 +1317,28 @@ TODO 统计 -->
     Random.domain()
     // => "kozfnb.org"
 
+#### Random.protocol()
+
+* Random.protocol()
+
+随机生成一个 URL 协议。返回以下值之一：'http`、'ftp`、'gopher`、'mailto`、'mid`、'cid`、'news`、'nntp`、'prospero`、'telnet`、'rlogin`、'tn3270`、'wais'。
+
+**使用示例**如下所示：
+
+    Random.protocol()
+    // => "ftp"
+
+#### Random.tld()
+
+* Random.tld()
+
+随机生成一个顶级域名（Top Level Domain）。
+
+**使用示例**如下所示：
+
+    Random.tld()
+    // => "net"
+
 #### Random.email()
 
 * Random.email()
@@ -1279,17 +1360,6 @@ TODO 统计 -->
 
     Random.ip()
     // => "34.206.109.169"
-
-#### Random.tld()
-
-* Random.tld()
-
-随机生成一个顶级域名。
-
-**使用示例**如下所示：
-
-    Random.tld()
-    // => "net"
 
 ### Address
 
@@ -1327,6 +1397,8 @@ TODO 统计 -->
 
     Random.guid()
     // => "662C63B4-FD43-66F4-3328-C54E3FF0D56E"
+
+> `Random.guid()` 的实现参考了 [UUID 规范](http://www.ietf.org/rfc/rfc4122.txt)。
 
 #### Random.id()
 

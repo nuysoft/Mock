@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mock.js Test Suite</title>
+    <!-- Load local QUnit. -->
+    <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" media="screen">
+    <script src="../bower_components/qunit/qunit/qunit.js"></script>
+    <!-- Load local lib. -->
+    <script src="../bower_components/underscore/underscore.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <!-- <script src="../dist/mock.js"></script> -->
+    <script src="../src/fix/expose.js"></script>
+    <script src="../src/util.js"></script>
+    <script src="../src/random.js"></script>
+    <script src="../src/mock.js"></script>
+    <script src="../src/xhr.js"></script>
+    <!-- Load local tests. -->
+    <script>
+        function doit(tpl, validator) {
+            var data = Mock.mock(tpl)
+            preview(tpl, data)
+            // console.log(tpl, '=>', data)
+            validator(
+                tpl, data,
+                JSON.stringify(tpl, null, 4) + ' => ' + JSON.stringify(data, null, 4)
+            )
+            empty()
+        }
+        function preview(tpl, data) {
+            $('#tpl').text(JSON.stringify(tpl, null, 4))
+            $('#data').text(JSON.stringify(data, null, 4))
+        }
+        function empty() {
+            $('#tpl').empty()
+            $('#data').empty()
+        }
+    </script>
+    <!--  -->
+    <!-- <script src="./spec_dtd.js"></script> -->
+    <!-- <script src="./spec_dpd.js"></script> -->
+    <!-- <script src="./random.js"></script> -->
+    <!-- <script src="./mock.js"></script> -->
+    <script src="./request.js"></script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <div id="qunit-testrunner-toolbar">
+        <!-- <a href="https://github.com/nuysoft/Mock/" target="_blank">
+            <img src="https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png" alt="Views in the last 24 hours">
+        </a> -->
+        <a href="http://mockjs.com/#数据模板定义 DTD" target="_blank">数据模板定义 DTD</a>，
+        <a href="http://mockjs.com/#数据占位符定义 DPD" target="_blank">数据占位符定义 DPD</a>
+    </div>
+  
+    <style type="text/css">
+        .container {
+            margin: 8px 0px 24px 0px;
+            float: left;
+            width: 50%;
+        }
+    </style>
+    <pre id="tpl" class="container"></pre>
+    <pre id="data" class="container"></pre>
+
+</body>
+</html>
+

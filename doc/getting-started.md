@@ -1,18 +1,15 @@
 <!-- ## Mock.js -->
 
-<h2 class="hide" href="#">Mock.js</h2>
-<img class="hide" src="mockjs.png" wid>
-
 <h1 style="color: #428BCA; margin-bottom: 30px;">
     <i class="iconlogo" style="font-size: 80px;">&#x3435;</i>
     <span>Mock.js</span>
 </h1>
 
-[![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
+<a href="http://travis-ci.org/nuysoft/Mock"><img data-src="https://api.travis-ci.org/nuysoft/Mock.png?branch=master" alt="Build Status"></a>
 <!-- [![GitHub version](https://badge.fury.io/gh/nuysoft%2FMock.png)](http://badge.fury.io/gh/nuysoft%2FMock) -->
 <!-- [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs) -->
 <!-- [![Bower version](https://badge.fury.io/bo/mockjs.png)](http://badge.fury.io/bo/mockjs) -->
-[![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png)](https://github.com/nuysoft/Mock/)
+<a href="https://github.com/nuysoft/Mock/"><img data-src="https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png" alt="Views in the last 24 hours"></a>
 
 Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮助前端攻城师独立于后端进行开发，帮助编写单元测试。提供了以下模拟功能：
 
@@ -45,10 +42,10 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
     </a> - <i>Unreleased</i>
 </p>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
+<iframe data-src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
+<iframe data-src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
 
 <!-- <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
@@ -62,7 +59,7 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 ### 浏览器
 
-<iframe width="100%" height="200" src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="200" data-src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Node (CommonJS)
 
@@ -90,15 +87,15 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 ### RequireJS (AMD)
 
-<iframe width="100%" height="350" src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="350" data-src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Sea.js (CMD)
 
-<iframe width="100%" height="350" src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="350" data-src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### KISSY
 
-<iframe width="100%" height="400" src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="400" data-src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <!-- 
 Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里同学可以直接加载 `gallery/Mock/0.1.1/index`：

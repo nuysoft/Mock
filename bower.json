@@ -14,12 +14,14 @@
     "tests"
   ],
   "devDependencies": {
-    "jquery": "~2.1.1",
-    "bootstrap": "",
-    "codemirror": "~3.20.0",
+    "jquery": "*",
+    "bootstrap": "~3.1.1",
+    "codemirror": "~4.3.0",
     "highlightjs": "~8.0.0",
-    "kissy": "~1.4.3",
+    "kissy": "~1.4.4",
     "seajs": "*",
-    "js-beautify": "~1.5.1"
+    "js-beautify": "~1.5.1",
+    "qunit": "~1.14.0",
+    "underscore": "~1.6.0"
   }
 }

@@ -1,64 +1,50 @@
 {
-  "name": "mockjs",
-  "title": "Mock.js",
-  "description": "模拟请求 & 模拟数据",
-  "version": "0.1.5",
-  "homepage": "http://mockjs.com/",
-  "keywords": [
-    "mock",
-    "mockJSON",
-    "mockAjax",
-    "mockTempalte"
-  ],
-  "author": "nuysoft@gmail.com",
-  "dependencies": {
-    "commander": "1.3.x"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-connect": "~0.5.0",
-    "grunt-markdown": "~0.4.0",
-    "grunt-exec": "~0.4.2",
-    "jquery": "~2.1.1",
-    "handlebars": "~1.0.12",
-    "underscore": "~1.5.1",
-    "jison": "~0.4.10",
-    "shelljs": "~0.2.1",
-    "kissy": "~1.3.1",
-    "node-print": "~0.0.4",
-    "codemirror": "~3.18.0",
-    "grunt-contrib-qunit": "~0.3.0",
-    "grunt-contrib-nodeunit": "~0.2.1",
-    "zepto": "0.0.4",
-    "time-grunt": "~0.3.1",
-    "grunt-cleaver": "~0.3.2",
-    "jsdom": "~0.10.5",
-    "xmlhttprequest": "~1.6.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nuysoft/Mock.git"
-  },
-  "main": "./dist/mock.js",
-  "scripts": {
-    "test": "grunt travis --verbose"
-  },
-  "bin": {
-    "random": "bin/random"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/nuysoft/node-print/blob/master/README.md"
+    "name": "mockjs",
+    "title": "Mock.js",
+    "description": "模拟请求 & 模拟数据",
+    "version": "0.2.0",
+    "homepage": "http://mockjs.com/",
+    "keywords": [
+        "mock",
+        "mockJSON",
+        "mockAjax"
+    ],
+    "author": "nuysoft@gmail.com",
+    "dependencies": {
+        "commander": "~2.2.0"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.5",
+        "grunt-contrib-jshint": "~0.10.0",
+        "grunt-contrib-watch": "~0.6.1",
+        "grunt-contrib-concat": "~0.4.0",
+        "grunt-contrib-copy": "~0.5.0",
+        "grunt-contrib-uglify": "~0.5.0",
+        "grunt-contrib-connect": "~0.8.0",
+        "grunt-contrib-qunit": "~0.5.1",
+        "grunt-contrib-nodeunit": "~0.4.1",
+        "grunt-markdown": "~0.6.1",
+        "grunt-cleaver": "~0.3.2",
+        "time-grunt": "~0.3.2",
+        "load-grunt-tasks": "~0.6.0",
+        "underscore": "~1.6.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/nuysoft/Mock.git"
+    },
+    "main": "./dist/mock.js",
+    "scripts": {
+        "test": "grunt travis --verbose"
+    },
+    "bin": {
+        "random": "bin/random"
+    },
+    "licenses": [{
+        "type": "MIT",
+        "url": "https://github.com/nuysoft/Mock/blob/master/LICENSE"
+    }],
+    "spm": {
+        "main": "dist/mock.js"
     }
-  ],
-  "spm": {
-    "main": "dist/mock.js"
-  }
 }

@@ -388,7 +388,7 @@ TODO 统计 -->
 * 参数 unit：可选。表示时间单元，用于对当前日期和时间进行格式化。可选值有：`year`、`month`、`week`、`day`、`hour`、`minute`、`second`、`week`，默认不会格式化。
 * 参数 format：可选。指示生成的日期和时间字符串的格式。默认值为 `yyyy-MM-dd HH:mm:ss`。可选的占位符参考自 [Ext.Date](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date)，请参见 [Random.date(format)](#date)。
 
-> Random.now() 的实现参考了 (Moment.js)[http://momentjs.cn/docs/#/manipulating/start-of/]。
+> `Random.now()` 的实现参考了 [Moment.js](http://momentjs.cn/docs/#/manipulating/start-of/)。
 
 **使用示例**如下所示：
     
@@ -465,12 +465,12 @@ TODO 统计 -->
 
 生成的路径所对应的图片如下所示：
 
-![](http://dummyimage.com/125x125)
-![](http://dummyimage.com/200x100)
-![](http://dummyimage.com/200x100/fb0a2a)
-![](http://dummyimage.com/200x100/02adea&text=Hello)
-![](http://dummyimage.com/200x100/00405d/FFF&text=Mock.js)
-![](http://dummyimage.com/200x100/ffcc33/FFF.png&text=!)
+<img data-src="http://dummyimage.com/125x125" alt="">
+<img data-src="http://dummyimage.com/200x100" alt="">
+<img data-src="http://dummyimage.com/200x100/fb0a2a" alt="">
+<img data-src="http://dummyimage.com/200x100/02adea&amp;text=Hello" alt="">
+<img data-src="http://dummyimage.com/200x100/00405d/FFF&amp;text=Mock.js" alt="">
+<img data-src="http://dummyimage.com/200x100/ffcc33/FFF.png&amp;text=!" alt="">
 
 #### Random.dataImage(size, text)
 
@@ -531,7 +531,36 @@ TODO 统计 -->
 **使用示例**如下所示：
 
     Random.color()
-    // => "#3538b2"
+    // => "#3538B2"
+
+下面是一些随机生成的颜色：
+
+<div id="color100" class="color_100"></div>
+<style type="text/css">
+    .circle {
+        display: inline-block;
+        width: 5em;
+        height: 5em;
+        border-radius: 50%;
+        margin: 0 1em 1em 0;
+        line-height: 5em;
+        vertical-align: middle;
+        text-align: center;
+        color: #FFF;
+    }
+</style>
+<script>
+    $(function(){
+        var container = $('#color100')
+        var color
+        for (var i = 0; i < 35; i++) {
+            color = Random.color()
+            $('<span class="circle"></span>')
+                .css('background-color', color)
+                .appendTo(container)
+        }  
+    })
+</script>
 
 ### Helpers
 
@@ -712,7 +741,7 @@ TODO 统计 -->
     Random.last()
     // => "Martinez"
 
-#### Random.name()
+#### Random.name(middle)
 
 * Random.name()
 * Random.name(middle)
@@ -729,6 +758,39 @@ TODO 统计 -->
     // => "Larry Wilson"
     Random.name(true)
     // => "Helen Carol Martinez"
+
+#### Random.cfirst()
+
+* Random.cfirst()
+
+随机生成一个常见的中文名。
+
+**使用示例**如下所示：
+
+    Random.first()
+    // => "曹"
+
+#### Random.clast()
+
+* Random.clast()
+
+随机生成一个常见的中文姓。
+
+**使用示例**如下所示：
+
+    Random.clast()
+    // => "艳"
+
+#### Random.cname()
+
+* Random.cname()
+
+随机生成一个常见的中文姓名。
+
+**使用示例**如下所示：
+
+    Random.cname()
+    // => "袁军"
 
 ### Web
 
@@ -754,6 +816,28 @@ TODO 统计 -->
     Random.domain()
     // => "kozfnb.org"
 
+#### Random.protocol()
+
+* Random.protocol()
+
+随机生成一个 URL 协议。返回以下值之一：'http`、'ftp`、'gopher`、'mailto`、'mid`、'cid`、'news`、'nntp`、'prospero`、'telnet`、'rlogin`、'tn3270`、'wais'。
+
+**使用示例**如下所示：
+
+    Random.protocol()
+    // => "ftp"
+
+#### Random.tld()
+
+* Random.tld()
+
+随机生成一个顶级域名（Top Level Domain）。
+
+**使用示例**如下所示：
+
+    Random.tld()
+    // => "net"
+
 #### Random.email()
 
 * Random.email()
@@ -775,17 +859,6 @@ TODO 统计 -->
 
     Random.ip()
     // => "34.206.109.169"
-
-#### Random.tld()
-
-* Random.tld()
-
-随机生成一个顶级域名。
-
-**使用示例**如下所示：
-
-    Random.tld()
-    // => "net"
 
 ### Address
 
@@ -823,6 +896,8 @@ TODO 统计 -->
 
     Random.guid()
     // => "662C63B4-FD43-66F4-3328-C54E3FF0D56E"
+
+> `Random.guid()` 的实现参考了 [UUID 规范](http://www.ietf.org/rfc/rfc4122.txt)。
 
 #### Random.id()
 

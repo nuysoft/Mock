@@ -5,7 +5,7 @@
     <title>Mock.js</title>
     <meta name="keywords" content="模拟数据生成器，模拟数据，模拟请求，Simulation Data Generator" />
     <link rel="icon" href="/favicon.ico">
-    <link href="./demo/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link  href="./bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
         body {
           font: 14px/1.7 'helvetica neue', 'hiragino sans gb', stheiti,'wenquanyi micro hei',\5FAE\8F6F\96C5\9ED1,\5B8B\4F53, sans-serif;
@@ -89,31 +89,29 @@
   <body>
     <div id="sidebar" class="interface"></div>
   
-    <script src="./bower_components/jquery/jquery.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
     <script src="./dist/mock.js"></script>
     
     
     <div class="container"><!-- ## Mock.js -->
 
-<p><h2 class="hide" href="#">Mock.js</h2>
-<img class="hide" src="mockjs.png" wid></p>
 <h1 style="color: #428BCA; margin-bottom: 30px;">
     <i class="iconlogo" style="font-size: 80px;">&#x3435;</i>
     <span>Mock.js</span>
 </h1>
 
-<p><a href="http://travis-ci.org/nuysoft/Mock"><img src="https://api.travis-ci.org/nuysoft/Mock.png?branch=master" alt="Build Status"></a>
+<p><a href="http://travis-ci.org/nuysoft/Mock"><img data-src="https://api.travis-ci.org/nuysoft/Mock.png?branch=master" alt="Build Status"></a>
 <!-- [![GitHub version](https://badge.fury.io/gh/nuysoft%2FMock.png)](http://badge.fury.io/gh/nuysoft%2FMock) -->
 <!-- [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs) -->
 <!-- [![Bower version](https://badge.fury.io/bo/mockjs.png)](http://badge.fury.io/bo/mockjs) -->
-<a href="https://github.com/nuysoft/Mock/"><img src="https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png" alt="Views in the last 24 hours"></a></p>
+<a href="https://github.com/nuysoft/Mock/"><img data-src="https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png" alt="Views in the last 24 hours"></a></p>
 <p>Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮助前端攻城师独立于后端进行开发，帮助编写单元测试。提供了以下模拟功能：</p>
 <ul>
 <li>根据数据模板生成模拟数据</li>
 <li>模拟 Ajax 请求，生成并返回模拟数据</li>
 <li>基于 HTML 模板生成模拟数据</li>
 </ul>
-<h2>在线编辑器</h2>
+<h2 id="-">在线编辑器</h2>
 <!-- 没有 Live Demo 的库都是耍流氓  -->
 
 <ul>
@@ -121,7 +119,7 @@
 <li><a href="./demo/mock4tpl.html">Handlebars &amp; Mustache</a></li>
 <li><a href="./demo/mock4xtpl.html">KISSY XTemplate</a></li>
 </ul>
-<h2>下载</h2>
+<h2 id="-">下载</h2>
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
         Development Version (0.1.5)
@@ -138,24 +136,24 @@
     </a> - <i>Unreleased</i>
 </p>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
+<iframe data-src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=watch&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="131" height="30"></iframe>
 
-<iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
+<iframe data-src="http://ghbtns.com/github-btn.html?user=nuysoft&repo=Mock&type=fork&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="140" height="30"></iframe>
 
 <!-- <iframe src="http://ghbtns.com/github-btn.html?user=nuysoft&type=follow&count=true&size=large"
   allowtransparency="true" frameborder="0" scrolling="0" width="165" height="30"></iframe> -->
 
-<h2>分享文档</h2>
+<h2 id="-">分享文档</h2>
 <ul>
 <li><a href="/doc/lanlan.html">懒懒交流会 2014.5.30</a></li>
 </ul>
-<h2>用法</h2>
-<h3>浏览器</h3>
-<iframe width="100%" height="200" src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<h2 id="-">用法</h2>
+<h3 id="-">浏览器</h3>
+<iframe width="100%" height="200" data-src="http://jsfiddle.net/DgJrj/embedded/html,js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<h3>Node (CommonJS)</h3>
+<h3 id="node-commonjs-">Node (CommonJS)</h3>
 <pre><code>// 安装
 npm install mockjs
 
@@ -167,21 +165,21 @@ var data = Mock.mock({
     }]
 });
 console.log(JSON.stringify(data, null, 4))</code></pre>
-<h3>Bower</h3>
+<h3 id="bower">Bower</h3>
 <!-- If you'd like to use [bower](http://bower.io/), it's as easy as: -->
 
 <pre><code>npm install -g bower
 bower install --save mockjs
 
 &lt;script type=&quot;text/javascript&quot; src=&quot;./bower_components/mockjs/dist/mock.js&quot;&gt;&lt;/script&gt;</code></pre>
-<h3>RequireJS (AMD)</h3>
-<iframe width="100%" height="350" src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<h3 id="requirejs-amd-">RequireJS (AMD)</h3>
+<iframe width="100%" height="350" data-src="http://jsfiddle.net/uTSqT/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<h3>Sea.js (CMD)</h3>
-<iframe width="100%" height="350" src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<h3 id="sea-js-cmd-">Sea.js (CMD)</h3>
+<iframe width="100%" height="350" data-src="http://jsfiddle.net/5jX6e/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<h3>KISSY</h3>
-<iframe width="100%" height="400" src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<h3 id="kissy">KISSY</h3>
+<iframe width="100%" height="400" data-src="http://jsfiddle.net/En2sX/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <!-- 
 Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里同学可以直接加载 `gallery/Mock/0.1.1/index`：
@@ -189,7 +187,7 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 <iframe width="100%" height="400" src="http://jsfiddle.net/8VNQQ/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 -->
 
-<h3>Random CLI</h3>
+<h3 id="random-cli">Random CLI</h3>
 <pre><code>// 安装
 npm install mockjs -g
 
@@ -197,13 +195,13 @@ npm install mockjs -g
 $ random url
 // =&gt; http://rmcpx.org/funzwc</code></pre>
 <hr>
-<h2>语法规范</h2>
+<h2 id="-">语法规范</h2>
 <p>Mock.js 的语法规范包括两部分：</p>
 <ol>
 <li>数据模板定义（Data Temaplte Definition，DTD）</li>
 <li>数据占位符定义（Data Placeholder Definition，DPD）</li>
 </ol>
-<h3>数据模板定义 DTD</h3>
+<h3 id="-dtd">数据模板定义 DTD</h3>
 <p><strong>数据模板中的每个属性由 3 部分构成：属性名、生成规则、属性值：</strong></p>
 <pre><code>// 属性名   name
 // 生成规则 rule
@@ -277,7 +275,7 @@ $ random url
 <p> <code>&#39;name&#39;: function(){}</code> 执行函数 <code>function(){}</code>，取其返回值作为最终的属性值，上下文为 <code>&#39;name&#39;</code> 所在的对象。</p>
 </li>
 </ol>
-<h3>数据占位符定义 DPD</h3>
+<h3 id="-dpd">数据占位符定义 DPD</h3>
 <p>占位符 只是在属性值字符串中占个位置，并不出现在最终的属性值中。占位符 的格式为：</p>
 <pre><code>@占位符
 @占位符(参数 [, 参数])</code></pre>
@@ -308,8 +306,8 @@ $ random url
 </li>
 </ol>
 <hr>
-<h2>Mock</h2>
-<h3>Mock.mock( rurl?, rtype?, template|function(options) )</h3>
+<h2 id="mock">Mock</h2>
+<h3 id="mock-mock-rurl-rtype-template-function-options-">Mock.mock( rurl?, rtype?, template|function(options) )</h3>
 <p>根据数据模板生成模拟数据。</p>
 <ul>
 <li><p><strong>Mock.mock( template )</strong></p>
@@ -338,24 +336,24 @@ $ random url
 </ul>
 <p>下面是 Mock.mock() 的 5 种参数格式以及语法规范的使用示例：</p>
 <p><strong>示例1：</strong>Mock.mock( template )</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/Y3rg6/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/Y3rg6/1/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <p><strong>示例2：</strong>Mock.mock( rurl, template )</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/BeENf/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/BeENf/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <p><strong>示例3：</strong>Mock.mock( rurl, function(options) )</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/2s5t5/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/2s5t5/3/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <p><strong>示例4：</strong>Mock.mock( rurl, rtype, template )</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/Eq68p/2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/Eq68p/2/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <p><strong>示例5：</strong>Mock.mock( rurl, rtype, function(options) )</p>
-<iframe width="100%" height="300" src="http://jsfiddle.net/6dpV5/4/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="300" data-src="http://jsfiddle.net/6dpV5/4/embedded/js,html,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
 
 
-<h3>Mock.mockjax(library)</h3>
+<h3 id="mock-mockjax-library-">Mock.mockjax(library)</h3>
 <p>覆盖（拦截） Ajax 请求，目前内置支持 jQuery、Zepto、KISSY。</p>
 <p>对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问<a href="https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L5">这里</a>。</p>
 <p>对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问<a href="https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L72">这里</a>。</p>
@@ -372,7 +370,7 @@ $ random url
 <!-- 如果业务和场景需要，可以联系 [@墨智]()、[nuysoft](nuysoft@gmail.com) 提供对特定库的内置支持，不过最酷的做法是开发人员能够为 Mock.js 贡献代码。 -->
 <!-- 感谢 @麦少 同学对 Mock.mockjax(library) 的重构，并增加了对 Zepto.js 的支持。 -->
 
-<h3>Mock.tpl(input, options, helpers, partials)</h3>
+<h3 id="mock-tpl-input-options-helpers-partials-">Mock.tpl(input, options, helpers, partials)</h3>
 <ul>
 <li>Mock.tpl(input)</li>
 <li>Mock.tpl(input, options)</li>
@@ -446,7 +444,7 @@ console.log(JSON.stringify(data, null, 4))
     &quot;email&quot;: &quot;j.walker@brown.edu&quot;,
     &quot;age&quot;: 83
 }</code></pre>
-<h3>Mock.xtpl(input, options, helpers, partials)</h3>
+<h3 id="mock-xtpl-input-options-helpers-partials-">Mock.xtpl(input, options, helpers, partials)</h3>
 <ul>
 <li>Mock.xtpl(input)</li>
 <li>Mock.xtpl(input, options)</li>
@@ -520,7 +518,7 @@ console.log(JSON.stringify(data, null, 4))
     &quot;email&quot;: &quot;j.walker@brown.edu&quot;,
     &quot;age&quot;: 83
 }</code></pre>
-<h3>Mock.heredoc(fn)</h3>
+<h3 id="mock-heredoc-fn-">Mock.heredoc(fn)</h3>
 <ul>
 <li>Mock.heredoc(fn)</li>
 </ul>
@@ -546,7 +544,7 @@ console.log(tpl)
 <ul>
 <li><a href="http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript">Creating multiline strings in JavaScript</a>、</li>
 </ul>
-<h2>Mock.Random</h2>
+<h2 id="mock-random">Mock.Random</h2>
 <p>Mock.Random 是一个工具类，用于生成各种随机数据。Mock.Random 的方法在数据模板中称为“占位符”，引用格式为 <code>@占位符(参数 [, 参数])</code> 。例如：</p>
 <pre><code>var Random = Mock.Random;
 Random.email()
@@ -648,8 +646,8 @@ Mock.mock({ constellation: &#39;@CONSTELLATION&#39;})
 // =&gt; { constellation: &quot;射手座&quot; }</code></pre>
 <p>下面是 Mock.Random 内置支持的方法说明。</p>
 <p><strong>你可以打开控制台，随意地试验这些方法。</strong></p>
-<h3>Basics</h3>
-<h4>Random.boolean(min, max, cur)</h4>
+<h3 id="basics">Basics</h3>
+<h4 id="random-boolean-min-max-cur-">Random.boolean(min, max, cur)</h4>
 <ul>
 <li>Random.boolean()</li>
 <li>Random.boolean(min, max, cur)</li>
@@ -673,7 +671,7 @@ Random.bool(1, 9, false)
 <!-- 事实上，原生方法 Math.random() 返回的随机（浮点）数的分布并不均匀，是货真价实的伪随机数，将来会替换为基于 ？？ 来生成随机数。?? 对 Math.random() 的实现机制进行了分析和统计，并提供了随机数的参考实现，可以访问[这里](http://??)。
 TODO 统计 -->
 
-<h4>Random.natural(min, max)</h4>
+<h4 id="random-natural-min-max-">Random.natural(min, max)</h4>
 <ul>
 <li>Random.natural()</li>
 <li>Random.natural(min)</li>
@@ -692,7 +690,7 @@ Random.natural(10000)
 // =&gt; 71529071126209
 Random.natural(60, 100)
 // =&gt; 77</code></pre>
-<h4>Random.integer(min, max)</h4>
+<h4 id="random-integer-min-max-">Random.integer(min, max)</h4>
 <ul>
 <li>Random.integer()</li>
 <li>Random.integer(min)</li>
@@ -711,7 +709,7 @@ Random.integer(10000)
 // =&gt; 4303764511003750
 Random.integer(60,100)
 // =&gt; 96</code></pre>
-<h4>Random.float(min, max, dmin, dmax)</h4>
+<h4 id="random-float-min-max-dmin-dmax-">Random.float(min, max, dmin, dmax)</h4>
 <ul>
 <li>Random.float()</li>
 <li>Random.float(min)</li>
@@ -738,7 +736,7 @@ Random.float(60, 100, 3)
 // =&gt; 61.718533677927894
 Random.float(60, 100, 3, 5)
 // =&gt; 70.6849</code></pre>
-<h4>Random.character(pool)</h4>
+<h4 id="random-character-pool-">Random.character(pool)</h4>
 <p>返回一个随机字符。</p>
 <ul>
 <li>Random.character()</li>
@@ -775,7 +773,7 @@ Random.character(&#39;symbol&#39;)
 // =&gt; &quot;&amp;&quot;
 Random.character(&#39;aeiou&#39;)
 // =&gt; &quot;u&quot;</code></pre>
-<h4>Random.string(pool, min, max)</h4>
+<h4 id="random-string-pool-min-max-">Random.string(pool, min, max)</h4>
 <p>返回一个随机字符串。</p>
 <ul>
 <li>Random.string()</li>
@@ -814,7 +812,7 @@ Random.string( 7, 10 )
 // =&gt; &quot;UuGQgSYk&quot;
 Random.string( &#39;aeiou&#39;, 1, 3 )
 // =&gt; &quot;ea&quot;</code></pre>
-<h4>Random.range(start, stop, step)</h4>
+<h4 id="random-range-start-stop-step-">Random.range(start, stop, step)</h4>
 <ul>
 <li>Random.range(stop)</li>
 <li>Random.range(start, stop)</li>
@@ -836,7 +834,7 @@ Random.range(1, 10, 2)
 // =&gt; [1, 3, 5, 7, 9]
 Random.range(1, 10, 3)
 // =&gt; [1, 4, 7]</code></pre>
-<h4>Random.date(format)</h4>
+<h4 id="random-date-format-">Random.date(format)</h4>
 <ul>
 <li>Random.date()</li>
 <li>Random.date(format)</li>
@@ -968,7 +966,7 @@ Random.date(&#39;y-MM-dd&#39;)
 // =&gt; &quot;81-05-17&quot;
 Random.date(&#39;y-M-d&#39;)
 // =&gt; &quot;84-6-5&quot;</code></pre>
-<h4>Random.time(format)</h4>
+<h4 id="random-time-format-">Random.time(format)</h4>
 <ul>
 <li>Random.time()</li>
 <li>Random.time(format)</li>
@@ -989,7 +987,7 @@ Random.time(&#39;HH:mm:ss&#39;)
 // =&gt; &quot;03:57:53&quot;
 Random.time(&#39;H:m:s&#39;)
 // =&gt; &quot;3:5:13&quot;</code></pre>
-<h4>Random.datetime(format)</h4>
+<h4 id="random-datetime-format-">Random.datetime(format)</h4>
 <ul>
 <li>Random.datetime()</li>
 <li>Random.datetime(format)</li>
@@ -1010,7 +1008,7 @@ Random.datetime(&#39;y-MM-dd HH:mm:ss&#39;)
 // =&gt; &quot;79-06-24 04:45:16&quot;
 Random.datetime(&#39;y-M-d H:m:s&#39;)
 // =&gt; &quot;02-4-23 2:49:40&quot;</code></pre>
-<h4>Random.now(unit, format)</h4>
+<h4 id="random-now-unit-format-">Random.now(unit, format)</h4>
 <ul>
 <li>Ranndom.now(unit, format)</li>
 <li>Ranndom.now()</li>
@@ -1024,7 +1022,7 @@ Random.datetime(&#39;y-M-d H:m:s&#39;)
 <li>参数 format：可选。指示生成的日期和时间字符串的格式。默认值为 <code>yyyy-MM-dd HH:mm:ss</code>。可选的占位符参考自 <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>，请参见 <a href="#date">Random.date(format)</a>。</li>
 </ul>
 <blockquote>
-<p>Random.now() 的实现参考了 (Moment.js)[<a href="http://momentjs.cn/docs/#/manipulating/start-of/]。">http://momentjs.cn/docs/#/manipulating/start-of/]。</a></p>
+<p><code>Random.now()</code> 的实现参考了 <a href="http://momentjs.cn/docs/#/manipulating/start-of/">Moment.js</a>。</p>
 </blockquote>
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.now()
@@ -1050,8 +1048,8 @@ Random.now(&#39;minute&#39;)
 // =&gt; &quot;2014-04-29 20:08:00&quot;
 Random.now(&#39;second&#39;)
 // =&gt; &quot;2014-04-29 20:08:38&quot;</code></pre>
-<h3>Image</h3>
-<h4>Random.image(size, background, foreground, format, text)</h4>
+<h3 id="image">Image</h3>
+<h4 id="random-image-size-background-foreground-format-text-">Random.image(size, background, foreground, format, text)</h4>
 <ul>
 <li>Random.image()</li>
 <li>Random.image(size)</li>
@@ -1095,13 +1093,13 @@ Random.image(&#39;200x100&#39;, &#39;#00405d&#39;, &#39;#FFF&#39;, &#39;Mock.js&
 Random.image(&#39;200x100&#39;, &#39;#ffcc33&#39;, &#39;#FFF&#39;, &#39;png&#39;, &#39;!&#39;)
 // =&gt; &quot;http://dummyimage.com/200x100/ffcc33/FFF.png&amp;text=!&quot;</code></pre>
 <p>生成的路径所对应的图片如下所示：</p>
-<p><img src="http://dummyimage.com/125x125" alt="">
-<img src="http://dummyimage.com/200x100" alt="">
-<img src="http://dummyimage.com/200x100/fb0a2a" alt="">
-<img src="http://dummyimage.com/200x100/02adea&amp;text=Hello" alt="">
-<img src="http://dummyimage.com/200x100/00405d/FFF&amp;text=Mock.js" alt="">
-<img src="http://dummyimage.com/200x100/ffcc33/FFF.png&amp;text=!" alt=""></p>
-<h4>Random.dataImage(size, text)</h4>
+<p><img data-src="http://dummyimage.com/125x125" alt="">
+<img data-src="http://dummyimage.com/200x100" alt="">
+<img data-src="http://dummyimage.com/200x100/fb0a2a" alt="">
+<img data-src="http://dummyimage.com/200x100/02adea&amp;text=Hello" alt="">
+<img data-src="http://dummyimage.com/200x100/00405d/FFF&amp;text=Mock.js" alt="">
+<img data-src="http://dummyimage.com/200x100/ffcc33/FFF.png&amp;text=!" alt=""></p>
+<h4 id="random-dataimage-size-text-">Random.dataImage(size, text)</h4>
 <ul>
 <li>Random.dataImage()</li>
 <li>Random.dataImage(size)</li>
@@ -1145,17 +1143,45 @@ Random.image(&#39;200x100&#39;, &#39;#ffcc33&#39;, &#39;#FFF&#39;, &#39;png&#39;
     $('#dataImage_size_text').prop('src', Random.dataImage('300x100', 'Hello Mock.js!'))
 </script>
 
-<h3>Color</h3>
-<h4>Random.color()</h4>
+<h3 id="color">Color</h3>
+<h4 id="random-color-">Random.color()</h4>
 <ul>
 <li>Random.color()</li>
 </ul>
 <p>随机生成一个颜色，格式为 &#39;#RRGGBB&#39;。</p>
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.color()
-// =&gt; &quot;#3538b2&quot;</code></pre>
-<h3>Helpers</h3>
-<h4>Random.capitalize(word)</h4>
+// =&gt; &quot;#3538B2&quot;</code></pre>
+<p>下面是一些随机生成的颜色：</p>
+<p><div id="color100" class="color_100"></div></p>
+<p><style type="text/css">
+    .circle {
+        display: inline-block;
+        width: 5em;
+        height: 5em;
+        border-radius: 50%;
+        margin: 0 1em 1em 0;
+        line-height: 5em;
+        vertical-align: middle;
+        text-align: center;
+        color: #FFF;
+    }
+</style></p>
+<script>
+    $(function(){
+        var container = $('#color100')
+        var color
+        for (var i = 0; i < 35; i++) {
+            color = Random.color()
+            $('<span class="circle"></span>')
+                .css('background-color', color)
+                .appendTo(container)
+        }  
+    })
+</script>
+
+<h3 id="helpers">Helpers</h3>
+<h4 id="random-capitalize-word-">Random.capitalize(word)</h4>
 <ul>
 <li>Random.capitalize(word)</li>
 </ul>
@@ -1163,7 +1189,7 @@ Random.image(&#39;200x100&#39;, &#39;#ffcc33&#39;, &#39;#FFF&#39;, &#39;png&#39;
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.capitalize(&#39;hello&#39;)
 // =&gt; &quot;Hello&quot;</code></pre>
-<h4>Random.upper(str)</h4>
+<h4 id="random-upper-str-">Random.upper(str)</h4>
 <ul>
 <li>Random.upper(str)</li>
 </ul>
@@ -1171,7 +1197,7 @@ Random.image(&#39;200x100&#39;, &#39;#ffcc33&#39;, &#39;#FFF&#39;, &#39;png&#39;
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.upper(&#39;hello&#39;)
 // =&gt; &quot;HELLO&quot;</code></pre>
-<h4>Random.lower(str)</h4>
+<h4 id="random-lower-str-">Random.lower(str)</h4>
 <ul>
 <li>Random.lower(str)</li>
 </ul>
@@ -1179,7 +1205,7 @@ Random.image(&#39;200x100&#39;, &#39;#ffcc33&#39;, &#39;#FFF&#39;, &#39;png&#39;
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.lower(&#39;HELLO&#39;)
 // =&gt; &quot;hello&quot;</code></pre>
-<h4>Random.pick(arr)</h4>
+<h4 id="random-pick-arr-">Random.pick(arr)</h4>
 <ul>
 <li>Random.pick(arr)</li>
 </ul>
@@ -1187,7 +1213,7 @@ Random.image(&#39;200x100&#39;, &#39;#ffcc33&#39;, &#39;#FFF&#39;, &#39;png&#39;
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.pick([&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;])
 // =&gt; &quot;o&quot;</code></pre>
-<h4>Random.shuffle(arr)</h4>
+<h4 id="random-shuffle-arr-">Random.shuffle(arr)</h4>
 <ul>
 <li>Random.shuffle(arr)</li>
 </ul>
@@ -1195,8 +1221,8 @@ Random.image(&#39;200x100&#39;, &#39;#ffcc33&#39;, &#39;#FFF&#39;, &#39;png&#39;
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.shuffle([&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;])
 // =&gt; [&quot;o&quot;, &quot;u&quot;, &quot;e&quot;, &quot;i&quot;, &quot;a&quot;]</code></pre>
-<h3>Text</h3>
-<h4>Random.paragraph(len)</h4>
+<h3 id="text">Text</h3>
+<h4 id="random-paragraph-len-">Random.paragraph(len)</h4>
 <ul>
 <li>Random.paragraph()</li>
 <li>Random.paragraph(len)</li>
@@ -1218,7 +1244,7 @@ Random.paragraph(2)
 
 Random.paragraph(1, 3)
 // =&gt; &quot;Qdgfqm puhxle twi lbeqjqfi bcxeeecu pqeqr srsx tjlnew oqtqx zhxhkvq pnjns eblxhzzta hifj csvndh ylechtyu.&quot;</code></pre>
-<h4>Random.sentence(len)</h4>
+<h4 id="random-sentence-len-">Random.sentence(len)</h4>
 <ul>
 <li>Random.sentence()</li>
 <li>Random.sentence(len)</li>
@@ -1238,7 +1264,7 @@ Random.sentence(5)
 // =&gt; &quot;Fwlymyyw htccsrgdk rgemfpyt cffydvvpc ycgvno.&quot;
 Random.sentence(3, 5)
 // =&gt; &quot;Mgl qhrprwkhb etvwfbixm jbqmg.&quot;</code></pre>
-<h4>Random.word(len)</h4>
+<h4 id="random-word-len-">Random.word(len)</h4>
 <ul>
 <li>Random.word()</li>
 <li>Random.word(len)</li>
@@ -1261,7 +1287,7 @@ Random.word(3, 5)
 <blockquote>
 <p>目前单词中的字符是随机的小写字母，未来会根据词法生成“可读”的单词。</p>
 </blockquote>
-<h4>Random.title(len)</h4>
+<h4 id="random-title-len-">Random.title(len)</h4>
 <ul>
 <li>Random.title()</li>
 <li>Random.title(len)</li>
@@ -1281,8 +1307,8 @@ Random.title(5)
 // =&gt; &quot;Ahknzf Btpehy Xmpc Gonehbnsm Mecfec&quot;
 Random.title(3, 5)
 // =&gt; &quot;Hvjexiondr Pyickubll Owlorjvzys Xfnfwbfk&quot;</code></pre>
-<h3>Name</h3>
-<h4>Random.first()</h4>
+<h3 id="name">Name</h3>
+<h4 id="random-first-">Random.first()</h4>
 <ul>
 <li>Random.first()</li>
 </ul>
@@ -1290,7 +1316,7 @@ Random.title(3, 5)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.first()
 // =&gt; &quot;Nancy&quot;</code></pre>
-<h4>Random.last()</h4>
+<h4 id="random-last-">Random.last()</h4>
 <ul>
 <li>Random.last()</li>
 </ul>
@@ -1298,7 +1324,7 @@ Random.title(3, 5)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.last()
 // =&gt; &quot;Martinez&quot;</code></pre>
-<h4>Random.name()</h4>
+<h4 id="random-name-middle-">Random.name(middle)</h4>
 <ul>
 <li>Random.name()</li>
 <li>Random.name(middle)</li>
@@ -1313,8 +1339,32 @@ Random.title(3, 5)
 // =&gt; &quot;Larry Wilson&quot;
 Random.name(true)
 // =&gt; &quot;Helen Carol Martinez&quot;</code></pre>
-<h3>Web</h3>
-<h4>Random.url()</h4>
+<h4 id="random-cfirst-">Random.cfirst()</h4>
+<ul>
+<li>Random.cfirst()</li>
+</ul>
+<p>随机生成一个常见的中文名。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.first()
+// =&gt; &quot;曹&quot;</code></pre>
+<h4 id="random-clast-">Random.clast()</h4>
+<ul>
+<li>Random.clast()</li>
+</ul>
+<p>随机生成一个常见的中文姓。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.clast()
+// =&gt; &quot;艳&quot;</code></pre>
+<h4 id="random-cname-">Random.cname()</h4>
+<ul>
+<li>Random.cname()</li>
+</ul>
+<p>随机生成一个常见的中文姓名。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.cname()
+// =&gt; &quot;袁军&quot;</code></pre>
+<h3 id="web">Web</h3>
+<h4 id="random-url-">Random.url()</h4>
 <ul>
 <li>Random.url()</li>
 </ul>
@@ -1322,7 +1372,7 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.url()
 // =&gt; &quot;http://vrcq.edu/ekqtyfi&quot;</code></pre>
-<h4>Random.domain()</h4>
+<h4 id="random-domain-">Random.domain()</h4>
 <ul>
 <li>Random.domain()</li>
 </ul>
@@ -1330,7 +1380,23 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.domain()
 // =&gt; &quot;kozfnb.org&quot;</code></pre>
-<h4>Random.email()</h4>
+<h4 id="random-protocol-">Random.protocol()</h4>
+<ul>
+<li>Random.protocol()</li>
+</ul>
+<p>随机生成一个 URL 协议。返回以下值之一：&#39;http<code>、&#39;ftp</code>、&#39;gopher<code>、&#39;mailto</code>、&#39;mid<code>、&#39;cid</code>、&#39;news<code>、&#39;nntp</code>、&#39;prospero<code>、&#39;telnet</code>、&#39;rlogin<code>、&#39;tn3270</code>、&#39;wais&#39;。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.protocol()
+// =&gt; &quot;ftp&quot;</code></pre>
+<h4 id="random-tld-">Random.tld()</h4>
+<ul>
+<li>Random.tld()</li>
+</ul>
+<p>随机生成一个顶级域名（Top Level Domain）。</p>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.tld()
+// =&gt; &quot;net&quot;</code></pre>
+<h4 id="random-email-">Random.email()</h4>
 <ul>
 <li>Random.email()</li>
 </ul>
@@ -1338,7 +1404,7 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.email()
 // =&gt; &quot;x.davis@jackson.edu&quot;</code></pre>
-<h4>Random.ip()</h4>
+<h4 id="random-ip-">Random.ip()</h4>
 <ul>
 <li>Random.ip()</li>
 </ul>
@@ -1346,16 +1412,8 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.ip()
 // =&gt; &quot;34.206.109.169&quot;</code></pre>
-<h4>Random.tld()</h4>
-<ul>
-<li>Random.tld()</li>
-</ul>
-<p>随机生成一个顶级域名。</p>
-<p><strong>使用示例</strong>如下所示：</p>
-<pre><code>Random.tld()
-// =&gt; &quot;net&quot;</code></pre>
-<h3>Address</h3>
-<h4>Random.area()</h4>
+<h3 id="address">Address</h3>
+<h4 id="random-area-">Random.area()</h4>
 <ul>
 <li>Random.area()</li>
 </ul>
@@ -1363,7 +1421,7 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.area()
 // =&gt; &quot;华北&quot;</code></pre>
-<h4>Random.region()</h4>
+<h4 id="random-region-">Random.region()</h4>
 <ul>
 <li>Random.region()</li>
 </ul>
@@ -1371,8 +1429,8 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.region()
 // =&gt; &quot;辽宁省&quot;</code></pre>
-<h3>Miscellaneous</h3>
-<h4>Random.guid()</h4>
+<h3 id="miscellaneous">Miscellaneous</h3>
+<h4 id="random-guid-">Random.guid()</h4>
 <ul>
 <li>Random.guid()</li>
 </ul>
@@ -1380,7 +1438,10 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.guid()
 // =&gt; &quot;662C63B4-FD43-66F4-3328-C54E3FF0D56E&quot;</code></pre>
-<h4>Random.id()</h4>
+<blockquote>
+<p><code>Random.guid()</code> 的实现参考了 <a href="http://www.ietf.org/rfc/rfc4122.txt">UUID 规范</a>。</p>
+</blockquote>
+<h4 id="random-id-">Random.id()</h4>
 <ul>
 <li>Random.id()</li>
 </ul>
@@ -1388,7 +1449,7 @@ Random.name(true)
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.id()
 // =&gt; &quot;420000200710091854&quot;</code></pre>
-<h4>Random.increment(step)</h4>
+<h4 id="random-increment-step-">Random.increment(step)</h4>
 <p>生成一个全局的自增整数。</p>
 <ul>
 <li>Random.increment(step)</li>
@@ -1405,11 +1466,11 @@ Random.increment(100)
 Random.increment(1000)
 // =&gt; 1101</code></pre>
 <hr>
-<h2>感谢</h2>
+<h2 id="-">感谢</h2>
 <p>最初的灵感来自 <a href="http://www.elijahmanor.com/angry-birds-of-javascript-green-bird-mocking/">Angry Birds of JavaScript- Green Bird: Mocking Introduction</a>，语法参考了 <a href="https://github.com/mennovanslooten/mockJSON">mockJSON</a>，随机数据参考了 <a href="http://chancejs.com/">Chance.js</a>。</p>
 <!-- 灵感来自 [Elijah Manor])(http://elijahmanor.com/) 的系列博文 [Angry Birds of JavaScript Series](http://www.elijahmanor.com/angry-birds-of-javascript-series/) 中的 [Angry Birds of JavaScript- Green Bird: Mocking Introduction](http://www.elijahmanor.com/angry-birds-of-javascript-green-bird-mocking/) --></div>
     
-    <script src="./demo/assets/catalog.js"></script>
+    <script src="./doc/catalog.js"></script>
 
     <script type="text/javascript">
         $(function(){
@@ -1426,13 +1487,18 @@ Random.increment(1000)
         $(function(){
             $('table').addClass('table table-bordered')
         })
+        $(window).on('load', function(){
+            $('[data-src]').attr('src', function(){
+                // return $(this).attr('data-src')
+            })
+        })
     </script>
   
-    <link href="./node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
-    <link href="./node_modules/codemirror/theme/neat.css" rel="stylesheet">
-    <script src="./node_modules/codemirror/lib/codemirror.js"></script>
-    <script src="./node_modules/codemirror/addon/runmode/runmode.js"></script>
-    <script src="./node_modules/codemirror/mode/javascript/javascript.js"></script>
+    <link  href="./bower_components/codemirror/lib/codemirror.css" rel="stylesheet">
+    <link  href="./bower_components/codemirror/theme/neat.css" rel="stylesheet">
+    <script src="./bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="./bower_components/codemirror/addon/runmode/runmode.js"></script>
+    <script src="./bower_components/codemirror/mode/javascript/javascript.js"></script>
     <script type="text/javascript">
         $('pre').each(function(index, el){
             $(this).hide()

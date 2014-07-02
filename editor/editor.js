@@ -41,8 +41,8 @@
     }
 
     // debug
-    $('.template').css('background-color', Random.color())
-    $('.result').css('background-color', Random.color())
+    $('.template').css('background-color', Mock.Random.color())
+    $('.result').css('background-color', Mock.Random.color())
     // $('.sidebar .help').css('background-color', Random.color())
     // $('.sidebar .about').css('background-color', Random.color())
     // $('.sidebar .content').append('<p>' + Random.paragraph() + '</p>')
@@ -103,7 +103,7 @@
             tpl = new Function('return ' + tpl)
             tpl = tpl()
         } catch (error) {
-            tpl = error.toString()
+            // tpl = error.toString()
         }
 
         var data
