@@ -1,6 +1,38 @@
 module('Request')
 
-window.XMLHttpRequest = FakeXMLHttpRequest
+window.XMLHttpRequest = MockXMLHttpRequest
+
+test('jQuery.ajax()', function() {
+	stop()
+	$.ajax({
+		url: Math.random(),
+		dataType: 'json'
+	}).done(function(data, textStatus, jqXHR) {
+		// 不会进入
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		// 浏览器 || PhantomJS
+		ok(jqXHR.status === 404 || jqXHR.status === 0, errorThrown)
+	}).always(function() {
+		start()
+	})
+
+})
+
+test('jQuery.getScript()', function() {
+	stop()
+	$.getScript('./materiels/noop.js', function(script, textStatus, jqXHR) {
+		ok(script, script)
+		start()
+	})
+})
+
+test('jQuery.load()', function() {
+	stop()
+	$('<div>').load('./materiels/noop.html', function(responseText, textStatus, jqXHR) {
+		ok(responseText, responseText)
+		start()
+	})
+})
 
 test('Mock.mock( rurl, template )', function() {
 	Mock.mock(/rurl_template.json/, {
@@ -15,17 +47,18 @@ test('Mock.mock( rurl, template )', function() {
 	$.ajax({
 		url: 'rurl_template.json',
 		dataType: 'json'
-	}).done(function(data, status, jqXHR) {
+	}).done(function(data, textStatus, jqXHR) {
 		var message = 'rurl_template.json => ' + JSON.stringify(data, null, 4)
 		ok(data.list.length >= 1, message)
 		ok(data.list.length <= 10, message)
 		_.each(data.list, function(item, index, list) {
 			if (index > 0) equal(item.id, list[index - 1].id + 1, message)
 		})
-		start()
+
 	}).fail(function(jqXHR, textStatus, errorThrown) {
-		console.log(window.Event)
 		console.log(jqXHR, textStatus, errorThrown)
+	}).always(function() {
+		start()
 	})
 
 })
@@ -52,6 +85,10 @@ test('Mock.mock( rurl, function(options) )', function() {
 		_.each(data.list, function(item, index, list) {
 			if (index > 0) equal(item.id, list[index - 1].id + 1, message)
 		})
+
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(jqXHR, textStatus, errorThrown)
+	}).always(function() {
 		start()
 	})
 
@@ -98,7 +135,7 @@ test('Mock.mock( rurl, rtype, template )', function() {
 		_.each(data.list, function(item, index, list) {
 			if (index > 0) equal(item.id, list[index - 1].id + 1, message)
 		})
-	}).done(success).complete(complete)
+	}).done(success).always(complete)
 
 	$.ajax({
 		url: 'rurl_rtype_template.json',
@@ -112,7 +149,7 @@ test('Mock.mock( rurl, rtype, template )', function() {
 		_.each(data.list, function(item, index, list) {
 			if (index > 0) equal(item.id, list[index - 1].id + 1, message)
 		})
-	}).done(success).complete(complete)
+	}).done(success).always(complete)
 
 })
 
@@ -148,7 +185,7 @@ test('Mock.mock( rurl, rtype, function(options) )', function() {
 	}).done(function(data, status, jqXHR) {
 		var message = 'GET rurl_rtype_function.json => ' + JSON.stringify(data, null, 4)
 		equal(data.type, 'get', message)
-	}).done(success).complete(complete)
+	}).done(success).always(complete)
 
 	$.ajax({
 		url: 'rurl_rtype_function.json',
@@ -157,7 +194,7 @@ test('Mock.mock( rurl, rtype, function(options) )', function() {
 	}).done(function(data, status, jqXHR) {
 		var message = 'POST rurl_rtype_function.json => ' + JSON.stringify(data, null, 4)
 		equal(data.type, 'post', message)
-	}).done(success).complete(complete)
+	}).done(success).always(complete)
 
 	$.ajax({
 		url: 'rurl_rtype_function.json',
@@ -166,6 +203,6 @@ test('Mock.mock( rurl, rtype, function(options) )', function() {
 	}).done(function(data, status, jqXHR) {
 		var message = 'PUT rurl_rtype_function.json => ' + JSON.stringify(data, null, 4)
 		equal(data.type, 'put', message)
-	}).done(success).complete(complete)
+	}).done(success).always(complete)
 
 })

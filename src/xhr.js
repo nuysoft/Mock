@@ -1,6 +1,7 @@
 "use strict";
 
 /* global window    */
+/* global document  */
 /* global location  */
 /* global Event     */
 /* global expose    */
@@ -10,7 +11,7 @@
 (function(factory) {
 
     expose(['mock', 'util'], factory, function() {
-        window.FakeXMLHttpRequest = factory(Mock, Util)
+        window.MockXMLHttpRequest = factory(Mock, Util)
     })
 
 }(function(Mock, Util) {
@@ -65,22 +66,17 @@
 
     */
 
-    /*
-        var Transports = {
-            XMLHttpRequest: {},
-            FakeXMLHttpRequest: {
-                send: function() {},
-                open: function() {},
-                abort: function() {}
-            }
-        }
-    */
-
+    // 备份原生 XMLHttpRequest
     window._XMLHttpRequest = window.XMLHttpRequest
     window._ActiveXObject = window.ActiveXObject
 
-    // https://github.com/bluerail/twitter-bootstrap-rails-confirm/issues/18
-    // https://github.com/ariya/phantomjs/issues/11289
+    /*
+        PhantomJS
+        TypeError: '[object EventConstructor]' is not a constructor (evaluating 'new Event("readystatechange")')
+
+        https://github.com/bluerail/twitter-bootstrap-rails-confirm/issues/18
+        https://github.com/ariya/phantomjs/issues/11289
+    */
     try {
         new window.Event('custom')
     } catch (exception) {
@@ -91,7 +87,7 @@
         }
     }
 
-    var FakeXMLHttpRequest = (function() {
+    var MockXMLHttpRequest = (function() {
 
             var XHR_STATES = {
                 // The object has been constructed.
@@ -156,104 +152,91 @@
             }
 
             /*
-                FakeXMLHttpRequest
+                MockXMLHttpRequest
             */
 
-            function FakeXMLHttpRequest() {
-                // 冒牌 XHR 对象
-                var fake = this
-
-                // 创建原生 XHR 对象
-                var xhr = createOriginalXMLHttpRequest()
-
+            function MockXMLHttpRequest() {
                 // 初始化 custom 对象，用于存储自定义属性
-                fake.custom = {
-                    xhr: xhr,
+                this.custom = {
                     events: {},
-                    requestHeaders: {}
-                }
-
-                // 初始化所有事件，用于监听原生 XHR 对象的事件
-                for (var i = 0; i < XHR_EVENTS.length; i++) {
-                    xhr.addEventListener(XHR_EVENTS[i], handle)
-                    xhr['on' + XHR_EVENTS[i]] = onhandle
-
-                    fake['on' + XHR_EVENTS[i]] = log
-                }
-
-                function handle(event) {
-                    console.log('[EVENT]   ', event.type, xhr.readyState)
-
-                    syncProperties()
-
-                    var handles = fake.custom.events[event.type] || []
-                    for (var i = 0; i < handles.length; i++) {
-                        if (typeof handles[i] !== "function") continue
-                        handles[i].call(fake, event)
-                    }
-                }
-
-                function onhandle(event) {
-                    console.log('[ON_EVENT]', event.type, xhr.readyState)
-
-                    syncProperties()
-
-                    var ontype = 'on' + event.type
-                    if (fake[ontype]) fake[ontype].call(fake, event)
-                }
-
-                function log(event) {
-                    console.log('[EVENT]   ', event.type, fake.readyState)
-                }
-
-                function syncProperties() {
-                    for (var i = 0, l = XHR_RESPONSE_PROPERTIES.length; i < l; i++) {
-                        fake[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]]
-                    }
+                    requestHeaders: {},
+                    responseHeaders: {}
                 }
             }
 
-            Util.extend(FakeXMLHttpRequest, XHR_STATES)
-            Util.extend(FakeXMLHttpRequest.prototype, XHR_STATES)
+            Util.extend(MockXMLHttpRequest, XHR_STATES)
+            Util.extend(MockXMLHttpRequest.prototype, XHR_STATES)
 
-            // 标记运行模式为 Mock 模式
-            FakeXMLHttpRequest.prototype.mock = false
-            // 标记当前对象为 FakeXMLHttpRequest
-            FakeXMLHttpRequest.prototype.fake = true
+            // 标记当前对象为 MockXMLHttpRequest
+            MockXMLHttpRequest.prototype.mock = true
+            // 是否拦截 Ajax 请求
+            MockXMLHttpRequest.prototype.match = false
 
             // Request 相关的属性和方法
-            Util.extend(FakeXMLHttpRequest.prototype, {
+            Util.extend(MockXMLHttpRequest.prototype, {
                 open: function open(method, url, async, username, password) {
+                    var that = this
+
                     Util.extend(this.custom, {
                         method: method,
                         url: url,
-                        async: typeof async === "boolean" ? async : true,
+                        async: typeof async === 'boolean' ? async : true,
                         username: username,
-                        password: password
+                        password: password,
+                        options: {
+                            url: url,
+                            type: method
+                        }
                     })
 
-                    var options = {
-                        url: url,
-                        type: method
-                    }
-                    var item = find(options)
+                    var item = find(this.custom.options)
 
+                    function handle(event) {
+                        // 同步属性
+                        for (var i = 0, len = XHR_RESPONSE_PROPERTIES.length; i < len; i++) {
+                            try {
+                                that[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]]
+                            } catch (e) {}
+                        }
+                        // 触发 MockXMLHttpRequest 上的同名事件
+                        that.dispatchEvent(new Event(event.type, false, false, that))
+                    }
+
+                    // 原生 XHR
                     if (!item) {
-                        var xhr = this.custom.xhr
+                        // 创建原生 XHR，open，监听事件
+                        var xhr = createOriginalXMLHttpRequest()
+                        this.custom.xhr = xhr
+
+                        // 初始化所有事件，用于监听原生 XHR 对象的事件
+                        for (var i = 0; i < XHR_EVENTS.length; i++) {
+                            xhr.addEventListener(XHR_EVENTS[i], handle)
+                        }
+
+                        // xhr.open()
                         if (username) xhr.open(method, url, async, username, password)
                         else xhr.open(method, url, async)
+
+                        return
                     }
 
+                    // 拦截 XHR
+                    this.match = true
                     this.custom.template = item
-                    this.custom.options = options
-                    this.readyStateChange(FakeXMLHttpRequest.OPENED)
+                    this.readyState = MockXMLHttpRequest.OPENED
+                    this.dispatchEvent(new Event('readystatechange', false, false, this))
                 },
                 setRequestHeader: function setRequestHeader(name, value) {
-                    if (!this.fake) this.custom.xhr.setRequestHeader(name, value)
+                    // 原生 XHR
+                    if (!this.match) {
+                        this.custom.xhr.setRequestHeader(name, value)
+                        return
+                    }
 
-                    /*var requestHeaders = this.custom.requestHeaders
-                    if (requestHeaders[name]) requestHeaders[name] += "," + value;
-                    else requestHeaders[name] = value;*/
+                    // 拦截 XHR
+                    var requestHeaders = this.custom.requestHeaders
+                    if (requestHeaders[name]) requestHeaders[name] += ',' + value
+                    else requestHeaders[name] = value
                 },
                 timeout: 0,
                 withCredentials: false,
@@ -261,17 +244,22 @@
                 send: function send(data) {
                     var that = this
 
-                    if (!this.fake) {
-                        var xhr = this.custom.xhr
-                        xhr.send(data)
+                    // 原生 XHR
+                    if (!this.match) {
+                        this.custom.xhr.send(data)
                         return
                     }
 
-                    this.dispatchEvent(new Event("loadstart", false, false, this))
+                    // 拦截 XHR
+                    this.dispatchEvent(new Event('loadstart', false, false, this))
+                    if (this.custom.async) setTimeout(done, 100)
+                    else done()
 
                     function done() {
-                        that.readyStateChange(FakeXMLHttpRequest.HEADERS_RECEIVED)
-                        that.readyStateChange(FakeXMLHttpRequest.LOADING)
+                        that.readyState = MockXMLHttpRequest.HEADERS_RECEIVED
+                        that.dispatchEvent(new Event('readystatechange', false, false, that))
+                        that.readyState = MockXMLHttpRequest.LOADING
+                        that.dispatchEvent(new Event('readystatechange', false, false, that))
 
                         that.status = 200
                         that.statusText = HTTP_STATUS_CODES[200]
@@ -280,63 +268,54 @@
                             null, 4
                         )
 
-                        that.readyStateChange(FakeXMLHttpRequest.DONE)
+                        that.readyState = MockXMLHttpRequest.DONE
+                        that.dispatchEvent(new Event('readystatechange', false, false, that))
+                        that.dispatchEvent(new Event('load', false, false, that));
+                        that.dispatchEvent(new Event('loadend', false, false, that));
                     }
-
-                    if (this.custom.async) setTimeout(done, 100)
-                    else done()
                 },
                 abort: function abort() {
-                    var xhr = this.custom.xhr
-                    xhr.abort()
-                    /*
-                    readyStateChange(this, FakeXMLHttpRequest.DONE)
-                    this.readyState = FakeXMLHttpRequest.UNSENT
-                    this.dispatchEvent(new Event("abort", false, false, this));
-                    if (typeof this.onabort === "function") {
-                        this.onerror()
+                    // 原生 XHR
+                    if (!this.match) {
+                        this.custom.xhr.abort()
+                        return
                     }
-                    if (typeof this.onerror === "function") {
-                        this.onerror()
-                    }
-                    */
+
+                    // 拦截 XHR
+                    this.readyStateChange(MockXMLHttpRequest.DONE)
+                    this.dispatchEvent(new Event('abort', false, false, this))
+                    this.dispatchEvent(new Event('error', false, false, this))
                 }
             })
 
             // Response 相关的属性和方法
-            Util.extend(FakeXMLHttpRequest.prototype, {
+            Util.extend(MockXMLHttpRequest.prototype, {
                 responseURL: '',
-                status: FakeXMLHttpRequest.UNSENT,
+                status: MockXMLHttpRequest.UNSENT,
                 statusText: '',
                 getResponseHeader: function getResponseHeader(name) {
-                    return this.custom.xhr.getResponseHeader(name)
-
-                    /*if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) return null
-
-                header = header.toLowerCase()
-
-                for (var h in this.responseHeaders) {
-                    if (h.toLowerCase() === header) {
-                        return this.responseHeaders[h]
+                    // 原生 XHR
+                    if (!this.match) {
+                        return this.custom.xhr.getResponseHeader(name)
                     }
-                }
 
-                return null*/
+                    // 拦截 XHR
+                    return this.custom.responseHeaders[name.toLowerCase()]
                 },
                 getAllResponseHeaders: function getAllResponseHeaders() {
-                    return this.custom.xhr.getAllResponseHeaders()
+                    // 原生 XHR
+                    if (!this.match) {
+                        return this.custom.xhr.getAllResponseHeaders()
+                    }
 
-                    /*if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {
-                    return ""
-                }
-
-                var headers = "";
-                for (var h in this.responseHeaders) {
-                    if (!this.responseHeaders.hasOwnProperty(h)) continue
-                    headers += h + ": " + this.responseHeaders[header] + "\r\n"
-                }
-
-                return headers;*/
+                    // 拦截 XHR
+                    var responseHeaders = this.custom.responseHeaders
+                    var headers = ''
+                    for (var h in responseHeaders) {
+                        if (!responseHeaders.hasOwnProperty(h)) continue
+                        headers += h + ': ' + responseHeaders[h] + '\r\n'
+                    }
+                    return headers
                 },
                 overrideMimeType: function overrideMimeType(mime) {},
                 responseType: '', // '', 'text', 'arraybuffer', 'blob', 'document', 'json' 
@@ -346,51 +325,33 @@
             })
 
             // EventTarget
-            Util.extend(FakeXMLHttpRequest.prototype, {
+            Util.extend(MockXMLHttpRequest.prototype, {
                 addEventListene: function addEventListene(type, handle) {
-                    if (!this.custom.events[type]) this.custom.events[type] = []
-
-                    var handles = this.custom.events[type]
-                    handles.push(handle)
+                    var events = this.custom.events
+                    if (!events[type]) events[type] = []
+                    events[type].push(handle)
                 },
                 removeEventListener: function removeEventListener(type, handle) {
                     var handles = this.custom.events[type] || []
-                    for (var i = 0, l = handles.length; i < l; ++i) {
+                    for (var i = 0; i < handles.length; i++) {
                         if (handles[i] === handle) {
-                            return handles.splice(i, 1);
+                            handles.splice(i--, 1)
+                            return
                         }
                     }
                 },
                 dispatchEvent: function dispatchEvent(event) {
-                    var type = event.type
-                    var handles = this.custom.events[type] || []
+                    var handles = this.custom.events[event.type] || []
                     for (var i = 0; i < handles.length; i++) {
-                        if (typeof handles[i] !== 'function') continue
                         handles[i].call(this, event)
                     }
 
                     var ontype = 'on' + event.type
                     if (this[ontype]) this[ontype](event)
-                },
-                readyStateChange: function readyStateChange(state) {
-                    this.readyState = state;
-
-                    if (typeof this.onreadystatechange === 'function') {
-                        this.onreadystatechange({
-                            type: 'readystatechange'
-                        })
-                    }
-
-                    this.dispatchEvent(new Event("readystatechange"));
-
-                    if (this.readyState === FakeXMLHttpRequest.DONE) {
-                        this.dispatchEvent(new Event('load', false, false, this));
-                        this.dispatchEvent(new Event('loadend', false, false, this));
-                    }
                 }
             })
 
-            return FakeXMLHttpRequest
+            return MockXMLHttpRequest
 
             // Inspired by jQuery
             function createOriginalXMLHttpRequest() {
@@ -453,6 +414,6 @@
         })()
         // END(BROWSER)
 
-    return FakeXMLHttpRequest
+    return MockXMLHttpRequest
 
 }));
