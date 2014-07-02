@@ -2,18 +2,28 @@
 
 ### 2014.6.24 V0.2.0 重构代码
 
-1. 支持 UMD
+1. 支持 UMD，包括：
 	* 未打包前的代码
 	* 打包后的代码
 2. random CLI
 	* --help 增加方法和参数说明
-3. 重构整站
+3. 重构文档站 @萝素
 	* 增加《入门》
 	* 单列《文档》
 4. 测试用例
-	nodeunit
-	qunit
-
+	* 重写测试用例
+	* 同时支持 nodeunit 和 qunit
+	* 同时支持 jQuery、KISSY、Zepto
+	* 同时支持 KMD、AMD、CMD
+5. 复写 XHR @行列 @霍庸
+6. 废弃的功能
+	* Mock.mockjax()
+	* Mock.tpl()
+	* Mock.xtpl()
+7. Random.dateImage() 支持 node-canvas
+8. Mock.valid(tpl, data)
+9. Mock.toJOSNSchema()
+10. Mock.mock(regexp) 
 
 ### 2014.6.23 V0.1.5
 
