@@ -3,40 +3,44 @@
 ### 2014.6.24 V0.2.0 重构代码
 
 1. 支持 UMD，包括：
-	* 未打包前的代码
-	* 打包后的代码
+    * 未打包前的代码
+    * 打包后的代码
 2. random CLI
-	* --help 增加方法和参数说明
+    * --help 增加方法和参数说明
 3. 重构文档站 @萝素
-	* 增加《入门》
-	* 单列《文档》
+    * 增加《入门》
+    * 单列《文档》
 4. 测试用例
-	* 重写测试用例
-	* 同时支持 nodeunit 和 qunit
-	* 同时支持 jQuery、KISSY、Zepto
-	* 同时支持 KMD、AMD、CMD
+    * 重写测试用例
+    * 同时支持 nodeunit 和 qunit
+    * 同时支持 jQuery、KISSY、Zepto
+    * 同时支持 KMD、AMD、CMD
 5. 复写 XHR @行列 @霍庸
 6. 废弃的功能
-	* Mock.mockjax()
-	* Mock.tpl()
-	* Mock.xtpl()
+    * Mock.mockjax()
+    * Mock.tpl()
+    * Mock.xtpl()
 7. Random.dateImage() 支持 node-canvas
 8. Mock.valid(tpl, data)
 9. Mock.toJOSNSchema()
 10. Mock.mock(regexp) 
+11. 完善地支持 node，代码中的：
+    * window
+    * document
+    * XHRHttpRequest
 
 ### 2014.6.23 V0.1.5
 
 1. [!] 修复 #28 #29，因为 jQuery 每个版本在 Ajax 实现上有些差异，导致在拦截 Ajax 请求时出现了兼容性问题（例如，方法 `xhr.onload()` 访问不到）。本次[测试](http://jsfiddle.net/8y8Fz/)并通过的 jQuery 版本有：
 
-	* jQuery 2.1.0
-	* jQuery 2.0.2
-	* jQuery 1.11.0
-	* jQuery 1.10.1
-	* jQuery 1.9.1
-	* jQuery 1.8.3
-	* jQuery 1.7.2
-	* jQuery 1.6.4
+    * jQuery 2.1.0
+    * jQuery 2.0.2
+    * jQuery 1.11.0
+    * jQuery 1.10.1
+    * jQuery 1.9.1
+    * jQuery 1.8.3
+    * jQuery 1.7.2
+    * jQuery 1.6.4
 
 非常抱歉，这个问题一直困扰着 Mock.js 用户，在后面的版本中，会通过拦截 XMLHttpRequest 的方法“一劳永逸”地解决拦截 Ajax 的兼容和适配问题。
 

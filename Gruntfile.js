@@ -25,7 +25,7 @@ module.exports = function(grunt) {
             ]
         },
         nodeunit: {
-            all: ['test/nodeunit/*.js']
+            all: ['test/*.js']
         },
         watch: {
             dev: {
