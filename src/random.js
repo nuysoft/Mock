@@ -93,7 +93,7 @@
                     Random.bool(1, 9, false)
                     // => true
                 
-                > 事实上，原生方法 Math.random() 返回的随机（浮点）数的分布并不均匀，是货真价实的伪随机数，将来会替换为基于 ？？ 来生成随机数。?? 对 Math.random() 的实现机制进行了分析和统计，并提供了随机数的参考实现，可以访问[这里](http://??)。
+                > 事实上，原生方法 Math.random() 返回的随机（浮点）数的分布并不均匀，是货真价实的伪随机数，将来会替换为基于 window.crytpo 来生成随机数。?? 对 Math.random() 的实现机制进行了分析和统计，并提供了随机数的参考实现，可以访问[这里](http://??)。
                 TODO 统计
 
             */
@@ -1263,7 +1263,7 @@
                     Random.pick(['a', 'e', 'i', 'o', 'u'])
                     // => "o"
             */
-            pick: function(arr) {
+            pick: function pick(arr) {
                 arr = arr || []
                 return arr[this.natural(0, arr.length - 1)]
             },
@@ -1280,7 +1280,7 @@
                     Random.shuffle(['a', 'e', 'i', 'o', 'u'])
                     // => ["o", "u", "e", "i", "a"]
             */
-            shuffle: function(arr) {
+            shuffle: function shuffle(arr) {
                 arr = arr || []
                 var old = arr.slice(0),
                     result = [],
@@ -1292,6 +1292,34 @@
                     old.splice(index, 1)
                 }
                 return result
+            },
+            /*
+                * Random.order(item, item)
+                * Random.order([item, item ...])
+
+                顺序获取数组中的元素
+
+                [JSON导入数组支持数组数据录入](https://github.com/thx/RAP/issues/22)
+
+                貌似不应该暴漏在这里！因为没法单独调用啊！
+            */
+            order: function order(array) {
+                order.cache = order.cache || {}
+
+                if (arguments.length > 1) array = [].slice.call(arguments, 0)
+
+                var options = order.options
+                // var path = options.context.path.join('.')
+                var templatePath = options.context.templatePath.join('.')
+
+                var cache = (
+                    order.cache[templatePath] = order.cache[templatePath] || {
+                        index: 0,
+                        array: array
+                    }
+                )
+                
+                return cache.array[cache.index++ % cache.array.length]
             }
         })
         /*
@@ -1502,7 +1530,7 @@
                     "Brenda", "Amy", "Anna"
                 ])
                 return this.pick(names)
-                return this.capitalize(this.word())
+                // return this.capitalize(this.word())
             },
             /*
                 ##### Random.last()
@@ -1527,7 +1555,7 @@
                     "Young", "Allen"
                 ]
                 return this.pick(names)
-                return this.capitalize(this.word())
+                // return this.capitalize(this.word())
             },
             /*
                 ##### Random.name(middle)
@@ -1816,6 +1844,7 @@
                 return zip
             }
         })
+
         // TODO ...
         Random.extend({
             todo: function() {

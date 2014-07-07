@@ -1,22 +1,13 @@
+/*! mockjs 03-07-2014 19:46:01 */
 /*! src/fix/prefix-1.js */
 (function(factory) {
-
-
-/*! src/fix/prefix-2.js */
-    expose(
-        'mockjs', [],
-        factory,
-        function() {
-            // Browser globals
-            window.Mock = factory()
-            window.Random = Mock.Random
-        }
-    )
-
-
-/*! src/fix/expose.js */
-
-
+    /*! src/fix/prefix-2.js */
+    expose("mockjs", [], factory, function() {
+        // Browser globals
+        window.Mock = factory();
+        window.Random = Mock.Random;
+    });
+    /*! src/fix/expose.js */
     /*
         * expose(id, dependencies, factory, globals)
         * expose(id, factory, globals)
@@ -29,199 +20,167 @@
         https://gist.github.com/nuysoft/7974409
     */
     function expose(id, dependencies, factory, globals) {
-        var argsLen = arguments.length
-        var args = []
-
+        var argsLen = arguments.length;
+        var args = [];
         switch (argsLen) {
-            case 1:
-                // expose(factory)
-                factory = id
-                id = dependencies = globals = undefined
-                break
-            case 2:
-                // expose(factory, globals)
-                factory = id
-                globals = dependencies
-                id = dependencies = undefined
-                break
-            case 3:
-                globals = factory
-                factory = dependencies
-                if (id instanceof Array) {
-                    // expose(dependencies, factory, globals)
-                    dependencies = id
-                    id = undefined
-                } else {
-                    // expose(id, factory, globals)
-                    dependencies = undefined
-                }
-                break
-            default:
-                // expose(id, dependencies, factory, globals)
-        }
+          case 1:
+            // expose(factory)
+            factory = id;
+            id = dependencies = globals = undefined;
+            break;
 
-        if (typeof module === 'object' && module.exports) {
+          case 2:
+            // expose(factory, globals)
+            factory = id;
+            globals = dependencies;
+            id = dependencies = undefined;
+            break;
+
+          case 3:
+            globals = factory;
+            factory = dependencies;
+            if (id instanceof Array) {
+                // expose(dependencies, factory, globals)
+                dependencies = id;
+                id = undefined;
+            } else {
+                // expose(id, factory, globals)
+                dependencies = undefined;
+            }
+            break;
+
+          default:        }
+        if (typeof module === "object" && module.exports) {
             // CommonJS
-            module.exports = factory()
-
+            module.exports = factory();
         } else if (typeof define === "function" && define.amd) {
             // AMD modules
             // define(id?, dependencies?, factory)
             // https://github.com/amdjs/amdjs-api/wiki/AMD
-            if (id !== undefined) args.push(id)
-            if (dependencies !== undefined) args.push(dependencies)
-            args.push(factory)
-            define.apply(window, args)
-
+            if (id !== undefined) args.push(id);
+            if (dependencies !== undefined) args.push(dependencies);
+            args.push(factory);
+            define.apply(window, args);
         } else if (typeof define === "function" && define.cmd) {
             // CMD modules
             // define(id?, deps?, factory)
             // https://github.com/seajs/seajs/issues/242
-            if (id !== undefined) args.push(id)
-            if (dependencies !== undefined) args.push(dependencies)
-            args.push(factory)
-            define.apply(window, args)
-
-        } else if (typeof KISSY != 'undefined') {
+            if (id !== undefined) args.push(id);
+            if (dependencies !== undefined) args.push(dependencies);
+            args.push(factory);
+            define.apply(window, args);
+        } else if (typeof KISSY != "undefined") {
             // For KISSY 1.4
             // http://docs.kissyui.com/1.4/docs/html/guideline/kmd.html
             if (!window.define) {
                 window.define = function define(id, dependencies, factory) {
                     // KISSY.add(name?, factory?, deps)
-                    function proxy( /*arguments*/ ) {
-                        var args = [].slice.call(arguments, 1, arguments.length)
-                        return factory.apply(window, args)
+                    function proxy() {
+                        var args = [].slice.call(arguments, 1, arguments.length);
+                        return factory.apply(window, args);
                     }
                     switch (arguments.length) {
-                        case 2:
-                            // KISSY.add(factory, deps)
-                            factory = dependencies
-                            dependencies = id
-                            KISSY.add(proxy, {
-                                requires: dependencies.concat(['node'])
-                            })
-                            break
-                        case 3:
-                            // KISSY.add(name?, factory, deps)
-                            KISSY.add(id, proxy, {
-                                requires: dependencies.concat(['node'])
-                            })
-                            break
-                    }
-                }
-                window.define.kmd = {}
-            }
-            define(id, dependencies, factory)
+                      case 2:
+                        // KISSY.add(factory, deps)
+                        factory = dependencies;
+                        dependencies = id;
+                        KISSY.add(proxy, {
+                            requires: dependencies.concat([ "node" ])
+                        });
+                        break;
 
+                      case 3:
+                        // KISSY.add(name?, factory, deps)
+                        KISSY.add(id, proxy, {
+                            requires: dependencies.concat([ "node" ])
+                        });
+                        break;
+                    }
+                };
+                window.define.kmd = {};
+            }
+            define(id, dependencies, factory);
         } else {
             // Browser globals
-            if (globals) globals()
-
+            if (globals) globals();
         }
     }
-
-    
-
-/*! src/fix/prefix-3.js */
-
-}(function() {
-
-
-/*! src/util.js */
-
-
+})(function() {
+    /*! src/util.js */
     /*
         Utilities
     */
-    var Util = (function() {
-        var Util = {}
-
+    var Util = function() {
+        var Util = {};
         Util.extend = function extend() {
-            var target = arguments[0] || {},
-                i = 1,
-                length = arguments.length,
-                options, name, src, copy, clone
-
+            var target = arguments[0] || {}, i = 1, length = arguments.length, options, name, src, copy, clone;
             if (length === 1) {
-                target = this
-                i = 0
+                target = this;
+                i = 0;
             }
-
-            for (; i < length; i++) {
-                options = arguments[i]
-                if (!options) continue
-
+            for (;i < length; i++) {
+                options = arguments[i];
+                if (!options) continue;
                 for (name in options) {
-                    src = target[name]
-                    copy = options[name]
-
-                    if (target === copy) continue
-                    if (copy === undefined) continue
-
+                    src = target[name];
+                    copy = options[name];
+                    if (target === copy) continue;
+                    if (copy === undefined) continue;
                     if (Util.isArray(copy) || Util.isObject(copy)) {
-                        if (Util.isArray(copy)) clone = src && Util.isArray(src) ? src : []
-                        if (Util.isObject(copy)) clone = src && Util.isObject(src) ? src : {}
-
-                        target[name] = Util.extend(clone, copy)
+                        if (Util.isArray(copy)) clone = src && Util.isArray(src) ? src : [];
+                        if (Util.isObject(copy)) clone = src && Util.isObject(src) ? src : {};
+                        target[name] = Util.extend(clone, copy);
                     } else {
-                        target[name] = copy
+                        target[name] = copy;
                     }
                 }
             }
-
-            return target
-        }
-
+            return target;
+        };
         Util.each = function each(obj, iterator, context) {
-            var i, key
-            if (this.type(obj) === 'number') {
+            var i, key;
+            if (this.type(obj) === "number") {
                 for (i = 0; i < obj; i++) {
-                    iterator(i, i)
+                    iterator(i, i);
                 }
             } else if (obj.length === +obj.length) {
                 for (i = 0; i < obj.length; i++) {
-                    if (iterator.call(context, obj[i], i, obj) === false) break
+                    if (iterator.call(context, obj[i], i, obj) === false) break;
                 }
             } else {
                 for (key in obj) {
-                    if (iterator.call(context, obj[key], key, obj) === false) break
+                    if (iterator.call(context, obj[key], key, obj) === false) break;
                 }
             }
-        }
-
+        };
         Util.type = function type(obj) {
-            return (obj === null || obj === undefined) ? String(obj) : Object.prototype.toString.call(obj).match(/\[object (\w+)\]/)[1].toLowerCase()
-        }
-
-        Util.each('String Object Array RegExp Function'.split(' '), function(value) {
-            Util['is' + value] = function(obj) {
-                return Util.type(obj) === value.toLowerCase()
-            }
-        })
-
+            return obj === null || obj === undefined ? String(obj) : Object.prototype.toString.call(obj).match(/\[object (\w+)\]/)[1].toLowerCase();
+        };
+        Util.each("String Object Array RegExp Function".split(" "), function(value) {
+            Util["is" + value] = function(obj) {
+                return Util.type(obj) === value.toLowerCase();
+            };
+        });
         Util.isObjectOrArray = function(value) {
-            return Util.isObject(value) || Util.isArray(value)
-        }
-
+            return Util.isObject(value) || Util.isArray(value);
+        };
         Util.isNumeric = function(value) {
-            return !isNaN(parseFloat(value)) && isFinite(value)
-        }
-
+            return !isNaN(parseFloat(value)) && isFinite(value);
+        };
         Util.keys = function(obj) {
             var keys = [];
             for (var key in obj) {
-                if (obj.hasOwnProperty(key)) keys.push(key)
+                if (obj.hasOwnProperty(key)) keys.push(key);
             }
             return keys;
-        }
+        };
         Util.values = function(obj) {
             var values = [];
             for (var key in obj) {
-                if (obj.hasOwnProperty(key)) values.push(obj[key])
+                if (obj.hasOwnProperty(key)) values.push(obj[key]);
             }
             return values;
-        }
-
+        };
         /*
             ### Mock.heredoc(fn)
 
@@ -248,22 +207,12 @@
             // 1. 移除起始的 function(){ /*!
             // 2. 移除末尾的 */ }
             // 3. 移除起始和末尾的空格
-            return fn.toString()
-                .replace(/^[^\/]+\/\*!?/, '')
-                .replace(/\*\/[^\/]+$/, '')
-                .replace(/^[\s\xA0]+/, '').replace(/[\s\xA0]+$/, '') // .trim()
-        }
-
-        Util.noop = function() {}
-
-        return Util
-    })()
-
-    
-
-/*! src/random.js */
-
-
+            return fn.toString().replace(/^[^\/]+\/\*!?/, "").replace(/\*\/[^\/]+$/, "").replace(/^[\s\xA0]+/, "").replace(/[\s\xA0]+$/, "");
+        };
+        Util.noop = function() {};
+        return Util;
+    }();
+    /*! src/random.js */
     /*
         ### Mock.Random
         
@@ -304,7 +253,7 @@
 
         （功能，方法签名，参数说明，示例）
     */
-    var Random = (function() {
+    var Random = function() {
         var Random = {
             extend: Util.extend
         };
@@ -346,17 +295,16 @@
                 TODO 统计
 
             */
-            boolean: function(min, max, cur) {
+            "boolean": function(min, max, cur) {
                 if (cur !== undefined) {
-                    min = typeof min !== 'undefined' && !isNaN(min) ? parseInt(min, 10) : 1
-                    max = typeof max !== 'undefined' && !isNaN(max) ? parseInt(max, 10) : 1
-                    return Math.random() > 1.0 / (min + max) * min ? !cur : cur
+                    min = typeof min !== "undefined" && !isNaN(min) ? parseInt(min, 10) : 1;
+                    max = typeof max !== "undefined" && !isNaN(max) ? parseInt(max, 10) : 1;
+                    return Math.random() > 1 / (min + max) * min ? !cur : cur;
                 }
-
-                return Math.random() >= 0.5
+                return Math.random() >= .5;
             },
             bool: function(min, max, cur) {
-                return this.boolean(min, max, cur)
+                return this.boolean(min, max, cur);
             },
             /*
                 ##### Random.natural(min, max)
@@ -382,9 +330,10 @@
                     // => 77
             */
             natural: function(min, max) {
-                min = typeof min !== 'undefined' ? parseInt(min, 10) : 0
-                max = typeof max !== 'undefined' ? parseInt(max, 10) : 9007199254740992 // 2^53
-                return Math.round(Math.random() * (max - min)) + min
+                min = typeof min !== "undefined" ? parseInt(min, 10) : 0;
+                max = typeof max !== "undefined" ? parseInt(max, 10) : 9007199254740992;
+                // 2^53
+                return Math.round(Math.random() * (max - min)) + min;
             },
             /*
                 ##### Random.integer(min, max)
@@ -408,12 +357,13 @@
                 // => 96
             */
             integer: function(min, max) {
-                min = typeof min !== 'undefined' ? parseInt(min, 10) : -9007199254740992
-                max = typeof max !== 'undefined' ? parseInt(max, 10) : 9007199254740992 // 2^53
-                return Math.round(Math.random() * (max - min)) + min
+                min = typeof min !== "undefined" ? parseInt(min, 10) : -9007199254740992;
+                max = typeof max !== "undefined" ? parseInt(max, 10) : 9007199254740992;
+                // 2^53
+                return Math.round(Math.random() * (max - min)) + min;
             },
-            int: function(min, max) {
-                return this.integer(min, max)
+            "int": function(min, max) {
+                return this.integer(min, max);
             },
             /*
                 ##### Random.float(min, max, dmin, dmax)
@@ -443,19 +393,17 @@
                     Random.float(60, 100, 3, 5)
                     // => 70.6849
             */
-            float: function(min, max, dmin, dmax) {
-                dmin = dmin === undefined ? 0 : dmin
-                dmin = Math.max(Math.min(dmin, 17), 0)
-                dmax = dmax === undefined ? 17 : dmax
-                dmax = Math.max(Math.min(dmax, 17), 0)
-                var ret = this.integer(min, max) + '.';
+            "float": function(min, max, dmin, dmax) {
+                dmin = dmin === undefined ? 0 : dmin;
+                dmin = Math.max(Math.min(dmin, 17), 0);
+                dmax = dmax === undefined ? 17 : dmax;
+                dmax = Math.max(Math.min(dmax, 17), 0);
+                var ret = this.integer(min, max) + ".";
                 for (var i = 0, dcount = this.natural(dmin, dmax); i < dcount; i++) {
-                    ret += (
-                        // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
-                        (i < dcount - 1) ? this.character('number') : this.character('123456789')
-                    )
+                    ret += // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
+                    i < dcount - 1 ? this.character("number") : this.character("123456789");
                 }
-                return parseFloat(ret, 10)
+                return parseFloat(ret, 10);
             },
             /*
                 ##### Random.character(pool)
@@ -496,19 +444,18 @@
             */
             character: function(pool) {
                 var pools = {
-                    lower: 'abcdefghijklmnopqrstuvwxyz',
-                    upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                    number: '0123456789',
-                    symbol: '!@#$%^&*()[]'
-                }
-                pools.alpha = pools.lower + pools.upper
-                pools['undefined'] = pools.lower + pools.upper + pools.number + pools.symbol
-
-                pool = pools[('' + pool).toLowerCase()] || pool
-                return pool.charAt(Random.natural(0, pool.length - 1))
+                    lower: "abcdefghijklmnopqrstuvwxyz",
+                    upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                    number: "0123456789",
+                    symbol: "!@#$%^&*()[]"
+                };
+                pools.alpha = pools.lower + pools.upper;
+                pools["undefined"] = pools.lower + pools.upper + pools.number + pools.symbol;
+                pool = pools[("" + pool).toLowerCase()] || pool;
+                return pool.charAt(Random.natural(0, pool.length - 1));
             },
-            char: function(pool) {
-                return this.character(pool)
+            "char": function(pool) {
+                return this.character(pool);
             },
             /*
                 ##### Random.string(pool, min, max)
@@ -551,39 +498,37 @@
             */
             string: function(pool, min, max) {
                 var length;
-
                 // string( pool, min, max )
                 if (arguments.length === 3) {
-                    length = Random.natural(min, max)
+                    length = Random.natural(min, max);
                 }
                 if (arguments.length === 2) {
                     // string( pool, length )
-                    if (typeof arguments[0] === 'string') {
-                        length = min
+                    if (typeof arguments[0] === "string") {
+                        length = min;
                     } else {
                         // string( min, max )
-                        length = Random.natural(pool, min)
-                        pool = undefined
+                        length = Random.natural(pool, min);
+                        pool = undefined;
                     }
                 }
                 // string( length )
                 if (arguments.length === 1) {
-                    length = pool
-                    pool = undefined
+                    length = pool;
+                    pool = undefined;
                 }
                 // string()
                 if (arguments.length === 0) {
-                    length = Random.natural(3, 7)
+                    length = Random.natural(3, 7);
                 }
-
-                var text = ''
+                var text = "";
                 for (var i = 0; i < length; i++) {
-                    text += Random.character(pool)
+                    text += Random.character(pool);
                 }
-                return text
+                return text;
             },
             str: function(pool, min, max) {
-                return this.string(pool, min, max)
+                return this.string(pool, min, max);
             },
             /*
                 ##### Random.range(start, stop, step)
@@ -619,115 +564,102 @@
                     start = 0;
                 }
                 step = arguments[2] || 1;
-
-                start = +start, stop = +stop, step = +step
-
+                start = +start, stop = +stop, step = +step;
                 var len = Math.max(Math.ceil((stop - start) / step), 0);
                 var idx = 0;
                 var range = new Array(len);
-
                 while (idx < len) {
                     range[idx++] = start;
                     start += step;
                 }
-
                 return range;
             }
-        })
+        });
         /*
             #### Date
         */
         Random.extend({
             patternLetters: {
-                yyyy: 'getFullYear',
+                yyyy: "getFullYear",
                 yy: function(date) {
-                    return ('' + date.getFullYear()).slice(2)
+                    return ("" + date.getFullYear()).slice(2);
                 },
-                y: 'yy',
-
+                y: "yy",
                 MM: function(date) {
-                    var m = date.getMonth() + 1
-                    return m < 10 ? '0' + m : m
+                    var m = date.getMonth() + 1;
+                    return m < 10 ? "0" + m : m;
                 },
                 M: function(date) {
-                    return date.getMonth() + 1
+                    return date.getMonth() + 1;
                 },
-
                 dd: function(date) {
-                    var d = date.getDate()
-                    return d < 10 ? '0' + d : d
+                    var d = date.getDate();
+                    return d < 10 ? "0" + d : d;
                 },
-                d: 'getDate',
-
+                d: "getDate",
                 HH: function(date) {
-                    var h = date.getHours()
-                    return h < 10 ? '0' + h : h
+                    var h = date.getHours();
+                    return h < 10 ? "0" + h : h;
                 },
-                H: 'getHours',
+                H: "getHours",
                 hh: function(date) {
-                    var h = date.getHours() % 12
-                    return h < 10 ? '0' + h : h
+                    var h = date.getHours() % 12;
+                    return h < 10 ? "0" + h : h;
                 },
                 h: function(date) {
-                    return date.getHours() % 12
+                    return date.getHours() % 12;
                 },
-
                 mm: function(date) {
-                    var m = date.getMinutes()
-                    return m < 10 ? '0' + m : m
+                    var m = date.getMinutes();
+                    return m < 10 ? "0" + m : m;
                 },
-                m: 'getMinutes',
-
+                m: "getMinutes",
                 ss: function(date) {
-                    var s = date.getSeconds()
-                    return s < 10 ? '0' + s : s
+                    var s = date.getSeconds();
+                    return s < 10 ? "0" + s : s;
                 },
-                s: 'getSeconds',
-
+                s: "getSeconds",
                 SS: function(date) {
-                    var ms = date.getMilliseconds()
-                    return ms < 10 && '00' + ms || ms < 100 && '0' + ms || ms
+                    var ms = date.getMilliseconds();
+                    return ms < 10 && "00" + ms || ms < 100 && "0" + ms || ms;
                 },
-                S: 'getMilliseconds',
-
+                S: "getMilliseconds",
                 A: function(date) {
-                    return date.getHours() < 12 ? 'AM' : 'PM'
+                    return date.getHours() < 12 ? "AM" : "PM";
                 },
                 a: function(date) {
-                    return date.getHours() < 12 ? 'am' : 'pm'
+                    return date.getHours() < 12 ? "am" : "pm";
                 },
-                T: 'getTime'
+                T: "getTime"
             }
-        })
+        });
         Random.extend({
-            rformat: new RegExp((function() {
-                var re = []
-                for (var i in Random.patternLetters) re.push(i)
-                return '(' + re.join('|') + ')'
-            })(), 'g'),
+            rformat: new RegExp(function() {
+                var re = [];
+                for (var i in Random.patternLetters) re.push(i);
+                return "(" + re.join("|") + ")";
+            }(), "g"),
             /*
                 ##### Random.format(date, format)
 
                 格式化日期。
             */
             format: function(date, format) {
-                var patternLetters = Random.patternLetters,
-                    rformat = Random.rformat
+                var patternLetters = Random.patternLetters, rformat = Random.rformat;
                 return format.replace(rformat, function creatNewSubString($0, flag) {
-                    return typeof patternLetters[flag] === 'function' ? patternLetters[flag](date) :
-                        patternLetters[flag] in patternLetters ? creatNewSubString($0, patternLetters[flag]) :
-                        date[patternLetters[flag]]()
-                })
+                    return typeof patternLetters[flag] === "function" ? patternLetters[flag](date) : patternLetters[flag] in patternLetters ? creatNewSubString($0, patternLetters[flag]) : date[patternLetters[flag]]();
+                });
             },
             /*
                 ##### Random.format(date, format)
 
                 生成一个随机的 Date 对象。
             */
-            randomDate: function(min, max) { // min, max
-                min = min === undefined ? new Date(0) : min
-                max = max === undefined ? new Date() : max
-                return new Date(Math.random() * (max.getTime() - min.getTime()))
+            randomDate: function(min, max) {
+                // min, max
+                min = min === undefined ? new Date(0) : min;
+                max = max === undefined ? new Date() : max;
+                return new Date(Math.random() * (max.getTime() - min.getTime()));
             },
             /*
                 ##### Random.date(format)
@@ -778,8 +710,8 @@
 
             */
             date: function(format) {
-                format = format || 'yyyy-MM-dd'
-                return this.format(this.randomDate(), format)
+                format = format || "yyyy-MM-dd";
+                return this.format(this.randomDate(), format);
             },
             /*
                 ##### Random.time(format)
@@ -807,8 +739,8 @@
                     // => "3:5:13"
             */
             time: function(format) {
-                format = format || 'HH:mm:ss'
-                return this.format(this.randomDate(), format)
+                format = format || "HH:mm:ss";
+                return this.format(this.randomDate(), format);
             },
             /*
                 ##### Random.datetime(format)
@@ -836,8 +768,8 @@
                     // => "02-4-23 2:49:40"
             */
             datetime: function(format) {
-                format = format || 'yyyy-MM-dd HH:mm:ss'
-                return this.format(this.randomDate(), format)
+                format = format || "yyyy-MM-dd HH:mm:ss";
+                return this.format(this.randomDate(), format);
             },
             /*
                 Ranndom.now(unit, format)
@@ -850,54 +782,48 @@
             now: function(unit, format) {
                 if (arguments.length === 1) {
                     if (!/year|month|week|day|hour|minute|second|week/.test(unit)) {
-                        format = unit
-                        unit = ''
+                        format = unit;
+                        unit = "";
                     }
                 }
-                unit = (unit || '').toLowerCase()
-                format = format || 'yyyy-MM-dd HH:mm:ss'
-
-                var date = new Date()
-                    /* jshint -W086 */
+                unit = (unit || "").toLowerCase();
+                format = format || "yyyy-MM-dd HH:mm:ss";
+                var date = new Date();
+                /* jshint -W086 */
                 switch (unit) {
-                    case 'year':
-                        date.setMonth(0)
-                    case 'month':
-                        date.setDate(1)
-                    case 'week':
-                    case 'day':
-                        date.setHours(0)
-                    case 'hour':
-                        date.setMinutes(0)
-                    case 'minute':
-                        date.setSeconds(0)
-                    case 'second':
-                        date.setMilliseconds(0)
+                  case "year":
+                    date.setMonth(0);
+
+                  case "month":
+                    date.setDate(1);
+
+                  case "week":
+                  case "day":
+                    date.setHours(0);
+
+                  case "hour":
+                    date.setMinutes(0);
+
+                  case "minute":
+                    date.setSeconds(0);
+
+                  case "second":
+                    date.setMilliseconds(0);
                 }
                 switch (unit) {
-                    case 'week':
-                        date.setDate(date.getDate() - date.getDay())
+                  case "week":
+                    date.setDate(date.getDate() - date.getDay());
                 }
-
-                return this.format(date, format)
+                return this.format(date, format);
             }
-        })
+        });
         /*
             #### Image
         */
         Random.extend({
-            ad_size: [
-                '300x250', '250x250', '240x400', '336x280', '180x150',
-                '720x300', '468x60', '234x60', '88x31', '120x90',
-                '120x60', '120x240', '125x125', '728x90', '160x600',
-                '120x600', '300x600'
-            ],
-            screen_size: [
-                '320x200', '320x240', '640x480', '800x480', '800x480',
-                '1024x600', '1024x768', '1280x800', '1440x900', '1920x1200',
-                '2560x1600'
-            ],
-            video_size: ['720x480', '768x576', '1280x720', '1920x1080'],
+            ad_size: [ "300x250", "250x250", "240x400", "336x280", "180x150", "720x300", "468x60", "234x60", "88x31", "120x90", "120x60", "120x240", "125x125", "728x90", "160x600", "120x600", "300x600" ],
+            screen_size: [ "320x200", "320x240", "640x480", "800x480", "800x480", "1024x600", "1024x768", "1280x800", "1440x900", "1920x1200", "2560x1600" ],
+            video_size: [ "720x480", "768x576", "1280x720", "1920x1080" ],
             /*
                 ##### Random.img(size, background, foreground, format, text)
 
@@ -960,29 +886,23 @@
             */
             image: function(size, background, foreground, format, text) {
                 if (arguments.length === 4) {
-                    text = format
-                    format = undefined
+                    text = format;
+                    format = undefined;
                 }
                 if (arguments.length === 3) {
-                    text = foreground
-                    foreground = undefined
+                    text = foreground;
+                    foreground = undefined;
                 }
-                if (!size) size = this.pick(this.ad_size)
-
-                if (background && ~background.indexOf('#')) background = background.slice(1)
-                if (foreground && ~foreground.indexOf('#')) foreground = foreground.slice(1)
-
+                if (!size) size = this.pick(this.ad_size);
+                if (background && ~background.indexOf("#")) background = background.slice(1);
+                if (foreground && ~foreground.indexOf("#")) foreground = foreground.slice(1);
                 // http://dummyimage.com/600x400/cc00cc/470047.png&text=hello
-                return 'http://dummyimage.com/' + size +
-                    (background ? '/' + background : '') +
-                    (foreground ? '/' + foreground : '') +
-                    (format ? '.' + format : '') +
-                    (text ? '&text=' + text : '')
+                return "http://dummyimage.com/" + size + (background ? "/" + background : "") + (foreground ? "/" + foreground : "") + (format ? "." + format : "") + (text ? "&text=" + text : "");
             },
             img: function() {
-                return this.image.apply(this, arguments)
+                return this.image.apply(this, arguments);
             }
-        })
+        });
         Random.extend({
             /*
                 BrandColors
@@ -997,161 +917,161 @@
                 })
             */
             brandColors: {
-                '4ormat': '#fb0a2a',
-                '500px': '#02adea',
-                'About.me (blue)': '#00405d',
-                'About.me (yellow)': '#ffcc33',
-                'Addvocate': '#ff6138',
-                'Adobe': '#ff0000',
-                'Aim': '#fcd20b',
-                'Amazon': '#e47911',
-                'Android': '#a4c639',
-                'Angie\'s List': '#7fbb00',
-                'AOL': '#0060a3',
-                'Atlassian': '#003366',
-                'Behance': '#053eff',
-                'Big Cartel': '#97b538',
-                'bitly': '#ee6123',
-                'Blogger': '#fc4f08',
-                'Boeing': '#0039a6',
-                'Booking.com': '#003580',
-                'Carbonmade': '#613854',
-                'Cheddar': '#ff7243',
-                'Code School': '#3d4944',
-                'Delicious': '#205cc0',
-                'Dell': '#3287c1',
-                'Designmoo': '#e54a4f',
-                'Deviantart': '#4e6252',
-                'Designer News': '#2d72da',
-                'Devour': '#fd0001',
-                'DEWALT': '#febd17',
-                'Disqus (blue)': '#59a3fc',
-                'Disqus (orange)': '#db7132',
-                'Dribbble': '#ea4c89',
-                'Dropbox': '#3d9ae8',
-                'Drupal': '#0c76ab',
-                'Dunked': '#2a323a',
-                'eBay': '#89c507',
-                'Ember': '#f05e1b',
-                'Engadget': '#00bdf6',
-                'Envato': '#528036',
-                'Etsy': '#eb6d20',
-                'Evernote': '#5ba525',
-                'Fab.com': '#dd0017',
-                'Facebook': '#3b5998',
-                'Firefox': '#e66000',
-                'Flickr (blue)': '#0063dc',
-                'Flickr (pink)': '#ff0084',
-                'Forrst': '#5b9a68',
-                'Foursquare': '#25a0ca',
-                'Garmin': '#007cc3',
-                'GetGlue': '#2d75a2',
-                'Gimmebar': '#f70078',
-                'GitHub': '#171515',
-                'Google Blue': '#0140ca',
-                'Google Green': '#16a61e',
-                'Google Red': '#dd1812',
-                'Google Yellow': '#fcca03',
-                'Google+': '#dd4b39',
-                'Grooveshark': '#f77f00',
-                'Groupon': '#82b548',
-                'Hacker News': '#ff6600',
-                'HelloWallet': '#0085ca',
-                'Heroku (light)': '#c7c5e6',
-                'Heroku (dark)': '#6567a5',
-                'HootSuite': '#003366',
-                'Houzz': '#73ba37',
-                'HTML5': '#ec6231',
-                'IKEA': '#ffcc33',
-                'IMDb': '#f3ce13',
-                'Instagram': '#3f729b',
-                'Intel': '#0071c5',
-                'Intuit': '#365ebf',
-                'Kickstarter': '#76cc1e',
-                'kippt': '#e03500',
-                'Kodery': '#00af81',
-                'LastFM': '#c3000d',
-                'LinkedIn': '#0e76a8',
-                'Livestream': '#cf0005',
-                'Lumo': '#576396',
-                'Mixpanel': '#a086d3',
-                'Meetup': '#e51937',
-                'Nokia': '#183693',
-                'NVIDIA': '#76b900',
-                'Opera': '#cc0f16',
-                'Path': '#e41f11',
-                'PayPal (dark)': '#1e477a',
-                'PayPal (light)': '#3b7bbf',
-                'Pinboard': '#0000e6',
-                'Pinterest': '#c8232c',
-                'PlayStation': '#665cbe',
-                'Pocket': '#ee4056',
-                'Prezi': '#318bff',
-                'Pusha': '#0f71b4',
-                'Quora': '#a82400',
-                'QUOTE.fm': '#66ceff',
-                'Rdio': '#008fd5',
-                'Readability': '#9c0000',
-                'Red Hat': '#cc0000',
-                'Resource': '#7eb400',
-                'Rockpack': '#0ba6ab',
-                'Roon': '#62b0d9',
-                'RSS': '#ee802f',
-                'Salesforce': '#1798c1',
-                'Samsung': '#0c4da2',
-                'Shopify': '#96bf48',
-                'Skype': '#00aff0',
-                'Snagajob': '#f47a20',
-                'Softonic': '#008ace',
-                'SoundCloud': '#ff7700',
-                'Space Box': '#f86960',
-                'Spotify': '#81b71a',
-                'Sprint': '#fee100',
-                'Squarespace': '#121212',
-                'StackOverflow': '#ef8236',
-                'Staples': '#cc0000',
-                'Status Chart': '#d7584f',
-                'Stripe': '#008cdd',
-                'StudyBlue': '#00afe1',
-                'StumbleUpon': '#f74425',
-                'T-Mobile': '#ea0a8e',
-                'Technorati': '#40a800',
-                'The Next Web': '#ef4423',
-                'Treehouse': '#5cb868',
-                'Trulia': '#5eab1f',
-                'Tumblr': '#34526f',
-                'Twitch.tv': '#6441a5',
-                'Twitter': '#00acee',
-                'TYPO3': '#ff8700',
-                'Ubuntu': '#dd4814',
-                'Ustream': '#3388ff',
-                'Verizon': '#ef1d1d',
-                'Vimeo': '#86c9ef',
-                'Vine': '#00a478',
-                'Virb': '#06afd8',
-                'Virgin Media': '#cc0000',
-                'Wooga': '#5b009c',
-                'WordPress (blue)': '#21759b',
-                'WordPress (orange)': '#d54e21',
-                'WordPress (grey)': '#464646',
-                'Wunderlist': '#2b88d9',
-                'XBOX': '#9bc848',
-                'XING': '#126567',
-                'Yahoo!': '#720e9e',
-                'Yandex': '#ffcc00',
-                'Yelp': '#c41200',
-                'YouTube': '#c4302b',
-                'Zalongo': '#5498dc',
-                'Zendesk': '#78a300',
-                'Zerply': '#9dcc7a',
-                'Zootool': '#5e8b1d'
+                "4ormat": "#fb0a2a",
+                "500px": "#02adea",
+                "About.me (blue)": "#00405d",
+                "About.me (yellow)": "#ffcc33",
+                Addvocate: "#ff6138",
+                Adobe: "#ff0000",
+                Aim: "#fcd20b",
+                Amazon: "#e47911",
+                Android: "#a4c639",
+                "Angie's List": "#7fbb00",
+                AOL: "#0060a3",
+                Atlassian: "#003366",
+                Behance: "#053eff",
+                "Big Cartel": "#97b538",
+                bitly: "#ee6123",
+                Blogger: "#fc4f08",
+                Boeing: "#0039a6",
+                "Booking.com": "#003580",
+                Carbonmade: "#613854",
+                Cheddar: "#ff7243",
+                "Code School": "#3d4944",
+                Delicious: "#205cc0",
+                Dell: "#3287c1",
+                Designmoo: "#e54a4f",
+                Deviantart: "#4e6252",
+                "Designer News": "#2d72da",
+                Devour: "#fd0001",
+                DEWALT: "#febd17",
+                "Disqus (blue)": "#59a3fc",
+                "Disqus (orange)": "#db7132",
+                Dribbble: "#ea4c89",
+                Dropbox: "#3d9ae8",
+                Drupal: "#0c76ab",
+                Dunked: "#2a323a",
+                eBay: "#89c507",
+                Ember: "#f05e1b",
+                Engadget: "#00bdf6",
+                Envato: "#528036",
+                Etsy: "#eb6d20",
+                Evernote: "#5ba525",
+                "Fab.com": "#dd0017",
+                Facebook: "#3b5998",
+                Firefox: "#e66000",
+                "Flickr (blue)": "#0063dc",
+                "Flickr (pink)": "#ff0084",
+                Forrst: "#5b9a68",
+                Foursquare: "#25a0ca",
+                Garmin: "#007cc3",
+                GetGlue: "#2d75a2",
+                Gimmebar: "#f70078",
+                GitHub: "#171515",
+                "Google Blue": "#0140ca",
+                "Google Green": "#16a61e",
+                "Google Red": "#dd1812",
+                "Google Yellow": "#fcca03",
+                "Google+": "#dd4b39",
+                Grooveshark: "#f77f00",
+                Groupon: "#82b548",
+                "Hacker News": "#ff6600",
+                HelloWallet: "#0085ca",
+                "Heroku (light)": "#c7c5e6",
+                "Heroku (dark)": "#6567a5",
+                HootSuite: "#003366",
+                Houzz: "#73ba37",
+                HTML5: "#ec6231",
+                IKEA: "#ffcc33",
+                IMDb: "#f3ce13",
+                Instagram: "#3f729b",
+                Intel: "#0071c5",
+                Intuit: "#365ebf",
+                Kickstarter: "#76cc1e",
+                kippt: "#e03500",
+                Kodery: "#00af81",
+                LastFM: "#c3000d",
+                LinkedIn: "#0e76a8",
+                Livestream: "#cf0005",
+                Lumo: "#576396",
+                Mixpanel: "#a086d3",
+                Meetup: "#e51937",
+                Nokia: "#183693",
+                NVIDIA: "#76b900",
+                Opera: "#cc0f16",
+                Path: "#e41f11",
+                "PayPal (dark)": "#1e477a",
+                "PayPal (light)": "#3b7bbf",
+                Pinboard: "#0000e6",
+                Pinterest: "#c8232c",
+                PlayStation: "#665cbe",
+                Pocket: "#ee4056",
+                Prezi: "#318bff",
+                Pusha: "#0f71b4",
+                Quora: "#a82400",
+                "QUOTE.fm": "#66ceff",
+                Rdio: "#008fd5",
+                Readability: "#9c0000",
+                "Red Hat": "#cc0000",
+                Resource: "#7eb400",
+                Rockpack: "#0ba6ab",
+                Roon: "#62b0d9",
+                RSS: "#ee802f",
+                Salesforce: "#1798c1",
+                Samsung: "#0c4da2",
+                Shopify: "#96bf48",
+                Skype: "#00aff0",
+                Snagajob: "#f47a20",
+                Softonic: "#008ace",
+                SoundCloud: "#ff7700",
+                "Space Box": "#f86960",
+                Spotify: "#81b71a",
+                Sprint: "#fee100",
+                Squarespace: "#121212",
+                StackOverflow: "#ef8236",
+                Staples: "#cc0000",
+                "Status Chart": "#d7584f",
+                Stripe: "#008cdd",
+                StudyBlue: "#00afe1",
+                StumbleUpon: "#f74425",
+                "T-Mobile": "#ea0a8e",
+                Technorati: "#40a800",
+                "The Next Web": "#ef4423",
+                Treehouse: "#5cb868",
+                Trulia: "#5eab1f",
+                Tumblr: "#34526f",
+                "Twitch.tv": "#6441a5",
+                Twitter: "#00acee",
+                TYPO3: "#ff8700",
+                Ubuntu: "#dd4814",
+                Ustream: "#3388ff",
+                Verizon: "#ef1d1d",
+                Vimeo: "#86c9ef",
+                Vine: "#00a478",
+                Virb: "#06afd8",
+                "Virgin Media": "#cc0000",
+                Wooga: "#5b009c",
+                "WordPress (blue)": "#21759b",
+                "WordPress (orange)": "#d54e21",
+                "WordPress (grey)": "#464646",
+                Wunderlist: "#2b88d9",
+                XBOX: "#9bc848",
+                XING: "#126567",
+                "Yahoo!": "#720e9e",
+                Yandex: "#ffcc00",
+                Yelp: "#c41200",
+                YouTube: "#c4302b",
+                Zalongo: "#5498dc",
+                Zendesk: "#78a300",
+                Zerply: "#9dcc7a",
+                Zootool: "#5e8b1d"
             },
             brands: function() {
                 var brands = [];
                 for (var b in this.brandColors) {
-                    brands.push(b)
+                    brands.push(b);
                 }
-                return brands
+                return brands;
             },
             /*
                 https://github.com/imsky/holder
@@ -1162,119 +1082,212 @@
                 },
             */
             dataImage: function(size, text) {
-                var canvas = (typeof document !== 'undefined') && document.createElement('canvas'),
-                    ctx = canvas && canvas.getContext && canvas.getContext("2d");
-                if (!canvas || !ctx) return ''
-
-                if (!size) size = this.pick(this.ad_size)
-                text = text !== undefined ? text : size
-
-                size = size.split('x')
-
-                var width = parseInt(size[0], 10),
-                    height = parseInt(size[1], 10),
-                    background = this.brandColors[this.pick(this.brands())],
-                    foreground = '#FFF',
-                    text_height = 14,
-                    font = 'sans-serif';
-
-                canvas.width = width
-                canvas.height = height
-                ctx.textAlign = "center"
-                ctx.textBaseline = "middle"
-                ctx.fillStyle = background
-                ctx.fillRect(0, 0, width, height)
-                ctx.fillStyle = foreground
-                ctx.font = "bold " + text_height + "px " + font
-                ctx.fillText(text, (width / 2), (height / 2), width)
-                return canvas.toDataURL("image/png")
+                var canvas = typeof document !== "undefined" && document.createElement("canvas"), ctx = canvas && canvas.getContext && canvas.getContext("2d");
+                if (!canvas || !ctx) return "";
+                if (!size) size = this.pick(this.ad_size);
+                text = text !== undefined ? text : size;
+                size = size.split("x");
+                var width = parseInt(size[0], 10), height = parseInt(size[1], 10), background = this.brandColors[this.pick(this.brands())], foreground = "#FFF", text_height = 14, font = "sans-serif";
+                canvas.width = width;
+                canvas.height = height;
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = background;
+                ctx.fillRect(0, 0, width, height);
+                ctx.fillStyle = foreground;
+                ctx.font = "bold " + text_height + "px " + font;
+                ctx.fillText(text, width / 2, height / 2, width);
+                return canvas.toDataURL("image/png");
             }
-        })
+        });
         /*
             #### Color
+
+            http://blog.csdn.net/idfaya/article/details/6770414
+                颜色空间RGB与HSV(HSL)的转换
+
+            http://llllll.li/randomColor/
+                A color generator for JavaScript.
+                randomColor generates attractive colors by default. More specifically, randomColor produces bright colors with a reasonably high saturation. This makes randomColor particularly useful for data visualizations and generative art.
+            
+            http://randomcolour.com/
+                var bg_colour = Math.floor(Math.random() * 16777215).toString(16);
+                bg_colour = "#" + ("000000" + bg_colour).slice(-6);
+                document.bgColor = bg_colour;
+
+            http://www.paulirish.com/2009/random-hex-color-code-snippets/
+                Random Hex Color Code Generator in JavaScript
+
+            http://chancejs.com/#color
+                chance.color()
+                // => '#79c157'
+                chance.color({format: 'hex'})
+                // => '#d67118'
+                chance.color({format: 'shorthex'})
+                // => '#60f'
+                chance.color({format: 'rgb'})
+                // => 'rgb(110,52,164)'
+
+            http://clrs.cc/
+                COLORS
+                A nicer color palette for the web.
+                Navy        #000080     #001F3F
+                Blue        #0000ff     #0074D9
+                Aqua        #00ffff     #7FDBFF
+                Teal        #008080     #39CCCC
+                Olive       #008000     #3D9970
+                Green       #008000     #2ECC40
+                Lime        #00ff00     #01FF70
+                Yellow      #ffff00     #FFDC00
+                Orange      #ffa500     #FF851B
+                Red         #ff0000     #FF4136
+                Maroon      #800000     #85144B
+                Fuchsia     #ff00ff     #F012BE
+                Purple      #800080     #B10DC9
+                Silver      #c0c0c0     #DDDDDD
+                Gray        #808080     #AAAAAA
+                Black       #000000     #111111
+                White       #FFFFFF     #FFFFFF
+
+            http://tool.c7sky.com/webcolor
+                网页设计常用色彩搭配表
+
+            http://www.colorsontheweb.com/colorwheel.asp
+                Color Wheel
+            
+            https://github.com/One-com/one-color
+                An OO-based JavaScript color parser/computation toolkit with support for RGB, HSV, HSL, CMYK, and alpha channels.
+
+            https://github.com/harthur/color
+                JavaScript color conversion and manipulation library
+
+            https://github.com/leaverou/css-colors
+            http://leaverou.github.io/css-colors/#slategray
+                Type a CSS color keyword, #hex, hsl(), rgba(), whatever:
+
+            色调 hue
+                http://baike.baidu.com/view/23368.htm
+                色调指的是一幅画中画面色彩的总体倾向，是大的色彩效果。
+            饱和度 saturation
+                http://baike.baidu.com/view/189644.htm
+                饱和度是指色彩的鲜艳程度，也称色彩的纯度。饱和度取决于该色中含色成分和消色成分（灰色）的比例。含色成分越大，饱和度越大；消色成分越大，饱和度越小。
+            亮度 brightness
+                http://baike.baidu.com/view/34773.htm
+                亮度是指发光体（反光体）表面发光（反光）强弱的物理量。
+            照度 luminosity
+                物体被照亮的程度,采用单位面积所接受的光通量来表示,表示单位为勒[克斯](Lux,lx) ,即 1m / m2 。
         */
+        // https://github.com/harthur/color-convert/blob/master/conversions.js
+        var conversions = {
+            rgb2hsl: function rgb2hsl(rgb) {
+                var r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255, min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, l;
+                if (max == min) h = 0; else if (r == max) h = (g - b) / delta; else if (g == max) h = 2 + (b - r) / delta; else if (b == max) h = 4 + (r - g) / delta;
+                h = Math.min(h * 60, 360);
+                if (h < 0) h += 360;
+                l = (min + max) / 2;
+                if (max == min) s = 0; else if (l <= .5) s = delta / (max + min); else s = delta / (2 - max - min);
+                return [ h, s * 100, l * 100 ];
+            },
+            rgb2hsv: function rgb2hsv(rgb) {
+                var r = rgb[0], g = rgb[1], b = rgb[2], min = Math.min(r, g, b), max = Math.max(r, g, b), delta = max - min, h, s, v;
+                if (max === 0) s = 0; else s = delta / max * 1e3 / 10;
+                if (max == min) h = 0; else if (r == max) h = (g - b) / delta; else if (g == max) h = 2 + (b - r) / delta; else if (b == max) h = 4 + (r - g) / delta;
+                h = Math.min(h * 60, 360);
+                if (h < 0) h += 360;
+                v = max / 255 * 1e3 / 10;
+                return [ h, s, v ];
+            },
+            hsl2rgb: function hsl2rgb(hsl) {
+                var h = hsl[0] / 360, s = hsl[1] / 100, l = hsl[2] / 100, t1, t2, t3, rgb, val;
+                if (s === 0) {
+                    val = l * 255;
+                    return [ val, val, val ];
+                }
+                if (l < .5) t2 = l * (1 + s); else t2 = l + s - l * s;
+                t1 = 2 * l - t2;
+                rgb = [ 0, 0, 0 ];
+                for (var i = 0; i < 3; i++) {
+                    t3 = h + 1 / 3 * -(i - 1);
+                    t3 < 0 && t3++;
+                    t3 > 1 && t3--;
+                    if (6 * t3 < 1) val = t1 + (t2 - t1) * 6 * t3; else if (2 * t3 < 1) val = t2; else if (3 * t3 < 2) val = t1 + (t2 - t1) * (2 / 3 - t3) * 6; else val = t1;
+                    rgb[i] = val * 255;
+                }
+                return rgb;
+            },
+            hsl2hsv: function hsl2hsv(hsl) {
+                var h = hsl[0], s = hsl[1] / 100, l = hsl[2] / 100, sv, v;
+                l *= 2;
+                s *= l <= 1 ? l : 2 - l;
+                v = (l + s) / 2;
+                sv = 2 * s / (l + s);
+                return [ h, sv * 100, v * 100 ];
+            },
+            hsv2rgb: function hsv2rgb(hsv) {
+                var h = hsv[0] / 60;
+                var s = hsv[1] / 100;
+                var v = hsv[2] / 100;
+                var hi = Math.floor(h) % 6;
+                var f = h - Math.floor(h);
+                var p = 255 * v * (1 - s);
+                var q = 255 * v * (1 - s * f);
+                var t = 255 * v * (1 - s * (1 - f));
+                v = 255 * v;
+                switch (hi) {
+                  case 0:
+                    return [ v, t, p ];
+
+                  case 1:
+                    return [ q, v, p ];
+
+                  case 2:
+                    return [ p, v, t ];
+
+                  case 3:
+                    return [ p, q, v ];
+
+                  case 4:
+                    return [ t, p, v ];
+
+                  case 5:
+                    return [ v, p, q ];
+                }
+            },
+            hsv2hsl: function hsv2hsl(hsv) {
+                var h = hsv[0], s = hsv[1] / 100, v = hsv[2] / 100, sl, l;
+                l = (2 - s) * v;
+                sl = s * v;
+                sl /= l <= 1 ? l : 2 - l;
+                l /= 2;
+                return [ h, sl * 100, l * 100 ];
+            }
+        };
         Random.extend({
+            colorConversions: conversions,
             /*
                 ##### Random.color()
 
-                随机生成一个有吸引力的颜色，格式为 '#RRGGBB'。
+                随机生成一个<!--有吸引力的-->颜色，格式为 '#RRGGBB'。
 
                 * Random.color()
+                * Random.color(format)
+                * Random.color(hue)
+                * Random.color(format, hue)
 
                 使用示例如下所示：
 
                     Random.color()
-                    // => "#3538b2"
-
-                http://llllll.li/randomColor/
-                    A color generator for JavaScript.
-                    randomColor generates attractive colors by default. More specifically, randomColor produces bright colors with a reasonably high saturation. This makes randomColor particularly useful for data visualizations and generative art.
-                
-                http://randomcolour.com/
-                    var bg_colour = Math.floor(Math.random() * 16777215).toString(16);
-                    bg_colour = "#" + ("000000" + bg_colour).slice(-6);
-                    document.bgColor = bg_colour;
-
-                http://www.paulirish.com/2009/random-hex-color-code-snippets/
-                    Random Hex Color Code Generator in JavaScript
-
-                http://chancejs.com/#color
-                    chance.color()
-                    // => '#79c157'
-                    chance.color({format: 'hex'})
-                    // => '#d67118'
-                    chance.color({format: 'shorthex'})
-                    // => '#60f'
-                    chance.color({format: 'rgb'})
-                    // => 'rgb(110,52,164)'
-
-                http://clrs.cc/
-                    COLORS
-                    A nicer color palette for the web.
-                    Navy        #000080     #001F3F
-                    Blue        #0000ff     #0074D9
-                    Aqua        #00ffff     #7FDBFF
-                    Teal        #008080     #39CCCC
-                    Olive       #008000     #3D9970
-                    Green       #008000     #2ECC40
-                    Lime        #00ff00     #01FF70
-                    Yellow      #ffff00     #FFDC00
-                    Orange      #ffa500     #FF851B
-                    Red         #ff0000     #FF4136
-                    Maroon      #800000     #85144B
-                    Fuchsia     #ff00ff     #F012BE
-                    Purple      #800080     #B10DC9
-                    Silver      #c0c0c0     #DDDDDD
-                    Gray        #808080     #AAAAAA
-                    Black       #000000     #111111
-                    White       #FFFFFF     #FFFFFF
-
-                http://tool.c7sky.com/webcolor
-                    网页设计常用色彩搭配表
-
-                http://www.colorsontheweb.com/colorwheel.asp
-                    Color Wheel
-
-                色调 hue
-                    http://baike.baidu.com/view/23368.htm
-                    色调指的是一幅画中画面色彩的总体倾向，是大的色彩效果。
-                饱和度 saturation
-                    http://baike.baidu.com/view/189644.htm
-                    饱和度是指色彩的鲜艳程度，也称色彩的纯度。饱和度取决于该色中含色成分和消色成分（灰色）的比例。含色成分越大，饱和度越大；消色成分越大，饱和度越小。
-                亮度 brightness
-                    http://baike.baidu.com/view/34773.htm
-                    亮度是指发光体（反光体）表面发光（反光）强弱的物理量。
-
+                    // => "#3538B2"
             */
-            DEFAULT_COLORS: {
-
-            },
             color: function() {
-                var color = Math.floor(Math.random() * (16 * 16 * 16 * 16 * 16 * 16 - 1)).toString(16)
-                color = "#" + ("000000" + color).slice(-6)
-                return color.toUpperCase()
+                // TODO
+                // var formats = 'rgb hsl hsv'.split(' ')
+                // var hues = 'navy blue aqua teal olive green lime yellow orange red maroon fuchsia purple silver gray black'.split(' ')
+                var color = Math.floor(Math.random() * (16 * 16 * 16 * 16 * 16 * 16 - 1)).toString(16);
+                color = "#" + ("000000" + color).slice(-6);
+                return color.toUpperCase();
             }
-        })
+        });
         /*
             #### Helpers
         */
@@ -1292,7 +1305,7 @@
                     // => "Hello"
             */
             capitalize: function(word) {
-                return (word + '').charAt(0).toUpperCase() + (word + '').substr(1)
+                return (word + "").charAt(0).toUpperCase() + (word + "").substr(1);
             },
             /*
                 ##### Random.upper(str)
@@ -1307,7 +1320,7 @@
                     // => "HELLO"
             */
             upper: function(str) {
-                return (str + '').toUpperCase()
+                return (str + "").toUpperCase();
             },
             /*
                 ##### Random.lower(str)
@@ -1320,7 +1333,7 @@
                     // => "hello"
             */
             lower: function(str) {
-                return (str + '').toLowerCase()
+                return (str + "").toLowerCase();
             },
             /*
                 ##### Random.pick(arr)
@@ -1334,9 +1347,9 @@
                     Random.pick(['a', 'e', 'i', 'o', 'u'])
                     // => "o"
             */
-            pick: function(arr) {
-                arr = arr || []
-                return arr[this.natural(0, arr.length - 1)]
+            pick: function pick(arr) {
+                arr = arr || [];
+                return arr[this.natural(0, arr.length - 1)];
             },
             /*
                 Given an array, scramble the order and return it.
@@ -1351,20 +1364,39 @@
                     Random.shuffle(['a', 'e', 'i', 'o', 'u'])
                     // => ["o", "u", "e", "i", "a"]
             */
-            shuffle: function(arr) {
-                arr = arr || []
-                var old = arr.slice(0),
-                    result = [],
-                    index = 0,
-                    length = old.length;
+            shuffle: function shuffle(arr) {
+                arr = arr || [];
+                var old = arr.slice(0), result = [], index = 0, length = old.length;
                 for (var i = 0; i < length; i++) {
-                    index = this.natural(0, old.length - 1)
-                    result.push(old[index])
-                    old.splice(index, 1)
+                    index = this.natural(0, old.length - 1);
+                    result.push(old[index]);
+                    old.splice(index, 1);
                 }
-                return result
+                return result;
+            },
+            /*
+                * Random.order(item, item)
+                * Random.order([item, item ...])
+
+                顺序获取数组中的元素
+
+                [JSON导入数组支持数组数据录入](https://github.com/thx/RAP/issues/22)
+
+                貌似不应该暴漏在这里！因为没法单独调用啊！
+            */
+            order: function order(array) {
+                order.cache = order.cache || {};
+                if (arguments.length > 1) array = [].slice.call(arguments, 0);
+                var options = order.options;
+                var path = options.context.path.join(".");
+                var templatePath = options.context.templatePath.join(".");
+                var cache = order.cache[templatePath] = order.cache[templatePath] || {
+                    index: 0,
+                    array: array
+                };
+                return cache.array[cache.index++ % cache.array.length];
             }
-        })
+        });
         /*
             #### Text
         */
@@ -1395,19 +1427,18 @@
             */
             paragraph: function(min, max) {
                 var len;
-                if (arguments.length === 0) len = Random.natural(3, 7)
-                if (arguments.length === 1) len = max = min
+                if (arguments.length === 0) len = Random.natural(3, 7);
+                if (arguments.length === 1) len = max = min;
                 if (arguments.length === 2) {
-                    min = parseInt(min, 10)
-                    max = parseInt(max, 10)
-                    len = Random.natural(min, max)
+                    min = parseInt(min, 10);
+                    max = parseInt(max, 10);
+                    len = Random.natural(min, max);
                 }
-
-                var arr = []
+                var arr = [];
                 for (var i = 0; i < len; i++) {
-                    arr.push(Random.sentence())
+                    arr.push(Random.sentence());
                 }
-                return arr.join(' ')
+                return arr.join(" ");
             },
             /*
                 ##### Random.sentence(len)
@@ -1435,19 +1466,18 @@
             */
             sentence: function(min, max) {
                 var len;
-                if (arguments.length === 0) len = Random.natural(12, 18)
-                if (arguments.length === 1) len = max = min
+                if (arguments.length === 0) len = Random.natural(12, 18);
+                if (arguments.length === 1) len = max = min;
                 if (arguments.length === 2) {
-                    min = parseInt(min, 10)
-                    max = parseInt(max, 10)
-                    len = Random.natural(min, max)
+                    min = parseInt(min, 10);
+                    max = parseInt(max, 10);
+                    len = Random.natural(min, max);
                 }
-
-                var arr = []
+                var arr = [];
                 for (var i = 0; i < len; i++) {
-                    arr.push(Random.word())
+                    arr.push(Random.word());
                 }
-                return Random.capitalize(arr.join(' ')) + '.'
+                return Random.capitalize(arr.join(" ")) + ".";
             },
             /*
                 ##### Random.word(len)
@@ -1477,20 +1507,18 @@
             */
             word: function(min, max) {
                 var len;
-                if (arguments.length === 0) len = Random.natural(3, 10)
-                if (arguments.length === 1) len = max = min
+                if (arguments.length === 0) len = Random.natural(3, 10);
+                if (arguments.length === 1) len = max = min;
                 if (arguments.length === 2) {
-                    min = parseInt(min, 10)
-                    max = parseInt(max, 10)
-                    len = Random.natural(min, max)
+                    min = parseInt(min, 10);
+                    max = parseInt(max, 10);
+                    len = Random.natural(min, max);
                 }
-
-                var result = '';
+                var result = "";
                 for (var i = 0; i < len; i++) {
-                    result += Random.character('lower')
+                    result += Random.character("lower");
                 }
-
-                return result
+                return result;
             },
             /*
                 ##### Random.title(len)
@@ -1517,25 +1545,24 @@
                     // => "Hvjexiondr Pyickubll Owlorjvzys Xfnfwbfk"
             */
             title: function(min, max) {
-                var len,
-                    result = [];
-
-                if (arguments.length === 0) len = Random.natural(3, 7)
-                if (arguments.length === 1) len = max = min
+                var len, result = [];
+                if (arguments.length === 0) len = Random.natural(3, 7);
+                if (arguments.length === 1) len = max = min;
                 if (arguments.length === 2) {
-                    min = parseInt(min, 10)
-                    max = parseInt(max, 10)
-                    len = Random.natural(min, max)
+                    min = parseInt(min, 10);
+                    max = parseInt(max, 10);
+                    len = Random.natural(min, max);
                 }
-
                 for (var i = 0; i < len; i++) {
-                    result.push(this.capitalize(this.word()))
+                    result.push(this.capitalize(this.word()));
                 }
-                return result.join(' ')
+                return result.join(" ");
             }
-        })
+        });
         /*
             #### Name
+
+            [Beyond the Top 1000 Names](http://www.ssa.gov/oact/babynames/limits.html)
         */
         Random.extend({
             /*
@@ -1551,27 +1578,11 @@
                     // => "Nancy"
             */
             first: function() {
-                var names = [
-                    // male
-                    "James", "John", "Robert", "Michael", "William",
-                    "David", "Richard", "Charles", "Joseph", "Thomas",
-                    "Christopher", "Daniel", "Paul", "Mark", "Donald",
-                    "George", "Kenneth", "Steven", "Edward", "Brian",
-                    "Ronald", "Anthony", "Kevin", "Jason", "Matthew",
-                    "Gary", "Timothy", "Jose", "Larry", "Jeffrey",
-                    "Frank", "Scott", "Eric"
-                ].concat([
-                    // female
-                    "Mary", "Patricia", "Linda", "Barbara", "Elizabeth",
-                    "Jennifer", "Maria", "Susan", "Margaret", "Dorothy",
-                    "Lisa", "Nancy", "Karen", "Betty", "Helen",
-                    "Sandra", "Donna", "Carol", "Ruth", "Sharon",
-                    "Michelle", "Laura", "Sarah", "Kimberly", "Deborah",
-                    "Jessica", "Shirley", "Cynthia", "Angela", "Melissa",
-                    "Brenda", "Amy", "Anna"
-                ])
-                return this.pick(names)
-                return this.capitalize(this.word())
+                var names = [ // male
+                "James", "John", "Robert", "Michael", "William", "David", "Richard", "Charles", "Joseph", "Thomas", "Christopher", "Daniel", "Paul", "Mark", "Donald", "George", "Kenneth", "Steven", "Edward", "Brian", "Ronald", "Anthony", "Kevin", "Jason", "Matthew", "Gary", "Timothy", "Jose", "Larry", "Jeffrey", "Frank", "Scott", "Eric" ].concat([ // female
+                "Mary", "Patricia", "Linda", "Barbara", "Elizabeth", "Jennifer", "Maria", "Susan", "Margaret", "Dorothy", "Lisa", "Nancy", "Karen", "Betty", "Helen", "Sandra", "Donna", "Carol", "Ruth", "Sharon", "Michelle", "Laura", "Sarah", "Kimberly", "Deborah", "Jessica", "Shirley", "Cynthia", "Angela", "Melissa", "Brenda", "Amy", "Anna" ]);
+                return this.pick(names);
+                return this.capitalize(this.word());
             },
             /*
                 ##### Random.last()
@@ -1586,17 +1597,9 @@
                     // => "Martinez"
             */
             last: function() {
-                var names = [
-                    "Smith", "Johnson", "Williams", "Brown", "Jones",
-                    "Miller", "Davis", "Garcia", "Rodriguez", "Wilson",
-                    "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez",
-                    "Moore", "Martin", "Jackson", "Thompson", "White",
-                    "Lopez", "Lee", "Gonzalez", "Harris", "Clark",
-                    "Lewis", "Robinson", "Walker", "Perez", "Hall",
-                    "Young", "Allen"
-                ]
-                return this.pick(names)
-                return this.capitalize(this.word())
+                var names = [ "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White", "Lopez", "Lee", "Gonzalez", "Harris", "Clark", "Lewis", "Robinson", "Walker", "Perez", "Hall", "Young", "Allen" ];
+                return this.pick(names);
+                return this.capitalize(this.word());
             },
             /*
                 ##### Random.name(middle)
@@ -1618,9 +1621,38 @@
                     // => "Helen Carol Martinez"
             */
             name: function(middle) {
-                return this.first() + ' ' + (middle ? this.first() + ' ' : '') + this.last()
+                return this.first() + " " + (middle ? this.first() + " " : "") + this.last();
+            },
+            /*
+                * Random.cfirst()
+
+                随机生成一个常见的中文姓。
+
+                [世界常用姓氏排行](http://baike.baidu.com/view/1719115.htm)
+                [玄派网 - 网络小说创作辅助平台](http://xuanpai.sinaapp.com/)
+             */
+            cfirst: function() {
+                var names = ("王 李 张 刘 陈 杨 赵 黄 周 吴 " + "徐 孙 胡 朱 高 林 何 郭 马 罗 " + "梁 宋 郑 谢 韩 唐 冯 于 董 萧 " + "程 曹 袁 邓 许 傅 沈 曾 彭 吕 " + "苏 卢 蒋 蔡 贾 丁 魏 薛 叶 阎 " + "余 潘 杜 戴 夏 锺 汪 田 任 姜 " + "范 方 石 姚 谭 廖 邹 熊 金 陆 " + "郝 孔 白 崔 康 毛 邱 秦 江 史 " + "顾 侯 邵 孟 龙 万 段 雷 钱 汤 " + "尹 黎 易 常 武 乔 贺 赖 龚 文").split(" ");
+                return this.pick(names);
+            },
+            /*
+                * Random.clast()
+
+                随机生成一个常见的中文名。
+
+                [中国最常见名字前50名_三九算命网](http://www.name999.net/xingming/xingshi/20131004/48.html)
+             */
+            clast: function() {
+                var names = ("伟 芳 娜 秀英 敏 静 丽 强 磊 军 " + "洋 勇 艳 杰 娟 涛 明 超 秀兰 霞 " + "平 刚 桂英").split(" ");
+                return this.pick(names);
+            },
+            /*
+                随机生成一个常见的中文姓名。
+            */
+            cname: function() {
+                return this.cfirst() + this.clast();
             }
-        })
+        });
         /*
             #### Web
         */
@@ -1631,14 +1663,33 @@
                 随机生成一个 URL。
 
                 * Random.url()
+                * Random.url(protocol, domain, port, path) TODO
                 
                 使用示例如下所示：
 
                     Random.url()
                     // => "http://vrcq.edu/ekqtyfi"
+
+                [URL 规范](http://www.w3.org/Addressing/URL/url-spec.txt)
+                    http                    Hypertext Transfer Protocol 
+                    ftp                     File Transfer protocol 
+                    gopher                  The Gopher protocol 
+                    mailto                  Electronic mail address 
+                    mid                     Message identifiers for electronic mail 
+                    cid                     Content identifiers for MIME body part 
+                    news                    Usenet news 
+                    nntp                    Usenet news for local NNTP access only 
+                    prospero                Access using the prospero protocols 
+                    telnet rlogin tn3270    Reference to interactive sessions
+                    wais                    Wide Area Information Servers 
             */
             url: function() {
-                return 'http://' + this.domain() + '/' + this.word()
+                return this.protocol() + "://" + this.domain() + "/" + this.word();
+            },
+            // 协议簇
+            protocols: "http ftp gopher mailto mid cid news nntp prospero telnet rlogin tn3270 wais".split(" "),
+            protocol: function() {
+                return this.pick(this.protocols);
             },
             /*
                 ##### Random.domain()
@@ -1653,7 +1704,34 @@
                     // => "kozfnb.org"
             */
             domain: function(tld) {
-                return this.word() + '.' + (tld || this.tld())
+                return this.word() + "." + (tld || this.tld());
+            },
+            /*
+                国际顶级域名 international top-level domain-names, iTLDs
+                国家顶级域名 national top-level domainnames, nTLDs
+                [域名后缀大全](http://www.163ns.com/zixun/post/4417.html)
+            */
+            tlds: (// 域名后缀
+            "com net org edu gov int mil cn " + // 国内域名
+            "com.cn net.cn gov.cn org.cn " + // 中文国内域名
+            "中国 中国互联.公司 中国互联.网络 " + // 新国际域名
+            "tel biz cc tv info name hk mobi asia cd travel pro museum coop aero " + // 世界各国域名后缀
+            "ad ae af ag ai al am an ao aq ar as at au aw az ba bb bd be bf bg bh bi bj bm bn bo br bs bt bv bw by bz ca cc cf cg ch ci ck cl cm cn co cq cr cu cv cx cy cz de dj dk dm do dz ec ee eg eh es et ev fi fj fk fm fo fr ga gb gd ge gf gh gi gl gm gn gp gr gt gu gw gy hk hm hn hr ht hu id ie il in io iq ir is it jm jo jp ke kg kh ki km kn kp kr kw ky kz la lb lc li lk lr ls lt lu lv ly ma mc md mg mh ml mm mn mo mp mq mr ms mt mv mw mx my mz na nc ne nf ng ni nl no np nr nt nu nz om qa pa pe pf pg ph pk pl pm pn pr pt pw py re ro ru rw sa sb sc sd se sg sh si sj sk sl sm sn so sr st su sy sz tc td tf tg th tj tk tm tn to tp tr tt tv tw tz ua ug uk us uy va vc ve vg vn vu wf ws ye yu za zm zr zw").split(" "),
+            /*
+                ##### Random.tld()
+
+                随机生成一个顶级域名。
+
+                * Random.tld()
+                
+                使用示例如下所示：
+
+                    Random.tld()
+                    // => "io"
+            */
+            tld: function() {
+                // Top Level Domain
+                return this.pick(this.tlds);
             },
             /*
                 ##### Random.email()
@@ -1668,8 +1746,7 @@
                     // => "x.davis@jackson.edu"
             */
             email: function(domain) {
-                return this.character('lower') + '.' + this.last().toLowerCase() + '@' + this.last().toLowerCase() + '.' + this.tld()
-                return this.word() + '@' + (domain || this.domain())
+                return this.character("lower") + "." + this.word() + "@" + (domain || this.word() + "." + this.tld());
             },
             /*
                 ##### Random.ip()
@@ -1684,34 +1761,15 @@
                     // => "34.206.109.169"
             */
             ip: function() {
-                return this.natural(0, 255) + '.' +
-                    this.natural(0, 255) + '.' +
-                    this.natural(0, 255) + '.' +
-                    this.natural(0, 255)
-            },
-            tlds: ['com', 'org', 'edu', 'gov', 'co.uk', 'net', 'io'],
-            /*
-                ##### Random.tld()
-
-                随机生成一个顶级域名。
-
-                * Random.tld()
-                
-                使用示例如下所示：
-
-                    Random.tld()
-                    // => "io"
-            */
-            tld: function() { // Top Level Domain
-                return this.pick(this.tlds)
+                return this.natural(0, 255) + "." + this.natural(0, 255) + "." + this.natural(0, 255) + "." + this.natural(0, 255);
             }
-        })
+        });
         /*
             #### Address
             TODO 
         */
         Random.extend({
-            areas: ['东北', '华北', '华东', '华中', '华南', '西南', '西北'],
+            areas: [ "东北", "华北", "华东", "华中", "华南", "西南", "西北" ],
             /*
                 ##### Random.area()
 
@@ -1725,9 +1783,8 @@
                     // => "华北"
             */
             area: function() {
-                return this.pick(this.areas)
+                return this.pick(this.areas);
             },
-
             /*
                 > 23 个省：
                 '河北省', '山西省', '辽宁省', '吉林省', '黑龙江省', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省', '河南省', '湖北省', '湖南省', '广东省', '海南省', '四川省', '贵州省', '云南省', '陕西省', '甘肃省', '青海省', '台湾省',
@@ -1738,16 +1795,7 @@
                 > 2 个特别行政区：
                 '香港特别行政区', '澳门特别行政区'
             */
-            regions: [
-                '110000 北京市', '120000 天津市', '130000 河北省', '140000 山西省', '150000 内蒙古自治区',
-                '210000 辽宁省', '220000 吉林省', '230000 黑龙江省',
-                '310000 上海市', '320000 江苏省', '330000 浙江省', '340000 安徽省', '350000 福建省', '360000 江西省', '370000 山东省',
-                '410000 河南省', '420000 湖北省', '430000 湖南省', '440000 广东省', '450000 广西壮族自治区', '460000 海南省',
-                '500000 重庆市', '510000 四川省', '520000 贵州省', '530000 云南省', '540000 西藏自治区',
-                '610000 陕西省', '620000 甘肃省', '630000 青海省', '640000 宁夏回族自治区', '650000 新疆维吾尔自治区', '650000 新疆维吾尔自治区',
-                '710000 台湾省',
-                '810000 香港特别行政区', '820000 澳门特别行政区'
-            ],
+            regions: [ "110000 北京市", "120000 天津市", "130000 河北省", "140000 山西省", "150000 内蒙古自治区", "210000 辽宁省", "220000 吉林省", "230000 黑龙江省", "310000 上海市", "320000 江苏省", "330000 浙江省", "340000 安徽省", "350000 福建省", "360000 江西省", "370000 山东省", "410000 河南省", "420000 湖北省", "430000 湖南省", "440000 广东省", "450000 广西壮族自治区", "460000 海南省", "500000 重庆市", "510000 四川省", "520000 贵州省", "530000 云南省", "540000 西藏自治区", "610000 陕西省", "620000 甘肃省", "630000 青海省", "640000 宁夏回族自治区", "650000 新疆维吾尔自治区", "650000 新疆维吾尔自治区", "710000 台湾省", "810000 香港特别行政区", "820000 澳门特别行政区" ],
             /*
                 ##### Random.region()
 
@@ -1761,77 +1809,75 @@
                     // => "辽宁省"
             */
             region: function() {
-                return this.pick(this.regions).split(' ')[1]
+                return this.pick(this.regions).split(" ")[1];
             },
-
-
-            address: function() {
-
-            },
-            city: function() {
-
-            },
-            phone: function() {
-
-            },
-            areacode: function() {
-
-            },
-            street: function() {
-
-            },
-            street_suffixes: function() {
-
-            },
-            street_suffix: function() {
-
-            },
-            states: function() {
-
-            },
-            state: function() {
-
-            },
+            address: function() {},
+            city: function() {},
+            phone: function() {},
+            areacode: function() {},
+            street: function() {},
+            street_suffixes: function() {},
+            street_suffix: function() {},
+            states: function() {},
+            state: function() {},
             zip: function(len) {
-                var zip = ''
-                for (var i = 0; i < (len || 6); i++) zip += this.natural(0, 9)
-                return zip
+                var zip = "";
+                for (var i = 0; i < (len || 6); i++) zip += this.natural(0, 9);
+                return zip;
             }
-        })
+        });
         // TODO ...
         Random.extend({
             todo: function() {
-                return 'todo'
+                return "todo";
             }
-        })
-
+        });
         /*
             #### Miscellaneous
         */
         Random.extend({
             // Dice
             d4: function() {
-                return this.natural(1, 4)
+                return this.natural(1, 4);
             },
             d6: function() {
-                return this.natural(1, 6)
+                return this.natural(1, 6);
             },
             d8: function() {
-                return this.natural(1, 8)
+                return this.natural(1, 8);
             },
             d12: function() {
-                return this.natural(1, 12)
+                return this.natural(1, 12);
             },
             d20: function() {
-                return this.natural(1, 20)
+                return this.natural(1, 20);
             },
             d100: function() {
-                return this.natural(1, 100)
+                return this.natural(1, 100);
             },
             /*
                 http://www.broofa.com/2008/09/javascript-uuid-function/
-                http://www.ietf.org/rfc/rfc4122.txt
-                http://chancejs.com/#guid
+                [UUID 规范](http://www.ietf.org/rfc/rfc4122.txt)
+                    UUIDs (Universally Unique IDentifier)
+                    GUIDs (Globally Unique IDentifier)
+                    The formal definition of the UUID string representation is provided by the following ABNF [7]:
+                        UUID                   = time-low "-" time-mid "-"
+                                               time-high-and-version "-"
+                                               clock-seq-and-reserved
+                                               clock-seq-low "-" node
+                        time-low               = 4hexOctet
+                        time-mid               = 2hexOctet
+                        time-high-and-version  = 2hexOctet
+                        clock-seq-and-reserved = hexOctet
+                        clock-seq-low          = hexOctet
+                        node                   = 6hexOctet
+                        hexOctet               = hexDigit hexDigit
+                        hexDigit =
+                            "0" / "1" / "2" / "3" / "4" / "5" / "6" / "7" / "8" / "9" /
+                            "a" / "b" / "c" / "d" / "e" / "f" /
+                            "A" / "B" / "C" / "D" / "E" / "F"
+                
+                https://github.com/victorquinn/chancejs/blob/develop/chance.js#L1349
 
                 ##### Random.guid()
 
@@ -1845,14 +1891,11 @@
                     // => "662C63B4-FD43-66F4-3328-C54E3FF0D56E"
             */
             guid: function() {
-
-                var pool = "ABCDEF1234567890",
-                    guid = this.string(pool, 8) + '-' +
-                    this.string(pool, 4) + '-' +
-                    this.string(pool, 4) + '-' +
-                    this.string(pool, 4) + '-' +
-                    this.string(pool, 12);
-                return guid
+                var pool = "abcdefABCDEF1234567890", guid = this.string(pool, 8) + "-" + this.string(pool, 4) + "-" + this.string(pool, 4) + "-" + this.string(pool, 4) + "-" + this.string(pool, 12);
+                return guid;
+            },
+            uuid: function() {
+                return this.guid();
             },
             /*
                 [身份证](http://baike.baidu.com/view/1697.htm#4)
@@ -1871,27 +1914,14 @@
                     // => "420000200710091854"
             */
             id: function() {
-                var id,
-                    sum = 0,
-                    rank = [
-                        "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2"
-                    ],
-                    last = [
-                        "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"
-                    ];
-
-                id = this.pick(this.regions).split(' ')[0] +
-                    this.date('yyyyMMdd') +
-                    this.string('number', 3)
-
+                var id, sum = 0, rank = [ "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2" ], last = [ "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2" ];
+                id = this.pick(this.regions).split(" ")[0] + this.date("yyyyMMdd") + this.string("number", 3);
                 for (var i = 0; i < id.length; i++) {
                     sum += id[i] * rank[i];
                 }
                 id += last[sum % 11];
-
-                return id
+                return id;
             },
-
             /*
                 自增主键
                 auto increment primary key
@@ -1916,32 +1946,26 @@
             */
             autoIncrementInteger: 0,
             increment: function(step) {
-                return this.autoIncrementInteger += (+step || 1)
+                return this.autoIncrementInteger += +step || 1;
             },
             inc: function(step) {
-                return this.increment(step)
+                return this.increment(step);
             }
-        })
-
-        return Random
-    })()
-
-    
-
-/*! src/mock.js */
-
-
+        });
+        return Random;
+    }();
+    /*! src/mock.js */
     /*!
         Mock - 模拟请求 & 模拟数据
         https://github.com/nuysoft/Mock
         墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
     */
     var Mock = function() {
+        var guid = 1;
         var Mock = {
-            version: '0.1.5',
+            version: "0.2.0-alpha1",
             _mocked: {}
-        }
-
+        };
         /*
             rkey
                 name|+inc
@@ -1959,12 +1983,10 @@
 
             #26 生成规则 支持 负数，例如 number|-100-100
         */
-        var rkey = /(.+)\|(?:\+(\d+)|([\+\-]?\d+-?[\+\-]?\d*)?(?:\.(\d+-?\d*))?)/
-        var rrange = /([\+\-]?\d+)-?([\+\-]?\d+)?/
-        var rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g
-
-        Mock.extend = Util.extend
-
+        var rkey = /(.+)\|(?:\+(\d+)|([\+\-]?\d+-?[\+\-]?\d*)?(?:\.(\d+-?\d*))?)/;
+        var rrange = /([\+\-]?\d+)-?([\+\-]?\d+)?/;
+        var rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g;
+        Mock.extend = Util.extend;
         /*
             * Mock.mock( template )
             * Mock.mock( function() )
@@ -1978,45 +2000,43 @@
         Mock.mock = function(rurl, rtype, template) {
             // Mock.mock(template)
             if (arguments.length === 1) {
-                return Handle.gen(rurl)
+                return Handle.gen(rurl);
             }
             // Mock.mock(rurl, template)
             if (arguments.length === 2) {
-                template = rtype
-                rtype = undefined
+                template = rtype;
+                rtype = undefined;
             }
-            Mock._mocked[rurl + (rtype || '')] = {
+            Mock._mocked[rurl + (rtype || "")] = {
                 rurl: rurl,
                 rtype: rtype,
                 template: template
-            }
-            return Mock
-        }
-
+            };
+            return Mock;
+        };
         var Handle = {
             extend: Util.extend
-        }
-
+        };
         Handle.rule = function(name) {
-            name = name == undefined ? '' : (name + '')
-
-            var parameters = (name || '').match(rkey)
-
-            var range = parameters && parameters[3] && parameters[3].match(rrange)
-            var min = range && range[1] && parseInt(range[1], 10) // || 1
-            var max = range && range[2] && parseInt(range[2], 10) // || 1
-                // repeat || min-max || 1
-                // var count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1
-            var count = range ? !range[2] ? parseInt(range[1], 10) : Random.integer(min, max) : 1
-
-            var decimal = parameters && parameters[4] && parameters[4].match(rrange)
-            var dmin = decimal && parseInt(decimal[1], 10) // || 0,
-            var dmax = decimal && parseInt(decimal[2], 10) // || 0,
-                // int || dmin-dmax || 0
-            var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : 0
-
+            /* jshint -W041 */
+            name = name == undefined ? "" : name + "";
+            var parameters = (name || "").match(rkey);
+            var range = parameters && parameters[3] && parameters[3].match(rrange);
+            var min = range && range[1] && parseInt(range[1], 10);
+            // || 1
+            var max = range && range[2] && parseInt(range[2], 10);
+            // || 1
+            // repeat || min-max || 1
+            // var count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1
+            var count = range ? !range[2] ? parseInt(range[1], 10) : Random.integer(min, max) : 1;
+            var decimal = parameters && parameters[4] && parameters[4].match(rrange);
+            var dmin = decimal && parseInt(decimal[1], 10);
+            // || 0,
+            var dmax = decimal && parseInt(decimal[2], 10);
+            // || 0,
+            // int || dmin-dmax || 0
+            var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : 0;
             var point = parameters && parameters[4];
-
             return {
                 parameters: parameters,
                 range: range,
@@ -2028,9 +2048,8 @@
                 dmax: dmax,
                 dcount: dcount,
                 point: point
-            }
-        }
-
+            };
+        };
         /*
             template        属性值（即数据模板）
             name            属性名
@@ -2044,25 +2063,22 @@
                 root, templateRoot
         */
         Handle.gen = function(template, name, context) {
-            name = name = (name || '') + ''
-
-            context = context || {}
+            name = name = (name || "") + "";
+            context = context || {};
             context = {
                 // 当前访问路径，只有属性名，不包括生成规则
-                path: context.path || [],
-                templatePath: context.templatePath || [],
+                path: context.path || [ guid ],
+                templatePath: context.templatePath || [ guid++ ],
                 // 最终属性值的上下文
                 currentContext: context.currentContext,
                 // 属性值模板的上下文
                 templateCurrentContext: context.templateCurrentContext || template,
                 root: context.root,
                 templateRoot: context.templateRoot
-            }
-            // console.log('path:', path.join('.'), template)
-
-            var rule = Handle.rule(name)
-            var type = Util.type(template)
-
+            };
+            // console.log('path:', context.path.join('.'), template)
+            var rule = Handle.rule(name);
+            var type = Util.type(template);
             if (Handle[type]) {
                 return Handle[type]({
                     // 属性值类型
@@ -2072,95 +2088,116 @@
                     // 属性名 + 生成规则
                     name: name,
                     // 属性名
-                    parsedName: name ? name.replace(rkey, '$1') : name,
-
+                    parsedName: name ? name.replace(rkey, "$1") : name,
                     // 解析后的生成规则
                     rule: rule,
                     // 相关上下文
                     context: context
-                })
+                });
             }
-            return template
-        }
-
+            return template;
+        };
         Handle.extend({
             array: function(options) {
-                var result = [],
-                    i, ii;
-
+                var result = [], i, ii;
                 // 'name|1': []
                 // 'name|count': []
                 // 'name|min-max': []
-                if (options.template.length === 0) return result
-
+                if (options.template.length === 0) return result;
                 // 'arr': [{ 'email': '@EMAIL' }, { 'email': '@EMAIL' }]
                 if (!options.rule.parameters) {
                     for (i = 0; i < options.template.length; i++) {
-                        options.context.path.push(i)
-                        result.push(
-                            Handle.gen(options.template[i], i, {
-                                currentContext: result,
-                                templateCurrentContext: options.template,
-                                path: options.context.path
-                            })
-                        )
-                        options.context.path.pop()
+                        options.context.path.push(i);
+                        options.context.templatePath.push(i);
+                        result.push(Handle.gen(options.template[i], i, {
+                            currentContext: result,
+                            templateCurrentContext: options.template,
+                            path: options.context.path,
+                            templatePath: options.context.templatePath
+                        }));
+                        options.context.path.pop();
+                        options.context.templatePath.pop();
                     }
                 } else {
                     // 'method|1': ['GET', 'POST', 'HEAD', 'DELETE']
                     if (options.rule.min === 1 && options.rule.max === undefined) {
                         // fix #17
-                        options.context.path.push(options.name)
-                        result = Random.pick(
-                            Handle.gen(options.template, undefined, {
+                        options.context.path.push(options.name), options.context.templatePath.push(options.name);
+                        result = Random.pick(Handle.gen(options.template, undefined, {
+                            currentContext: result,
+                            templateCurrentContext: options.template,
+                            path: options.context.path,
+                            templatePath: options.context.templatePath
+                        }));
+                        options.context.path.pop();
+                        options.context.templatePath.pop();
+                    } else {
+                        // 'data|+1': [{}, {}]
+                        if (options.rule.parameters[2]) {
+                            options.template.__order_index = options.template.__order_index || 0;
+                            options.context.path.push(options.name), options.context.templatePath.push(options.name);
+                            result = Handle.gen(options.template, undefined, {
                                 currentContext: result,
                                 templateCurrentContext: options.template,
-                                path: options.context.path
-                            })
-                        )
-                        options.context.path.pop()
-                    } else {
-                        // 'data|1-10': [{}]
-                        for (i = 0; i < options.rule.count; i++) {
-                            // 'data|1-10': [{}, {}]
-                            for (ii = 0; ii < options.template.length; ii++) {
-                                result.push(Handle.gen(options.template[ii]))
+                                path: options.context.path,
+                                templatePath: options.context.templatePath
+                            })[options.template.__order_index % options.template.length];
+                            options.template.__order_index += +options.rule.parameters[2];
+                            options.context.path.pop();
+                            options.context.templatePath.pop();
+                        } else {
+                            // 'data|1-10': [{}]
+                            for (i = 0; i < options.rule.count; i++) {
+                                // 'data|1-10': [{}, {}]
+                                for (ii = 0; ii < options.template.length; ii++) {
+                                    options.context.path.push(result.length);
+                                    options.context.templatePath.push(ii);
+                                    result.push(Handle.gen(options.template[ii], result.length, {
+                                        currentContext: result,
+                                        templateCurrentContext: options.template,
+                                        path: options.context.path,
+                                        templatePath: options.context.templatePath
+                                    }));
+                                    options.context.path.pop();
+                                    options.context.templatePath.pop();
+                                }
                             }
                         }
                     }
                 }
-                return result
+                return result;
             },
             object: function(options) {
-                var result = {},
-                    keys, fnKeys, key, parsedKey, inc, i;
-
+                var result = {}, keys, fnKeys, key, parsedKey, inc, i;
                 // 'obj|min-max': {}
+                /* jshint -W041 */
                 if (options.rule.min != undefined) {
-                    keys = Util.keys(options.template)
-                    keys = Random.shuffle(keys)
-                    keys = keys.slice(0, options.rule.count)
+                    keys = Util.keys(options.template);
+                    keys = Random.shuffle(keys);
+                    keys = keys.slice(0, options.rule.count);
                     for (i = 0; i < keys.length; i++) {
-                        key = keys[i]
-                        parsedKey = key.replace(rkey, '$1')
-                        options.context.path.push(parsedKey)
+                        key = keys[i];
+                        parsedKey = key.replace(rkey, "$1");
+                        options.context.path.push(parsedKey);
+                        options.context.templatePath.push(key);
                         result[parsedKey] = Handle.gen(options.template[key], key, {
                             currentContext: result,
                             templateCurrentContext: options.template,
-                            path: options.context.path
-                        })
-                        options.context.path.pop()
+                            path: options.context.path,
+                            templatePath: options.context.templatePath
+                        });
+                        options.context.path.pop();
+                        options.context.templatePath.pop();
                     }
-
                 } else {
                     // 'obj': {}
-                    keys = []
-                    fnKeys = [] // #25 改变了非函数属性的顺序，查找起来不方便
+                    keys = [];
+                    fnKeys = [];
+                    // #25 改变了非函数属性的顺序，查找起来不方便
                     for (key in options.template) {
-                        (typeof options.template[key] === 'function' ? fnKeys : keys).push(key)
+                        (typeof options.template[key] === "function" ? fnKeys : keys).push(key);
                     }
-                    keys = keys.concat(fnKeys)
-
+                    keys = keys.concat(fnKeys);
                     /*
                     会改变非函数属性的顺序
                     keys = Util.keys(options.template)
@@ -2172,120 +2209,118 @@
                         if (!afn && bfn) return -1
                     })
                     */
-
                     for (i = 0; i < keys.length; i++) {
-                        key = keys[i]
-                        parsedKey = key.replace(rkey, '$1')
-                        options.context.path.push(parsedKey)
+                        key = keys[i];
+                        parsedKey = key.replace(rkey, "$1");
+                        options.context.path.push(parsedKey);
+                        options.context.templatePath.push(key);
                         result[parsedKey] = Handle.gen(options.template[key], key, {
                             currentContext: result,
                             templateCurrentContext: options.template,
-                            path: options.context.path
-                        })
-                        options.context.path.pop()
+                            path: options.context.path,
+                            templatePath: options.context.templatePath
+                        });
+                        options.context.path.pop();
+                        options.context.templatePath.pop();
                         // 'id|+1': 1
-                        inc = key.match(rkey)
-                        if (inc && inc[2] && Util.type(options.template[key]) === 'number') {
-                            options.template[key] += parseInt(inc[2], 10)
+                        inc = key.match(rkey);
+                        if (inc && inc[2] && Util.type(options.template[key]) === "number") {
+                            options.template[key] += parseInt(inc[2], 10);
                         }
                     }
                 }
-                return result
+                return result;
             },
             number: function(options) {
                 var result, parts;
-                if (options.rule.point) { // float
-                    options.template += ''
-                    parts = options.template.split('.')
+                if (options.rule.point) {
+                    // float
+                    options.template += "";
+                    parts = options.template.split(".");
                     // 'float1|.1-10': 10,
                     // 'float2|1-100.1-10': 1,
                     // 'float3|999.1-10': 1,
                     // 'float4|.3-10': 123.123,
-                    parts[0] = options.rule.range ? options.rule.count : parts[0]
-                    parts[1] = (parts[1] || '').slice(0, options.rule.dcount)
+                    parts[0] = options.rule.range ? options.rule.count : parts[0];
+                    parts[1] = (parts[1] || "").slice(0, options.rule.dcount);
                     while (parts[1].length < options.rule.dcount) {
-                        parts[1] += (
-                            // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
-                            (parts[1].length < options.rule.dcount - 1) ? Random.character('number') : Random.character('123456789')
-                        )
+                        parts[1] += // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
+                        parts[1].length < options.rule.dcount - 1 ? Random.character("number") : Random.character("123456789");
                     }
-                    result = parseFloat(parts.join('.'), 10)
-                } else { // integer
+                    result = parseFloat(parts.join("."), 10);
+                } else {
+                    // integer
                     // 'grade1|1-100': 1,
-                    result = options.rule.range && !options.rule.parameters[2] ? options.rule.count : options.template
+                    result = options.rule.range && !options.rule.parameters[2] ? options.rule.count : options.template;
                 }
-                return result
+                return result;
             },
-            boolean: function(options) {
+            "boolean": function(options) {
                 var result;
                 // 'prop|multiple': false, 当前值是相反值的概率倍数
                 // 'prop|probability-probability': false, 当前值与相反值的概率
-                result = options.rule.parameters ? Random.bool(options.rule.min, options.rule.max, options.template) : options.template
-                return result
+                result = options.rule.parameters ? Random.bool(options.rule.min, options.rule.max, options.template) : options.template;
+                return result;
             },
             string: function(options) {
-                var result = '',
-                    i, placeholders, ph, phed;
+                var result = "", i, placeholders, ph, phed;
                 if (options.template.length) {
                     // 'star|1-5': '★',
                     for (i = 0; i < options.rule.count; i++) {
-                        result += options.template
+                        result += options.template;
                     }
                     // 'email|1-10': '@EMAIL, ',
-                    placeholders = result.match(rplaceholder) || [] // A-Z_0-9 > \w_
+                    placeholders = result.match(rplaceholder) || [];
+                    // A-Z_0-9 > \w_
                     for (i = 0; i < placeholders.length; i++) {
-                        ph = placeholders[i]
+                        ph = placeholders[i];
                         // TODO 只有转义斜杠是偶数时，才不需要解析占位符？
                         if (/^\\/.test(ph)) {
-                            placeholders.splice(i--, 1)
-                            continue
+                            placeholders.splice(i--, 1);
+                            continue;
                         }
-                        phed = Handle.placeholder(ph, options.context.currentContext, options.context.templateCurrentContext)
+                        phed = Handle.placeholder(ph, options.context.currentContext, options.context.templateCurrentContext, options);
                         // 只有一个占位符，并且没有其他字符
-                        if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) { // 
-                            result = phed
-                            break
-
+                        if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) {
+                            // 
+                            result = phed;
+                            break;
                             if (Util.isNumeric(phed)) {
-                                result = parseFloat(phed, 10)
-                                break
+                                result = parseFloat(phed, 10);
+                                break;
                             }
                             if (/^(true|false)$/.test(phed)) {
-                                result = phed === 'true' ? true :
-                                    phed === 'false' ? false :
-                                    phed // 已经是布尔值
-                                break
+                                result = phed === "true" ? true : phed === "false" ? false : phed;
+                                // 已经是布尔值
+                                break;
                             }
                         }
-                        result = result.replace(ph, phed)
+                        result = result.replace(ph, phed);
                     }
                 } else {
                     // 'ASCII|1-10': '',
                     // 'ASCII': '',
-                    result = options.rule.range ? Random.string(options.rule.count) : options.template
+                    result = options.rule.range ? Random.string(options.rule.count) : options.template;
                 }
-                return result
+                return result;
             },
-            'function': function(options) {
-                return options.template.call(options.context.currentContext)
+            "function": function(options) {
+                // TODO 参数该如何设计
+                return options.template.call(options.context.currentContext, options);
             }
-        })
-
+        });
         Handle.extend({
             _all: function() {
                 var re = {};
-                for (var key in Random) re[key.toLowerCase()] = key
-                return re
+                for (var key in Random) re[key.toLowerCase()] = key;
+                return re;
             },
-            placeholder: function(placeholder, obj, templateContext) {
+            // 处理占位符，转换为最终值
+            placeholder: function(placeholder, obj, templateContext, options) {
+                // console.log(options.context.path)
                 // 1 key, 2 params
-                rplaceholder.exec('')
-                var parts = rplaceholder.exec(placeholder),
-                    key = parts && parts[1],
-                    lkey = key && key.toLowerCase(),
-                    okey = this._all()[lkey],
-                    params = parts && parts[2] || ''
-
+                rplaceholder.exec("");
+                var parts = rplaceholder.exec(placeholder), key = parts && parts[1], lkey = key && key.toLowerCase(), okey = this._all()[lkey], params = parts && parts[2] || "";
                 // 解析占位符的参数
                 try {
                     // 1. 尝试保持参数的类型
@@ -2295,59 +2330,53 @@
                         应该属于 Window Firefox 30.0 的 BUG
                     */
                     /* jshint -W061 */
-                    params = eval('(function(){ return [].splice.call(arguments, 0 ) })(' + params + ')')
+                    params = eval("(function(){ return [].splice.call(arguments, 0 ) })(" + params + ")");
                 } catch (error) {
                     // 2. 如果失败，只能解析为字符串
                     // console.error(error)
                     // if (error instanceof ReferenceError) params = parts[2].split(/,\s*/);
                     // else throw error
-                    params = parts[2].split(/,\s*/)
+                    params = parts[2].split(/,\s*/);
                 }
-
                 // 占位符优先引用数据模板中的属性
-                if (obj && (key in obj)) return obj[key]
-
-                if (templateContext &&
-                    (typeof templateContext === 'object') &&
-                    (key in templateContext) &&
-                    (placeholder !== templateContext[key]) // fix #15 避免自己依赖自己
-                ) {
+                if (obj && key in obj) return obj[key];
+                // 递归引用数据模板中的属性
+                if (templateContext && typeof templateContext === "object" && key in templateContext && placeholder !== templateContext[key]) {
                     templateContext[key] = Handle.gen(templateContext[key], key, {
                         currentContext: obj,
                         templateCurrentContext: templateContext
-                    })
-                    return templateContext[key]
+                    });
+                    return templateContext[key];
                 }
-
-                if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder
-
+                // 如果未找到，则原样返回
+                if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder;
+                // 递归解析参数中的占位符
                 for (var i = 0; i < params.length; i++) {
-                    rplaceholder.exec('')
+                    rplaceholder.exec("");
                     if (rplaceholder.test(params[i])) {
-                        params[i] = Handle.placeholder(params[i], obj)
+                        params[i] = Handle.placeholder(params[i], obj, templateContext, options);
                     }
                 }
-
-                var handle = Random[key] || Random[lkey] || Random[okey]
+                var handle = Random[key] || Random[lkey] || Random[okey];
                 switch (Util.type(handle)) {
-                    case 'array':
-                        return Random.pick(handle)
-                    case 'function':
-                        var re = handle.apply(Random, params)
-                        if (re === undefined) re = ''
-                        return re
+                  // 自动从数组中取一个，例如 @areas
+                    case "array":
+                    return Random.pick(handle);
+
+                  // 执行占位符方法（大多数情况）
+                    case "function":
+                    handle.options = options;
+                    var re = handle.apply(Random, params);
+                    if (re === undefined) re = "";
+                    // 因为是在字符串中，所以默认为空字符串。
+                    delete handle.options;
+                    return re;
                 }
             }
-        })
-
-        return Mock
+        });
+        return Mock;
     }();
-
-    
-
-/*! src/xhr.js */
-
-
+    /*! src/xhr.js */
     /*
         期望的功能：
         1. 完整地覆盖原生 XHR 的行为
@@ -2395,388 +2424,306 @@
         new window.ActiveXObject("Microsoft.XMLHTTP")
 
     */
-
+    // 备份原生 XMLHttpRequest
+    window._XMLHttpRequest = window.XMLHttpRequest;
+    window._ActiveXObject = window.ActiveXObject;
     /*
-        var Transports = {
-            XMLHttpRequest: {},
-            FakeXMLHttpRequest: {
-                send: function() {},
-                open: function() {},
-                abort: function() {}
-            }
-        }
+        PhantomJS
+        TypeError: '[object EventConstructor]' is not a constructor (evaluating 'new Event("readystatechange")')
+
+        https://github.com/bluerail/twitter-bootstrap-rails-confirm/issues/18
+        https://github.com/ariya/phantomjs/issues/11289
     */
-
-    window._XMLHttpRequest = window.XMLHttpRequest
-    window._ActiveXObject = window.ActiveXObject
-
-    var FakeXMLHttpRequest = (function() {
-
-            var XHR_STATES = {
-                // The object has been constructed.
-                UNSENT: 0,
-                // The open() method has been successfully invoked.
-                OPENED: 1,
-                // All redirects (if any) have been followed and all HTTP headers of the response have been received.
-                HEADERS_RECEIVED: 2,
-                // The response's body is being received.
-                LOADING: 3,
-                // The data transfer has been completed or something went wrong during the transfer (e.g. infinite redirects).
-                DONE: 4
-            }
-
-            var XHR_EVENTS = 'readystatechange loadstart progress abort error load timeout loadend'.split(' ')
-
-            var XHR_RESPONSE_PROPERTIES = 'readyState responseURL status statusText responseType response responseText responseXML'.split(' ')
-
-            // https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js#L32
-            var HTTP_STATUS_CODES = {
-                100: "Continue",
-                101: "Switching Protocols",
-                200: "OK",
-                201: "Created",
-                202: "Accepted",
-                203: "Non-Authoritative Information",
-                204: "No Content",
-                205: "Reset Content",
-                206: "Partial Content",
-                300: "Multiple Choice",
-                301: "Moved Permanently",
-                302: "Found",
-                303: "See Other",
-                304: "Not Modified",
-                305: "Use Proxy",
-                307: "Temporary Redirect",
-                400: "Bad Request",
-                401: "Unauthorized",
-                402: "Payment Required",
-                403: "Forbidden",
-                404: "Not Found",
-                405: "Method Not Allowed",
-                406: "Not Acceptable",
-                407: "Proxy Authentication Required",
-                408: "Request Timeout",
-                409: "Conflict",
-                410: "Gone",
-                411: "Length Required",
-                412: "Precondition Failed",
-                413: "Request Entity Too Large",
-                414: "Request-URI Too Long",
-                415: "Unsupported Media Type",
-                416: "Requested Range Not Satisfiable",
-                417: "Expectation Failed",
-                422: "Unprocessable Entity",
-                500: "Internal Server Error",
-                501: "Not Implemented",
-                502: "Bad Gateway",
-                503: "Service Unavailable",
-                504: "Gateway Timeout",
-                505: "HTTP Version Not Supported"
-            }
-
-            /*
-                FakeXMLHttpRequest
+    try {
+        new window.Event("custom");
+    } catch (exception) {
+        window.Event = function(type, bubbles, cancelable, detail) {
+            var event = document.createEvent("CustomEvent");
+            // MUST be 'CustomEvent'
+            event.initCustomEvent(type, bubbles, cancelable, detail);
+            return event;
+        };
+    }
+    var MockXMLHttpRequest = function() {
+        var XHR_STATES = {
+            // The object has been constructed.
+            UNSENT: 0,
+            // The open() method has been successfully invoked.
+            OPENED: 1,
+            // All redirects (if any) have been followed and all HTTP headers of the response have been received.
+            HEADERS_RECEIVED: 2,
+            // The response's body is being received.
+            LOADING: 3,
+            // The data transfer has been completed or something went wrong during the transfer (e.g. infinite redirects).
+            DONE: 4
+        };
+        var XHR_EVENTS = "readystatechange loadstart progress abort error load timeout loadend".split(" ");
+        var XHR_RESPONSE_PROPERTIES = "readyState responseURL status statusText responseType response responseText responseXML".split(" ");
+        // https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js#L32
+        var HTTP_STATUS_CODES = {
+            100: "Continue",
+            101: "Switching Protocols",
+            200: "OK",
+            201: "Created",
+            202: "Accepted",
+            203: "Non-Authoritative Information",
+            204: "No Content",
+            205: "Reset Content",
+            206: "Partial Content",
+            300: "Multiple Choice",
+            301: "Moved Permanently",
+            302: "Found",
+            303: "See Other",
+            304: "Not Modified",
+            305: "Use Proxy",
+            307: "Temporary Redirect",
+            400: "Bad Request",
+            401: "Unauthorized",
+            402: "Payment Required",
+            403: "Forbidden",
+            404: "Not Found",
+            405: "Method Not Allowed",
+            406: "Not Acceptable",
+            407: "Proxy Authentication Required",
+            408: "Request Timeout",
+            409: "Conflict",
+            410: "Gone",
+            411: "Length Required",
+            412: "Precondition Failed",
+            413: "Request Entity Too Large",
+            414: "Request-URI Too Long",
+            415: "Unsupported Media Type",
+            416: "Requested Range Not Satisfiable",
+            417: "Expectation Failed",
+            422: "Unprocessable Entity",
+            500: "Internal Server Error",
+            501: "Not Implemented",
+            502: "Bad Gateway",
+            503: "Service Unavailable",
+            504: "Gateway Timeout",
+            505: "HTTP Version Not Supported"
+        };
+        /*
+                MockXMLHttpRequest
             */
-
-            function FakeXMLHttpRequest() {
-                // 冒牌 XHR 对象
-                var fake = this
-
-                // 创建原生 XHR 对象
-                var xhr = createOriginalXMLHttpRequest()
-
-                // 初始化 custom 对象，用于存储自定义属性
-                fake.custom = {
-                    xhr: xhr,
-                    events: {},
-                    requestHeaders: {}
-                }
-
-                // 初始化所有事件，用于监听原生 XHR 对象的事件
-                for (var i = 0; i < XHR_EVENTS.length; i++) {
-                    xhr.addEventListener(XHR_EVENTS[i], handle)
-                    xhr['on' + XHR_EVENTS[i]] = onhandle
-
-                    fake['on' + XHR_EVENTS[i]] = log
-                }
-
-                function handle(event) {
-                    console.log('[EVENT]   ', event.type, xhr.readyState)
-
-                    syncProperties()
-
-                    var handles = fake.custom.events[event.type] || []
-                    for (var i = 0; i < handles.length; i++) {
-                        if (typeof handles[i] !== "function") continue
-                        handles[i].call(fake, event)
-                    }
-                }
-
-                function onhandle(event) {
-                    // console.log('[ON_EVENT]', event.type, xhr.readyState)
-
-                    syncProperties()
-
-                    var ontype = 'on' + event.type
-                    if (fake[ontype]) fake[ontype].call(fake, event)
-                }
-
-                function log(event) {
-                    // console.log('[EVENT]   ', event.type, fake.readyState)
-                }
-
-                function syncProperties() {
-                    for (var i = 0, l = XHR_RESPONSE_PROPERTIES.length; i < l; i++) {
-                        fake[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]]
-                    }
-                }
-            }
-
-            Util.extend(FakeXMLHttpRequest, XHR_STATES)
-            Util.extend(FakeXMLHttpRequest.prototype, XHR_STATES)
-
-            // 标记运行模式为 Mock 模式
-            FakeXMLHttpRequest.prototype.mock = false
-            // 标记当前对象为 FakeXMLHttpRequest
-            FakeXMLHttpRequest.prototype.fake = true
-
-            // Request 相关的属性和方法
-            Util.extend(FakeXMLHttpRequest.prototype, {
-                open: function open(method, url, async, username, password) {
-                    Util.extend(this.custom, {
-                        method: method,
-                        url: url,
-                        async: typeof async === "boolean" ? async : true,
-                        username: username,
-                        password: password
-                    })
-
-                    var options = {
+        function MockXMLHttpRequest() {
+            // 初始化 custom 对象，用于存储自定义属性
+            this.custom = {
+                events: {},
+                requestHeaders: {},
+                responseHeaders: {}
+            };
+        }
+        Util.extend(MockXMLHttpRequest, XHR_STATES);
+        Util.extend(MockXMLHttpRequest.prototype, XHR_STATES);
+        // 标记当前对象为 MockXMLHttpRequest
+        MockXMLHttpRequest.prototype.mock = true;
+        // 是否拦截 Ajax 请求
+        MockXMLHttpRequest.prototype.match = false;
+        // Request 相关的属性和方法
+        Util.extend(MockXMLHttpRequest.prototype, {
+            open: function open(method, url, async, username, password) {
+                var that = this;
+                Util.extend(this.custom, {
+                    method: method,
+                    url: url,
+                    async: typeof async === "boolean" ? async : true,
+                    username: username,
+                    password: password,
+                    options: {
                         url: url,
                         type: method
                     }
-                    var item = find(options)
-
-                    if (!item) {
-                        var xhr = this.custom.xhr
-                        if (username) xhr.open(method, url, async, username, password)
-                        else xhr.open(method, url, async)
+                });
+                var item = find(this.custom.options);
+                function handle(event) {
+                    // 同步属性
+                    for (var i = 0, len = XHR_RESPONSE_PROPERTIES.length; i < len; i++) {
+                        try {
+                            that[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]];
+                        } catch (e) {}
                     }
-
-                    this.custom.template = item
-                    this.custom.options = options
-                    this.readyStateChange(FakeXMLHttpRequest.OPENED)
-                },
-                setRequestHeader: function setRequestHeader(name, value) {
-                    if (!this.fake) this.custom.xhr.setRequestHeader(name, value)
-
-                    /*var requestHeaders = this.custom.requestHeaders
-                    if (requestHeaders[name]) requestHeaders[name] += "," + value;
-                    else requestHeaders[name] = value;*/
-                },
-                timeout: 0,
-                withCredentials: false,
-                upload: {},
-                send: function send(data) {
-                    var that = this
-
-                    if (!this.fake) {
-                        var xhr = this.custom.xhr
-                        xhr.send(data)
-                        return
-                    }
-
-                    this.dispatchEvent(new Event("loadstart", false, false, this))
-
-                    function done() {
-                        that.readyStateChange(FakeXMLHttpRequest.HEADERS_RECEIVED)
-                        that.readyStateChange(FakeXMLHttpRequest.LOADING)
-
-                        that.status = 200
-                        that.statusText = HTTP_STATUS_CODES[200]
-                        that.responseText = JSON.stringify(
-                            convert(that.custom.template, that.custom.options),
-                            null, 4
-                        )
-
-                        that.readyStateChange(FakeXMLHttpRequest.DONE)
-                    }
-
-                    if (this.custom.async) setTimeout(done, 100)
-                    else done()
-                },
-                abort: function abort() {
-                    var xhr = this.custom.xhr
-                    xhr.abort()
-                    /*
-                    readyStateChange(this, FakeXMLHttpRequest.DONE)
-                    this.readyState = FakeXMLHttpRequest.UNSENT
-                    this.dispatchEvent(new Event("abort", false, false, this));
-                    if (typeof this.onabort === "function") {
-                        this.onerror()
-                    }
-                    if (typeof this.onerror === "function") {
-                        this.onerror()
-                    }
-                    */
+                    // 触发 MockXMLHttpRequest 上的同名事件
+                    that.dispatchEvent(new Event(event.type, false, false, that));
                 }
-            })
-
-            // Response 相关的属性和方法
-            Util.extend(FakeXMLHttpRequest.prototype, {
-                responseURL: '',
-                status: FakeXMLHttpRequest.UNSENT,
-                statusText: '',
-                getResponseHeader: function getResponseHeader(name) {
-                    return this.custom.xhr.getResponseHeader(name)
-
-                    /*if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) return null
-
-                header = header.toLowerCase()
-
-                for (var h in this.responseHeaders) {
-                    if (h.toLowerCase() === header) {
-                        return this.responseHeaders[h]
+                // 原生 XHR
+                if (!item) {
+                    // 创建原生 XHR，open，监听事件
+                    var xhr = createOriginalXMLHttpRequest();
+                    this.custom.xhr = xhr;
+                    // 初始化所有事件，用于监听原生 XHR 对象的事件
+                    for (var i = 0; i < XHR_EVENTS.length; i++) {
+                        xhr.addEventListener(XHR_EVENTS[i], handle);
                     }
+                    // xhr.open()
+                    if (username) xhr.open(method, url, async, username, password); else xhr.open(method, url, async);
+                    return;
                 }
-
-                return null*/
-                },
-                getAllResponseHeaders: function getAllResponseHeaders() {
-                    return this.custom.xhr.getAllResponseHeaders()
-
-                    /*if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {
-                    return ""
+                // 拦截 XHR
+                this.match = true;
+                this.custom.template = item;
+                this.readyState = MockXMLHttpRequest.OPENED;
+                this.dispatchEvent(new Event("readystatechange", false, false, this));
+            },
+            setRequestHeader: function setRequestHeader(name, value) {
+                // 原生 XHR
+                if (!this.match) {
+                    this.custom.xhr.setRequestHeader(name, value);
+                    return;
                 }
-
-                var headers = "";
-                for (var h in this.responseHeaders) {
-                    if (!this.responseHeaders.hasOwnProperty(h)) continue
-                    headers += h + ": " + this.responseHeaders[header] + "\r\n"
+                // 拦截 XHR
+                var requestHeaders = this.custom.requestHeaders;
+                if (requestHeaders[name]) requestHeaders[name] += "," + value; else requestHeaders[name] = value;
+            },
+            timeout: 0,
+            withCredentials: false,
+            upload: {},
+            send: function send(data) {
+                var that = this;
+                // 原生 XHR
+                if (!this.match) {
+                    this.custom.xhr.send(data);
+                    return;
                 }
-
-                return headers;*/
-                },
-                overrideMimeType: function overrideMimeType(mime) {},
-                responseType: '', // '', 'text', 'arraybuffer', 'blob', 'document', 'json' 
-                response: null,
-                responseText: '',
-                responseXML: null
-            })
-
-            // EventTarget
-            Util.extend(FakeXMLHttpRequest.prototype, {
-                addEventListene: function addEventListene(type, handle) {
-                    if (!this.custom.events[type]) this.custom.events[type] = []
-
-                    var handles = this.custom.events[type]
-                    handles.push(handle)
-                },
-                removeEventListener: function removeEventListener(type, handle) {
-                    var handles = this.custom.events[type] || []
-                    for (var i = 0, l = handles.length; i < l; ++i) {
-                        if (handles[i] === handle) {
-                            return handles.splice(i, 1);
-                        }
-                    }
-                },
-                dispatchEvent: function dispatchEvent(event) {
-                    var type = event.type
-                    var handles = this.custom.events[type] || []
-                    for (var i = 0; i < handles.length; i++) {
-                        if (typeof handles[i] !== "function") continue
-                        handles[i].call(this, event)
-                    }
-
-                    var ontype = 'on' + event.type
-                    if (this[ontype]) this[ontype](event)
-                },
-                readyStateChange: function readyStateChange(state) {
-                    this.readyState = state;
-
-                    if (typeof this.onreadystatechange == "function") {
-                        this.onreadystatechange({
-                            type: 'readystatechange'
-                        })
-                    }
-
-                    this.dispatchEvent(new Event("readystatechange"));
-
-                    if (this.readyState == FakeXMLHttpRequest.DONE) {
-                        this.dispatchEvent(new Event("load", false, false, this));
-                        this.dispatchEvent(new Event("loadend", false, false, this));
-                    }
+                // 拦截 XHR
+                this.dispatchEvent(new Event("loadstart", false, false, this));
+                if (this.custom.async) setTimeout(done, 100); else done();
+                function done() {
+                    that.readyState = MockXMLHttpRequest.HEADERS_RECEIVED;
+                    that.dispatchEvent(new Event("readystatechange", false, false, that));
+                    that.readyState = MockXMLHttpRequest.LOADING;
+                    that.dispatchEvent(new Event("readystatechange", false, false, that));
+                    that.status = 200;
+                    that.statusText = HTTP_STATUS_CODES[200];
+                    that.responseText = JSON.stringify(convert(that.custom.template, that.custom.options), null, 4);
+                    that.readyState = MockXMLHttpRequest.DONE;
+                    that.dispatchEvent(new Event("readystatechange", false, false, that));
+                    that.dispatchEvent(new Event("load", false, false, that));
+                    that.dispatchEvent(new Event("loadend", false, false, that));
                 }
-            })
-
-            return FakeXMLHttpRequest
-
-            // Inspired by jQuery
-            function createOriginalXMLHttpRequest() {
-                var isLocal = function() {
-                    var rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/
-                    var rurl = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/
-                    var ajaxLocation = location.href
-                    var ajaxLocParts = rurl.exec(ajaxLocation.toLowerCase()) || []
-                    return rlocalProtocol.test(ajaxLocParts[1])
-                }()
-
-                return window.ActiveXObject ?
-                    (!isLocal && createStandardXHR() || createActiveXHR()) : createStandardXHR()
-
-                function createStandardXHR() {
-                    try {
-                        return new window._XMLHttpRequest();
-                    } catch (e) {}
+            },
+            abort: function abort() {
+                // 原生 XHR
+                if (!this.match) {
+                    this.custom.xhr.abort();
+                    return;
                 }
-
-                function createActiveXHR() {
-                    try {
-                        return new window._ActiveXObject("Microsoft.XMLHTTP");
-                    } catch (e) {}
-                }
+                // 拦截 XHR
+                this.readyStateChange(MockXMLHttpRequest.DONE);
+                this.dispatchEvent(new Event("abort", false, false, this));
+                this.dispatchEvent(new Event("error", false, false, this));
             }
-
-            /*
+        });
+        // Response 相关的属性和方法
+        Util.extend(MockXMLHttpRequest.prototype, {
+            responseURL: "",
+            status: MockXMLHttpRequest.UNSENT,
+            statusText: "",
+            getResponseHeader: function getResponseHeader(name) {
+                // 原生 XHR
+                if (!this.match) {
+                    return this.custom.xhr.getResponseHeader(name);
+                }
+                // 拦截 XHR
+                return this.custom.responseHeaders[name.toLowerCase()];
+            },
+            getAllResponseHeaders: function getAllResponseHeaders() {
+                // 原生 XHR
+                if (!this.match) {
+                    return this.custom.xhr.getAllResponseHeaders();
+                }
+                // 拦截 XHR
+                var responseHeaders = this.custom.responseHeaders;
+                var headers = "";
+                for (var h in responseHeaders) {
+                    if (!responseHeaders.hasOwnProperty(h)) continue;
+                    headers += h + ": " + responseHeaders[h] + "\r\n";
+                }
+                return headers;
+            },
+            overrideMimeType: function overrideMimeType(mime) {},
+            responseType: "",
+            // '', 'text', 'arraybuffer', 'blob', 'document', 'json' 
+            response: null,
+            responseText: "",
+            responseXML: null
+        });
+        // EventTarget
+        Util.extend(MockXMLHttpRequest.prototype, {
+            addEventListene: function addEventListene(type, handle) {
+                var events = this.custom.events;
+                if (!events[type]) events[type] = [];
+                events[type].push(handle);
+            },
+            removeEventListener: function removeEventListener(type, handle) {
+                var handles = this.custom.events[type] || [];
+                for (var i = 0; i < handles.length; i++) {
+                    if (handles[i] === handle) {
+                        handles.splice(i--, 1);
+                        return;
+                    }
+                }
+            },
+            dispatchEvent: function dispatchEvent(event) {
+                var handles = this.custom.events[event.type] || [];
+                for (var i = 0; i < handles.length; i++) {
+                    handles[i].call(this, event);
+                }
+                var ontype = "on" + event.type;
+                if (this[ontype]) this[ontype](event);
+            }
+        });
+        return MockXMLHttpRequest;
+        // Inspired by jQuery
+        function createOriginalXMLHttpRequest() {
+            var isLocal = function() {
+                var rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/;
+                var rurl = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/;
+                var ajaxLocation = location.href;
+                var ajaxLocParts = rurl.exec(ajaxLocation.toLowerCase()) || [];
+                return rlocalProtocol.test(ajaxLocParts[1]);
+            }();
+            return window.ActiveXObject ? !isLocal && createStandardXHR() || createActiveXHR() : createStandardXHR();
+            function createStandardXHR() {
+                try {
+                    return new window._XMLHttpRequest();
+                } catch (e) {}
+            }
+            function createActiveXHR() {
+                try {
+                    return new window._ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {}
+            }
+        }
+        /*
          
             */
-            function find(options) {
-
-                for (var sUrlType in Mock._mocked) {
-                    var item = Mock._mocked[sUrlType]
-                    if (
-                        (!item.rurl || match(item.rurl, options.url)) &&
-                        (!item.rtype || match(item.rtype, options.type.toLowerCase()))
-                    ) {
-                        // console.log('[mock]', options.url, '>', item.rurl)
-                        return item
-                    }
+        function find(options) {
+            for (var sUrlType in Mock._mocked) {
+                var item = Mock._mocked[sUrlType];
+                if ((!item.rurl || match(item.rurl, options.url)) && (!item.rtype || match(item.rtype, options.type.toLowerCase()))) {
+                    // console.log('[mock]', options.url, '>', item.rurl)
+                    return item;
                 }
-
-                function match(expected, actual) {
-                    if (Util.type(expected) === 'string') {
-                        return expected === actual
-                    }
-                    if (Util.type(expected) === 'regexp') {
-                        return expected.test(actual)
-                    }
+            }
+            function match(expected, actual) {
+                if (Util.type(expected) === "string") {
+                    return expected === actual;
                 }
-
+                if (Util.type(expected) === "regexp") {
+                    return expected.test(actual);
+                }
             }
-
-            function convert(item, options) {
-                return Util.isFunction(item.template) ?
-                    item.template(options) : Mock.mock(item.template)
-            }
-
-        })()
-        
-
-/*! src/fix/suffix.js */
-	Mock.Util = Util
-	Mock.heredoc = Util.heredoc
-	Mock.extend = Util.extend
-	Mock.Random = Random
-	
-	return Mock
-}));
+        }
+        function convert(item, options) {
+            return Util.isFunction(item.template) ? item.template(options) : Mock.mock(item.template);
+        }
+    }();
+    /*! src/fix/suffix.js */
+    Mock.Util = Util;
+    Mock.heredoc = Util.heredoc;
+    Mock.extend = Util.extend;
+    Mock.Random = Random;
+    Mock.MockXMLHttpRequest = MockXMLHttpRequest;
+    return Mock;
+});

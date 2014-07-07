@@ -2,7 +2,7 @@
 	Mock.heredoc = Util.heredoc
 	Mock.extend = Util.extend
 	Mock.Random = Random
-	Mock.FakeXMLHttpRequest = FakeXMLHttpRequest
+	Mock.MockXMLHttpRequest = MockXMLHttpRequest
 	
 	return Mock
 }));

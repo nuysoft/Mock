@@ -239,6 +239,34 @@ test('Array', function() {
     }, function(tpl, data, message) {
         equal(data.name.length, 0, message)
     })
+
+    // `'name|+1': [{}, {} ...]`
+    doit({
+        'list|5': [{
+            'name|+1': ['a', 'b', 'c']
+        }]
+    }, function(tpl, data, message) {
+        equal(data.list.length, 5, message)
+        equal(data.list[0].name, 'a', message)
+        equal(data.list[1].name, 'b', message)
+        equal(data.list[2].name, 'c', message)
+        equal(data.list[3].name, 'a', message)
+        equal(data.list[4].name, 'b', message)
+    })
+    doit({
+        'list|5-10': [{
+            'name|+1': ['@integer', '@email', '@boolean']
+        }]
+    }, function(tpl, data, message) {
+        ok(data.list.length >= 5, message)
+        ok(data.list.length <= 10, message)
+        equal(typeof data.list[0].name, 'number', message)
+        equal(typeof data.list[1].name, 'string', message)
+        equal(typeof data.list[2].name, 'boolean', message)
+        equal(typeof data.list[3].name, 'number', message)
+        equal(typeof data.list[4].name, 'string', message)
+    })
+
     // `'name|1': [{}, {} ...]`
     doit({
         'name|1': [{}]
