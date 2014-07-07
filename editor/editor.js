@@ -194,6 +194,9 @@
     'array1|1': ['AMD', 'CMD', 'KMD', 'UMD'],
     'array2|1-10': ['Mock.js'],
     'array3|3': ['Mock.js'],
+    'array4|1-10': [{
+        'name|+1': ['Hello', 'Mock.js', '!']
+    }],
 
     'function': function() {
         return this.title
