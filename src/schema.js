@@ -7,11 +7,11 @@
 
 (function(factory) {
 
-    expose(['mock', 'util', 'handle'], factory, function() {
-        window.toJSONSchema = factory(Mock, Util, Handle)
+    expose(['util', 'handle'], factory, function() {
+        window.toJSONSchema = factory(Util, Handle)
     })
 
-}(function(Mock, Util, Handle) {
+}(function(Util, Handle) {
 
     // BEGIN(BROWSER)
 
