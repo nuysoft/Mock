@@ -7,49 +7,49 @@
 
 (function(factory) {
 
-	expose(['mock', 'util', 'handle'], factory, function() {
-		window.toJSONSchema = factory(Mock, Util, Handle)
-	})
+    expose(['mock', 'util', 'handle'], factory, function() {
+        window.toJSONSchema = factory(Mock, Util, Handle)
+    })
 
 }(function(Mock, Util, Handle) {
 
-	// BEGIN(BROWSER)
+    // BEGIN(BROWSER)
 
-	function toJSONSchema(template, name) {
-		// type rule properties items
+    function toJSONSchema(template, name) {
+        // type rule properties items
 
-		var result = {
-			name: typeof name === 'string' ? name.replace(Handle.RE_KEY, '$1') : name,
-			template: template,
-			type: Util.type(template),
-			rule: Handle.rule(name)
-		}
+        var result = {
+            name: typeof name === 'string' ? name.replace(Handle.RE_KEY, '$1') : name,
+            template: template,
+            type: Util.type(template),
+            rule: Handle.rule(name)
+        }
 
-		switch (result.type) {
-			case 'array':
-				result.items = []
-				Util.each(template, function(value, index) {
-					result.items.push(
-						toJSONSchema(value, index)
-					)
-				})
-				break
-			case 'object':
-				result.properties = []
-				Util.each(template, function(value, name) {
-					result.properties.push(
-						toJSONSchema(value, name)
-					)
-				})
-				break
-		}
+        switch (result.type) {
+            case 'array':
+                result.items = []
+                Util.each(template, function(value, index) {
+                    result.items.push(
+                        toJSONSchema(value, index)
+                    )
+                })
+                break
+            case 'object':
+                result.properties = []
+                Util.each(template, function(value, name) {
+                    result.properties.push(
+                        toJSONSchema(value, name)
+                    )
+                })
+                break
+        }
 
-		return result
+        return result
 
-	}
+    }
 
-	// END(BROWSER)
+    // END(BROWSER)
 
-	return toJSONSchema
+    return toJSONSchema
 
 }));
