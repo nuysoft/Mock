@@ -1,7 +1,8 @@
-/*! mockjs 0.2.0-alpha1 26-08-2014 15:03:31 *//*! src/fix/prefix-1.js */
+/*! mockjs 0.2.0-alpha1 26-08-2014 16:27:55 *//*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/fix/prefix-2.js */
     try {
+        // for node
         window;
     } catch (error) {
         window = {};
@@ -1462,7 +1463,7 @@
                 return text;
             },
             str: function(pool, min, max) {
-                return this.string(pool, min, max);
+                return this.string.apply(this, arguments);
             },
             /*
                 ##### Random.range(start, stop, step)

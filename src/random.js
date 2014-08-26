@@ -334,7 +334,7 @@
                 return text
             },
             str: function(pool, min, max) {
-                return this.string(pool, min, max)
+                return this.string.apply(this, arguments)
             },
             /*
                 ##### Random.range(start, stop, step)
