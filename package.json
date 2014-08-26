@@ -11,7 +11,8 @@
   ],
   "author": "nuysoft@gmail.com",
   "dependencies": {
-    "commander": "~2.2.0"
+    "commander": "~2.2.0",
+    "canvas": "~1.1.6"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
