@@ -28,6 +28,16 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
+        Development Version (0.2.0 alpha1)
+    </a> - <i>171kB, Uncompressed</i>
+</p>
+<p>
+    <a href="./dist/mock-min.js" class="btn btn-primary w250">
+        Production Version (0.2.0 alpha1)
+    </a> - <i>55kB, Minified</i>
+</p>
+<p>
+    <a href="./dist/mock.js" class="btn btn-success w250">
         Development Version (0.1.5)
     </a> - <i>71kB, Uncompressed</i>
 </p>
@@ -142,7 +152,7 @@ Mock.js 的语法规范包括两部分：
     1. `'name|count.dmin-dmax': value`
     1. `'name|count.dcount': value`
     1. `'name|+step': value`
-* **生成规则 的 含义 需要依赖 属性值 才能确定。**
+* **生成规则 的 含义 需要依赖 属性值的类型 才能确定。**
 * 属性值 中可以含有 `@占位符`。
 * 属性值 还指定了最终值的初始值和类型。
 
@@ -184,8 +194,21 @@ Mock.js 的语法规范包括两部分：
     3. `'name|min-max': [{}, {} ...]` 通过重复属性值 `[{}, {} ...]` 生成一个新数组，重复次数大于等于 `min`，小于等于 `max`。
     4. `'name|count': [{}, {} ...]` 通过重复属性值 `[{}, {} ...]` 生成一个新数组，重复次数为 `count`。
 6. 属性值是数组 **Function**
-
     `'name': function(){}` 执行函数 `function(){}`，取其返回值作为最终的属性值，上下文为 `'name'` 所在的对象。
+7. 属性值是正则表达式 **RegExp**
+    `'name': regexp` 根据正则表达式 regexp 反向生成可以匹配它的字符串。用于生成自定义格式的字符串。
+
+            {
+                'regexp1': /[a-z][A-Z][0-9]/,
+                'regexp2': /\w\W\s\S\d\D/,
+                'regexp3': /\d{5,10}/
+            }
+            // =>
+            {
+                "regexp1": "pJ7",
+                "regexp2": "F)\fp1G",
+                "regexp3": "561659409"
+            }
 
 ### 数据占位符定义 DPD
 
@@ -201,6 +224,7 @@ Mock.js 的语法规范包括两部分：
 3. 通过 `Mock.Random.extend()` 来扩展自定义占位符。
 4. 占位符 也可以引用 数据模板 中的属性。
 5. 占位符 会优先引用 数据模板 中的属性。
+6. 占位符 支持 相对路径 和 绝对路径。
 
         {
             name: {
@@ -282,195 +306,71 @@ Mock.js 的语法规范包括两部分：
 
 
 
-### Mock.mockjax(library)
+### Mock.toJSONSchema( template )
 
-覆盖（拦截） Ajax 请求，目前内置支持 jQuery、Zepto、KISSY。
+* Mock.toJSONSchema( template )
 
-对 jQuery Ajax 请求的拦截和响应，通过覆盖前置过滤器、选项 dataFilter 以及数据转换器实现，实现代码请问[这里](https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L5)。
+把数据模板转换为 JSON Schema 风格。
 
-对 KISSY Ajax 请求的拦截和响应，则通过粗鲁地覆盖 KISSY.io(options) 实现，实现代码请问[这里](https://github.com/nuysoft/Mock/blob/master/src/mockjax.js#L72)。
+**参数的含义和默认值**如下所示：
 
-因为第三库 Ajax 的实现方式不尽相同，故目前只内置支持了实际开发中（本人和所服务的阿里） 常用的 jQuery、Zepto 和 KISSY。如果需要拦截其他第三方库的 Ajax 请求，可参考对 jQuery、Zepto 和 KISSY 的实现，覆盖 `Mock.mockjax(library)`。
+* **参数 template**：可选。表示数据模板，可以是对象或字符串。例如 `{ 'data|1-10':[{}] }`、`'@EMAIL'`。
 
-通过方法 `Mock.mock( rurl, rtype, template|function(options) )` 设置的 URL 和数据模板的映射，均记录在属性 `Mock._mocked` 中，扩展时可从中获取 URL 对应的数据模板，进而生成和响应模拟数据。`Mock._mocked` 的数据结构为：
+该方法返回一个 JSON Schema 风格的对象，结构如下：
 
     {
-        (rurl + rtype): {
-            rurl: rurl,
-            rtype: rtype,
-            template: template
+        name: '',
+        type: '',
+        template: ,
+        rule: {
+            min: min,
+            max: max,
+            dmin: dmin,
+            dmax: dmax,
+            step: step
         },
-        ...
+        items: [],
+        properties: []
     }
 
-<!-- 如果业务和场景需要，可以联系 [@墨智]()、[nuysoft](nuysoft@gmail.com) 提供对特定库的内置支持，不过最酷的做法是开发人员能够为 Mock.js 贡献代码。 -->
-<!-- 感谢 @麦少 同学对 Mock.mockjax(library) 的重构，并增加了对 Zepto.js 的支持。 -->
+其中，属性的含义如下所示：
 
-### Mock.tpl(input, options, helpers, partials)
+* **属性 name**：描述属性名。
+* **属性 type**：描述属性值的类型。可选值有 6 个：`'string'`、`'number'`、`'boolean'`、`'array'`、`'object'`、`'regexp'`。
+* **属性 template**：属性值的模板。其中可能含有占位符。
+* **属性 rule**：描述属性值的生成规则。其中，含有 5 个属性：min、max、dmin、dmax、step。生成规则的含义需要依赖属性值的类型才能确定。参见[数据模板定义 DTD](#数据模板定义 DTD)
+* **属性 items**：用于存放对数组元素的描述。
+* **属性 properties**：用于存放对数组元素的描述。
 
-* Mock.tpl(input)
-* Mock.tpl(input, options)
-* Mock.tpl(input, options, helpers)
-* Mock.tpl(input, options, helpers, partials)
+JSON Schame 更方便机器解析，但书写和阅读起来很繁琐；Mock.js 的语法规则对书写者更友好。所以，建议用 Mock.js 的语法规则来快速的编写和生成模拟数据，用 Mock.toJSONSchema( template ) 生成的 JSON Schema 对象来生成文档、校验数据。
 
-基于 Handlebars、Mustache 的 HTML 模板生成模拟数据。
+相关阅读：[JSON Schema](http://json-schema.org/)
 
-**参数的含义和默认值**如下所示：
+<!-- 
+**2014.8.14**
 
-* **参数 input**：必选。可以是 HTML 模板，或者经过 Handlebars 解析的语法树（`Handlebars.parse(input)`）。将基于该参数生成模拟数据。
-* **参数 options**：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
-* **参数 helpers**：可选。对象。表示局部 helper。全局 helper 会自动从 `Handlebars.helpers` 中读取。
-* **参数 partials**：可选。对象。表示局部子模板。全局子模板会自动从 `Handlebars.partials` 中读取。
+# Mock.toJSONSchema(template)
 
-**使用示例**如下所示：
+## 生成 
 
-    // 基于 HTML 模板生成模拟数据
-    Mock.tpl('this is {{title}}!')
-    // => {title: "title"}
-    
-    // 基于 HTML 模板和数据模板生成模拟数据
-    Mock.tpl('this is {{title}}!', {
-        title: '@TITLE'
-    })
-    // => {title: "Guhwbgehq Isuzssx Ywvwt Dkp"}
-    
-    // 基于 HTML 模板生成模拟数据，传入了局部命令。
-    Mock.tpl('this is {{title}}!', {}, {
-        title: function(){
-            return 'my title'
-        }
-    })
-    // => {title: "title"}
-    
-    // 基于 HTML 模板生成模拟数据，传入了局部子模板。
-    Mock.tpl('{{> "sub-tpl"}}', {}, {}, {
-        'sub-tpl': '{{title}}'
-    })
-    // => {title: "title"}
+`'name|rule': template`
 
-数据模板 `options` 可以在调用 Mock.tpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置（为了避免侵入现有的代码和开发模式），格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
-    
-**示例1：**在 HTML 模板中通过一个 HTML 注释**集中**配置数据模板。
+## 验证 
 
-    var tpl = Mock.heredoc(function() {
-        /*!
-    {{email}}{{age}}
-    <!-- Mock { 
-        email: '@EMAIL',
-        age: '@INT(1,100)'
-    } -->
-        */
-    })
-    var data = Mock.tpl(tpl)
-    console.log(JSON.stringify(data, null, 4))
-    // =>
-    {
-        "email": "t.lee@clark.net",
-        "age": 33
-    }
+### 规则映射
 
-**示例2：**在 HTML 模板中通过多个 HTML 注释**分散**配置数据模板。
+rule | String | Number | Boolean | Object | Array | Function | RegExp |
+---- | ------ | ------ | ------- | ------ | ----- | -------- | ------ |
+min  |  |  |  |  |  |  | 
+max  |  |  |  |  |  |  | 
+dmin |  |  |  |  |  |  | 
+dmax |  |  |  |  |  |  | 
+step |  |  |  |  |  |  | 
 
-    var tpl = Mock.heredoc(function() {
-        /*!
-    {{email}}{{age}}
-    <!-- Mock { 
-        email: '@EMAIL'
-    } -->
-    <!-- Mock { age: '@INT(1,100)' } -->
-        */
-    })
-    var data = Mock.tpl(tpl)
-    console.log(JSON.stringify(data, null, 4))
-    // =>
-    {
-        "email": "j.walker@brown.edu",
-        "age": 83
-    }
+### format
 
-
-### Mock.xtpl(input, options, helpers, partials)
-
-* Mock.xtpl(input)
-* Mock.xtpl(input, options)
-* Mock.xtpl(input, options, helpers)
-* Mock.xtpl(input, options, helpers, partials)
-
-基于 KISSY XTempalte 的 HTML 模板生成模拟数据。
-
-**参数的含义和默认值**如下所示：
-
-* **参数 input**：必选。可以是 HTML 模板，或者经过 KISSY XTempalte 解析的语法树（`XTemplate.compiler.parse(input)`）。将基于该参数生成模拟数据。
-* **参数 options**：可选。对象。称为“数据模板”，用于配置生成模拟数据的规则。例如 `{ 'email': '@EMAIL' }`，在生成模拟数据时，所有 `email` 属性对应的值将是一个邮件地址。
-* **参数 helpers**：可选。对象。表示局部命令。全局命令会自动从 `XTemplate.RunTime.commands` 中读取。
-* **参数 partials**：可选。对象。表示局部子模板。全局子模板会自动从 `XTemplate.RunTime.subTpls` 中读取。
-
-**使用示例**如下所示：
-
-    // 基于 HTML 模板生成模拟数据
-    Mock.xtpl('this is {{title}}!')
-    // => {title: "title"}
-    
-    // 基于 HTML 模板和数据模板生成模拟数据
-    Mock.xtpl('this is {{title}}!', {
-        title: '@TITLE'
-    })
-    // => {title: "Guhwbgehq Isuzssx Ywvwt Dkp"}
-    
-    // 基于 HTML 模板生成模拟数据，传入了局部命令。
-    Mock.xtpl('this is {{title}}!', {}, {
-        title: function(){
-            return 'my title'
-        }
-    })
-    // => {title: "title"}
-    
-    // 基于 HTML 模板生成模拟数据，传入了局部子模板。
-    Mock.xtpl('{{include "sub-tpl"}}', {}, {}, {
-        'sub-tpl': '{{title}}'
-    })
-    // => {title: "title"}
-
-数据模板 `options` 可以在调用 Mock.xtpl(input, options, helpers, partials) 时传入，也可以在 HTML 模板中通过 HTML 注释配置（为了避免侵入现有的代码和开发模式），格式为 `<!-- Mock {} -->` 。下面的 2 个示例演示了通过 HTML 注释配置数据模板的两种方式：集中配置、分散配置。
-    
-**示例1：**在 HTML 模板中通过一个 HTML 注释**集中**配置数据模板。
-
-    var tpl = Mock.heredoc(function() {
-        /*!
-    {{email}}{{age}}
-    <!-- Mock { 
-        email: '@EMAIL',
-        age: '@INT(1,100)'
-    } -->
-        */
-    })
-    var data = Mock.xtpl(tpl)
-    console.log(JSON.stringify(data, null, 4))
-    // =>
-    {
-        "email": "t.lee@clark.net",
-        "age": 33
-    }
-
-**示例2：**在 HTML 模板中通过多个 HTML 注释**分散**配置数据模板。
-
-    var tpl = Mock.heredoc(function() {
-        /*!
-    {{email}}{{age}}
-    <!-- Mock { 
-        email: '@EMAIL'
-    } -->
-    <!-- Mock { age: '@INT(1,100)' } -->
-        */
-    })
-    var data = Mock.xtpl(tpl)
-    console.log(JSON.stringify(data, null, 4))
-    // =>
-    {
-        "email": "j.walker@brown.edu",
-        "age": 83
-    }
-
+*TODO*
+ -->
 
 ### Mock.heredoc(fn)
 
@@ -756,6 +656,8 @@ TODO 统计 -->
     // => "UuGQgSYk"
     Random.string( 'aeiou', 1, 3 )
     // => "ea"
+    Random.string( '壹贰叁肆伍陆柒捌玖拾', 3, 5 )
+    // => "肆捌伍叁"
 
 #### Random.range(start, stop, step)
 
@@ -781,6 +683,8 @@ TODO 统计 -->
     // => [1, 3, 5, 7, 9]
     Random.range(1, 10, 3)
     // => [1, 4, 7]
+
+### Datetime
 
 #### Random.date(format)
 
@@ -1008,7 +912,7 @@ TODO 统计 -->
 
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAAB9CAYAAACPgGwlAAAFJElEQVR4Xu2dS0hUURzG/1Yqlj2otJe10AqCoiJaFFTUpgcUhLaKCIogKCEiCl0U1SIIF1EIQlFEtCmkpbWSHlAQYRYUlI9Ie6nYmI9hfIx1LpzL3PGO/aeuM/r/f7PRufe7d873/ea75xw3ZjTumDtMeKlKIAPQVfF2zAK6PuaArpA5oAO6xgQUesacDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLQ8bpo+fft+ylxYSJ23LvpisOfNST/N7ENniYa9/0xy4GsTdT+6+09Yx9t4/slEgovSDt2EO3P3YcoqWuUMsWln3oihFlTWUlbhSvf4UKid2iqOUfhVrXussKZ9xHXh10/oW1lxUnmNt/EkNXimOK3QTTtn7Sv1DDUees66rTT/3B0a/NFCvc9raOqf9+YL0PfiIX0/f8ADPdrXTZEPde6xyMd66rx5wXlvnwThN8/cL4ttc7S3i0L3rjqaVI2HyWdMZGmFbhwtvv7cgZm7ZS9NyS/wbboBb1ttwQy2tdLng2s90OOPxSa24FI15azZTAOtDdRyZAOZe84ru0GTps2g0P1r7pcjVeMZE5rMm6Yduh3nktt1CaHHesk/XUW5W4sp8v4lfTm5ywN9eCBCQz/baOBLE0Ua3rgg4z/DPCUmz5xD2SvWU6IpIBXjYTIKXDahoNtHvUmho/KMZ5HmN6f31FZT2+Wjbmix12dkZtNoTwYO9P8dT+A0mTecMNBNwPmnKmnyrDyKhxnv1U4B0d5f9KmkyHPaPinMwfYrJxKu7v8GPajxMDkFKpsQ0JMJ2KZjmm8e9817CjxNt/O4Odjf+JZaj2/zDXQ06EGNJ1CSSdws7dDNAsvsr7OXr3UWVeG6x87wv5WXOD9jAzZbtf7md669nscP3KbOLa2gaE+Xc27axl2UWbB0xLxvFmnmuJnTzU/7e+wuIJXjSYJToNK0Q/ebi41Du3Xz20bZBGJX3fH3Mav0jqpyd9Xvt3o3W0Ezt492H/tZQY8nUIpJ3izt0J39s8/L7q9N03NWb/LVhOuferZyWYuX0WDnD2evHv+XOPs5sdc4+/RFRX+eECFnn25eqRpPkpwClacdeqBucDNWAoDOikmWCNBl8WS5AXRWTLJEgC6LJ8sNoLNikiUCdFk8WW4AnRWTLBGgy+LJcgPorJhkiQBdFk+WG0BnxSRLBOiyeLLcADorJlkiQJfFk+UG0FkxyRIBuiyeLDeAzopJlgjQZfFkuQF0VkyyRIAuiyfLDaCzYpIlAnRZPFluAJ0VkywRoMviyXID6KyYZIkAXRZPlhtAZ8UkSwTosniy3AA6KyZZIkCXxZPlBtBZMckSAbosniw3gM6KSZYI0GXxZLkBdFZMskSALosnyw2gs2KSJQJ0WTxZbgCdFZMsEaDL4slyA+ismGSJAF0WT5YbQGfFJEsE6LJ4stwAOismWSJAl8WT5QbQWTHJEgG6LJ4sN4DOikmWCNBl8WS5AXRWTLJEgC6LJ8sNoLNikiUCdFk8WW4AnRWTLNFvXskYA3TG3JwAAAAASUVORK5CYII=)
 
-因为图片的 Base64 编码比较长，下面只显示生成的图片效果。
+因为图片的 Base64 编码比较长，下面只贴出生成的图片效果。
 
     Random.dataImage('200x100')
 
@@ -1021,6 +925,39 @@ TODO 统计 -->
 <img id="dataImage_size_text">
 <script type="text/javascript">
     $('#dataImage_size_text').prop('src', Random.dataImage('300x100', 'Hello Mock.js!'))
+</script>
+
+下面是一个生成图片的小工具：
+
+<div class="panel panel-default">
+    <div class="panel-heading">生成 Base64 图片</div>
+    <div class="panel-body">
+        <div class="form-inline">
+            <div class="form-group">
+                <input class="form-control" id="dataImageWidth" value="400" placeholder="Enter width">
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="dataImageHeight" value="100" placeholder="Enter height">
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="dataImageText" value="" placeholder="Enter text">
+            </div>
+            <button id="genDataImage" class="btn btn-default">生成</button>
+        </div>
+    </div>
+    <div id="previewDataImage" class="panel-body" style="padding-top: 0px;"></div>
+</div>
+<script type="text/javascript">
+    $('#genDataImage').on('click', function(event){
+        var src = Random.dataImage(
+            $('#dataImageWidth').val() + 'x' + $('#dataImageHeight').val(),
+            $('#dataImageText').val()
+        )
+        $('#previewDataImage').empty()
+            .append(
+                $('<img>').attr('src', src)
+            )
+    }).trigger('click')
 </script>
 
 ### Color
@@ -1038,6 +975,8 @@ TODO 统计 -->
 
 下面是一些随机生成的颜色：
 
+<button id="genColor" type="button" class="btn btn-default">重新生成一批</button>
+
 <div id="color100" class="color_100"></div>
 <style type="text/css">
     .circle {
@@ -1054,14 +993,16 @@ TODO 统计 -->
 </style>
 <script>
     $(function(){
-        var container = $('#color100')
-        var color
-        for (var i = 0; i < 35; i++) {
-            color = Random.color()
-            $('<span class="circle"></span>')
-                .css('background-color', color)
-                .appendTo(container)
-        }  
+        $('#genColor').on('click', function(event){
+            var container = $('#color100').empty()
+            var color
+            for (var i = 0; i < 35; i++) {
+                color = Random.color()
+                $('<span class="circle"></span>')
+                    .css('background-color', color)
+                    .appendTo(container)
+            }      
+        }).trigger('click')
     })
 </script>
 
@@ -1434,7 +1375,13 @@ TODO 统计 -->
 
 ---
 
-## 感谢
+## 感谢 & 贡献者
+<a class="photo" href="https://github.com/nuysoft">
+  <img alt="nuysoft" src="https://1.gravatar.com/avatar/f027d7d8970d6602d2ff21eb3d3f42c1">
+</a>
+<a class="photo" href="https://github.com/taberh">
+  <img alt="taberh" src="https://1.gravatar.com/avatar/2df8874b24d703cc5941b6242c54c9e4">
+</a>
 
 最初的灵感来自 [Angry Birds of JavaScript- Green Bird: Mocking Introduction](http://www.elijahmanor.com/angry-birds-of-javascript-green-bird-mocking/)，语法参考了 [mockJSON](https://github.com/mennovanslooten/mockJSON)，随机数据参考了 [Chance.js](http://chancejs.com/)。
 

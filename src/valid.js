@@ -1,9 +1,10 @@
 "use strict";
 
-/* global window    */
-/* global expose    */
-/* global Mock      */
-/* global Util      */
+/* global window        */
+/* global expose        */
+/* global Util          */
+/* global toJSONSchema  */
+
 
 (function(factory) {
 
@@ -16,20 +17,25 @@
     // BEGIN(BROWSER)
 
     /*
-
         * Mock.valid(template, data)
 
         校验真实数据 data 是否与数据模板 template 匹配。
         
         实现思路：
-        1. 解析规则。先把数据模板 template 解析为更方便机器解析的 JSON-Schame
+        1. 解析规则。
+            先把数据模板 template 解析为更方便机器解析的 JSON-Schame
             name               属性名 
             type               属性值类型
             template           属性值模板
             properties         对象属性数组
             items              数组元素数组
             rule               属性值生成规则
-        2. 递归验证规则。然后用 JSON-Schema 校验真实数据，校验项包括属性名、值类型、值、值生成规则。
+        2. 递归验证规则。
+            然后用 JSON-Schema 校验真实数据，校验项包括属性名、值类型、值、值生成规则。
+
+        提示信息 https://github.com/fge/json-schema-validator/blob/master/src/main/resources/com/github/fge/jsonschema/validator/validation.properties
+        [JSON-Schama validator](http://json-schema-validator.herokuapp.com/)
+        [Regexp Demo](http://demos.forbeslindesay.co.uk/regexp/)
     */
     function valid(template, data) {
         var schema = toJSONSchema(template)
@@ -79,8 +85,6 @@
     var Diff = {
         diff: function diff(schema, data, name /* Internal Use Only */ ) {
             var result = []
-            var type = Util.type(data)
-            var keys = Util.keys(data)
 
             // 先检测名称 name 和类型 type，如果匹配，才有必要继续检测
             if (
@@ -94,7 +98,7 @@
 
             return result
         },
-        name: function name(schema, data, name, result) {
+        name: function(schema, data, name, result) {
             var length = result.length
 
             Assert.equal('name', name, name + '', schema.name + '', result)
@@ -102,7 +106,7 @@
             if (result.length !== length) return false
             return true
         },
-        type: function type(schema, data, name, result) {
+        type: function(schema, data, name, result) {
             var length = result.length
 
             Assert.equal('type', name, Util.type(data), schema.type, result)
@@ -110,7 +114,7 @@
             if (result.length !== length) return false
             return true
         },
-        value: function value(schema, data, name, result) {
+        value: function(schema, data, name, result) {
             var length = result.length
 
             var rule = schema.rule
@@ -132,7 +136,8 @@
                     // 整数部分
                     // |min-max
                     if (rule.min !== undefined && rule.max !== undefined) {
-                        Assert.greaterThanOrEqualTo('value', name, parts[0], rule.min, result)
+                        Assert.greaterThanOrEqualTo('value', name, parts[0], rule.min, result,
+                            'numeric instance is lower than the required minimum (minimum: {expected}, found: {actual})')
                         Assert.lessThanOrEqualTo('value', name, parts[0], rule.max, result)
                     }
                     // |count
@@ -177,9 +182,10 @@
             if (result.length !== length) return false
             return true
         },
-        properties: function properties(schema, data, name, result) {
+        properties: function(schema, data, name, result) {
             var length = result.length
 
+            var rule = schema.rule
             var keys = Util.keys(data)
             if (!schema.properties) return
 
@@ -215,7 +221,7 @@
             if (result.length !== length) return false
             return true
         },
-        items: function items(schema, data, name, result) {
+        items: function(schema, data, name, result) {
             var length = result.length
 
             if (!schema.items) return
@@ -229,8 +235,10 @@
                 // 有生成规则
                 // |min-max
                 if (rule.min !== undefined && rule.max !== undefined) {
-                    Assert.greaterThanOrEqualTo('items length', name, data.length, (rule.min * schema.items.length), result)
-                    Assert.lessThanOrEqualTo('items length', name, data.length, (rule.max * schema.items.length), result)
+                    Assert.greaterThanOrEqualTo('items', name, data.length, (rule.min * schema.items.length), result,
+                        '[{utype}] array is too short: {path} must have at least {expected} elements but instance has {actual} elements')
+                    Assert.lessThanOrEqualTo('items', name, data.length, (rule.max * schema.items.length), result,
+                        '[{utype}] array is too long: {path} must have at most {expected} elements but instance has {actual} elements')
                 }
                 // |count
                 if (rule.min !== undefined && rule.max === undefined) {
@@ -269,7 +277,8 @@
     */
     var Assert = {
         message: function(item) {
-            return '[{utype}] Expect {path}\'{ltype} is {action} {expected}, but is {actual}'
+            return ( /*item.message ||*/
+                    '[{utype}] Expect {path}\'{ltype} is {action} {expected}, but is {actual}')
                 .replace('{utype}', item.type.toUpperCase())
                 .replace('{ltype}', item.type.toLowerCase())
                 .replace('{path}', item.path)
@@ -277,7 +286,7 @@
                 .replace('{expected}', item.expected)
                 .replace('{actual}', item.actual)
         },
-        equal: function(type, path, actual, expected, result) {
+        equal: function(type, path, actual, expected, result, message) {
             if (actual === expected) return true
             result.push({
                 path: path,
@@ -288,58 +297,63 @@
             })
             return false
         },
-        notEqual: function(type, path, actual, expected, result) {
+        notEqual: function(type, path, actual, expected, result, message) {
             if (actual !== expected) return true
             result.push({
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
-                action: 'not equal to'
+                action: 'not equal to',
+                message: message
             })
             return false
         },
-        greaterThan: function(type, path, actual, expected, result) {
+        greaterThan: function(type, path, actual, expected, result, message) {
             if (actual > expected) return true
             result.push({
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
-                action: 'greater than'
+                action: 'greater than',
+                message: message
             })
             return false
         },
-        lessThan: function(type, path, actual, expected, result) {
+        lessThan: function(type, path, actual, expected, result, message) {
             if (actual < expected) return true
             result.push({
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
-                action: 'less to'
+                action: 'less to',
+                message: message
             })
             return false
         },
-        greaterThanOrEqualTo: function(type, path, actual, expected, result) {
+        greaterThanOrEqualTo: function(type, path, actual, expected, result, message) {
             if (actual >= expected) return true
             result.push({
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
-                action: 'greater than or equal to'
+                action: 'greater than or equal to',
+                message: message
             })
             return false
         },
-        lessThanOrEqualTo: function(type, path, actual, expected, result) {
+        lessThanOrEqualTo: function(type, path, actual, expected, result, message) {
             if (actual <= expected) return true
             result.push({
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
-                action: 'less than or equal to'
+                action: 'less than or equal to',
+                message: message
             })
             return false
         }

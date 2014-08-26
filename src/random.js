@@ -913,8 +913,16 @@
                 },
             */
             dataImage: function(size, text) {
-                var canvas = (typeof document !== 'undefined') && document.createElement('canvas'),
-                    ctx = canvas && canvas.getContext && canvas.getContext("2d");
+                var canvas
+                if (typeof document !== 'undefined') {
+                    canvas = document.createElement('canvas')
+                } else {
+                    var Canvas = require('canvas')
+                    canvas = new Canvas()
+                }
+                // canvas = (typeof document !== 'undefined') && document.createElement('canvas')
+
+                var ctx = canvas && canvas.getContext && canvas.getContext("2d")
                 if (!canvas || !ctx) return ''
 
                 if (!size) size = this.pick(this.ad_size)
@@ -931,14 +939,14 @@
 
                 canvas.width = width
                 canvas.height = height
-                ctx.textAlign = "center"
-                ctx.textBaseline = "middle"
+                ctx.textAlign = 'center'
+                ctx.textBaseline = 'middle'
                 ctx.fillStyle = background
                 ctx.fillRect(0, 0, width, height)
                 ctx.fillStyle = foreground
-                ctx.font = "bold " + text_height + "px " + font
+                ctx.font = 'bold ' + text_height + 'px ' + font
                 ctx.fillText(text, (width / 2), (height / 2), width)
-                return canvas.toDataURL("image/png")
+                return canvas.toDataURL('image/png')
             }
         })
         /*
@@ -1263,9 +1271,18 @@
                     Random.pick(['a', 'e', 'i', 'o', 'u'])
                     // => "o"
             */
-            pick: function pick(arr) {
+            pick: function pick(arr, min, max) {
                 arr = arr || []
-                return arr[this.natural(0, arr.length - 1)]
+                switch (arguments.length) {
+                    case 1:
+                        return arr[this.natural(0, arr.length - 1)]
+                    case 2:
+                        max = min
+                        /* falls through */
+                    case 3:
+                        return this.shuffle(arr, min, max)
+
+                }
             },
             /*
                 Given an array, scramble the order and return it.
@@ -1280,7 +1297,7 @@
                     Random.shuffle(['a', 'e', 'i', 'o', 'u'])
                     // => ["o", "u", "e", "i", "a"]
             */
-            shuffle: function shuffle(arr) {
+            shuffle: function shuffle(arr, min, max) {
                 arr = arr || []
                 var old = arr.slice(0),
                     result = [],
@@ -1291,7 +1308,18 @@
                     result.push(old[index])
                     old.splice(index, 1)
                 }
-                return result
+                switch (arguments.length) {
+                    case 0:
+                    case 1:
+                        return result
+                    case 2:
+                        max = min
+                        /* falls through */
+                    case 3:
+                        min = parseInt(min, 10)
+                        max = parseInt(max, 10)
+                        return result.slice(0, this.natural(min, max))
+                }
             },
             /*
                 * Random.order(item, item)
@@ -1309,7 +1337,7 @@
                 if (arguments.length > 1) array = [].slice.call(arguments, 0)
 
                 var options = order.options
-                // var path = options.context.path.join('.')
+                    // var path = options.context.path.join('.')
                 var templatePath = options.context.templatePath.join('.')
 
                 var cache = (
@@ -1318,7 +1346,7 @@
                         array: array
                     }
                 )
-                
+
                 return cache.array[cache.index++ % cache.array.length]
             }
         })
@@ -1530,7 +1558,7 @@
                     "Brenda", "Amy", "Anna"
                 ])
                 return this.pick(names)
-                // return this.capitalize(this.word())
+                    // return this.capitalize(this.word())
             },
             /*
                 ##### Random.last()
@@ -1555,7 +1583,7 @@
                     "Young", "Allen"
                 ]
                 return this.pick(names)
-                // return this.capitalize(this.word())
+                    // return this.capitalize(this.word())
             },
             /*
                 ##### Random.name(middle)

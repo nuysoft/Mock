@@ -22,9 +22,12 @@
         期望的功能：
         1. 完整地覆盖原生 XHR 的行为
         2. 完整地模拟原生 XHR 的行为
-        3. 在发起请求时，检测是否需要拦截
+        3. 在发起请求时，自动检测是否需要拦截
         4. 如果不必拦截，则执行原生 XHR 的行为
         5. 如果需要拦截，则执行虚拟 XHR 的行为
+        6. 兼容 XMLHttpRequest 和 ActiveXObject
+            new window.XMLHttpRequest()
+            new window.ActiveXObject("Microsoft.XMLHTTP")
         
         关键方法的逻辑：
 
@@ -49,7 +52,6 @@
             唯一的办法，是模拟整个 XMLHttpRequest，就像 jQuery 对事件模型的封装一样。
 
         // Event handlers
-        event handler       event handler event type
         onloadstart         loadstart
         onprogress          progress
         onabort             abort
@@ -58,12 +60,6 @@
         ontimeout           timeout
         onloadend           loadend
         onreadystatechange  readystatechange
-        
-        **兼容 XMLHttpRequest 和 ActiveXObject**
-        
-        new window.XMLHttpRequest()
-        new window.ActiveXObject("Microsoft.XMLHTTP")
-
     */
 
     // 备份原生 XMLHttpRequest

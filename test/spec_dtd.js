@@ -182,6 +182,7 @@ test('Object', function() {
     for (var min = 0, max; min <= methodsLength + 1; min++) {
         tpl = {}
         max = Random.integer(0, methodsLength)
+        // methods|0-? |1-? |2-? |3-? |4-? |5-? |6-?
         tpl['methods|' + min + '-' + max] = methods
         doit(tpl, function(tpl, data, message) {
             ok(_.keys(data.methods).length >= Math.min(min, max), message)

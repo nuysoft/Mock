@@ -7,12 +7,15 @@ module.exports = function(grunt) {
     // Displays the execution time of grunt tasks
     require('time-grunt')(grunt)
 
+    var pkg = grunt.file.readJSON('package.json')
+    var mock_version_js = 'mock-' + pkg.version + '.js'
+
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
+        pkg: pkg,
         jshint: {
             files: [
                 'Gruntfile.js', 'package.json',
-                'src/*.js', 'src/fix/expose.js',
+                'src/*.js', 'src/fix/expose.js', '!src/regexp_parser.js',
                 'test/**/*.js'
             ],
             options: {
@@ -21,11 +24,8 @@ module.exports = function(grunt) {
         },
         qunit: {
             files: [
-                'test/*.html'
+                'test/qunit.html'
             ]
-        },
-        nodeunit: {
-            all: ['test/*.js']
         },
         watch: {
             dev: {
@@ -60,13 +60,18 @@ module.exports = function(grunt) {
                     'src/fix/prefix-3.js',
 
                     'src/util.js',
+                    'src/regexp_parser.js',
+                    'src/regexp_handler.js',
                     'src/random.js',
+                    'src/handle.js',
                     'src/mock.js',
                     'src/xhr.js',
+                    'src/schema.js',
+                    'src/valid.js',
 
                     'src/fix/suffix.js'
                 ],
-                dest: 'dist/mock.js'
+                dest: 'dist/' + mock_version_js
             },
             doc: {
                 options: {
@@ -76,9 +81,10 @@ module.exports = function(grunt) {
                     'doc/getting-started.md',
                     'doc/spec.md',
                     'doc/mock.md',
-                    'doc/mockjax.md',
-                    'doc/mock4tpl.md',
-                    'doc/mock4xtpl.md',
+                    // 'doc/mockjax.md',
+                    // 'doc/mock4tpl.md',
+                    // 'doc/mock4xtpl.md',
+                    'doc/schema.md',
                     'doc/util.md',
                     'doc/random.md',
                     'doc/other.md'
@@ -88,7 +94,7 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n'
+                banner: '/*! <%= pkg.name %> <%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */'
             },
             dev: {
                 options: {
@@ -98,21 +104,23 @@ module.exports = function(grunt) {
                     preserveComments: 'all' // false all some
                 },
                 files: [{
+                    extDot: 'last',
                     expand: true,
                     cwd: 'dist/',
-                    src: ['**/*.js', '!**/*-min.js'],
+                    src: [mock_version_js, 'mock.js'],
                     dest: 'dist/',
                     ext: '.js'
                 }]
             },
             dist: {
                 options: {
-                    sourceMap: 'dist/mock-min.map'
+                    sourceMap: true,
                 },
                 files: [{
+                    extDot: 'last',
                     expand: true,
                     cwd: 'dist/',
-                    src: ['**/*.js', '!**/*-min.js'],
+                    src: [mock_version_js, 'mock.js'],
                     dest: 'dist/',
                     ext: '-min.js'
                 }]
@@ -151,6 +159,16 @@ module.exports = function(grunt) {
                     dest: '../../nuysoft.github.com/project/mock/'
                 }]
             },
+            lastest: {
+                files: [{
+                    expand: true,
+                    src: ['dist/mock-' + pkg.version + '.js'],
+                    dest: 'dist/',
+                    rename: function(dest, src) {
+                        return 'dist/mock.js'
+                    }
+                }]
+            },
             doc: {
                 files: [{
                     expand: true,
@@ -161,12 +179,12 @@ module.exports = function(grunt) {
                         'bower_components/**',
                         'editor/**',
                     ],
-                    dest: '../mockjs.github.com/'
+                    dest: '../mockjs.github.com/0.2.0/'
                 }, {
                     expand: true,
                     cwd: './',
                     src: ['index.html', 'favicon.ico', 'editor.html'],
-                    dest: '../mockjs.github.com/'
+                    dest: '../mockjs.github.com/0.2.0/'
                 }]
             },
             kissy: {
@@ -189,16 +207,15 @@ module.exports = function(grunt) {
             }
         }
     })
-    
+
     grunt.registerTask('base', [
-        'jshint', 'nodeunit', 'concat:mock', 'qunit',
-        'uglify',
+        'jshint', 'concat', 'qunit', 'uglify',
         'doc-base'
     ]) // 'copy:demo',
-    grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']) // grunt travis --verbose
+    grunt.registerTask('travis', ['jshint', 'qunit']) // grunt travis --verbose
     grunt.registerTask('default', ['base', 'connect', 'watch:dev'])
     grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc', 'copy:kissy'])
     grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc'])
 
-    grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])
+    grunt.registerTask('build', ['jshint', 'concat', 'copy:lastest', 'qunit', 'uglify'])
 };

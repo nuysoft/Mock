@@ -28,6 +28,7 @@
     * window
     * document
     * XHRHttpRequest
+12. 支持相对路径
 
 ### 2014.6.23 V0.1.5
 

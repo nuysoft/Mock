@@ -1,6 +1,6 @@
 module('Request')
 
-window.XMLHttpRequest = MockXMLHttpRequest
+window.XMLHttpRequest = window.MockXMLHttpRequest || Mock.MockXMLHttpRequest
 
 test('jQuery.ajax()', function() {
     stop()

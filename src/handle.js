@@ -4,14 +4,16 @@
 /* global expose    */
 /* global Random    */
 /* global Util      */
+/* global RegExpParser  */
+/* global RegExpHandler */
 
 (function(factory) {
 
-    expose(['random', 'util'], factory, function() {
-        window.Handle = factory(Random, Util)
+    expose(['random', 'util', 'regexp_parser', 'regexp_handler'], factory, function() {
+        window.Handle = factory(Random, Util, RegExpParser, RegExpHandler)
     })
 
-}(function(Random, Util) {
+}(function(Random, Util, RegExpParser, RegExpHandler) {
 
     // BEGIN(BROWSER)
 
@@ -42,7 +44,8 @@
         */
         var RE_KEY = /(.+)\|(?:\+(\d+)|([\+\-]?\d+-?[\+\-]?\d*)?(?:\.(\d+-?\d*))?)/
         var RE_RANGE = /([\+\-]?\d+)-?([\+\-]?\d+)?/
-        var RE_PLACEHOLDER = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g
+            // var RE_PLACEHOLDER = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g
+        var RE_PLACEHOLDER = /\\*@([^@#%&()\?\s]+)(?:\((.*?)\))?/g
 
         Handle.RE_KEY = RE_KEY
         Handle.RE_RANGE = RE_RANGE
@@ -115,16 +118,19 @@
                 currentContext: context.currentContext,
                 // 属性值模板的上下文
                 templateCurrentContext: context.templateCurrentContext || template,
-                root: context.root,
-                templateRoot: context.templateRoot
+                // 最终值的根
+                root: context.root || context.currentContext,
+                // 模板的根
+                templateRoot: context.templateRoot || context.templateCurrentContext || template
             }
             // console.log('path:', context.path.join('.'), template)
 
             var rule = Handle.rule(name)
             var type = Util.type(template)
+            var data
 
             if (Handle[type]) {
-                return Handle[type]({
+                data = Handle[type]({
                     // 属性值类型
                     type: type,
                     // 属性值模板
@@ -139,6 +145,8 @@
                     // 相关上下文
                     context: context
                 })
+                if (!context.root) context.root = data
+                return data
             }
             return template
         }
@@ -160,10 +168,12 @@
                         options.context.templatePath.push(i)
                         result.push(
                             Handle.gen(options.template[i], i, {
+                                path: options.context.path,
+                                templatePath: options.context.templatePath,
                                 currentContext: result,
                                 templateCurrentContext: options.template,
-                                path: options.context.path,
-                                templatePath: options.context.templatePath
+                                root: options.context.root || result,
+                                templateRoot: options.context.templateRoot || options.template
                             })
                         )
                         options.context.path.pop()
@@ -177,10 +187,12 @@
                         options.context.templatePath.push(options.name)
                         result = Random.pick(
                             Handle.gen(options.template, undefined, {
+                                path: options.context.path,
+                                templatePath: options.context.templatePath,
                                 currentContext: result,
                                 templateCurrentContext: options.template,
-                                path: options.context.path,
-                                templatePath: options.context.templatePath
+                                root: options.context.root || result,
+                                templateRoot: options.context.templateRoot || options.template
                             })
                         )
                         options.context.path.pop()
@@ -193,10 +205,12 @@
                             options.context.path.push(options.name),
                             options.context.templatePath.push(options.name)
                             result = Handle.gen(options.template, undefined, {
+                                path: options.context.path,
+                                templatePath: options.context.templatePath,
                                 currentContext: result,
                                 templateCurrentContext: options.template,
-                                path: options.context.path,
-                                templatePath: options.context.templatePath
+                                root: options.context.root || result,
+                                templateRoot: options.context.templateRoot || options.template
                             })[
                                 options.template.__order_index % options.template.length
                             ]
@@ -215,10 +229,12 @@
                                     options.context.templatePath.push(ii)
                                     result.push(
                                         Handle.gen(options.template[ii], result.length, {
+                                            path: options.context.path,
+                                            templatePath: options.context.templatePath,
                                             currentContext: result,
                                             templateCurrentContext: options.template,
-                                            path: options.context.path,
-                                            templatePath: options.context.templatePath
+                                            root: options.context.root || result,
+                                            templateRoot: options.context.templateRoot || options.template
                                         })
                                     )
                                     options.context.path.pop()
@@ -246,10 +262,12 @@
                         options.context.path.push(parsedKey)
                         options.context.templatePath.push(key)
                         result[parsedKey] = Handle.gen(options.template[key], key, {
+                            path: options.context.path,
+                            templatePath: options.context.templatePath,
                             currentContext: result,
                             templateCurrentContext: options.template,
-                            path: options.context.path,
-                            templatePath: options.context.templatePath
+                            root: options.context.root || result,
+                            templateRoot: options.context.templateRoot || options.template
                         })
                         options.context.path.pop()
                         options.context.templatePath.pop()
@@ -265,15 +283,15 @@
                     keys = keys.concat(fnKeys)
 
                     /*
-                    会改变非函数属性的顺序
-                    keys = Util.keys(options.template)
-                    keys.sort(function(a, b) {
-                        var afn = typeof options.template[a] === 'function'
-                        var bfn = typeof options.template[b] === 'function'
-                        if (afn === bfn) return 0
-                        if (afn && !bfn) return 1
-                        if (!afn && bfn) return -1
-                    })
+                        会改变非函数属性的顺序
+                        keys = Util.keys(options.template)
+                        keys.sort(function(a, b) {
+                            var afn = typeof options.template[a] === 'function'
+                            var bfn = typeof options.template[b] === 'function'
+                            if (afn === bfn) return 0
+                            if (afn && !bfn) return 1
+                            if (!afn && bfn) return -1
+                        })
                     */
 
                     for (i = 0; i < keys.length; i++) {
@@ -282,10 +300,12 @@
                         options.context.path.push(parsedKey)
                         options.context.templatePath.push(key)
                         result[parsedKey] = Handle.gen(options.template[key], key, {
+                            path: options.context.path,
+                            templatePath: options.context.templatePath,
                             currentContext: result,
                             templateCurrentContext: options.template,
-                            path: options.context.path,
-                            templatePath: options.context.templatePath
+                            root: options.context.root || result,
+                            templateRoot: options.context.templateRoot || options.template
                         })
                         options.context.path.pop()
                         options.context.templatePath.pop()
@@ -335,6 +355,7 @@
                 if (options.template.length) {
 
                     //  'foo': '★',
+                    /* jshint -W041 */
                     if (options.rule.count == undefined) {
                         result += options.template
                     }
@@ -384,7 +405,19 @@
                 return options.template.call(options.context.currentContext, options)
             },
             'regexp': function(options) {
-                return options.template
+                // regexp.source
+                var source = options.template.source
+
+                // 'name|1-5': /regexp/,
+                for (var i = 0; i < options.rule.count; i++) {
+                    source += options.template.source
+                }
+
+                return RegExpHandler.gen(
+                    RegExpParser.parse(
+                        source
+                    )
+                )
             }
         })
 
@@ -404,6 +437,7 @@
                     lkey = key && key.toLowerCase(),
                     okey = this._all()[lkey],
                     params = parts && parts[2] || ''
+                var pathParts = this.splitPathToArray(key)
 
                 // 解析占位符的参数
                 try {
@@ -426,12 +460,19 @@
                 // 占位符优先引用数据模板中的属性
                 if (obj && (key in obj)) return obj[key]
 
+                // 绝对路径 or 相对路径
+                if (
+                    key.charAt(0) === '/' ||
+                    pathParts.length > 1
+                ) return this.getValueByKeyPath(key, options)
+
                 // 递归引用数据模板中的属性
                 if (templateContext &&
                     (typeof templateContext === 'object') &&
                     (key in templateContext) &&
                     (placeholder !== templateContext[key]) // fix #15 避免自己依赖自己
                 ) {
+                    // 先计算被引用的属性值
                     templateContext[key] = Handle.gen(templateContext[key], key, {
                         currentContext: obj,
                         templateCurrentContext: templateContext
@@ -463,6 +504,74 @@
                         delete handle.options
                         return re
                 }
+            },
+            getValueByKeyPath: function(key, options) {
+                var originalKey = key
+                var keyPathParts = this.splitPathToArray(key)
+                var absolutePathParts = []
+
+                // 绝对路径
+                if (key.charAt(0) === '/') {
+                    absolutePathParts = [options.context.path[0]].concat(
+                        this.normalizePath(keyPathParts)
+                    )
+                } else {
+                    // 相对路径
+                    if (keyPathParts.length > 1) {
+                        absolutePathParts = options.context.path.slice(0)
+                        absolutePathParts.pop()
+                        absolutePathParts = this.normalizePath(
+                            absolutePathParts.concat(keyPathParts)
+                        )
+
+                    }
+                }
+
+                key = keyPathParts[keyPathParts.length - 1]
+                var currentContext = options.context.root
+                var templateCurrentContext = options.context.templateRoot
+                for (var i = 1; i < absolutePathParts.length - 1; i++) {
+                    currentContext = currentContext[absolutePathParts[i]]
+                    templateCurrentContext = templateCurrentContext[absolutePathParts[i]]
+                }
+                // 引用的值已经计算好
+                if (currentContext && (key in currentContext)) return currentContext[key]
+
+                // 尚未计算，递归引用数据模板中的属性
+                if (templateCurrentContext &&
+                    (typeof templateCurrentContext === 'object') &&
+                    (key in templateCurrentContext) &&
+                    (originalKey !== templateCurrentContext[key]) // fix #15 避免自己依赖自己
+                ) {
+                    // 先计算被引用的属性值
+                    templateCurrentContext[key] = Handle.gen(templateCurrentContext[key], key, {
+                        currentContext: currentContext,
+                        templateCurrentContext: templateCurrentContext
+                    })
+                    return templateCurrentContext[key]
+                }
+            },
+            // https://github.com/kissyteam/kissy/blob/master/src/path/src/path.js
+            normalizePath: function(pathParts) {
+                var newPathParts = []
+                for (var i = 0; i < pathParts.length; i++) {
+                    switch (pathParts[i]) {
+                        case '..':
+                            newPathParts.pop()
+                            break
+                        case '.':
+                            break
+                        default:
+                            newPathParts.push(pathParts[i])
+                    }
+                }
+                return newPathParts
+            },
+            splitPathToArray: function(path) {
+                var parts = path.split(/\/+/);
+                if (!parts[parts.length - 1]) parts = parts.slice(0, -1)
+                if (!parts[0]) parts = parts.slice(1)
+                return parts;
             }
         })
 

@@ -253,6 +253,8 @@ TODO 统计 -->
     // => "UuGQgSYk"
     Random.string( 'aeiou', 1, 3 )
     // => "ea"
+    Random.string( '壹贰叁肆伍陆柒捌玖拾', 3, 5 )
+    // => "肆捌伍叁"
 
 #### Random.range(start, stop, step)
 
@@ -278,6 +280,8 @@ TODO 统计 -->
     // => [1, 3, 5, 7, 9]
     Random.range(1, 10, 3)
     // => [1, 4, 7]
+
+### Datetime
 
 #### Random.date(format)
 
@@ -505,7 +509,7 @@ TODO 统计 -->
 
 ![](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAAB9CAYAAACPgGwlAAAFJElEQVR4Xu2dS0hUURzG/1Yqlj2otJe10AqCoiJaFFTUpgcUhLaKCIogKCEiCl0U1SIIF1EIQlFEtCmkpbWSHlAQYRYUlI9Ie6nYmI9hfIx1LpzL3PGO/aeuM/r/f7PRufe7d873/ea75xw3ZjTumDtMeKlKIAPQVfF2zAK6PuaArpA5oAO6xgQUesacDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLSMpgO6wgQUWkbTAV1hAgoto+mArjABhZbRdEBXmIBCy2g6oCtMQKFlNB3QFSag0DKaDugKE1BoGU0HdIUJKLQ8bpo+fft+ylxYSJ23LvpisOfNST/N7ENniYa9/0xy4GsTdT+6+09Yx9t4/slEgovSDt2EO3P3YcoqWuUMsWln3oihFlTWUlbhSvf4UKid2iqOUfhVrXussKZ9xHXh10/oW1lxUnmNt/EkNXimOK3QTTtn7Sv1DDUees66rTT/3B0a/NFCvc9raOqf9+YL0PfiIX0/f8ADPdrXTZEPde6xyMd66rx5wXlvnwThN8/cL4ttc7S3i0L3rjqaVI2HyWdMZGmFbhwtvv7cgZm7ZS9NyS/wbboBb1ttwQy2tdLng2s90OOPxSa24FI15azZTAOtDdRyZAOZe84ru0GTps2g0P1r7pcjVeMZE5rMm6Yduh3nktt1CaHHesk/XUW5W4sp8v4lfTm5ywN9eCBCQz/baOBLE0Ua3rgg4z/DPCUmz5xD2SvWU6IpIBXjYTIKXDahoNtHvUmho/KMZ5HmN6f31FZT2+Wjbmix12dkZtNoTwYO9P8dT+A0mTecMNBNwPmnKmnyrDyKhxnv1U4B0d5f9KmkyHPaPinMwfYrJxKu7v8GPajxMDkFKpsQ0JMJ2KZjmm8e9817CjxNt/O4Odjf+JZaj2/zDXQ06EGNJ1CSSdws7dDNAsvsr7OXr3UWVeG6x87wv5WXOD9jAzZbtf7md669nscP3KbOLa2gaE+Xc27axl2UWbB0xLxvFmnmuJnTzU/7e+wuIJXjSYJToNK0Q/ebi41Du3Xz20bZBGJX3fH3Mav0jqpyd9Xvt3o3W0Ezt492H/tZQY8nUIpJ3izt0J39s8/L7q9N03NWb/LVhOuferZyWYuX0WDnD2evHv+XOPs5sdc4+/RFRX+eECFnn25eqRpPkpwClacdeqBucDNWAoDOikmWCNBl8WS5AXRWTLJEgC6LJ8sNoLNikiUCdFk8WW4AnRWTLBGgy+LJcgPorJhkiQBdFk+WG0BnxSRLBOiyeLLcADorJlkiQJfFk+UG0FkxyRIBuiyeLDeAzopJlgjQZfFkuQF0VkyyRIAuiyfLDaCzYpIlAnRZPFluAJ0VkywRoMviyXID6KyYZIkAXRZPlhtAZ8UkSwTosniy3AA6KyZZIkCXxZPlBtBZMckSAbosniw3gM6KSZYI0GXxZLkBdFZMskSALosnyw2gs2KSJQJ0WTxZbgCdFZMsEaDL4slyA+ismGSJAF0WT5YbQGfFJEsE6LJ4stwAOismWSJAl8WT5QbQWTHJEgG6LJ4sN4DOikmWCNBl8WS5AXRWTLJEgC6LJ8sNoLNikiUCdFk8WW4AnRWTLNFvXskYA3TG3JwAAAAASUVORK5CYII=)
 
-因为图片的 Base64 编码比较长，下面只显示生成的图片效果。
+因为图片的 Base64 编码比较长，下面只贴出生成的图片效果。
 
     Random.dataImage('200x100')
 
@@ -518,6 +522,39 @@ TODO 统计 -->
 <img id="dataImage_size_text">
 <script type="text/javascript">
     $('#dataImage_size_text').prop('src', Random.dataImage('300x100', 'Hello Mock.js!'))
+</script>
+
+下面是一个生成图片的小工具：
+
+<div class="panel panel-default">
+    <div class="panel-heading">生成 Base64 图片</div>
+    <div class="panel-body">
+        <div class="form-inline">
+            <div class="form-group">
+                <input class="form-control" id="dataImageWidth" value="400" placeholder="Enter width">
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="dataImageHeight" value="100" placeholder="Enter height">
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="dataImageText" value="" placeholder="Enter text">
+            </div>
+            <button id="genDataImage" class="btn btn-default">生成</button>
+        </div>
+    </div>
+    <div id="previewDataImage" class="panel-body" style="padding-top: 0px;"></div>
+</div>
+<script type="text/javascript">
+    $('#genDataImage').on('click', function(event){
+        var src = Random.dataImage(
+            $('#dataImageWidth').val() + 'x' + $('#dataImageHeight').val(),
+            $('#dataImageText').val()
+        )
+        $('#previewDataImage').empty()
+            .append(
+                $('<img>').attr('src', src)
+            )
+    }).trigger('click')
 </script>
 
 ### Color
@@ -535,6 +572,8 @@ TODO 统计 -->
 
 下面是一些随机生成的颜色：
 
+<button id="genColor" type="button" class="btn btn-default">重新生成一批</button>
+
 <div id="color100" class="color_100"></div>
 <style type="text/css">
     .circle {
@@ -551,14 +590,16 @@ TODO 统计 -->
 </style>
 <script>
     $(function(){
-        var container = $('#color100')
-        var color
-        for (var i = 0; i < 35; i++) {
-            color = Random.color()
-            $('<span class="circle"></span>')
-                .css('background-color', color)
-                .appendTo(container)
-        }  
+        $('#genColor').on('click', function(event){
+            var container = $('#color100').empty()
+            var color
+            for (var i = 0; i < 35; i++) {
+                color = Random.color()
+                $('<span class="circle"></span>')
+                    .css('background-color', color)
+                    .appendTo(container)
+            }      
+        }).trigger('click')
     })
 </script>
 

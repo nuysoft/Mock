@@ -2,8 +2,8 @@
 
 /* global window    */
 /* global expose    */
-/* global Mock      */
 /* global Util      */
+/* global Handle    */
 
 (function(factory) {
 
@@ -17,11 +17,10 @@
 
     function toJSONSchema(template, name) {
         // type rule properties items
-
         var result = {
             name: typeof name === 'string' ? name.replace(Handle.RE_KEY, '$1') : name,
             template: template,
-            type: Util.type(template),
+            type: Util.type(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
             rule: Handle.rule(name)
         }
 

@@ -457,13 +457,27 @@ test('Helpers', function() {
             message
         )
     })
+    doRandom('Random.pick(["a", "e", "i", "o", "u"], 3)', function(expr, data, message) {
+        equal(data.length, 3, message)
+    })
+    doRandom('Random.pick(["a", "e", "i", "o", "u"], 1, 5)', function(expr, data, message) {
+        ok(data.length >= 1, message)
+        ok(data.length <= 5)
+    })
 
     doRandom('Random.shuffle()', function(expr, data, message) {
         deepEqual(data, [], message)
     })
     doRandom('Random.shuffle(["a", "e", "i", "o", "u"])', function(expr, data, message) {
         notEqual(data.join(''), 'aeiou', message)
-        equal(data.sort().join(''), 'aeiou', message)
+        equal(data.sort().join(''), 'aeiou')
+    })
+    doRandom('Random.shuffle(["a", "e", "i", "o", "u"], 3)', function(expr, data, message) {
+        equal(data.length, 3, message)
+    })
+    doRandom('Random.shuffle(["a", "e", "i", "o", "u"], 1, 5)', function(expr, data, message) {
+        ok(data.length >= 1, message)
+        ok(data.length <= 5)
     })
 })
 

@@ -41,8 +41,8 @@
     }
 
     // debug
-    $('.template').css('background-color', Mock.Random.color())
-    $('.result').css('background-color', Mock.Random.color())
+    $('.template').css('background-color', Random.color())
+    $('.result').css('background-color', Random.color())
     // $('.sidebar .help').css('background-color', Random.color())
     // $('.sidebar .about').css('background-color', Random.color())
     // $('.sidebar .content').append('<p>' + Random.paragraph() + '</p>')
@@ -109,8 +109,9 @@
         var data
         try {
             data = Mock.mock(tpl) || ''
-            data = JSON.stringify(data, null, tabSize)    
+            data = JSON.stringify(data, null, tabSize)
         } catch (error) {
+            console.error(error)
             data = error.toString()
         }
         $('textarea[name=data]').val(data)
@@ -140,8 +141,10 @@
         })
     tplEditor.on('change', function(instance) {
         render(instance.getValue())
+        onScroll()
     })
-    tplEditor.on('scroll', function(instance) {
+
+    function onScroll() {
         var scrollInfo = tplEditor.getScrollInfo()
         var percent = scrollInfo.top / (scrollInfo.height - scrollInfo.clientHeight)
 
@@ -149,7 +152,9 @@
         var dataEditorTop = (dataEditorScrollInfo.height - dataEditorScrollInfo.clientHeight) * percent
 
         dataEditor.scrollTo(dataEditorScrollInfo.left, dataEditorTop)
-    })
+    }
+
+    tplEditor.on('scroll', onScroll)
 
     var dataEditor = CodeMirror
         .fromTextArea($('textarea[name=data]').get(0), {
@@ -160,7 +165,7 @@
         })
 
     // Syntax Demo
-    var EXAMPLE_SYNTAX = Mock.heredoc(function() {
+    var EXAMPLE_SYNTAX = (window.Util || window.Mock).heredoc(function() {
         /*!
 {
     'title': 'Syntax Demo',
@@ -200,11 +205,31 @@
 
     'function': function() {
         return this.title
-    }
+    },
+
+    'regexp1': /[a-z][A-Z][0-9]/,
+    'regexp2': /\w\W\s\S\d\D/,
+    'regexp3': /\d{5,10}/,
+
+    'nested': {
+        a: {
+            b: {
+                c: 'Mock.js'
+            }
+        }
+    },
+    'absolutePath': '@/title @/nested/a/b/c',
+    'relativePath': {
+        a: {
+            b: {
+                c: '@../../../nested/a/b/c'
+            }
+        }
+    },
 }
     */
     })
-    var EXAMPLE_PLACEHOLDER = Mock.heredoc(function() {
+    var EXAMPLE_PLACEHOLDER = (window.Util || window.Mock).heredoc(function() {
         /*!
 {
     basics: {
@@ -354,7 +379,7 @@
         })
 
     tplEditor.setValue(EXAMPLE_SYNTAX)
-    
+
 })()
 
 // 

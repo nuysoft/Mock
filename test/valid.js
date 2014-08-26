@@ -1,5 +1,9 @@
 module('Mck.valid(template, data)')
 
+if (!window.valid) {
+    window.valid = Mock.valid
+}
+
 test('Name', function() {
     console.group('Name')
 

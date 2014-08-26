@@ -5,28 +5,37 @@
     <title>Mock.js Test Suite</title>
     <!-- Load local QUnit. -->
     <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css" media="screen">
+    <style type="text/css">
+        .test-message {
+            font-family: monospace;
+        }
+    </style>
     <script src="../bower_components/qunit/qunit/qunit.js"></script>
     <!-- Load local lib. -->
     <script src="../bower_components/underscore/underscore.js"></script>
     <script src="../bower_components/jquery/dist/jquery.js"></script>
-    <!-- <script src="../dist/mock.js"></script> -->
-    <script src="../src/fix/expose.js"></script>
-    <script src="../src/util.js"></script>
-    <script src="../src/random.js"></script>
-    <script src="../src/handle.js"></script>
-    <script src="../src/mock.js"></script>
-    <script src="../src/xhr.js"></script>
-    <script src="../src/schema.js"></script>
-    <script src="../src/valid.js"></script>
+    <script src="../dist/mock.js"></script>
+    <!-- <script src="../src/fix/expose.js"></script> -->
+    <!-- <script src="../src/util.js"></script> -->
+    <!-- <script src="../src/regexp_parser.js"></script> -->
+    <!-- <script src="../src/regexp_handler.js"></script> -->
+    <!-- <script src="../src/random.js"></script> -->
+    <!-- <script src="../src/handle.js"></script> -->
+    <!-- <script src="../src/mock.js"></script> -->
+    <!-- <script src="../src/xhr.js"></script> -->
+    <!-- <script src="../src/schema.js"></script> -->
+    <!-- <script src="../src/valid.js"></script> -->
     <!-- Load local tests. -->
     <script>
         function doit(tpl, validator) {
             var data = Mock.mock(tpl)
             preview(tpl, data)
             // console.log(tpl, '=>', data)
+            var message
+            if (_.isRegExp(tpl)) message = tpl.toString() + ' => ' + data
+            else message = JSON.stringify(tpl, null, 4) + ' => ' + JSON.stringify(data, null, 4)
             validator(
-                tpl, data,
-                JSON.stringify(tpl, null, 4) + ' => ' + JSON.stringify(data, null, 4)
+                tpl, data, message
             )
             empty()
         }
@@ -40,13 +49,14 @@
         }
     </script>
     <!--  -->
-    <!-- <script src="./spec_dtd.js"></script> -->
-    <!-- <script src="./spec_dpd.js"></script> -->
-    <!-- <script src="./random.js"></script> -->
-    <!-- <script src="./mock.js"></script> -->
-    <!-- <script src="./request.js"></script> -->
-    <script src="./shcema.js"></script>
+    <script src="./spec_dtd.js"></script>
+    <script src="./spec_dpd.js"></script>
+    <script src="./random.js"></script>
+    <script src="./mock.js"></script>
+    <script src="./request.js"></script>
+    <script src="./schema.js"></script>
     <script src="./valid.js"></script>
+    <script src="./regexp.js"></script>
 </head>
 <body>
     <div id="qunit"></div>
@@ -55,8 +65,8 @@
         <!-- <a href="https://github.com/nuysoft/Mock/" target="_blank">
             <img src="https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png" alt="Views in the last 24 hours">
         </a> -->
-        <a href="http://mockjs.com/#数据模板定义 DTD" target="_blank">数据模板定义 DTD</a>，
-        <a href="http://mockjs.com/#数据占位符定义 DPD" target="_blank">数据占位符定义 DPD</a>
+        <a href="../#数据模板定义 DTD" target="_blank">数据模板定义 DTD</a>，
+        <a href="../#数据占位符定义 DPD" target="_blank">数据占位符定义 DPD</a>
     </div>
   
     <style type="text/css">
