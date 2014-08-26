@@ -1,4 +1,4 @@
-/*! mockjs 0.2.0-alpha1 26-08-2014 16:27:55 *//*! src/fix/prefix-1.js */
+/*! mockjs 0.2.0-alpha1 26-08-2014 18:37:29 *//*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/fix/prefix-2.js */
     try {
@@ -3838,9 +3838,7 @@
     function valid(template, data) {
         var schema = toJSONSchema(template);
         var result = Diff.diff(schema, data);
-        for (var i = 0; i < result.length; i++) {
-            console.log(Assert.message(result[i]));
-        }
+        for (var i = 0; i < result.length; i++) {}
         return result;
     }
     /*

@@ -9,7 +9,7 @@ function doToJSONSchema(template, validator) {
     var message = (JSON.stringify(template, null, 4) || template.toString()) +
         ' => ' +
         JSON.stringify(schema, null, 4)
-    console.log(message)
+    // console.log(message)
     validator(
         template,
         schema,

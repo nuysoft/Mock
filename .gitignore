@@ -3,8 +3,5 @@
 .idea
 node_modules
 bower_components
-build
-*.TODO
+coverage
 PLAN.md
-xhr.js
-MockHttpRequest.js

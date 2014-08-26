@@ -41,7 +41,7 @@
         var schema = toJSONSchema(template)
         var result = Diff.diff(schema, data)
         for (var i = 0; i < result.length; i++) {
-            console.log(Assert.message(result[i]))
+            // console.log(Assert.message(result[i]))
         }
         return result
     }

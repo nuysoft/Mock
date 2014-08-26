@@ -23,9 +23,30 @@ module.exports = function(grunt) {
             }
         },
         qunit: {
+            options: {
+                '--web-security': false,
+                timeout: 30000,
+                coverage: {
+                    baseUrl: '.',
+                    src: ['dist/mock.js'],
+                    instrumentedFiles: 'tmp',
+                    htmlReport: 'coverage/html',
+                    lcovReport: 'coverage/lcov',
+                    statementsThresholdPct: 60.0,
+                    disposeCollector: true
+                }
+            },
             files: [
                 'test/qunit.html'
             ]
+        },
+        coveralls: {
+            options: {
+                force: true
+            },
+            main_target: {
+                src: '<%= qunit.options.coverage.lcovReport %>/lcov.info'
+            }
         },
         watch: {
             dev: {
