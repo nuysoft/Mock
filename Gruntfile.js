@@ -233,7 +233,7 @@ module.exports = function(grunt) {
         'jshint', 'concat', 'qunit', 'uglify',
         'doc-base'
     ]) // 'copy:demo',
-    grunt.registerTask('travis', ['jshint', 'qunit']) // grunt travis --verbose
+    grunt.registerTask('travis', ['jshint', 'qunit', 'qunit']) // grunt travis --verbose
     grunt.registerTask('default', ['base', 'connect', 'watch:dev'])
     grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc', 'copy:kissy'])
     grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc'])
