@@ -11,8 +11,7 @@
   ],
   "author": "nuysoft@gmail.com",
   "dependencies": {
-    "commander": "~2.2.0",
-    "canvas": "~1.1.6"
+    "commander": "~2.2.0"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -29,8 +28,7 @@
     "load-grunt-tasks": "~0.6.0",
     "regexp": "^1.0.0",
     "time-grunt": "~0.3.2",
-    "underscore": "~1.6.0",
-    "canvas": "~1.1.6"
+    "underscore": "~1.6.0"
   },
   "repository": {
     "type": "git",
