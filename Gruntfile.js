@@ -34,10 +34,7 @@ module.exports = function(grunt) {
         },
         qunit: {
             files: [
-                'test/**/*.html',
-                '!test/mock4xtpl.html',
-                '!test/**/noop.*',
-                '!test/xhr.html'
+                'test/qunit.html'
             ]
         },
         nodeunit: {
