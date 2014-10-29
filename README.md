@@ -1,10 +1,10 @@
 # Mock.js
 <!-- 模拟请求 & 模拟数据 -->
-[![Build Status](https://api.travis-ci.org/nuysoft/Mock.png?branch=master)](http://travis-ci.org/nuysoft/Mock)
-[![Coverage Status](https://coveralls.io/repos/nuysoft/Mock/badge.png?branch=refactoring)](https://coveralls.io/r/nuysoft/Mock?branch=refactoring)
-[![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs)
-[![Bower version](https://badge.fury.io/bo/mockjs.png)](http://badge.fury.io/bo/mockjs)
-[![Dependency Status](https://gemnasium.com/nuysoft/Mock.png)](https://gemnasium.com/nuysoft/Mock)
+[![Build Status](https://api.travis-ci.org/nuysoft/Mock.svg)](http://travis-ci.org/nuysoft/Mock)
+[![Coverage Status](https://img.shields.io/coveralls/nuysoft/Mock.svg)](https://coveralls.io/r/nuysoft/Mock?branch=refactoring)
+[![NPM version](https://badge.fury.io/js/mockjs.svg)](http://badge.fury.io/js/mockjs)
+[![Bower version](https://badge.fury.io/bo/mockjs.svg)](http://badge.fury.io/bo/mockjs)
+[![Dependency Status](https://gemnasium.com/nuysoft/Mock.svg)](https://gemnasium.com/nuysoft/Mock)
 
 <!-- 
 [![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/nuysoft/Mock/counters/views-24h.png)](https://github.com/nuysoft/Mock/)

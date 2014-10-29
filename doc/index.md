@@ -5,7 +5,7 @@
     <span>Mock.js</span>
 </h1>
 
-<a href="http://travis-ci.org/nuysoft/Mock"><img data-src="https://api.travis-ci.org/nuysoft/Mock.png?branch=master" alt="Build Status"></a>
+<a href="http://travis-ci.org/nuysoft/Mock"><img data-src="https://api.travis-ci.org/nuysoft/Mock.svg?branch=master" alt="Build Status"></a>
 <!-- [![GitHub version](https://badge.fury.io/gh/nuysoft%2FMock.png)](http://badge.fury.io/gh/nuysoft%2FMock) -->
 <!-- [![NPM version](https://badge.fury.io/js/mockjs.png)](http://badge.fury.io/js/mockjs) -->
 <!-- [![Bower version](https://badge.fury.io/bo/mockjs.png)](http://badge.fury.io/bo/mockjs) -->
@@ -518,7 +518,7 @@ TODO 统计 -->
 **参数的含义和默认值**如下所示：
 
 * 参数 min：可选。指示随机自然数的最小值。默认值为 0。
-* 参数 max：可选。指示随机自然数的最小值。默认值为 9007199254740992。
+* 参数 max：可选。指示随机自然数的最大值。默认值为 9007199254740992。
 
 **使用示例**如下所示：
 
