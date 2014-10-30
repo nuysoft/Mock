@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         },
         qunit: {
             files: [
-                'test/qunit.html'
+                'test/mock.html'
             ]
         },
         nodeunit: {
