@@ -1,8 +1,4 @@
-/*! mockjs 0.2.0-alpha1 30-10-2014 02:05:10 *//*! mockjs 0.2.0-alpha1 30-10-2014 02:04:58 */
-/*! mockjs 0.2.0-alpha1 30-10-2014 02:04:45 */
-/*! mockjs 0.2.0-alpha1 30-10-2014 02:02:10 */
-/*! mockjs 0.2.0-alpha1 12-09-2014 15:21:18 */
-/*! src/fix/prefix-1.js */
+/*! mockjs 0.2.0-alpha1 04-11-2014 11:25:24 *//*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/fix/prefix-2.js */
     try {
@@ -1435,6 +1431,10 @@
                     // => "UuGQgSYk"
                     Random.string( 'aeiou', 1, 3 )
                     // => "ea"
+
+                其他实现
+                    // https://code.google.com/p/jslibs/wiki/JavascriptTips
+                    Math.random().toString(36).substr(2) 
             */
             string: function(pool, min, max) {
                 var length;
@@ -2235,10 +2235,12 @@
                 // TODO
                 // var formats = 'rgb hsl hsv'.split(' ')
                 // var hues = 'navy blue aqua teal olive green lime yellow orange red maroon fuchsia purple silver gray black'.split(' ')
+                // [Use ~~ and 0| instead of Math.floor for positive numbers](https://github.com/jed/140bytes/wiki/Byte-saving-techniques#use--and-0-instead-of-mathfloor-for-positive-numbers)
                 var color = Math.floor(Math.random() * (16 * 16 * 16 * 16 * 16 * 16 - 1)).toString(16);
                 color = "#" + ("000000" + color).slice(-6);
                 return color.toUpperCase();
             },
+            // http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
             // https://github.com/devongovett/color-generator/blob/master/index.js
             goldenRatioColor: function(saturation, value) {
                 this._goldenRatio = .618033988749895;
@@ -2337,6 +2339,12 @@
 
                     Random.shuffle(['a', 'e', 'i', 'o', 'u'])
                     // => ["o", "u", "e", "i", "a"]
+
+                其他的实现思路：
+                    // https://code.google.com/p/jslibs/wiki/JavascriptTips
+                    result = result.sort(function() {
+                        return Math.random() - 0.5
+                    })
             */
             shuffle: function shuffle(arr, min, max) {
                 arr = arr || [];
@@ -4129,6 +4137,7 @@
     Mock.heredoc = Util.heredoc;
     Mock.extend = Util.extend;
     Mock.Random = Random;
+    Mock.Handle = Handle;
     Mock.MockXMLHttpRequest = MockXMLHttpRequest;
     Mock.RegExpParser = parser;
     Mock.RegExpHandler = RegExpHandler;

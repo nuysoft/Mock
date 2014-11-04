@@ -1,4 +1,4 @@
-/*! mockjs 0.2.0-alpha1 30-10-2014 02:05:10 *//*! src/fix/prefix-1.js */
+/*! mockjs 0.2.0-alpha1 04-11-2014 11:25:24 *//*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/fix/prefix-2.js */
     try {
@@ -4137,6 +4137,7 @@
     Mock.heredoc = Util.heredoc;
     Mock.extend = Util.extend;
     Mock.Random = Random;
+    Mock.Handle = Handle;
     Mock.MockXMLHttpRequest = MockXMLHttpRequest;
     Mock.RegExpParser = parser;
     Mock.RegExpHandler = RegExpHandler;
