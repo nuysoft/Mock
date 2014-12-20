@@ -1284,6 +1284,38 @@ var Random = (function() {
         */
         name: function(middle) {
             return this.first() + ' ' + (middle ? this.first() + ' ' : '') + this.last()
+        },
+        /*
+            ##### Random.chineseName(count)
+
+            随机生成一个常见的中文姓名。
+
+            * Random.chineseName()
+            * Random.chineseName(count)
+
+            参数的含义和默认值如下所示：
+
+            * 参数 count：可选。数字。指示姓名的字数，默认为 2 到 3 的随机姓名。
+
+            使用示例如下所示：
+
+                Random.chineseName()
+                // => "林则徐"
+                Random.chineseName(2)
+                // => "马云"
+        */
+        chineseName: function(count) {
+            var familyNames = '赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐'.split('');
+            var names = '贵福生龙元全国胜学祥才发武新利清飞彬富顺信子杰涛昌成康星光天达安岩中茂进林有坚和彪博绍功松善厚庆磊民友裕河哲江超浩亮政谦亨奇固之轮翰朗伯宏言若鸣朋斌梁栋维启克伦翔旭鹏月莺媛艳瑞凡佳嘉琼勤珍贞莉桂娣叶璧璐娅琦晶妍茜秋珊莎锦黛青倩婷姣婉娴瑾颖露瑶怡婵雁蓓'.split('');
+            if (typeof count !== 'number') {
+                count = Math.random() > 0.66 ? 2 : 3;
+            }
+            var familyName = this.pick(familyNames);
+            var name = '';
+            for (var i=0; i<count; i++) {
+                name += this.pick(familyNames);
+            }
+            return familyName + name;
         }
     })
     /*
