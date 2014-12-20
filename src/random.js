@@ -1320,7 +1320,7 @@ var Random = (function() {
             var familyName = this.pick(familyNames);
             var name = '';
             for (var i=0; i<count; i++) {
-                name += this.pick(familyNames);
+                name += this.pick(names);
             }
             return familyName + name;
         }
