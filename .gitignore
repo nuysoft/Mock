@@ -6,3 +6,6 @@ bower_components
 build
 *.TODO
 PLAN.md
+xhr.js
+MockHttpRequest.js
+coverage

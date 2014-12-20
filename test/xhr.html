@@ -1,0 +1,24 @@
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../dist/Mock.js"></script>
+<script src="../src/xhr.js"></script>
+<script>
+    Mock.mock('/dist/mock.js', {
+        list: []
+    })
+
+    var xhr = new FakeXMLHttpRequest()
+    // xhr.onreadystatechange = function(){
+
+    // }
+    console.group('open')
+    xhr.open('get', '/dist/mock.js', true)
+    console.groupEnd()
+
+    console.group('send')
+    xhr.send()
+    console.groupEnd()
+
+    // console.group('abort')
+    // xhr.abort()
+    // console.groupEnd()
+</script>

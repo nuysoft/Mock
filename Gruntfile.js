@@ -1,4 +1,21 @@
 'use strict';
+
+var Mock = require('./dist/mock.js')
+
+// http://www.network-science.de/ascii/ doom
+console.log(Mock.heredoc(function() {
+    /*
+___  ___              _        _      
+|  \/  |             | |      (_)     
+| .  . |  ___    ___ | | __    _  ___ 
+| |\/| | / _ \  / __|| |/ /   | |/ __|
+| |  | || (_) || (__ |   <  _ | |\__ \
+\_|  |_/ \___/  \___||_|\_\(_)| ||___/
+                             _/ |     
+                            |__/      
+     */
+}))
+
 module.exports = function(grunt) {
 
     // Displays the execution time of grunt tasks. Can help when optimizing build times.
@@ -8,6 +25,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         jshint: {
             files: ['Gruntfile.js', 'package.json', 'src/**/*.js', 'test/**/*.js',
+                '!src/xhr.js', '!src/MockHttpRequest.js',
                 '!**/*-prefix.js', '!**/*-suffix.js'
             ],
             options: {
@@ -16,15 +34,11 @@ module.exports = function(grunt) {
         },
         qunit: {
             files: [
-                'test/mock.html', 'test/mock-*.html',
-                'test/mock4tpl.html', 'test/mock4tpl-*.html',
-                'test/mock4xtpl.html', 'test/mock4xtpl-*.html',
-                'test/**/*.html',
-                '!test/mock4xtpl.html'
+                'test/mock.html'
             ]
         },
         nodeunit: {
-            all: ['test/nodeuinit/*.js']
+            all: ['test/nodeunit/*.js', '!test/**/noop.*']
         },
         watch: {
             dev: {
@@ -57,6 +71,7 @@ module.exports = function(grunt) {
                 src: ['src/mock-prefix.js',
                     'src/util.js', 'src/random.js',
                     'src/mock.js',
+                    // 'src/xhr.js',
                     'src/mockjax.js',
                     'src/expose.js',
                     'src/mock4tpl.js',

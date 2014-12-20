@@ -1,13 +1,13 @@
-/*! mockjs 26-05-2014 22:49:52 */
+/*! mockjs 23-06-2014 15:57:37 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
     https://github.com/nuysoft/Mock
-    墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
+    墨智 nuysoft@gmail.com
 */
 (function(undefined) {
     var Mock = {
-        version: "0.1.2",
+        version: "0.1.5",
         _mocked: {}
     };
     /*! src/util.js */
@@ -709,7 +709,7 @@
         return Random;
     }();
     /*! src/mock.js */
-    var rkey = /(.+)\|(?:\+(\d+)|(\d+-?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /(\d+)-?(\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g;
+    var rkey = /(.+)\|(?:\+(\d+)|([\+\-]?\d+-?[\+\-]?\d*)?(?:\.(\d+-?\d*))?)/, rrange = /([\+\-]?\d+)-?([\+\-]?\d+)?/, rplaceholder = /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g;
     Mock.extend = Util.extend;
     Mock.mock = function(rurl, rtype, template) {
         if (arguments.length === 1) {
@@ -804,7 +804,7 @@
             return result;
         },
         object: function(options) {
-            var result = {}, keys, key, parsedKey, inc, i;
+            var result = {}, keys, fnKeys, key, parsedKey, inc, i;
             if (options.rule.min) {
                 keys = Util.keys(options.template);
                 keys = Random.shuffle(keys);
@@ -821,7 +821,14 @@
                     options.context.path.pop();
                 }
             } else {
+                keys = [];
+                fnKeys = [];
                 for (key in options.template) {
+                    (typeof options.template[key] === "function" ? fnKeys : keys).push(key);
+                }
+                keys = keys.concat(fnKeys);
+                for (i = 0; i < keys.length; i++) {
+                    key = keys[i];
                     parsedKey = key.replace(rkey, "$1");
                     options.context.path.push(parsedKey);
                     result[parsedKey] = Handle.gen(options.template[key], key, {
@@ -906,8 +913,8 @@
             rplaceholder.exec("");
             var parts = rplaceholder.exec(placeholder), key = parts && parts[1], lkey = key && key.toLowerCase(), okey = this._all()[lkey], params = parts && parts[2] || "";
             try {
-                eval("!function(){ params = [].splice.call(arguments, 0 ) }(" + params + ")");
-            } catch (e) {
+                params = eval("(function(){ return [].splice.call(arguments, 0 ) })(" + params + ")");
+            } catch (error) {
                 params = parts[2].split(/,\s*/);
             }
             if (obj && key in obj) return obj[key];
@@ -965,7 +972,7 @@
                 statusText: "",
                 open: jQuery.noop,
                 send: function() {
-                    this.onload();
+                    if (this.onload) this.onload();
                 },
                 setRequestHeader: jQuery.noop,
                 getAllResponseHeaders: jQuery.noop,
@@ -981,12 +988,10 @@
                     return convert(item, options);
                 };
                 options.xhr = mockxhr;
+                if (originalOptions.dataType !== "script") return "json";
             }
-            return "json";
         }
-        jQuery.ajaxPrefilter("json", prefilter);
-        jQuery.ajaxPrefilter("jsonp", prefilter);
-        jQuery.ajaxPrefilter("script", prefilter);
+        jQuery.ajaxPrefilter("json jsonp script", prefilter);
         return Mock;
     };
     if (typeof jQuery != "undefined") Mock.mockjax(jQuery);

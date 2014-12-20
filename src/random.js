@@ -685,6 +685,13 @@ var Random = (function() {
             ![](http://dummyimage.com/200x100/02adea&text=hello)
             ![](http://dummyimage.com/200x100/00405d/FFF&text=mock)
             ![](http://dummyimage.com/200x100/ffcc33/FFF.png&text=js)
+
+            替代图片源
+                http://fpoimg.com/
+            参考自 
+                http://rensanning.iteye.com/blog/1933310
+                http://code.tutsplus.com/articles/the-top-8-placeholders-for-web-designers--net-19485
+            
         */
         image: function(size, background, foreground, format, text) {
             if (arguments.length === 4) {

@@ -11,7 +11,7 @@ function find(options) {
             (!item.rurl || match(item.rurl, options.url)) &&
             (!item.rtype || match(item.rtype, options.type.toLowerCase()))
         ) {
-            // console.log("[mock]", options.url, ">", item.rurl)
+            // console.log('[mock]', options.url, '>', item.rurl)
             return item
         }
     }
@@ -48,7 +48,7 @@ Mock.mockjax = function mockjax(jQuery) {
             statusText: '',
             open: jQuery.noop,
             send: function() {
-                this.onload()
+                if (this.onload) this.onload()
             },
             setRequestHeader: jQuery.noop,
             getAllResponseHeaders: jQuery.noop,
@@ -64,18 +64,19 @@ Mock.mockjax = function mockjax(jQuery) {
             options.dataFilter =
                 options.converters['text json'] =
                 options.converters['text jsonp'] =
-                options.converters["text script"] =
-                options.converters["script json"] = function() {
+                options.converters['text script'] =
+                options.converters['script json'] = function() {
                     return convert(item, options)
             }
             options.xhr = mockxhr
+
+            if (originalOptions.dataType !== 'script') return 'json'
         }
-        return 'json'
     }
 
-    jQuery.ajaxPrefilter("json", prefilter)
-    jQuery.ajaxPrefilter("jsonp", prefilter)
-    jQuery.ajaxPrefilter("script", prefilter)
+    // #22 步加载js文件的时候发现问题
+    // #23 Mock.mockjax 导致 $.getScript 不执行回调
+    jQuery.ajaxPrefilter('json jsonp script', prefilter)
 
     return Mock
 }
@@ -95,7 +96,7 @@ if (typeof Zepto != 'undefined') {
             responseXML: null,
             state: 2,
             status: 200,
-            statusText: "success",
+            statusText: 'success',
             timeoutTimer: null
         }
 
@@ -126,7 +127,7 @@ if (typeof KISSY != 'undefined' && KISSY.add) {
             responseXML: null,
             state: 2,
             status: 200,
-            statusText: "success",
+            statusText: 'success',
             timeoutTimer: null
         };
 

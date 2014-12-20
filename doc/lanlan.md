@@ -8,6 +8,18 @@ controls: true
 
 --
 
+<!-- 
+    随堂问题：
+
+    我在分享的过程中会做一些提问和调查，需要各位的配合，我会根据你们的回答调整分享的内容。
+
+    * 使用过 Mock.js 的请举一下手
+    * 使用过 RAP（阿里妈妈）、IF（天猫）、中途岛（淘宝）、River（集团）之一的请举一下手
+    * 了解过 http://json-schema.org/ 的请举一下手
+    * 访问过 http://www.json-generator.com/ 的请举一下手
+
+ -->
+
 <style type="text/css">
     @font-face {
         font-family: 'logo';
@@ -92,6 +104,13 @@ controls: true
 
 --
 
+<style>
+    .question {
+        font-size: 250%;
+        font-weight: bold;
+    }
+</style>
+
 ### 开始之前
 
 [mockjs.com](http://mockjs.com/)
@@ -99,6 +118,30 @@ controls: true
 [![](../demo/assets/doc.png)](/doc/lanlan.html)
 
 <!-- 数据模板编辑器 -->
+
+--
+
+### 开始之前 - ？
+
+<p class="question">Mock.js</p>
+
+--
+
+### 开始之前 - ？
+
+<p class="question">RAP、IF、River、中途岛</p>
+
+--
+
+### 开始之前 - ？
+
+<p class="question">[json-schema.org](http://json-schema.org/)</p>
+
+--
+
+### 开始之前 - ？
+
+<p class="question">[json-generator.com](http://www.json-generator.com/)</p>
 
 --
 
@@ -191,13 +234,29 @@ controls: true
 
 ### Mock.js 是什么
 
-<span class="label label-success mr10 mb10">期望1</span> 引入方便，用法简单
+<span class="label label-success mr10 mb10">期望1</span> 生成随机数据
 
-<span class="label label-success mr10 mb10">期望2</span> 数据类型丰富
+<span class="label label-success mr10 mb10">期望2</span> 拦截 Ajax 请求
+
+--
+
+### Mock.js 是什么
 
 <span class="label label-success mr10 mb10">期望3</span> 开发无侵入
 
-<span class="label label-success mr10 mb10">期望4</span> 文档一定要详细
+<span class="label label-success mr10 mb10">期望4</span> 引入方便，用法简单
+
+<span class="label label-success mr10 mb10">期望5</span> 数据类型丰富
+
+<span class="label label-success mr10 mb10">期望6</span> 符合直觉的接口
+
+<span class="label label-success mr10 mb10">期望7</span> 一目了然的文档
+
+--
+
+### Mock.js 是什么
+
+# <span class="label label-success mr10 mb10">可用</span> <span class="label label-success mr10 mb10">好用</span>
 
 --
 
@@ -205,21 +264,21 @@ controls: true
 
 一款模拟数据生成器。
 
-<span class="label label-success mr10 mb10">功能1</span> 基于 数据模板 生成 模拟数据
+<span class="label label-success mr10 mb10">功能 1</span> 基于 数据模板 生成 模拟数据
 
-<span class="label label-success mr10 mb10">功能2</span> 类型丰富的 随机数据
+<span class="label label-success mr10 mb10">功能 2</span> 类型丰富的 随机数据
 
-<span class="label label-success mr10 mb10">功能3</span> 模拟 Ajax 请求
+<span class="label label-success mr10 mb10">功能 3</span> 模拟 Ajax 请求
 
-<span class="label label-success mr10 mb10">功能4</span> ~~基于 HTML 模板生成模拟数据~~
+<span class="label label-success mr10 mb10">功能 4</span> ~~基于 HTML 模板生成模拟数据~~
 
 --
 
 ### Mock.js 是什么
 
-<span class="label label-primary mr10 mb10">价值1</span> 前端攻城师独立于后端进行开发
+<span class="label label-primary mr10 mb10">价值 1</span> 前端攻城师独立于后端进行开发
 
-<span class="label label-primary mr10 mb10">价值2</span> 提高单元测试覆盖率
+<span class="label label-primary mr10 mb10">价值 2</span> 提高单元测试覆盖率
 
 --
 
@@ -283,8 +342,8 @@ controls: true
 <span class="label label-success mr10 mb10">发起 Ajax 请求</span>
 
     $.ajax({
-        url: 'hello.json'
-        dataType: 'json',
+        url: 'hello.json',
+        dataType: 'json'
     }).done(function(data, status, xhr){
         console.log(
             JSON.stringify(data, null, 4)
@@ -311,7 +370,7 @@ controls: true
 
 ### 数据模板
 
-每个属性由 3 部分构成：
+每个属性由 <span class="label label-success">3</span> 部分构成：
 
     // 属性名   name
     // 生成规则 rule
@@ -403,7 +462,7 @@ controls: true
 
 <span class="label label-success mb10">Mock.Random.extend()</span>
 
-    Random.extend({
+    Mock.Random.extend({
         hero: function() {
             return this.pick([
                 '盖伦 德玛西亚',
@@ -465,6 +524,11 @@ controls: true
     var mock = ~location.search.indexOf('mock')
     if(mock) KISSY.use('app/models/data')
 
+<!-- 
+    // protocol://host:port/pathname?search&mock
+    // http://host:port/index.html?mock
+ -->
+
 --
 
 ### 未来规划
@@ -492,11 +556,11 @@ controls: true
 
 1. 你如何看待 JSON Schema？
 
-    非常不友好。
+    看上去很美。
 
 2. Mock.js 如何协同 RAP（阿里妈妈）、IF（天猫）、中途岛（淘宝）、River（集团）？
 
-    RAP、中途岛、River 目前基于 Mock.js 生成随机数据。
+    目前 RAP、中途岛、River 基于 Mock.js 生成随机数据。
 
 --
 ### 问答
@@ -507,6 +571,11 @@ controls: true
 </p>
 
 --
+
+<h1 class="mock_color">求 Star</h1>
+
+--
+
 ### 没有了
 
 <p style="text-align: center; font-size: 64px;">谢谢各位的聆听</p>

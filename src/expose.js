@@ -4,6 +4,7 @@
     把 Expose 部分放在代码头部非常直观 <https://github.com/kennethcachia/Background-Check/blob/master/background-check.js>
 */
 Mock.Util = Util
+// Mock.FakeXMLHttpRequest = FakeXMLHttpRequest
 Mock.Random = Random
 Mock.heredoc = Util.heredoc
 

@@ -31,12 +31,12 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
-        Development Version (0.1.2)
+        Development Version (0.1.5)
     </a> - <i>71kB, Uncompressed</i>
 </p>
 <p>
     <a href="./dist/mock-min.js" class="btn btn-primary w250">
-        Production Version (0.1.2)
+        Production Version (0.1.5)
     </a> - <i>31kB, Minified</i>
 </p>
 <p>
@@ -1358,3 +1358,10 @@ TODO 统计 -->
     Random.increment(1000)
     // => 1101
 
+---
+
+## 感谢
+
+最初的灵感来自 [Angry Birds of JavaScript- Green Bird: Mocking Introduction](http://www.elijahmanor.com/angry-birds-of-javascript-green-bird-mocking/)，语法参考了 [mockJSON](https://github.com/mennovanslooten/mockJSON)，随机数据参考了 [Chance.js](http://chancejs.com/)。
+
+<!-- 灵感来自 [Elijah Manor])(http://elijahmanor.com/) 的系列博文 [Angry Birds of JavaScript Series](http://www.elijahmanor.com/angry-birds-of-javascript-series/) 中的 [Angry Birds of JavaScript- Green Bird: Mocking Introduction](http://www.elijahmanor.com/angry-birds-of-javascript-green-bird-mocking/) -->
