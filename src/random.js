@@ -1243,7 +1243,6 @@ var Random = (function() {
                 "Brenda", "Amy", "Anna"
             ])
             return this.pick(names)
-            return this.capitalize(this.word())
         },
         /*
             ##### Random.last()
@@ -1268,7 +1267,6 @@ var Random = (function() {
                 "Young", "Allen"
             ]
             return this.pick(names)
-            return this.capitalize(this.word())
         },
         /*
             ##### Random.name(middle)
