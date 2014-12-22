@@ -5,6 +5,9 @@
   "authors": [
     "nuysoft <nuysoft@gmail.com>"
   ],
+  "main": [
+    "dist/mock.js"
+  ],
   "license": "MIT",
   "ignore": [
     "**/.*",
