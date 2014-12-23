@@ -1,8 +1,8 @@
 {
 	"expr": true,
-    "node": true,
     "asi": true,
-    "unused": "vars",
-    "supernew": true,
-    "strict": false
+    "strict": false,
+    "undef": true,
+    "unused": "strict",
+    "multistr": true
 }

@@ -19,8 +19,8 @@ The official site: <http://mockjs.com>
 ## Features
 
 * Generate simulated data according to the data template
-* Provide request/response mocking for ajax requests with jQuery and KISSY
-* Generate simulated data according to HTML-based templates
+* Provide request/response mocking for ajax requests
+* ~~Generate simulated data according to HTML-based templates~~
 
 <!-- **TODO** This library is loosely inspired by Elijah Manor's [post](http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html), [mennovanslooten/mockJSON](https://github.com/mennovanslooten/mockJSON), [appendto/jquery-mockjax](https://github.com/appendto/jquery-mockjax) and [victorquinn/chancejs](https://github.com/victorquinn/chancejs/). -->
 

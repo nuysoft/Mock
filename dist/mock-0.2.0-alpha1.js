@@ -1,4 +1,4 @@
-/*! mockjs 0.2.0-alpha1 04-11-2014 11:25:24 *//*! src/fix/prefix-1.js */
+/*! mockjs 0.2.0-alpha1 22-12-2014 15:10:31 *//*! src/fix/prefix-1.js */
 (function(factory) {
     /*! src/fix/prefix-2.js */
     try {

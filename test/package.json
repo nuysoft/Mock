@@ -1,0 +1,6 @@
+{
+  "name": "test",
+  "dependencies": {
+    "chai": "^1.10.0"
+  }
+}

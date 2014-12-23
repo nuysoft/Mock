@@ -1,31 +1,43 @@
-"use strict";
+/* global define */
+define(
+    [
+        'mock/handler', 'mock/util',
+        'mock/random/random',
+        'mock/xhr/xhr',
+        'mock/regexp/parser', 'mock/regexp/handler',
+        'mock/schema/schema',
+        'mock/valid/valid'
+    ],
+    function(
+        Handler, Util,
+        Random,
+        XHR,
+        RegExpParser, RegExpHandler,
+        toJSONSchema,
+        valid
+    ) {
 
-/* global window    */
-/* global expose    */
-/* global Random    */
-/* global Handle      */
-
-(function(factory) {
-
-    expose(['random', 'handle'], factory, function() {
-        window.Mock = factory(Random, Handle)
-    })
-
-}(function(Random, Handle) {
-
-    // BEGIN(BROWSER)
-
-    /*!
-        Mock - 模拟请求 & 模拟数据
-        https://github.com/nuysoft/Mock
-        墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
-    */
-    var Mock = function() {
-
+        /*!
+            Mock - 模拟请求 & 模拟数据
+            https://github.com/nuysoft/Mock
+            墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
+        */
         var Mock = {
             version: '0.2.0-alpha1',
+            Handler: Handler,
+            Util: Util,
+            heredoc: Util.heredoc,
+            Random: Random,
+            XHR: XHR,
+            RegExpParser: RegExpParser,
+            RegExpHandler: RegExpHandler,
+            toJSONSchema: toJSONSchema,
+            valid: valid,
             _mocked: {}
         }
+
+        // 避免循环依赖
+        XHR.Mock = Mock
 
         /*
             * Mock.mock( template )
@@ -40,7 +52,7 @@
         Mock.mock = function(rurl, rtype, template) {
             // Mock.mock(template)
             if (arguments.length === 1) {
-                return Handle.gen(rurl)
+                return Handler.gen(rurl)
             }
             // Mock.mock(rurl, template)
             if (arguments.length === 2) {
@@ -56,11 +68,5 @@
         }
 
         return Mock
-
-    }();
-
-    // END(BROWSER)
-
-    return Mock
-
-}));
+    }
+)

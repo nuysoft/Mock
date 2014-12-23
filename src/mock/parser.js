@@ -1,0 +1,47 @@
+/* global define */
+define(['mock/constant', 'mock/random/random'], function(Constant, Random) {
+	/* jshint -W041 */
+	return {
+		parse: function(name) {
+			name = name == undefined ? '' : (name + '')
+
+			var parameters = (name || '').match(Constant.RE_KEY)
+
+			var range = parameters && parameters[3] && parameters[3].match(Constant.RE_RANGE)
+			var min = range && range[1] && parseInt(range[1], 10) // || 1
+			var max = range && range[2] && parseInt(range[2], 10) // || 1
+				// repeat || min-max || 1
+				// var count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1
+			var count = range ? !range[2] ? parseInt(range[1], 10) : Random.integer(min, max) : null
+
+			var decimal = parameters && parameters[4] && parameters[4].match(Constant.RE_RANGE)
+			var dmin = decimal && parseInt(decimal[1], 10) // || 0,
+			var dmax = decimal && parseInt(decimal[2], 10) // || 0,
+				// int || dmin-dmax || 0
+			var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : null
+
+			var result = {
+				// 1 name, 2 inc, 3 range, 4 decimal
+				parameters: parameters,
+				// 1 min, 2 max
+				range: range,
+				min: min,
+				max: max,
+				// min-max
+				count: count,
+				// 是否有 decimal
+				decimal: decimal,
+				dmin: dmin,
+				dmax: dmax,
+				// dmin-dimax
+				dcount: dcount
+			}
+
+			for (var r in result) {
+				if (result[r] != undefined) return result
+			}
+
+			return {}
+		}
+	}
+})

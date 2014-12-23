@@ -8,7 +8,6 @@
     https://github.com/visionmedia/commander.js/tree/master/examples
 
     sudo npm install ./ -g
-
 */
 
 var path = require('path')

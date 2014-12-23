@@ -1,7 +1,7 @@
 {
   "name": "Mock.js",
-  "version": "0.0.0",
-  "homepage": "https://github.com/nuysoft/MockService",
+  "version": "0.2.0-alpha1",
+  "homepage": "https://github.com/nuysoft/Mock",
   "authors": [
     "nuysoft <nuysoft@gmail.com>"
   ],
@@ -10,18 +10,15 @@
     "**/.*",
     "node_modules",
     "bower_components",
+    "src",
     "test",
-    "tests"
+    "doc",
+    "editor",
+    "package.json",
+    "gulpfile.js",
+    "AUTHORS.txt",
+    "CONTRIBUTING.md",
+    "HISTORY.md"
   ],
-  "devDependencies": {
-    "jquery": "*",
-    "bootstrap": "~3.1.1",
-    "codemirror": "~4.3.0",
-    "highlightjs": "~8.0.0",
-    "kissy": "~1.4.4",
-    "seajs": "*",
-    "js-beautify": "~1.5.1",
-    "qunit": "~1.14.0",
-    "underscore": "~1.6.0"
-  }
+  "devDependencies": {}
 }

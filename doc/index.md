@@ -128,7 +128,7 @@ Mock.js 已入驻 [KISSY Gallery](https://github.com/kissygalleryteam)，阿里�
 
 Mock.js 的语法规范包括两部分：
 
-1. 数据模板定义（Data Temaplte Definition，DTD）
+1. 数据模板定义（Data Template Definition，DTD）
 2. 数据占位符定义（Data Placeholder Definition，DPD）
 
 ### 数据模板定义 DTD

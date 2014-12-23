@@ -11,25 +11,18 @@
   ],
   "author": "nuysoft@gmail.com",
   "dependencies": {
-    "commander": "~2.2.0"
+    "commander": "*"
   },
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-cleaver": "~0.3.2",
-    "grunt-contrib-concat": "~0.4.0",
-    "grunt-contrib-connect": "~0.8.0",
-    "grunt-contrib-copy": "~0.5.0",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-nodeunit": "~0.4.1",
-    "grunt-contrib-uglify": "~0.5.0",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-markdown": "~0.6.1",
-    "grunt-coveralls": "~1.0.0",
-    "grunt-qunit-istanbul": "~0.4.5",
-    "load-grunt-tasks": "~0.6.0",
-    "regexp": "^1.0.0",
-    "time-grunt": "~0.3.2",
-    "underscore": "~1.6.0"
+    "gulp": "*",
+    "gulp-connect": "*",
+    "gulp-coveralls": "*",
+    "gulp-istanbul": "*",
+    "gulp-jshint": "*",
+    "gulp-mocha": "*",
+    "gulp-mocha-phantomjs": "*",
+    "gulp-requirejs": "*",
+    "jshint-stylish": "*"
   },
   "repository": {
     "type": "git",
@@ -37,7 +30,8 @@
   },
   "main": "./dist/mock.js",
   "scripts": {
-    "test": "grunt travis --verbose"
+    "test": "gulp mocha",
+    "coveralls": "gulp coveralls"
   },
   "bin": {
     "random": "bin/random"
