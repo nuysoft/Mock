@@ -1,6 +1,6 @@
 # Mock.js
 <!-- 模拟请求 & 模拟数据 -->
-[![Build Status](https://api.travis-ci.org/nuysoft/Mock.svg)](http://travis-ci.org/nuysoft/Mock)
+[![Build Status](https://travis-ci.org/nuysoft/Mock.svg?branch=refactoring)](https://travis-ci.org/nuysoft/Mock)
 [![Coverage Status](https://img.shields.io/coveralls/nuysoft/Mock.svg)](https://coveralls.io/r/nuysoft/Mock?branch=refactoring)
 [![NPM version](https://badge.fury.io/js/mockjs.svg)](http://badge.fury.io/js/mockjs)
 [![Bower version](https://badge.fury.io/bo/mockjs.svg)](http://badge.fury.io/bo/mockjs)

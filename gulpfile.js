@@ -100,6 +100,7 @@ gulp.task('madge', function( /*callback*/ ) {
 gulp.task('istanbul', function(cb) {
     gulp.src(['test/test.coveralls.js'])
         .pipe(istanbul()) // Covering files
+        .pipe(istanbul.hookRequire()) // Force `require` to return covered files
         .on('finish', function() {
             gulp.src(['test/test.coveralls.js'])
                 .pipe(mocha({}))
