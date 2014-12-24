@@ -17,7 +17,8 @@ The official site: <http://mockjs.com>
 * Provide request/response mocking for ajax requests
 * ~~Generate simulated data according to HTML-based templates~~
 
-<!-- **TODO** This library is loosely inspired by Elijah Manor's [post](http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html), [mennovanslooten/mockJSON](https://github.com/mennovanslooten/mockJSON), [appendto/jquery-mockjax](https://github.com/appendto/jquery-mockjax) and [victorquinn/chancejs](https://github.com/victorquinn/chancejs/). -->
+This library is loosely inspired by Elijah Manor's post [Mocking
+Introduction](http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html), [mennovanslooten/mockJSON](https://github.com/mennovanslooten/mockJSON), [appendto/jquery-mockjax](https://github.com/appendto/jquery-mockjax) and [victorquinn/chancejs](https://github.com/victorquinn/chancejs/).
 
 ## Questions?
 If you have any questions, please feel free to ask through [New Issue](https://github.com/nuysoft/Mock/issues/new).
@@ -27,8 +28,3 @@ Make sure the problem you're addressing is reproducible. Use <http://jsbin.com/>
 
 ## License
 Mock.js is available under the terms of the [MIT License](./MIT-LICENSE.txt).
-
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nuysoft/mock/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
