@@ -109,11 +109,12 @@ gulp.task('istanbul', function(cb) {
         })
 })
 gulp.task('istanbulForMochaPhantomJS', function(cb) {
-    gulp.src(['dist/*.js'])
+    gulp.src(['dist/mock.js'])
         .pipe(istanbul()) // Covering files
+        .pipe(istanbul.hookRequire()) // Force `require` to return covered files
         .on('finish', function() {
-            gulp.src(['test/*.html'])
-                .pipe(mochaPhantomJS({}))
+            gulp.src(['test/test.mock.html'])
+                .pipe(mochaPhantomJS({reporter: 'spec'}))
                 .pipe(istanbul.writeReports()) // Creating the reports after tests runned
                 .on('end', cb)
         })
