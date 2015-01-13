@@ -1,0 +1,127 @@
+/* */
+@font-face {
+    font-family: 'logo';
+    src: url('http://at.alicdn.com/t/font_1390195988_9420388.eot'); /* IE9*/
+    src: url('http://at.alicdn.com/t/font_1390195988_9420388.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('http://at.alicdn.com/t/font_1390195989_0386753.woff') format('woff'), /* chrome、firefox */
+    url('http://at.alicdn.com/t/font_1390195988_7969282.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('http://at.alicdn.com/t/font_1390195989_0668917.svg#svgFontName') format('svg'); /* iOS 4.1- */
+}
+.iconlogo {
+    font-family: "logo";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    display: inline-block;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+/* */
+.mb10 {
+    margin-bottom: 10px;
+}
+.mb20 {
+    margin-bottom: 20px;
+}
+.bg {
+    background-image: url(bg.png);
+}
+/* */
+.nav {
+    height: 50px;
+    line-height: 50px;
+    vertical-align: middle;
+    background-color: #339966;
+}
+.nav .name {
+    float: left;
+    color: #FFF;
+    font-size: 18px;
+}
+.nav .name img {
+    height: 50px;
+    padding-left: 20px;
+}
+.nav .items {
+    float: right;
+    padding: 0 20px;
+}
+.nav .items a {
+    color: #FFF;
+    margin-left: 20px;
+}
+
+/* hero */
+.hero {
+    padding: 20px 0;
+    background-image: url(bg.png);
+    background-color: #339966;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #FFF;
+}
+.hero .iconlogo {
+    font-size: 160px;
+    margin-bottom: -50px;
+}
+.hero .title {
+    margin-bottom: 20px;
+}
+.hero .title .name {
+    position: relative;
+}
+.hero .title .version {
+    position: absolute;
+    bottom: 5px;
+    font-size: 60%;
+    font-weight: normal;
+    margin-left: 10px;
+}
+/* build */
+.build {
+
+}
+.build .item-header {
+    text-align: center;
+}
+.build .item-content {
+    text-align: center;
+}
+.build .item-content .link {
+    width: 260px;
+}
+.build .item-content .link-dev {
+    background-color: #339966;
+}
+.build .item-content code {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    width: 260px;
+}
+
+.virtue {
+
+}
+.virtue .item {
+    height: 100px;
+}
+.virtue .item-header {
+    text-align: center;
+}
+
+.thx {
+    background-image: url(bg.png);
+    background-color: #339966;
+    color: #FFF;
+    padding: 30px 0 40px 0;
+}
+.thx a {
+    color: #FFF;
+}

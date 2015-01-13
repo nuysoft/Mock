@@ -283,6 +283,7 @@ define(function() {
             if (typeof document !== 'undefined') {
                 canvas = document.createElement('canvas')
             } else {
+                // TODO
                 // var Canvas = require('canvas')
                 // canvas = new Canvas()
             }

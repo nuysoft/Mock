@@ -1,0 +1,9 @@
+{
+  "name": "test",
+  "dependencies": {},
+  "devDependencies": {
+    "requirejs": "*",
+    "underscore": "*",
+    "jquery": "~2.1.1"
+  }
+}
