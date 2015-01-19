@@ -730,6 +730,24 @@ TODO 统计 -->
     Random.name(true)
     // => "Helen Carol Martinez"
 
+#### Random.chineseName()
+
+* Random.chineseName()
+* Random.chineseName(count)
+
+随机生成一个常见的英文姓名。
+
+**参数的含义和默认值**如下所示：
+
+* 参数 count：可选。数字。指示姓名的字数，默认为 2 到 3 的随机姓名。
+
+**使用示例**如下所示：
+
+    Random.chineseName()
+    // => "林则徐"
+    Random.chineseName(2)
+    // => "马云"
+
 ### Web
 
 #### Random.url()
