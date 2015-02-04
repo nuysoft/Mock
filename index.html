@@ -12,11 +12,10 @@
         }
 
         .page-catalog > ul {
-            padding-left: 0px;
+            padding-left: 0;
         }
         .page-catalog ul {
             padding-left: 20px;
-            /*list-style: none;*/
         }
 
         .gist .gist-file .gist-data .line-numbers {
@@ -61,15 +60,13 @@
           margin-bottom: 10px;
         }
 
-    </style>
-    <style type="text/css">
         @font-face {
             font-family: 'logo';
-            src: url('http://at.alicdn.com/t/font_1390195988_9420388.eot'); /* IE9*/
-            src: url('http://at.alicdn.com/t/font_1390195988_9420388.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('http://at.alicdn.com/t/font_1390195989_0386753.woff') format('woff'), /* chrome、firefox */
-            url('http://at.alicdn.com/t/font_1390195988_7969282.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-            url('http://at.alicdn.com/t/font_1390195989_0668917.svg#svgFontName') format('svg'); /* iOS 4.1- */
+            src: url('./demo/assets/fonts/font_1390195988_9420388.eot'); /* IE9*/
+            src: url('./demo/assets/fonts/font_1390195988_9420388.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('./demo/assets/fonts/font_1390195989_0386753.woff') format('woff'), /* chrome、firefox */
+            url('./demo/assets/fonts/font_1390195988_7969282.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+            url('./demo/assets/fonts/font_1390195989_0668917.svg#svgFontName') format('svg'); /* iOS 4.1- */
         }
 
         .iconlogo {
@@ -89,10 +86,9 @@
   <body>
     <div id="sidebar" class="interface"></div>
   
-    <script src="./bower_components/jquery/jquery.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
     <script src="./dist/mock.js"></script>
-    
-    
+
     <div class="container"><!-- ## Mock.js -->
 
 <p><h2 class="hide" href="#">Mock.js</h2>
@@ -1313,6 +1309,21 @@ Random.title(3, 5)
 // =&gt; &quot;Larry Wilson&quot;
 Random.name(true)
 // =&gt; &quot;Helen Carol Martinez&quot;</code></pre>
+<h4>Random.chineseName()</h4>
+<ul>
+<li>Random.chineseName()</li>
+<li>Random.chineseName(count)</li>
+</ul>
+<p>随机生成一个常见的英文姓名。</p>
+<p><strong>参数的含义和默认值</strong>如下所示：</p>
+<ul>
+<li>参数 count：可选。数字。指示姓名的字数，默认为 2 到 3 的随机姓名。</li>
+</ul>
+<p><strong>使用示例</strong>如下所示：</p>
+<pre><code>Random.chineseName()
+// =&gt; &quot;林则徐&quot;
+Random.chineseName(2)
+// =&gt; &quot;马云&quot;</code></pre>
 <h3>Web</h3>
 <h4>Random.url()</h4>
 <ul>
@@ -1427,7 +1438,7 @@ Random.increment(1000)
             $('table').addClass('table table-bordered')
         })
     </script>
-  
+
     <link href="./node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
     <link href="./node_modules/codemirror/theme/neat.css" rel="stylesheet">
     <script src="./node_modules/codemirror/lib/codemirror.js"></script>

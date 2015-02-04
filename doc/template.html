@@ -12,11 +12,10 @@
         }
 
         .page-catalog > ul {
-            padding-left: 0px;
+            padding-left: 0;
         }
         .page-catalog ul {
             padding-left: 20px;
-            /*list-style: none;*/
         }
 
         .gist .gist-file .gist-data .line-numbers {
@@ -61,15 +60,13 @@
           margin-bottom: 10px;
         }
 
-    </style>
-    <style type="text/css">
         @font-face {
             font-family: 'logo';
-            src: url('http://at.alicdn.com/t/font_1390195988_9420388.eot'); /* IE9*/
-            src: url('http://at.alicdn.com/t/font_1390195988_9420388.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-            url('http://at.alicdn.com/t/font_1390195989_0386753.woff') format('woff'), /* chrome、firefox */
-            url('http://at.alicdn.com/t/font_1390195988_7969282.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-            url('http://at.alicdn.com/t/font_1390195989_0668917.svg#svgFontName') format('svg'); /* iOS 4.1- */
+            src: url('./demo/assets/fonts/font_1390195988_9420388.eot'); /* IE9*/
+            src: url('./demo/assets/fonts/font_1390195988_9420388.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+            url('./demo/assets/fonts/font_1390195989_0386753.woff') format('woff'), /* chrome、firefox */
+            url('./demo/assets/fonts/font_1390195988_7969282.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+            url('./demo/assets/fonts/font_1390195989_0668917.svg#svgFontName') format('svg'); /* iOS 4.1- */
         }
 
         .iconlogo {
@@ -89,10 +86,9 @@
   <body>
     <div id="sidebar" class="interface"></div>
   
-    <script src="./bower_components/jquery/jquery.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
     <script src="./dist/mock.js"></script>
-    
-    
+
     <div class="container"><%=content%></div>
     
     <script src="./demo/assets/catalog.js"></script>
@@ -113,7 +109,7 @@
             $('table').addClass('table table-bordered')
         })
     </script>
-  
+
     <link href="./node_modules/codemirror/lib/codemirror.css" rel="stylesheet">
     <link href="./node_modules/codemirror/theme/neat.css" rel="stylesheet">
     <script src="./node_modules/codemirror/lib/codemirror.js"></script>
