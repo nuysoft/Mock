@@ -1,30 +1,30 @@
 'use strict';
 
-var Mock = require('./dist/mock.js');
+var Mock = require('./dist/mock.js')
 
 // http://www.network-science.de/ascii/ doom
-console.log(Mock.heredoc(function () {
+console.log(Mock.heredoc(function() {
     /*
-___  ___              _        _
-|  \/  |             | |      (_)
-| .  . |  ___    ___ | | __    _  ___
+___  ___              _        _      
+|  \/  |             | |      (_)     
+| .  . |  ___    ___ | | __    _  ___ 
 | |\/| | / _ \  / __|| |/ /   | |/ __|
 | |  | || (_) || (__ |   <  _ | |\__ \
 \_|  |_/ \___/  \___||_|\_\(_)| ||___/
-                             _/ |
-                            |__/
+                             _/ |     
+                            |__/      
      */
-}));
+}))
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     // Displays the execution time of grunt tasks. Can help when optimizing build times.
-    require('time-grunt')(grunt);
+    require('time-grunt')(grunt)
 
     grunt.initConfig({
-        pkg     : grunt.file.readJSON('package.json'),
-        jshint  : {
-            files  : ['Gruntfile.js', 'package.json', 'src/**/*.js', 'test/**/*.js',
+        pkg: grunt.file.readJSON('package.json'),
+        jshint: {
+            files: ['Gruntfile.js', 'package.json', 'src/**/*.js', 'test/**/*.js',
                 '!src/xhr.js', '!src/MockHttpRequest.js',
                 '!**/*-prefix.js', '!**/*-suffix.js',
                 '!**/node_modules/**/*.js', '!**/bower_components/**/*.js'
@@ -33,7 +33,7 @@ module.exports = function (grunt) {
                 jshintrc: '.jshintrc'
             }
         },
-        qunit   : {
+        qunit: {
             files: [
                 'test/mock.html'
             ]
@@ -41,22 +41,22 @@ module.exports = function (grunt) {
         nodeunit: {
             all: ['test/nodeunit/*.js', '!test/**/noop.*']
         },
-        watch   : {
-            dev  : {
+        watch: {
+            dev: {
                 files: ['<%= jshint.files %>', 'test/**/*.*', 'doc/**/*.md', 'doc/template.html', '!doc/index.md'],
                 tasks: ['base']
             },
-            doc  : {
+            doc: {
                 files: ['Gruntfile.js', 'doc/**/*.md', 'doc/template.html', '!doc/index.md'],
                 tasks: ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc']
             },
             build: {}
         },
-        concat  : {
+        concat: {
             mock: {
                 options: {
                     separator: '\n\n',
-                    process  : function (src, filepath) {
+                    process: function(src, filepath) {
                         var banner = '/*! ' + filepath + ' */\n';
                         // var rbrowser = /\/\/ BEGIN\(BROWSER\)\n([.\s]*)\n\/\/ END\(BROWSER\)/mg
                         var BEGEIN = '// BEGIN(BROWSER)',
@@ -69,7 +69,7 @@ module.exports = function (grunt) {
                         return banner + src
                     }
                 },
-                src    : ['src/mock-prefix.js',
+                src: ['src/mock-prefix.js',
                     'src/util.js', 'src/random.js',
                     'src/mock.js',
                     // 'src/xhr.js',
@@ -79,13 +79,13 @@ module.exports = function (grunt) {
                     'src/mock4xtpl.js',
                     'src/mock-suffix.js'
                 ],
-                dest   : 'dist/mock.js'
+                dest: 'dist/mock.js'
             },
-            doc : {
+            doc: {
                 options: {
                     separator: '\n\n'
                 },
-                src    : ['doc/getting-started.md',
+                src: ['doc/getting-started.md',
                     'doc/spec.md',
                     'doc/mock.md',
                     'doc/mockjax.md',
@@ -95,41 +95,41 @@ module.exports = function (grunt) {
                     'doc/random.md',
                     'doc/other.md'
                 ],
-                dest   : 'doc/index.md'
+                dest: 'doc/index.md'
             }
         },
-        clean   : {
+        clean: {
             dest: ["dist/**.**"]
         },
-        uglify  : {
+        uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy HH:MM:ss") %> */\n'
             },
-            dev    : {
+            dev: {
                 options: {
-                    beautify        : true,
-                    compress        : false,
-                    mangle          : false,
+                    beautify: true,
+                    compress: false,
+                    mangle: false,
                     preserveComments: 'some' // false all some
                 },
-                files  : [{
+                files: [{
                     expand: true,
-                    cwd   : 'dist/',
-                    src   : ['**/*.js', '!**/*-min.js'],
-                    dest  : 'dist/',
-                    ext   : '.js'
+                    cwd: 'dist/',
+                    src: ['**/*.js', '!**/*-min.js'],
+                    dest: 'dist/',
+                    ext: '.js'
                 }]
             },
             release: {
                 options: {
                     sourceMap: 'mock-min.map'
                 },
-                files  : [{
+                files: [{
                     expand: true,
-                    cwd   : 'dist/',
-                    src   : ['**/*.js', '!**/*-min.js'],
-                    dest  : 'dist/',
-                    ext   : '-min.js'
+                    cwd: 'dist/',
+                    src: ['**/*.js', '!**/*-min.js'],
+                    dest: 'dist/',
+                    ext: '-min.js'
                 }]
             }
         },
@@ -137,69 +137,69 @@ module.exports = function (grunt) {
             options: {
                 template: 'doc/template.html'
             },
-            doc    : {
+            doc: {
                 expand: true,
-                cwd   : 'doc/',
-                src   : ['index.md'],
-                dest  : './',
-                ext   : '.html'
+                cwd: 'doc/',
+                src: ['index.md'],
+                dest: './',
+                ext: '.html'
             }
         },
-        cleaver : {
+        cleaver: {
             lanlan: {
                 expand: true,
-                cwd   : 'doc/',
-                src   : ['lanlan.md'],
-                dest  : 'doc/',
-                ext   : '.htm'
+                cwd: 'doc/',
+                src: ['lanlan.md'],
+                dest: 'doc/',
+                ext: '.htm'
             }
         },
-        copy    : {
-            demo : {
+        copy: {
+            demo: {
                 files: [{
                     expand: true,
-                    src   : ['dist/**', 'demo/**',
+                    src: ['dist/**', 'demo/**',
                         'node_modules/jquery/tmp/**',
                         'node_modules/codemirror/**',
                         'node_modules/handlebars/dist/**'
                     ],
-                    dest  : '../../nuysoft.github.com/project/mock/'
+                    dest: '../../nuysoft.github.com/project/mock/'
                 }]
             },
-            doc  : {
+            doc: {
                 files: [{
                     expand: true,
-                    src   : ['dist/**', 'demo/**', 'doc/**',
+                    src: ['dist/**', 'demo/**', 'doc/**',
                         'node_modules/jquery/tmp/**',
                         'node_modules/codemirror/**',
                         'node_modules/handlebars/dist/**',
                         'bower_components/**',
-                        'editor/**'
+                        'editor/**',
                     ],
-                    dest  : '../mockjs.github.com/'
+                    dest: '../mockjs.github.com/'
                 }, {
                     expand: true,
-                    cwd   : './',
-                    src   : ['index.html', 'favicon.ico', 'editor.html'],
-                    dest  : '../mockjs.github.com/'
+                    cwd: './',
+                    src: ['index.html', 'favicon.ico', 'editor.html'],
+                    dest: '../mockjs.github.com/'
                 }]
             },
             kissy: {
                 files: [{
-                    src : ['dist/mock.js'],
+                    src: ['dist/mock.js'],
                     dest: '../kissy-gallery/Mock/0.1.1/build/index.js'
                 }, {
-                    src : ['dist/mock-min.js'],
+                    src: ['dist/mock-min.js'],
                     dest: '../kissy-gallery/Mock/0.1.1/build/index-min.js'
                 }]
             }
         },
-        exec    : {
+        exec: {
             doc: {
                 command: 'node ../push'
             }
         },
-        connect : { // grunt connect:server:keepalive
+        connect: { // grunt connect:server:keepalive
             server: {
                 options: {
                     port: 5050,
@@ -208,30 +208,30 @@ module.exports = function (grunt) {
                 }
             }
         }
-    });
+    })
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-nodeunit');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-exec');
-    grunt.loadNpmTasks('grunt-markdown');
-    grunt.loadNpmTasks('grunt-cleaver');
+    grunt.loadNpmTasks('grunt-contrib-jshint')
+    grunt.loadNpmTasks('grunt-contrib-qunit')
+    grunt.loadNpmTasks('grunt-contrib-watch')
+    grunt.loadNpmTasks('grunt-contrib-nodeunit')
+    grunt.loadNpmTasks('grunt-contrib-uglify')
+    grunt.loadNpmTasks('grunt-contrib-concat')
+    grunt.loadNpmTasks('grunt-contrib-copy')
+    grunt.loadNpmTasks('grunt-contrib-clean')
+    grunt.loadNpmTasks('grunt-contrib-connect')
+    grunt.loadNpmTasks('grunt-exec')
+    grunt.loadNpmTasks('grunt-markdown')
+    grunt.loadNpmTasks('grunt-cleaver')
 
     grunt.registerTask('base', [
         'jshint', 'nodeunit', 'concat:mock', 'qunit',
         'uglify',
         'doc-base'
-    ]); // 'copy:demo',
-    grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']); // grunt travis --verbose
-    grunt.registerTask('default', ['base', 'connect', 'watch:dev']);
-    grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc', 'copy:kissy']);
-    grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc']);
+    ]) // 'copy:demo',
+    grunt.registerTask('travis', ['jshint', 'nodeunit', 'qunit']) // grunt travis --verbose
+    grunt.registerTask('default', ['base', 'connect', 'watch:dev'])
+    grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc', 'copy:kissy'])
+    grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc'])
 
     grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])
 };
