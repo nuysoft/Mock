@@ -114,7 +114,7 @@ Handle.rule = function(name) {
         root, templateRoot
 */
 Handle.gen = function(template, name, context) {
-    name = name = (name || '') + ''
+    name = (name || '') + ''
 
     context = context || {}
     context = {

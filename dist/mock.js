@@ -1,4 +1,4 @@
-/*! mockjs 24-12-2014 11:39:10 */
+/*! mockjs 04-02-2015 14:32:02 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -607,15 +607,26 @@
             first: function() {
                 var names = [ "James", "John", "Robert", "Michael", "William", "David", "Richard", "Charles", "Joseph", "Thomas", "Christopher", "Daniel", "Paul", "Mark", "Donald", "George", "Kenneth", "Steven", "Edward", "Brian", "Ronald", "Anthony", "Kevin", "Jason", "Matthew", "Gary", "Timothy", "Jose", "Larry", "Jeffrey", "Frank", "Scott", "Eric" ].concat([ "Mary", "Patricia", "Linda", "Barbara", "Elizabeth", "Jennifer", "Maria", "Susan", "Margaret", "Dorothy", "Lisa", "Nancy", "Karen", "Betty", "Helen", "Sandra", "Donna", "Carol", "Ruth", "Sharon", "Michelle", "Laura", "Sarah", "Kimberly", "Deborah", "Jessica", "Shirley", "Cynthia", "Angela", "Melissa", "Brenda", "Amy", "Anna" ]);
                 return this.pick(names);
-                return this.capitalize(this.word());
             },
             last: function() {
                 var names = [ "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson", "Martinez", "Anderson", "Taylor", "Thomas", "Hernandez", "Moore", "Martin", "Jackson", "Thompson", "White", "Lopez", "Lee", "Gonzalez", "Harris", "Clark", "Lewis", "Robinson", "Walker", "Perez", "Hall", "Young", "Allen" ];
                 return this.pick(names);
-                return this.capitalize(this.word());
             },
             name: function(middle) {
                 return this.first() + " " + (middle ? this.first() + " " : "") + this.last();
+            },
+            chineseName: function(count) {
+                var familyNames = "赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐".split("");
+                var names = "贵福生龙元全国胜学祥才发武新利清飞彬富顺信子杰涛昌成康星光天达安岩中茂进林有坚和彪博绍功松善厚庆磊民友裕河哲江超浩亮政谦亨奇固之轮翰朗伯宏言若鸣朋斌梁栋维启克伦翔旭鹏月莺媛艳瑞凡佳嘉琼勤珍贞莉桂娣叶璧璐娅琦晶妍茜秋珊莎锦黛青倩婷姣婉娴瑾颖露瑶怡婵雁蓓".split("");
+                if (typeof count !== "number") {
+                    count = Math.random() > .66 ? 2 : 3;
+                }
+                var familyName = this.pick(familyNames);
+                var name = "";
+                for (var i = 0; i < count; i++) {
+                    name += this.pick(names);
+                }
+                return familyName + name;
             }
         });
         Random.extend({
@@ -746,7 +757,7 @@
         };
     };
     Handle.gen = function(template, name, context) {
-        name = name = (name || "") + "";
+        name = (name || "") + "";
         context = context || {};
         context = {
             path: context.path || [],

@@ -591,7 +591,11 @@ exports.testRandom = function(test) {
         return Random.format(date, 'yyyy-MM-dd 00:00:00 000') === result
     })
     t('now("yyyy-MM-dd HH:mm:ss SS")', Random.now("yyyy-MM-dd HH:mm:ss SS"), function(result) {
-        test.equal(Random.format(new Date(), 'yyyy-MM-dd HH:mm:ss SS'), result)
+        // 这里可能出现SS不相等，抛弃SS进行比较
+        var mainTag = result.substring(0, result.length - 4),
+            newTag = Random.format(new Date(), 'yyyy-MM-dd HH:mm:ss SS');
+        newTag = newTag.substring(0, newTag.length - 4);
+        test.equal(newTag, mainTag);
         return true
     })
 
