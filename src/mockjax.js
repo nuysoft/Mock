@@ -42,20 +42,28 @@ function convert(item, options) {
 Mock.mockjax = function mockjax(jQuery) {
 
     function mockxhr() {
-        return {
+        var _opt = {
             readyState: 4,
             status: 200,
             statusText: '',
             open: jQuery.noop,
             send: function() {
-                if (this.onload) this.onload()
+                if ( _opt.onload ) {
+                    // 友好部分第三方封装jqAjax的插件库（存在请求队列和返回处理异步的情况）
+                    // 如：pipe( ajax ).then( callback )
+                    // 如果pipe进行了请求，then方法还未执行  这时callback将永远不会执行
+                    window.setTimeout( function(){
+                        _opt.onload()
+                    } , 0 )
+                }
             },
             setRequestHeader: jQuery.noop,
             getAllResponseHeaders: jQuery.noop,
             getResponseHeader: jQuery.noop,
             statusCode: jQuery.noop,
             abort: jQuery.noop
-        }
+        };
+        return _opt;
     }
 
     function prefilter(options, originalOptions, jqXHR) {
