@@ -77,18 +77,18 @@ var Util = (function() {
     }
 
     Util.keys = function(obj) {
-        var keys = [];
+        var keys = []
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) keys.push(key)
         }
-        return keys;
+        return keys
     }
     Util.values = function(obj) {
-        var values = [];
+        var values = []
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) values.push(obj[key])
         }
-        return values;
+        return values
     }
 
     /*
@@ -171,7 +171,7 @@ if (!console.group) {
 
     console.group = function() {
         var args = [].slice.call(arguments, 0),
-            style = console._styles.bold;
+            style = console._styles.bold
         args[0] = style[0] + args[0] + style[1]
         console.log.apply(console, args)
 

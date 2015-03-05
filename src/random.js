@@ -1371,7 +1371,7 @@ var Random = (function() {
         */
         email: function(domain) {
             return this.character('lower') + '.' + this.last().toLowerCase() + '@' + this.last().toLowerCase() + '.' + this.tld()
-            return this.word() + '@' + (domain || this.domain())
+            // return this.word() + '@' + (domain || this.domain())
         },
         /*
             ##### Random.ip()
