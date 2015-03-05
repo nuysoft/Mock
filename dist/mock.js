@@ -1,4 +1,4 @@
-/*! mockjs 05-03-2015 15:35:16 */
+/*! mockjs 05-03-2015 18:58:23 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -968,13 +968,17 @@
     }
     Mock.mockjax = function mockjax(jQuery) {
         function mockxhr() {
-            return {
+            var _opt = {
                 readyState: 4,
                 status: 200,
                 statusText: "",
                 open: jQuery.noop,
                 send: function() {
-                    if (this.onload) this.onload();
+                    if (_opt.onload) {
+                        window.setTimeout(function() {
+                            _opt.onload();
+                        }, 0);
+                    }
                 },
                 setRequestHeader: jQuery.noop,
                 getAllResponseHeaders: jQuery.noop,
@@ -982,6 +986,7 @@
                 statusCode: jQuery.noop,
                 abort: jQuery.noop
             };
+            return _opt;
         }
         function prefilter(options, originalOptions, jqXHR) {
             var item = find(options);
@@ -1056,7 +1061,7 @@
     if (typeof module === "object" && module.exports) {
         module.exports = Mock;
     } else if (typeof define === "function" && define.amd) {
-        define(function() {
+        define("mockjs", function() {
             return Mock;
         });
     } else if (typeof define === "function" && define.cmd) {

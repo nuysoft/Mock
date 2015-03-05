@@ -17,7 +17,9 @@ if (typeof module === 'object' && module.exports) {
 
 } else if (typeof define === "function" && define.amd) {
     // AMD modules
-    define(function() {
+    // 这里在部分requirejs版本里 第一个字段不可省略
+    // 未做详细的调研
+    define( "mockjs" , function() {
         return Mock
     })
 

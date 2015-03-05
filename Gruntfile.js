@@ -233,5 +233,6 @@ module.exports = function(grunt) {
     grunt.registerTask('doc-base', ['concat:doc', 'markdown:doc', 'cleaver', 'copy:doc', 'copy:kissy'])
     grunt.registerTask('doc', ['doc-base', 'connect', 'watch:doc'])
 
-    grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])
+    // grunt.registerTask('build', ['jshint', 'nodeunit', 'concat', 'qunit', 'uglify'])
+    grunt.registerTask('build', ['jshint', 'concat', 'uglify'])
 };
