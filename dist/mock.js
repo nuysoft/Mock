@@ -1,3 +1,48 @@
+(function() {
+	if (this.define) return
+
+	var CACHE = {}
+
+	this.define = function(id, dependencies, factory) {
+		CACHE[id] = factory
+		for (var i = 0; i < dependencies.length; i++) {
+			if (dependencies[i][0] === '.') {
+				dependencies[i] = dirname(id) + dependencies[i]
+				dependencies[i] = realpath(dependencies[i])
+			}
+			dependencies[i] = CACHE[dependencies[i]]
+		}
+		CACHE[id] = factory.apply(this, dependencies)
+	}
+
+	this.require = function(id) {
+		return CACHE[id]
+	}
+
+	this.define.umd = true
+
+	// https://github.com/seajs/seajs/blob/master/dist/sea-debug.js
+
+	var DIRNAME_RE = /[^?#]*\//
+	var DOT_RE = /\/\.\//g
+	var DOUBLE_DOT_RE = /\/[^/]+\/\.\.\//
+	var MULTI_SLASH_RE = /([^:/])\/+\//g
+
+	function dirname(path) {
+		return path.match(DIRNAME_RE)[0]
+	}
+
+	function realpath(path) {
+		path = path.replace(DOT_RE, "/")
+		path = path.replace(MULTI_SLASH_RE, "$1/")
+		while (path.match(DOUBLE_DOT_RE)) {
+			path = path.replace(DOUBLE_DOT_RE, "/")
+		}
+
+		return path
+	}
+
+})();
 
 /* global define */
 define('mock/constant',[],function() {
@@ -468,10 +513,12 @@ define('mock/random/basic',[],function() {
             http://underscorejs.org/#range
         */
         range: function(start, stop, step) {
+            // range( stop )
             if (arguments.length <= 1) {
                 stop = start || 0;
                 start = 0;
             }
+            // range( start, stop )
             step = arguments[2] || 1;
 
             start = +start
@@ -705,7 +752,7 @@ define('mock/random/date',[],function() {
         */
         now: function(unit, format) {
             if (arguments.length === 1) {
-                if (!/year|month|week|day|hour|minute|second|week/.test(unit)) {
+                if (!/year|month|day|hour|minute|second|week/.test(unit)) {
                     format = unit
                     unit = ''
                 }
@@ -1534,8 +1581,14 @@ define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
         */
         paragraph: function(min, max) {
             var len;
+
+            // paragraph()
             if (arguments.length === 0) len = Basic.natural(3, 7)
+
+            // paragraph(len)
             if (arguments.length === 1) len = max = min
+
+            // paragraph(min, max)
             if (arguments.length === 2) {
                 min = parseInt(min, 10)
                 max = parseInt(max, 10)
@@ -1547,6 +1600,28 @@ define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
                 arr.push(this.sentence())
             }
             return arr.join(' ')
+        },
+        cparagraph: function(min, max) {
+            var len;
+
+            // paragraph()
+            if (arguments.length === 0) len = Basic.natural(3, 7)
+
+            // paragraph(len)
+            if (arguments.length === 1) len = max = min
+
+            // paragraph(min, max)
+            if (arguments.length === 2) {
+                min = parseInt(min, 10)
+                max = parseInt(max, 10)
+                len = Basic.natural(min, max)
+            }
+
+            var arr = []
+            for (var i = 0; i < len; i++) {
+                arr.push(this.csentence())
+            }
+            return arr.join('')
         },
         /*
             ##### Random.sentence(len)
@@ -1587,6 +1662,22 @@ define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
                 arr.push(this.word())
             }
             return Helper.capitalize(arr.join(' ')) + '.'
+        },
+        csentence: function(min, max) {
+            var len;
+            if (arguments.length === 0) len = Basic.natural(12, 18)
+            if (arguments.length === 1) len = max = min
+            if (arguments.length === 2) {
+                min = parseInt(min, 10)
+                max = parseInt(max, 10)
+                len = Basic.natural(min, max)
+            }
+
+            var arr = []
+            for (var i = 0; i < len; i++) {
+                arr.push(this.cword())
+            }
+            return arr.join('') + '。'
         },
         /*
             ##### Random.word(len)
@@ -1631,6 +1722,11 @@ define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
 
             return result
         },
+        cword: function(pool) {
+            // 最常用的500个汉字 http://baike.baidu.com/view/568436.htm
+            pool = pool || '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自二理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但质气第向道命此变条只没结解问意建月公无系军很情者最立代想已通并提直题党程展五果料象员革位入常文总次品式活设及管特件长求老头基资边流路级少图山统接知较将组见计别她手角期根论运农指几九区强放决西被干做必战先回则任取据处队南给色光门即保治北造百规热领七海口东导器压志世金增争济阶油思术极交受联什认六共权收证改清己美再采转更单风切打白教速花带安场身车例真务具万每目至达走积示议声报斗完类八离华名确才科张信马节话米整空元况今集温传土许步群广石记需段研界拉林律叫且究观越织装影算低持音众书布复容儿须际商非验连断深难近矿千周委素技备半办青省列习响约支般史感劳便团往酸历市克何除消构府称太准精值号率族维划选标写存候毛亲快效斯院查江型眼王按格养易置派层片始却专状育厂京识适属圆包火住调满县局照参红细引听该铁价严龙飞'
+            return pool.charAt(this.natural(0, pool.length - 1))
+        },
         /*
             ##### Random.title(len)
 
@@ -1659,8 +1755,13 @@ define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
             var len,
                 result = [];
 
+            // Random.title()
             if (arguments.length === 0) len = Basic.natural(3, 7)
+
+            // Random.title(len)
             if (arguments.length === 1) len = max = min
+
+            // Random.title(min, max)
             if (arguments.length === 2) {
                 min = parseInt(min, 10)
                 max = parseInt(max, 10)
@@ -1671,6 +1772,28 @@ define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
                 result.push(this.capitalize(this.word()))
             }
             return result.join(' ')
+        },
+        ctitle: function(min, max) {
+            var len,
+                result = [];
+
+            // Random.title()
+            if (arguments.length === 0) len = Basic.natural(3, 7)
+
+            // Random.title(len)
+            if (arguments.length === 1) len = max = min
+
+            // Random.title(min, max)
+            if (arguments.length === 2) {
+                min = parseInt(min, 10)
+                max = parseInt(max, 10)
+                len = Basic.natural(min, max)
+            }
+
+            for (var i = 0; i < len; i++) {
+                result.push(this.cword())
+            }
+            return result.join('')
         }
     }
 });
@@ -3807,8 +3930,8 @@ define('mock/xhr/xhr',['mock/util'], function(Util) {
     */
 
     // 备份原生 XMLHttpRequest
-    window._XMLHttpRequest = window.XMLHttpRequest
-    window._ActiveXObject = window.ActiveXObject
+    this._XMLHttpRequest = this.XMLHttpRequest
+    this._ActiveXObject = this.ActiveXObject
 
     /*
         PhantomJS
@@ -3818,9 +3941,9 @@ define('mock/xhr/xhr',['mock/util'], function(Util) {
         https://github.com/ariya/phantomjs/issues/11289
     */
     try {
-        new window.Event('custom')
+        new this.Event('custom')
     } catch (exception) {
-        window.Event = function(type, bubbles, cancelable, detail) {
+        this.Event = function(type, bubbles, cancelable, detail) {
             var event = document.createEvent('CustomEvent') // MUST be 'CustomEvent'
             event.initCustomEvent(type, bubbles, cancelable, detail)
             return event
@@ -4548,7 +4671,7 @@ define('mock/valid/valid',['mock/util', 'mock/schema/schema'], function(Util, to
 
     return valid
 });
-/* global define */
+/* global define, module */
 define(
     'mock',[
         'mock/handler', 'mock/util',
@@ -4573,7 +4696,6 @@ define(
             墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
         */
         var Mock = {
-            version: '0.2.0-alpha1',
             Handler: Handler,
             Util: Util,
             heredoc: Util.heredoc,
@@ -4616,6 +4738,16 @@ define(
             }
             return Mock
         }
+
+        // CommonJS
+        if (typeof module === "object" && module.exports) {
+            module.exports = Mock
+
+        }
+
+        // Browser globals
+        this.Mock = Mock
+        this.Random = Random
 
         return Mock
     }

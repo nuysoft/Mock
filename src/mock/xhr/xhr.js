@@ -46,8 +46,8 @@ define(['mock/util'], function(Util) {
     */
 
     // 备份原生 XMLHttpRequest
-    window._XMLHttpRequest = window.XMLHttpRequest
-    window._ActiveXObject = window.ActiveXObject
+    this._XMLHttpRequest = this.XMLHttpRequest
+    this._ActiveXObject = this.ActiveXObject
 
     /*
         PhantomJS
@@ -57,9 +57,9 @@ define(['mock/util'], function(Util) {
         https://github.com/ariya/phantomjs/issues/11289
     */
     try {
-        new window.Event('custom')
+        new this.Event('custom')
     } catch (exception) {
-        window.Event = function(type, bubbles, cancelable, detail) {
+        this.Event = function(type, bubbles, cancelable, detail) {
             var event = document.createEvent('CustomEvent') // MUST be 'CustomEvent'
             event.initCustomEvent(type, bubbles, cancelable, detail)
             return event

@@ -18,6 +18,13 @@
     -moz-osx-font-smoothing: grayscale;
 }
 /* */
+pre {
+    padding: 0px;
+}
+.code {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+/* */
 .mb10 {
     margin-bottom: 10px;
 }
@@ -26,6 +33,9 @@
 }
 .bg {
     background-image: url(bg.png);
+}
+.c999 {
+    color: #999;
 }
 /* */
 .nav {
@@ -125,3 +135,26 @@
 .thx a {
     color: #FFF;
 }
+
+/* */
+.definition {}
+.definition h1,
+.definition h2,
+.definition h3,
+.definition h4 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.definition .code pre,
+.definition .code pre code,
+.definition .result pre,
+.definition .result pre code {
+    height: 100%;
+}
+.definition .code .badge,
+.definition .result .badge {
+    position: absolute;
+    right: 20px;
+    top: 7px;
+}
+

@@ -6,18 +6,25 @@ var jshint = require('gulp-jshint')
 var connect = require('gulp-connect')
 var mochaPhantomJS = require('gulp-mocha-phantomjs')
 var rjs = require('gulp-requirejs')
+var concat = require('gulp-concat')
 var exec = require('child_process').exec
 
 var istanbul = require('gulp-istanbul')
 var mocha = require('gulp-mocha')
 var coveralls = require('gulp-coveralls')
 
+// 
 gulp.task('hello', function() {
     console.log((function() {
         /*
-
-Mock
-
+___  ___              _        _      
+|  \/  |             | |      (_)     
+| .  . |  ___    ___ | | __    _  ___ 
+| |\/| | / _ \  / __|| |/ /   | |/ __|
+| |  | || (_) || (__ |   <  _ | |\__ \
+\_|  |_/ \___/  \___||_|\_\(_)| ||___/
+                             _/ |     
+                            |__/    
         */
     }).toString().split('\n').slice(2, -2).join('\n') + '\n')
 })
@@ -72,8 +79,15 @@ gulp.task('rjs', function() {
         .pipe(gulp.dest('.')) // pipe it to the output DIR
 })
 
+// https://github.com/wearefractal/gulp-concat
+gulp.task('concat', function() {
+    return gulp.src(['src/umd.js', 'dist/mock.js'])
+        .pipe(concat('mock.js'))
+        .pipe(gulp.dest('./dist/'))
+})
+
 // https://github.com/floatdrop/gulp-watch
-var watchTasks = ['hello', 'madge', 'jshint', 'rjs', 'mocha']
+var watchTasks = ['hello', 'madge', 'jshint', 'rjs', 'concat', 'mocha']
 gulp.task('watch', function( /*callback*/ ) {
     gulp.watch(['src/**/*.js', 'gulpfile.js', 'test/*'], watchTasks)
 })
@@ -114,7 +128,9 @@ gulp.task('istanbulForMochaPhantomJS', function(cb) {
         .pipe(istanbul.hookRequire()) // Force `require` to return covered files
         .on('finish', function() {
             gulp.src(['test/test.mock.html'])
-                .pipe(mochaPhantomJS({reporter: 'spec'}))
+                .pipe(mochaPhantomJS({
+                    reporter: 'spec'
+                }))
                 .pipe(istanbul.writeReports()) // Creating the reports after tests runned
                 .on('end', cb)
         })
@@ -135,4 +151,4 @@ gulp.task('publish', function() {
 })
 
 gulp.task('default', watchTasks.concat(['watch', 'connect']))
-gulp.task('build', ['jshint', 'rjs', 'mocha'])
+gulp.task('build', ['jshint', 'rjs', 'concat', 'mocha'])

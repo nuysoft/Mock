@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "gulp": "*",
+    "gulp-concat": "^2.5.2",
     "gulp-connect": "*",
     "gulp-coveralls": "*",
     "gulp-istanbul": "*",

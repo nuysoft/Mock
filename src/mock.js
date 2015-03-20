@@ -1,4 +1,4 @@
-/* global define */
+/* global define, module */
 define(
     [
         'mock/handler', 'mock/util',
@@ -23,7 +23,6 @@ define(
             墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
         */
         var Mock = {
-            version: '0.2.0-alpha1',
             Handler: Handler,
             Util: Util,
             heredoc: Util.heredoc,
@@ -66,6 +65,16 @@ define(
             }
             return Mock
         }
+
+        // CommonJS
+        if (typeof module === "object" && module.exports) {
+            module.exports = Mock
+
+        }
+
+        // Browser globals
+        this.Mock = Mock
+        this.Random = Random
 
         return Mock
     }

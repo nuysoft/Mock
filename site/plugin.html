@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mock.js</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="logo.svg">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
+    <link href="site.plugin.css" rel="stylesheet">
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="../dist/mock.js"></script>
+    <!-- https://www.uservoice.com/ -->
+</head>
+<body>
+    <nav class="nav">
+        <div class="container">
+            <div class="name">
+                Mock.js
+            </div>
+            <div class="items">
+                <a href="./index.html">Home</a>
+                <a href="https://github.com/nuysoft/Mock/wiki" target="_blank">Docs</a>
+                <a href="./site.test.html">Tests</a>
+                <a href="./editor.html">Editor</a>
+                <a href="./site.plugin.html">Plugins</a>
+                <a href="https://github.com/nuysoft/Mock/tree/refactoring" target="_blank">Code</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Plugins</h1>
+        <div>
+            <ul>
+                <li>Generate Base64 Image</li>
+                <li>RegExp Playground</li>
+            </ul>
+        </div>
+        <hr>
+    </div>
+    <div class="container">
+        <h2>Generate Base64 Image</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input class="form-control" id="dataImageWidth" value="400" placeholder="Enter width">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" id="dataImageHeight" value="100" placeholder="Enter height">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" id="dataImageText" value="" placeholder="Enter text">
+                    </div>
+                    <button id="genDataImage" class="btn btn-default">Generate</button>
+                </div>
+            </div>
+        </div>
+        <div id="previewDataImage" class="panel-body" style="padding-top: 0px;"></div>
+        <script type="text/javascript">
+            $('#genDataImage').on('click', function(event){
+                var src = Random.dataImage(
+                    $('#dataImageWidth').val() + 'x' + $('#dataImageHeight').val(),
+                    $('#dataImageText').val()
+                )
+                $('#previewDataImage').empty()
+                    .append(
+                        $('<img>').attr('src', src)
+                    )
+            }).trigger('click')
+        </script>
+    </div>
+
+    <div class="container">
+        <hr>
+        <h2>Generate Color</h2>
+        <p><button id="genColor" type="button" class="btn btn-default">Generate</button>
+        </p>
+        <div id="color100" class="color_100"></div>
+        <style type="text/css">
+            .circle {
+                display: inline-block;
+                width: 5em;
+                height: 5em;
+                border-radius: 50%;
+                margin: 0 1em 1em 0;
+                line-height: 5em;
+                vertical-align: middle;
+                text-align: center;
+                color: #FFF;
+            }
+        </style>
+        <script>
+            $(function(){
+                $('#genColor').on('click', function(event){
+                    var container = $('#color100').empty()
+                    var color
+                    for (var i = 0; i < 10; i++) {
+                        color = Random.color()
+                        $('<span class="circle"></span>')
+                            .css('background-color', color)
+                            .appendTo(container)
+                    }      
+                }).trigger('click')
+            })
+        </script>
+    </div>
+
+    <div class="container">
+        <hr>
+        <h2>RegExp Playground</h2>
+        <div class="regex-test regex-test-bg">
+            <div class="pattern" style="font-size: 360%;">
+                /<div><input id="pattern" value="a(b)" tabindex="1" style="width: 4ch;"></div>/<span>g</span>
+            </div>
+            <div class="tester" style="font-size: 360%;">"<div id="tester"></div>"</div>
+        </div>
+        <br>
+        <blockquote>
+            交互参考自 <a href="https://github.com/leaverou/regexplained/" target="_blank">regexplained</a>。
+        </blockquote>
+        <script type="text/javascript">
+            function patternHandle(event) {
+                var div = this.parentNode.parentNode
+                var len = this.value.length
+                var fontSize = len < 10 && 500 || len < 20 && 350 || len < 30 && 250 || 200
+                div.style.fontSize = fontSize + '%'
+                this.style.width = (this.value.length || .2) + 'ch';
+
+                var re = new RegExp(this.value)
+                var ast = Mock.RegExpParser.parse(this.value)
+                var data = Mock.RegExpHandler.gen(ast)
+                console.log(re.test(data))
+                console.log(
+                    JSON.stringify(ast, null, 4 )
+                )
+                $('#tester').text(data)
+            }
+            $('#pattern')
+                .on('input', patternHandle)
+                .on('keypress', function(event) {
+                    if (event.which !== 13) return
+                    patternHandle.call(this, event)
+                })
+                .trigger('input')
+        </script>
+    </div>
+    <footer class="thx">
+        <div class="container">
+            <p>Mock.js is freely distributable under the terms of the MIT license.</p>
+            <p>This library is loosely inspired by Elijah Manor's post <b><a href="http://www.elijahmanor.com/2013/04/angry-birds-of-javascript-green-bird.html">Mocking Introduction</a></b>, it's syntax is inspired by <b><a href="https://github.com/mennovanslooten/mockJSON">mennovanslooten/mockJSON</a></b>, and the random data ganerator is ispired by <b><a href="http://chancejs.com/">victorquinn/chancejs</a></b>.</p>
+        </div>
+    </footer>
+</body>
+</html>

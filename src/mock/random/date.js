@@ -212,7 +212,7 @@ define(function() {
         */
         now: function(unit, format) {
             if (arguments.length === 1) {
-                if (!/year|month|week|day|hour|minute|second|week/.test(unit)) {
+                if (!/year|month|day|hour|minute|second|week/.test(unit)) {
                     format = unit
                     unit = ''
                 }

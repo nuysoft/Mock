@@ -311,10 +311,12 @@ define(function() {
             http://underscorejs.org/#range
         */
         range: function(start, stop, step) {
+            // range( stop )
             if (arguments.length <= 1) {
                 stop = start || 0;
                 start = 0;
             }
+            // range( start, stop )
             step = arguments[2] || 1;
 
             start = +start
