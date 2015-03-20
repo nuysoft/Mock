@@ -32,7 +32,7 @@ describe('Mock.mock', function() {
                 }]
             }
             var data = Mock.mock(tpl)
-            this.test.title = JSON.stringify(tpl, null, 4) + ' => ' + JSON.stringify(data, null, 4)
+            this.test.title = JSON.stringify(tpl /*, null, 4*/ ) + ' => ' + JSON.stringify(data /*, null, 4*/ )
             expect(data).to.have.property('list')
                 .that.be.an('array').with.length.within(1, 10)
             _.each(data.list, function(item, index, list) {
@@ -51,7 +51,7 @@ describe('Mock.mock', function() {
                 })
             }
             var data = Mock.mock(fn)
-            this.test.title = fn.toString() + ' => ' + JSON.stringify(data, null, 4)
+            this.test.title = fn.toString() + ' => ' + JSON.stringify(data /*, null, 4*/ )
             expect(data).to.have.property('list')
                 .that.be.an('array').with.length.within(1, 10)
             _.each(data.list, function(item, index, list) {

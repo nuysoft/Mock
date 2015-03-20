@@ -20,7 +20,7 @@ describe('Random', function() {
     })
 
     function stringify(json) {
-        return JSON.stringify(json, null, 4)
+        return JSON.stringify(json /*, null, 4*/ )
     }
 
     function doit(expression, validator) {

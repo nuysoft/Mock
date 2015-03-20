@@ -19,11 +19,11 @@ describe('Mock.valid', function() {
     })
 
     function stringify(json) {
-        return JSON.stringify(json, null, 4)
+        return JSON.stringify(json /*, null, 4*/ )
     }
 
     function title(tpl, data, result, test) {
-        test.title = stringify(tpl) + '\n' + stringify(data) + '\n// ==>\n' + stringify(result)
+        test.title = stringify(tpl) + ' VS ' + stringify(data) + '\n' + stringify(result)
     }
 
     function doit(tpl, data, len) {
@@ -162,7 +162,7 @@ describe('Mock.valid', function() {
         }, {
             'name': [1, 2, 3, 4]
         }, 1)
-        
+
         doit({
             'name|2-3': [1]
         }, {

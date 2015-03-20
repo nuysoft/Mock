@@ -670,7 +670,7 @@ describe('DTD', function() {
 
         it('', function() {
             var data = Mock.mock(tpl)
-            this.test.title += JSON.stringify(data, null, 4)
+            this.test.title += JSON.stringify(data /*, null, 4*/ )
             expect(data).to.be.a('object')
         })
     })

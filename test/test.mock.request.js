@@ -19,7 +19,7 @@ describe('Request', function() {
     })
 
     function stringify(json) {
-        return JSON.stringify(json, null, 4)
+        return JSON.stringify(json /*, null, 4*/ )
     }
 
     describe('jQuery.ajax()', function() {
