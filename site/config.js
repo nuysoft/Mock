@@ -3,7 +3,7 @@ require.config({
         jquery: 'bower_components/jquery/dist/jquery',
         underscore: 'bower_components/underscore/underscore',
         highlightjs: 'bower_components/highlightjs/highlight.pack',
-        mock: '../dist/mock'
+        mock: 'bower_components/mockjs/dist/mock'
     },
     shim: {
         highlightjs: {
