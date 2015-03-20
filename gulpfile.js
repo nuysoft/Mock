@@ -101,7 +101,7 @@ gulp.task('madge', function( /*callback*/ ) {
             console.log(stdout)
         }
     )
-    exec('madge --format amd --image ./doc/dependencies.png ./src/',
+    exec('madge --format amd --image ./dependencies.png ./src/',
         function(error /*, stdout, stderr*/ ) {
             if (error) console.log('exec error: ' + error)
         }

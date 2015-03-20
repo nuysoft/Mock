@@ -1,8 +1,8 @@
 define(
     [
         'jquery', 'underscore', 'mock', 'highlightjs',
-        'site.test.template',
-        './site.test.dpd.data'
+        './test.template',
+        './test.dpd.data'
     ],
     function(
         $, _, Mock, hljs,

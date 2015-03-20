@@ -2,13 +2,13 @@
   "name": "test",
   "dependencies": {},
   "devDependencies": {
-    "mockjs": "master",
+    "mockjs": "refactoring",
     "requirejs": "*",
-    "jquery": "~2.1.1",
+    "jquery": "*",
     "underscore": "*",
     "bootstrap": "",
-    "codemirror": "~3.20.0",
-    "highlightjs": "~8.0.0",
-    "js-beautify": "~1.5.1"
+    "codemirror": "*",
+    "highlightjs": "*",
+    "js-beautify": "*"
   }
 }

@@ -18,16 +18,16 @@
             <div class="items">
                 <a href="./index.html">Home</a>
                 <a href="https://github.com/nuysoft/Mock/wiki" target="_blank">Docs</a>
-                <a href="./site.test.html">Tests</a>
+                <a href="./test.html">Tests</a>
                 <a href="./editor.html">Editor</a>
-                <a href="./site.plugin.html">Plugins</a>
+                <a href="./plugin.html">Plugins</a>
                 <a href="https://github.com/nuysoft/Mock/tree/refactoring" target="_blank">Code</a>
             </div>
         </div>
     </nav>
     <div class="test">
         <div class="container definition">
-            <h1>Syntax Specification</h1>
+            <h1>Test: Syntax Specification</h1>
             <p>
                 <!-- <a href="">Syntax Specification</a>
                 <span class="glyphicon glyphicon-chevron-right c999"></span>
@@ -69,22 +69,10 @@
         </div>
     </footer>
     <script src="bower_components/requirejs/require.js"></script>
+    <script src="./config.js"></script>
     <script>
-        require.config({
-            paths: {
-                jquery: 'bower_components/jquery/dist/jquery',
-                underscore: 'bower_components/underscore/underscore',
-                highlightjs: 'bower_components/highlightjs/highlight.pack',
-                mock: '../dist/mock'
-            },
-            shim: {
-                highlightjs: {
-                    exports: 'hljs'
-                }
-            }
-        })
-        require(['./site.test.dtd'])
-        require(['./site.test.dpd'])
+        require(['./test.dtd'])
+        require(['./test.dpd'])
     </script>
     <link rel="stylesheet" href="./bower_components/highlightjs/styles/rainbow.css"><!-- github -->
     
