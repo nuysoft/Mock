@@ -32,42 +32,48 @@ describe('Schema', function() {
 
     describe('Type', function() {
         doit(1, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'number')
             for (var n in schema.rule) {
                 expect(schema.rule[n]).to.be.null()
             }
         })
         doit(true, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'boolean')
             for (var n in schema.rule) {
                 expect(schema.rule[n]).to.be.null()
             }
         })
         doit('', function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'string')
             for (var n in schema.rule) {
                 expect(schema.rule[n]).to.be.null()
             }
         })
         doit(function() {}, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'function')
             for (var n in schema.rule) {
                 expect(schema.rule[n]).to.be.null()
             }
         })
         doit(/\d/, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'regexp')
             for (var n in schema.rule) {
                 expect(schema.rule[n]).to.be.null()
             }
         })
         doit([], function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'array')
             for (var n in schema.rule) {
                 expect(schema.rule[n]).to.be.null()
@@ -75,7 +81,8 @@ describe('Schema', function() {
             expect(schema).to.have.property('items').with.length(0)
         })
         doit({}, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
             for (var n in schema.rule) {
                 expect(schema.rule[n]).to.be.null()
@@ -95,7 +102,8 @@ describe('Schema', function() {
                 }
             }
         }, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
 
             var properties;
@@ -137,7 +145,8 @@ describe('Schema', function() {
                 ['foo', 'bar']
             ]
         ], function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'array')
 
             var items;
@@ -164,7 +173,8 @@ describe('Schema', function() {
         doit({
             'string|1-10': '★'
         }, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
 
             var properties;
@@ -178,7 +188,8 @@ describe('Schema', function() {
         doit({
             'string|3': 'value',
         }, function(schema) {
-            expect(schema).to.not.have.property('name')
+            expect(schema.name).to.be.an('undefined')
+                // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
 
             var properties;
