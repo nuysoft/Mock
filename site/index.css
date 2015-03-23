@@ -49,6 +49,9 @@ pre {
     color: #FFF;
     font-size: 18px;
 }
+.nav .name a {
+    color: #FFF;
+}
 .nav .name img {
     height: 50px;
     padding-left: 20px;
