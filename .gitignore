@@ -6,3 +6,4 @@ node_modules
 bower_components
 coverage
 PLAN.md
+npm-debug.log
