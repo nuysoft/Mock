@@ -11,3 +11,13 @@ require.config({
         }
     }
 })
+
+var DEBUG = ~location.search.indexOf('mock.debug')
+if (DEBUG) {
+    require.config({
+        paths: {
+            mock: '../dist/mock',
+        },
+        shim: {}
+    })
+}
