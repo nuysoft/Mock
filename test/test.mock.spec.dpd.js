@@ -196,8 +196,10 @@ describe('DPD', function() {
                 tld: '@TLD',
             },
             address: {
-                area: '@AREA',
-                region: '@REGION'
+                region: '@REGION',
+                province: '@PROVINCE',
+                city: '@CITY',
+                county: '@COUNTY'
             },
             miscellaneous: {
                 guid: '@GUID',

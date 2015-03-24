@@ -467,17 +467,41 @@ define([], function() {
             ],
         },
         'Address': {
-            'Random.area()': [
-                '// Random.area()',
-                'Random.area()',
-                'Mock.mock(\'@area\')',
-                'Mock.mock(\'@area()\')',
-            ],
             'Random.region()': [
                 '// Random.region()',
                 'Random.region()',
                 'Mock.mock(\'@region\')',
                 'Mock.mock(\'@region()\')',
+            ],
+            'Random.province()': [
+                '// Random.province()',
+                'Random.province()',
+                'Mock.mock(\'@province\')',
+                'Mock.mock(\'@province()\')',
+            ],
+            'Random.city( prefix? )': [
+                '// Random.city()',
+                'Random.city()',
+                'Mock.mock(\'@city\')',
+                'Mock.mock(\'@city()\')',
+                '// Random.city( prefix )',
+                'Random.city(true)',
+                'Mock.mock(\'@city(true)\')',
+            ],
+            'Random.county( prefix? )': [
+                '// Random.county()',
+                'Random.county()',
+                'Mock.mock(\'@county\')',
+                'Mock.mock(\'@county()\')',
+                '// Random.county( prefix )',
+                'Random.county(true)',
+                'Mock.mock(\'@county(true)\')',
+            ],
+            'Random.zip()': [
+                '// Random.zip()',
+                'Random.zip()',
+                'Mock.mock(\'@zip\')',
+                'Mock.mock(\'@zip()\')',
             ],
         },
         'Helper': {

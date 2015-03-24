@@ -361,11 +361,26 @@ describe('Random', function() {
         })
     })
     describe('Address', function() {
-        doit('Random.area()', function(data) {
-            expect(Random.areas).to.include(data)
-        })
         doit('Random.region()', function(data) {
-            expect(Random.regions.join(' ')).to.include(data)
+            expect(data).to.be.ok
+        })
+        doit('Random.province()', function(data) {
+            expect(data).to.be.ok
+        })
+        doit('Random.city()', function(data) {
+            expect(data).to.be.ok
+        })
+        doit('Random.city(true)', function(data) {
+            expect(data).to.be.ok
+        })
+        doit('Random.county()', function(data) {
+            expect(data).to.be.ok
+        })
+        doit('Random.county(true)', function(data) {
+            expect(data).to.be.ok
+        })
+        doit('Random.zip()', function(data) {
+            expect(data).to.be.ok
         })
     })
     describe('Helpers', function() {
