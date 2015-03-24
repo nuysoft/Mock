@@ -1,91 +1,43 @@
-/* global define, document */
+/* global define, document, module */
 /*
-    #### Image
+    # Image
 */
 define(function() {
     return {
-        ad_size: [
+        _adSize: [
             '300x250', '250x250', '240x400', '336x280', '180x150',
             '720x300', '468x60', '234x60', '88x31', '120x90',
             '120x60', '120x240', '125x125', '728x90', '160x600',
             '120x600', '300x600'
         ],
-        screen_size: [
+        _screenSize: [
             '320x200', '320x240', '640x480', '800x480', '800x480',
             '1024x600', '1024x768', '1280x800', '1440x900', '1920x1200',
             '2560x1600'
         ],
-        video_size: ['720x480', '768x576', '1280x720', '1920x1080'],
+        _videoSize: ['720x480', '768x576', '1280x720', '1920x1080'],
         /*
-            ##### Random.img(size, background, foreground, format, text)
-
-            * Random.img()
-            * Random.img(size)
-            * Random.img(size, background)
-            * Random.img(size, background, text)
-            * Random.img(size, background, foreground, text)
-            * Random.img(size, background, foreground, format, text)
-
             生成一个随机的图片地址。
-
-            **参数的含义和默认值**如下所示：
-
-            * 参数 size：可选。指示图片的宽高，格式为 `'宽x高'`。默认从下面的数组中随机读取一个：
-
-                    [
-                        '300x250', '250x250', '240x400', '336x280', 
-                        '180x150', '720x300', '468x60', '234x60', 
-                        '88x31', '120x90', '120x60', '120x240', 
-                        '125x125', '728x90', '160x600', '120x600', 
-                        '300x600'
-                    ]
-
-            * 参数 background：可选。指示图片的背景色。默认值为 '#000000'。
-            * 参数 foreground：可选。指示图片的前景色（文件）。默认值为 '#FFFFFF'。
-            * 参数 format：可选。指示图片的格式。默认值为 'png'，可选值包括：'png'、'gif'、'jpg'。
-            * 参数 text：可选。指示图片上文字。默认为 ''。
-
-            **使用示例**如下所示：
-                
-                Random.img()
-                // => "http://dummyimage.com/125x125"
-                Random.img('200x100')
-                // => "http://dummyimage.com/200x100"
-                Random.img('200x100', '#fb0a2a')
-                // => "http://dummyimage.com/200x100/fb0a2a"
-                Random.img('200x100', '#02adea', 'hello')
-                // => "http://dummyimage.com/200x100/02adea&text=hello"
-                Random.img('200x100', '#00405d', '#FFF', 'mock')
-                // => "http://dummyimage.com/200x100/00405d/FFF&text=mock"
-                Random.img('200x100', '#ffcc33', '#FFF', 'png', 'js')
-                // => "http://dummyimage.com/200x100/ffcc33/FFF.png&text=js"
-
-            生成的路径所对应的图片如下所示：
-
-            ![](http://dummyimage.com/125x125)
-            ![](http://dummyimage.com/200x100)
-            ![](http://dummyimage.com/200x100/fb0a2a)
-            ![](http://dummyimage.com/200x100/02adea&text=hello)
-            ![](http://dummyimage.com/200x100/00405d/FFF&text=mock)
-            ![](http://dummyimage.com/200x100/ffcc33/FFF.png&text=js)
 
             替代图片源
                 http://fpoimg.com/
             参考自 
                 http://rensanning.iteye.com/blog/1933310
                 http://code.tutsplus.com/articles/the-top-8-placeholders-for-web-designers--net-19485
-            
         */
         image: function(size, background, foreground, format, text) {
+            // Random.image( size, background, foreground, text )
             if (arguments.length === 4) {
                 text = format
                 format = undefined
             }
+            // Random.image( size, background, text )
             if (arguments.length === 3) {
                 text = foreground
                 foreground = undefined
             }
-            if (!size) size = this.pick(this.ad_size)
+            // Random.image()
+            if (!size) size = this.pick(this._adSize)
 
             if (background && ~background.indexOf('#')) background = background.slice(1)
             if (foreground && ~foreground.indexOf('#')) foreground = foreground.slice(1)
@@ -113,7 +65,7 @@ define(function() {
                 console.log('\'' + item.text() + '\'', ':', '\'' + item.next().text() + '\'', ',')
             })
         */
-        brandColors: {
+        _brandColors: {
             '4ormat': '#fb0a2a',
             '500px': '#02adea',
             'About.me (blue)': '#00405d',
@@ -263,14 +215,16 @@ define(function() {
             'Zerply': '#9dcc7a',
             'Zootool': '#5e8b1d'
         },
-        brands: function() {
+        _brandNames: function() {
             var brands = [];
-            for (var b in this.brandColors) {
+            for (var b in this._brandColors) {
                 brands.push(b)
             }
             return brands
         },
         /*
+            生成一段随机的 Base64 图片编码。
+
             https://github.com/imsky/holder
             Holder renders image placeholders entirely on the client side.
 
@@ -283,23 +237,29 @@ define(function() {
             if (typeof document !== 'undefined') {
                 canvas = document.createElement('canvas')
             } else {
-                // TODO
-                // var Canvas = require('canvas')
-                // canvas = new Canvas()
+                /*
+                    https://github.com/Automattic/node-canvas
+                        npm install canvas --save
+                    安装问题：
+                    * http://stackoverflow.com/questions/22953206/gulp-issues-with-cario-install-command-not-found-when-trying-to-installing-canva
+                    * https://github.com/Automattic/node-canvas/issues/415
+                 */
+                // node
+                var Canvas = module.require('canvas')
+                canvas = new Canvas()
             }
-            // canvas = (typeof document !== 'undefined') && document.createElement('canvas')
 
             var ctx = canvas && canvas.getContext && canvas.getContext("2d")
             if (!canvas || !ctx) return ''
 
-            if (!size) size = this.pick(this.ad_size)
+            if (!size) size = this.pick(this._adSize)
             text = text !== undefined ? text : size
 
             size = size.split('x')
 
             var width = parseInt(size[0], 10),
                 height = parseInt(size[1], 10),
-                background = this.brandColors[this.pick(this.brands())],
+                background = this._brandColors[this.pick(this._brandNames())],
                 foreground = '#FFF',
                 text_height = 14,
                 font = 'sans-serif';

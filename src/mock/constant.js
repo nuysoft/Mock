@@ -1,14 +1,21 @@
 /* global define */
+/*
+    ## Constant
+
+    常量集合。
+ */
 define(function() {
     /*
         RE_KEY
-            name|+inc
-            name|repeat
-            name|min-max
-            name|min-max.dmin-dmax
-            name|int.dmin-dmax
+            'name|min-max': value
+            'name|count': value
+            'name|min-max.dmin-dmax': value
+            'name|min-max.dcount': value
+            'name|count.dmin-dmax': value
+            'name|count.dcount': value
+            'name|+step': value
 
-            1 name, 2 inc, 3 range, 4 decimal
+            1 name, 2 step, 3 range [ min, max ], 4 drange [ dmin, dmax ]
 
         RE_PLACEHOLDER
             placeholder(*)

@@ -1,50 +1,50 @@
 /* global define */
 /* global window, document, location, Event, setTimeout */
+/*
+    ## MockXMLHttpRequest
+
+    期望的功能：
+    1. 完整地覆盖原生 XHR 的行为
+    2. 完整地模拟原生 XHR 的行为
+    3. 在发起请求时，自动检测是否需要拦截
+    4. 如果不必拦截，则执行原生 XHR 的行为
+    5. 如果需要拦截，则执行虚拟 XHR 的行为
+    6. 兼容 XMLHttpRequest 和 ActiveXObject
+        new window.XMLHttpRequest()
+        new window.ActiveXObject("Microsoft.XMLHTTP")
+    
+    关键方法的逻辑：
+    * new   此时尚无法确定是否需要拦截，所以创建原生 XHR 对象是必须的。
+    * open  此时可以取到 URL，可以决定是否进行拦截。
+    * send  此时已经确定了请求方式。
+
+    规范：
+    http://xhr.spec.whatwg.org/
+    http://www.w3.org/TR/XMLHttpRequest2/
+    
+    参考实现：
+    https://github.com/philikon/MockHttpRequest/blob/master/lib/mock.js
+    https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js
+    https://github.com/ilinsky/xmlhttprequest/blob/master/XMLHttpRequest.js
+    https://github.com/firebug/firebug-lite/blob/master/content/lite/xhr.js
+    https://github.com/thx/RAP/blob/master/lab/rap.plugin.xinglie.js
+
+    **需不需要全面重写 XMLHttpRequest？**
+        http://xhr.spec.whatwg.org/#interface-xmlhttprequest
+        关键属性 readyState、status、statusText、response、responseText、responseXML 是 readonly，所以，试图通过修改这些状态，来模拟响应是不可行的。
+        因此，唯一的办法是模拟整个 XMLHttpRequest，就像 jQuery 对事件模型的封装。
+
+    // Event handlers
+    onloadstart         loadstart
+    onprogress          progress
+    onabort             abort
+    onerror             error
+    onload              load
+    ontimeout           timeout
+    onloadend           loadend
+    onreadystatechange  readystatechange
+ */
 define(['mock/util'], function(Util) {
-    /*
-        期望的功能：
-        1. 完整地覆盖原生 XHR 的行为
-        2. 完整地模拟原生 XHR 的行为
-        3. 在发起请求时，自动检测是否需要拦截
-        4. 如果不必拦截，则执行原生 XHR 的行为
-        5. 如果需要拦截，则执行虚拟 XHR 的行为
-        6. 兼容 XMLHttpRequest 和 ActiveXObject
-            new window.XMLHttpRequest()
-            new window.ActiveXObject("Microsoft.XMLHTTP")
-        
-        关键方法的逻辑：
-
-        * new   此时尚无法确定是否需要拦截，所以创建原生 XHR 对象是必须的。
-        * open  此时可以取到 URL，可以决定是否进行拦截。
-        * send  此时已经确定了请求方式。
-
-        规范
-        http://xhr.spec.whatwg.org/
-        http://www.w3.org/TR/XMLHttpRequest2/
-        
-        参考实现
-        https://github.com/philikon/MockHttpRequest/blob/master/lib/mock.js
-        https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js
-        https://github.com/ilinsky/xmlhttprequest/blob/master/XMLHttpRequest.js
-        https://github.com/firebug/firebug-lite/blob/master/content/lite/xhr.js
-        https://github.com/thx/RAP/blob/master/lab/rap.plugin.xinglie.js
-
-        **需不需要全面重写 XMLHttpRequest？**
-            http://xhr.spec.whatwg.org/#interface-xmlhttprequest
-            关键属性 readyState、status、statusText、response、responseText、responseXML 是 readonly，所以，试图通过修改这些状态，来模拟响应是不可行的。
-            唯一的办法，是模拟整个 XMLHttpRequest，就像 jQuery 对事件模型的封装一样。
-
-        // Event handlers
-        onloadstart         loadstart
-        onprogress          progress
-        onabort             abort
-        onerror             error
-        onload              load
-        ontimeout           timeout
-        onloadend           loadend
-        onreadystatechange  readystatechange
-    */
-
     // 备份原生 XMLHttpRequest
     this._XMLHttpRequest = this.XMLHttpRequest
     this._ActiveXObject = this.ActiveXObject
@@ -65,8 +65,6 @@ define(['mock/util'], function(Util) {
             return event
         }
     }
-
-
 
     var XHR_STATES = {
         // The object has been constructed.
@@ -148,12 +146,15 @@ define(['mock/util'], function(Util) {
 
     // 标记当前对象为 MockXMLHttpRequest
     MockXMLHttpRequest.prototype.mock = true
-        // 是否拦截 Ajax 请求
+
+    // 是否拦截 Ajax 请求
     MockXMLHttpRequest.prototype.match = false
 
-    // Request 相关的属性和方法
+    // 初始化 Request 相关的属性和方法
     Util.extend(MockXMLHttpRequest.prototype, {
-        open: function open(method, url, async, username, password) {
+        // https://xhr.spec.whatwg.org/#the-open()-method
+        // Sets the request method, request URL, and synchronous flag.
+        open: function(method, url, async, username, password) {
             var that = this
 
             Util.extend(this.custom, {
@@ -168,10 +169,11 @@ define(['mock/util'], function(Util) {
                 }
             })
 
+            // 查找与请求参数匹配的数据模板
             var item = find(this.custom.options)
 
             function handle(event) {
-                // 同步属性
+                // 同步属性 NativeXMLHttpRequest => MockXMLHttpRequest
                 for (var i = 0, len = XHR_RESPONSE_PROPERTIES.length; i < len; i++) {
                     try {
                         that[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]]
@@ -181,10 +183,10 @@ define(['mock/util'], function(Util) {
                 that.dispatchEvent(new Event(event.type, false, false, that))
             }
 
-            // 原生 XHR
+            // 如果未找到匹配的数据模板，则采用原生 XHR 发送请求。
             if (!item) {
-                // 创建原生 XHR，open，监听事件
-                var xhr = createOriginalXMLHttpRequest()
+                // 创建原生 XHR 对象，调用原生 open()，监听所有原生事件
+                var xhr = createNativeXMLHttpRequest()
                 this.custom.xhr = xhr
 
                 // 初始化所有事件，用于监听原生 XHR 对象的事件
@@ -199,13 +201,15 @@ define(['mock/util'], function(Util) {
                 return
             }
 
-            // 拦截 XHR
+            // 找到了匹配的数据模板，开始拦截 XHR 请求
             this.match = true
             this.custom.template = item
             this.readyState = MockXMLHttpRequest.OPENED
             this.dispatchEvent(new Event('readystatechange', false, false, this))
         },
-        setRequestHeader: function setRequestHeader(name, value) {
+        // https://xhr.spec.whatwg.org/#the-setrequestheader()-method
+        // Combines a header in author request headers.
+        setRequestHeader: function(name, value) {
             // 原生 XHR
             if (!this.match) {
                 this.custom.xhr.setRequestHeader(name, value)
@@ -220,6 +224,8 @@ define(['mock/util'], function(Util) {
         timeout: 0,
         withCredentials: false,
         upload: {},
+        // https://xhr.spec.whatwg.org/#the-send()-method
+        // Initiates the request.
         send: function send(data) {
             var that = this
 
@@ -253,6 +259,8 @@ define(['mock/util'], function(Util) {
                 that.dispatchEvent(new Event('loadend', false, false, that));
             }
         },
+        // https://xhr.spec.whatwg.org/#the-abort()-method
+        // Cancels any network activity.
         abort: function abort() {
             // 原生 XHR
             if (!this.match) {
@@ -261,18 +269,19 @@ define(['mock/util'], function(Util) {
             }
 
             // 拦截 XHR
-            this.readyStateChange(MockXMLHttpRequest.DONE)
+            this.readyState = MockXMLHttpRequest.UNSENT
             this.dispatchEvent(new Event('abort', false, false, this))
             this.dispatchEvent(new Event('error', false, false, this))
         }
     })
 
-    // Response 相关的属性和方法
+    // 初始化 Response 相关的属性和方法
     Util.extend(MockXMLHttpRequest.prototype, {
         responseURL: '',
         status: MockXMLHttpRequest.UNSENT,
         statusText: '',
-        getResponseHeader: function getResponseHeader(name) {
+        // https://xhr.spec.whatwg.org/#the-getresponseheader()-method
+        getResponseHeader: function(name) {
             // 原生 XHR
             if (!this.match) {
                 return this.custom.xhr.getResponseHeader(name)
@@ -281,7 +290,9 @@ define(['mock/util'], function(Util) {
             // 拦截 XHR
             return this.custom.responseHeaders[name.toLowerCase()]
         },
-        getAllResponseHeaders: function getAllResponseHeaders() {
+        // https://xhr.spec.whatwg.org/#the-getallresponseheaders()-method
+        // http://www.utf8-chartable.de/
+        getAllResponseHeaders: function() {
             // 原生 XHR
             if (!this.match) {
                 return this.custom.xhr.getAllResponseHeaders()
@@ -296,7 +307,7 @@ define(['mock/util'], function(Util) {
             }
             return headers
         },
-        overrideMimeType: function overrideMimeType( /*mime*/ ) {},
+        overrideMimeType: function( /*mime*/ ) {},
         responseType: '', // '', 'text', 'arraybuffer', 'blob', 'document', 'json' 
         response: null,
         responseText: '',
@@ -315,7 +326,6 @@ define(['mock/util'], function(Util) {
             for (var i = 0; i < handles.length; i++) {
                 if (handles[i] === handle) {
                     handles.splice(i--, 1)
-                    return
                 }
             }
         },
@@ -330,10 +340,8 @@ define(['mock/util'], function(Util) {
         }
     })
 
-    return MockXMLHttpRequest
-
     // Inspired by jQuery
-    function createOriginalXMLHttpRequest() {
+    function createNativeXMLHttpRequest() {
         var isLocal = function() {
             var rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/
             var rurl = /^([\w.+-]+:)(?:\/\/([^\/?#:]*)(?::(\d+)|)|)/
@@ -358,9 +366,8 @@ define(['mock/util'], function(Util) {
         }
     }
 
-    /*
-     
-    */
+
+    // 查找与请求参数匹配的数据模板：URL，Type
     function find(options) {
 
         for (var sUrlType in MockXMLHttpRequest.Mock._mocked) {
@@ -385,6 +392,7 @@ define(['mock/util'], function(Util) {
 
     }
 
+    // 数据模板 ＝> 响应数据
     function convert(item, options) {
         return Util.isFunction(item.template) ?
             item.template(options) : MockXMLHttpRequest.Mock.mock(item.template)

@@ -198,7 +198,7 @@ describe('Schema', function() {
             expect(properties).to.with.length(1)
             expect(properties[0]).to.have.property('type', 'string')
             expect(properties[0].rule).to.have.property('min', 3)
-            expect(properties[0].rule).to.not.have.property('max')
+            expect(properties[0].rule.max).to.be.an('undefined')
         })
     })
 

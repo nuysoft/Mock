@@ -1,3 +1,8 @@
+/*
+	## Modular
+
+	模块化，适配无 AMD 的环境。
+ */
 (function() {
 	if (this.define) return
 
@@ -21,7 +26,7 @@
 
 	this.define.umd = true
 
-	// https://github.com/seajs/seajs/blob/master/dist/sea-debug.js
+	// 以下代码参考自 https://github.com/seajs/seajs/blob/master/dist/sea-debug.js
 
 	var DIRNAME_RE = /[^?#]*\//
 	var DOT_RE = /\/\.\//g

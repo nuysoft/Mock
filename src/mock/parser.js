@@ -1,4 +1,27 @@
 /* global define */
+/*
+	Parser
+
+	解析数据模板（属性名部分）。
+
+	* Parser.parse( name )
+		
+		```json
+		{
+			parameters: [ name, inc, range, decimal ],
+			rnage: [ min , max ],
+
+			min: min,
+			max: max,
+			count : count,
+
+			decimal: decimal,
+			dmin: dmin,
+			dmax: dmax,
+			dcount: dcount
+		}
+		```
+ */
 define(['mock/constant', 'mock/random/random'], function(Constant, Random) {
 	/* jshint -W041 */
 	return {

@@ -1,64 +1,22 @@
 /* global define */
 /*
-    #### Helpers
+    # Helpers
 */
 define(function() {
 	return {
-		/*
-		    ##### Random.capitalize(word)
-
-		    把字符串的第一个字母转换为大写。
-
-		    * Random.capitalize(word)
-
-		    使用示例如下所示：
-
-		        Random.capitalize('hello')
-		        // => "Hello"
-		*/
+		// 把字符串的第一个字母转换为大写。
 		capitalize: function(word) {
 			return (word + '').charAt(0).toUpperCase() + (word + '').substr(1)
 		},
-		/*
-		    ##### Random.upper(str)
-
-		    把字符串转换为大写。
-
-		    * Random.upper(str)
-
-		    使用示例如下所示：
-
-		        Random.upper('hello')
-		        // => "HELLO"
-		*/
+		// 把字符串转换为大写。
 		upper: function(str) {
 			return (str + '').toUpperCase()
 		},
-		/*
-		    ##### Random.lower(str)
-
-		    把字符串转换为小写。
-
-		    使用示例如下所示：
-
-		        Random.lower('HELLO')
-		        // => "hello"
-		*/
+		// 把字符串转换为小写。
 		lower: function(str) {
 			return (str + '').toLowerCase()
 		},
-		/*
-		    ##### Random.pick(arr)
-
-		    从数组中随机选取一个元素，并返回。
-
-		    * Random.pick(arr)
-
-		    使用示例如下所示：
-
-		        Random.pick(['a', 'e', 'i', 'o', 'u'])
-		        // => "o"
-		*/
+		// 从数组中随机选取一个元素，并返回。
 		pick: function pick(arr, min, max) {
 			arr = arr || []
 			switch (arguments.length) {
@@ -73,17 +31,8 @@ define(function() {
 			}
 		},
 		/*
-		    Given an array, scramble the order and return it.
-		    ##### Random.shuffle(arr)
-		    
 		    打乱数组中元素的顺序，并返回。
-
-		    * Random.shuffle(arr)
-
-		    使用示例如下所示：
-
-		        Random.shuffle(['a', 'e', 'i', 'o', 'u'])
-		        // => ["o", "u", "e", "i", "a"]
+		    Given an array, scramble the order and return it.
 
 		    其他的实现思路：
 		        // https://code.google.com/p/jslibs/wiki/JavascriptTips
@@ -123,15 +72,15 @@ define(function() {
 
 		    [JSON导入数组支持数组数据录入](https://github.com/thx/RAP/issues/22)
 
-		    貌似不应该暴漏在这里！因为没法单独调用啊！
+		    不支持单独调用！
 		*/
 		order: function order(array) {
 			order.cache = order.cache || {}
 
 			if (arguments.length > 1) array = [].slice.call(arguments, 0)
 
+			// options.context.path/templatePath
 			var options = order.options
-				// var path = options.context.path.join('.')
 			var templatePath = options.context.templatePath.join('.')
 
 			var cache = (

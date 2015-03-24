@@ -1,4 +1,36 @@
 /* global define */
+/* 
+    ## Handler
+
+    处理数据模板。
+    
+    * Handler.gen( template, name?, context? )
+
+        入口方法。
+
+    * Data Template Definition, DTD
+        
+        处理数据模板定义。
+
+        * Handler.array( options )
+        * Handler.object( options )
+        * Handler.number( options )
+        * Handler.boolean( options )
+        * Handler.string( options )
+        * Handler.function( options )
+        * Handler.regexp( options )
+        
+        处理路径（相对和绝对）。
+
+        * Handler.getValueByKeyPath( key, options )
+
+    * Data Placeholder Definition, DPD
+
+        处理数据占位符定义
+
+        * Handler.placeholder( placeholder, context, templateContext, options )
+
+*/
 define(
     [
         './constant', './util', './parser',
@@ -67,9 +99,11 @@ define(
                     // 相关上下文
                     context: context
                 })
+
                 if (!context.root) context.root = data
                 return data
             }
+
             return template
         }
 
@@ -415,11 +449,11 @@ define(
 
                 var handle = Random[key] || Random[lkey] || Random[okey]
                 switch (Util.type(handle)) {
-                    // 自动从数组中取一个，例如 @areas
                     case 'array':
+                        // 自动从数组中取一个，例如 @areas
                         return Random.pick(handle)
-                            // 执行占位符方法（大多数情况）
                     case 'function':
+                        // 执行占位符方法（大多数情况）
                         handle.options = options
                         var re = handle.apply(Random, params)
                         if (re === undefined) re = '' // 因为是在字符串中，所以默认为空字符串。

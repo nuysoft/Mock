@@ -2,7 +2,7 @@
 /*
     #### Miscellaneous
 */
-define(function() {
+define(['./address_dict.js'], function(DICT) {
 	return {
 		// Dice
 		d4: function() {
@@ -96,7 +96,7 @@ define(function() {
 					"1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"
 				];
 
-			id = this.pick(this.regions).split(' ')[0] +
+			id = this.pick(DICT).id +
 				this.date('yyyyMMdd') +
 				this.string('number', 3)
 

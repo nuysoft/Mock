@@ -1,7 +1,8 @@
 /* global define, module */
 define(
     [
-        'mock/handler', 'mock/util',
+        'mock/handler',
+        'mock/util',
         'mock/random/random',
         'mock/xhr/xhr',
         'mock/regexp/parser', 'mock/regexp/handler',
@@ -9,7 +10,8 @@ define(
         'mock/valid/valid'
     ],
     function(
-        Handler, Util,
+        Handler,
+        Util,
         Random,
         XHR,
         RegExpParser, RegExpHandler,
