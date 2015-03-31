@@ -4025,7 +4025,7 @@ define(function() {
         "990100": "海外"
     }
 
-    // id pid name
+    // id pid/parentId name children
     function tree(list) {
         var mapped = {}
         for (var i = 0, item; i < list.length; i++) {
