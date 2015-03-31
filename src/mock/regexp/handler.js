@@ -1,60 +1,65 @@
 /* global define */
+/*
+    # RegExp Handler
+
+    https://github.com/ForbesLindesay/regexp
+    https://github.com/dmajda/pegjs
+    http://www.regexper.com/
+
+    每个节点的结构
+        {
+            type: '',
+            offset: number,
+            text: '',
+            body: {},
+            escaped: true/false
+        }
+
+    type 可选值
+        alternate             |         选择
+        match                 匹配
+        capture-group         ()        捕获组
+        non-capture-group     (?:...)   非捕获组
+        positive-lookahead    (?=p)     零宽正向先行断言
+        negative-lookahead    (?!p)     零宽负向先行断言
+        quantified            a*        重复节点
+        quantifier            *         量词
+        charset               []        字符集
+        range                 {m, n}    范围
+        literal               a         直接量字符
+        unicode               \uxxxx    Unicode
+        hex                   \x        十六进制
+        octal                 八进制
+        back-reference        \n        反向引用
+        control-character     \cX       控制字符
+
+        // Token
+        start               ^       开头
+        end                 $       结尾
+        any-character       .       任意字符
+        backspace           [\b]    退格直接量
+        word-boundary       \b      单词边界
+        non-word-boundary   \B      非单词边界
+        digit               \d      ASCII 数字，[0-9]
+        non-digit           \D      非 ASCII 数字，[^0-9]
+        form-feed           \f      换页符
+        line-feed           \n      换行符
+        carriage-return     \r      回车符
+        white-space         \s      空白符
+        non-white-space     \S      非空白符
+        tab                 \t      制表符
+        vertical-tab        \v      垂直制表符
+        word                \w      ASCII 字符，[a-zA-Z0-9]
+        non-word            \W      非 ASCII 字符，[^a-zA-Z0-9]
+        null-character      \o      NUL 字符
+ */
 define(['mock/util', 'mock/random/random'], function(Util, Random) {
     /*
-        https://github.com/ForbesLindesay/regexp
-        https://github.com/dmajda/pegjs
-        http://www.regexper.com/
-
-        每个节点的结构
-            {
-                type: '',
-                offset: number,
-                text: '',
-                body: {},
-                escaped: true/false
-            }
-
-        type 可选值
-            alternate             |         选择
-            match                 匹配
-            capture-group         ()        捕获组
-            non-capture-group     (?:...)   非捕获组
-            positive-lookahead    (?=p)     零宽正向先行断言
-            negative-lookahead    (?!p)     零宽负向先行断言
-            quantified            a*        重复节点
-            quantifier            *         量词
-            charset               []        字符集
-            range                 {m, n}    范围
-            literal               a         直接量字符
-            unicode               \uxxxx    Unicode
-            hex                   \x        十六进制
-            octal                 八进制
-            back-reference        \n        反向引用
-            control-character     \cX       控制字符
-
-            // Token
-            start               ^       开头
-            end                 $       结尾
-            any-character       .       任意字符
-            backspace           [\b]    退格直接量
-            word-boundary       \b      单词边界
-            non-word-boundary   \B      非单词边界
-            digit               \d      ASCII 数字，[0-9]
-            non-digit           \D      非 ASCII 数字，[^0-9]
-            form-feed           \f      换页符
-            line-feed           \n      换行符
-            carriage-return     \r      回车符
-            white-space         \s      空白符
-            non-white-space     \S      非空白符
-            tab                 \t      制表符
-            vertical-tab        \v      垂直制表符
-            word                \w      ASCII 字符，[a-zA-Z0-9]
-            non-word            \W      非 ASCII 字符，[^a-zA-Z0-9]
-            null-character      \o      NUL 字符
+        
     */
 
 
-    var Handle = {
+    var Handler = {
         extend: Util.extend
     }
 
@@ -129,15 +134,15 @@ define(['mock/util', 'mock/random/random'], function(Util, Random) {
     }
 
     // var ast = RegExpParser.parse(regexp.source)
-    Handle.gen = function(node, result, cache) {
+    Handler.gen = function(node, result, cache) {
         cache = cache || {
             guid: 1
         }
-        return Handle[node.type] ? Handle[node.type](node, result, cache) :
-            Handle.token(node, result, cache)
+        return Handler[node.type] ? Handler[node.type](node, result, cache) :
+            Handler.token(node, result, cache)
     }
 
-    Handle.extend({
+    Handler.extend({
         /* jshint unused:false */
         token: function(node, result, cache) {
             switch (node.type) {
@@ -385,6 +390,6 @@ define(['mock/util', 'mock/random/random'], function(Util, Random) {
         }
     })
 
-    return Handle
+    return Handler
 
 })
