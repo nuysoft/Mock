@@ -357,7 +357,7 @@ define(
                 return result
             },
             'function': function(options) {
-                // TODO 参数该如何设计
+                // ( context, options )
                 return options.template.call(options.context.currentContext, options)
             },
             'regexp': function(options) {
