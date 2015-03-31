@@ -6,18 +6,7 @@
 */
 define(function() {
 	return {
-		/*
-		    ##### Random.first()
-
-		    随机生成一个常见的英文名。
-
-		    * Random.first()
-		    
-		    使用示例如下所示：
-
-		        Random.first()
-		        // => "Nancy"
-		*/
+		// 随机生成一个常见的英文名。
 		first: function() {
 			var names = [
 				// male
@@ -39,20 +28,9 @@ define(function() {
 				"Brenda", "Amy", "Anna"
 			])
 			return this.pick(names)
-				// return this.capitalize(this.word())
+				// or this.capitalize(this.word())
 		},
-		/*
-		    ##### Random.last()
-
-		    随机生成一个常见的英文姓。
-
-		    * Random.last()
-		    
-		    使用示例如下所示：
-
-		        Random.last()
-		        // => "Martinez"
-		*/
+		// 随机生成一个常见的英文姓。
 		last: function() {
 			var names = [
 				"Smith", "Johnson", "Williams", "Brown", "Jones",
@@ -66,33 +44,14 @@ define(function() {
 			return this.pick(names)
 				// return this.capitalize(this.word())
 		},
-		/*
-		    ##### Random.name(middle)
-
-		    随机生成一个常见的英文姓名。
-		    
-		    * Random.name()
-		    * Random.name(middle)
-
-		    参数的含义和默认值如下所示：
-
-		    * 参数 middle：可选。布尔值。指示是否生成中间名。
-		    
-		    使用示例如下所示：
-
-		        Random.name()
-		        // => "Larry Wilson"
-		        Random.name(true)
-		        // => "Helen Carol Martinez"
-		*/
+		// 随机生成一个常见的英文姓名。
 		name: function(middle) {
-			return this.first() + ' ' + (middle ? this.first() + ' ' : '') + this.last()
+			return this.first() + ' ' +
+				(middle ? this.first() + ' ' : '') +
+				this.last()
 		},
 		/*
-		    * Random.cfirst()
-
 		    随机生成一个常见的中文姓。
-
 		    [世界常用姓氏排行](http://baike.baidu.com/view/1719115.htm)
 		    [玄派网 - 网络小说创作辅助平台](http://xuanpai.sinaapp.com/)
 		 */
@@ -112,10 +71,7 @@ define(function() {
 			return this.pick(names)
 		},
 		/*
-		    * Random.clast()
-
 		    随机生成一个常见的中文名。
-
 		    [中国最常见名字前50名_三九算命网](http://www.name999.net/xingming/xingshi/20131004/48.html)
 		 */
 		clast: function() {
@@ -126,9 +82,7 @@ define(function() {
 			).split(' ')
 			return this.pick(names)
 		},
-		/*
-		    随机生成一个常见的中文姓名。
-		*/
+		// 随机生成一个常见的中文姓名。
 		cname: function() {
 			return this.cfirst() + this.clast()
 		}
