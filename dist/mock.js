@@ -5620,7 +5620,7 @@ define('mock/random/misc',['./address_dict.js'], function(DICT) {
 		increment: function() {
 			var key = 0
 			return function(step) {
-				return key += (+step || 1)
+				return key += (+step || 1) // step?
 			}
 		}(),
 		inc: function(step) {
