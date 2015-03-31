@@ -1,27 +1,28 @@
 /* global define */
+/*
+    # valid(template, data)
+
+    校验真实数据 data 是否与数据模板 template 匹配。
+    
+    实现思路：
+    1. 解析规则。
+        先把数据模板 template 解析为更方便机器解析的 JSON-Schame
+        name               属性名 
+        type               属性值类型
+        template           属性值模板
+        properties         对象属性数组
+        items              数组元素数组
+        rule               属性值生成规则
+    2. 递归验证规则。
+        然后用 JSON-Schema 校验真实数据，校验项包括属性名、值类型、值、值生成规则。
+
+    提示信息 
+    https://github.com/fge/json-schema-validator/blob/master/src/main/resources/com/github/fge/jsonschema/validator/validation.properties
+    [JSON-Schama validator](http://json-schema-validator.herokuapp.com/)
+    [Regexp Demo](http://demos.forbeslindesay.co.uk/regexp/)
+*/
 define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
-    /*
-        * Mock.valid(template, data)
-
-        校验真实数据 data 是否与数据模板 template 匹配。
-        
-        实现思路：
-        1. 解析规则。
-            先把数据模板 template 解析为更方便机器解析的 JSON-Schame
-            name               属性名 
-            type               属性值类型
-            template           属性值模板
-            properties         对象属性数组
-            items              数组元素数组
-            rule               属性值生成规则
-        2. 递归验证规则。
-            然后用 JSON-Schema 校验真实数据，校验项包括属性名、值类型、值、值生成规则。
-
-        提示信息 
-        https://github.com/fge/json-schema-validator/blob/master/src/main/resources/com/github/fge/jsonschema/validator/validation.properties
-        [JSON-Schama validator](http://json-schema-validator.herokuapp.com/)
-        [Regexp Demo](http://demos.forbeslindesay.co.uk/regexp/)
-    */
+    
     function valid(template, data) {
         var schema = toJSONSchema(template)
         var result = Diff.diff(schema, data)
@@ -250,8 +251,9 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
         }
     }
 
-    // TODO 完善、友好的提示信息
     /*
+        完善、友好的提示信息
+        
         Equal, not equal to, greater than, less than, greater than or equal to, less than or equal to
         路径 验证类型 描述 
 

@@ -1,4 +1,7 @@
 /* global define */
+/*
+    # toJSONSchema
+ */
 define(
     [
         'mock/constant', 'mock/util', 'mock/parser'
