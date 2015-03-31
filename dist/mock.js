@@ -492,17 +492,20 @@ define('mock/random/date',[],function() {
 */
 define('mock/random/image',[],function() {
     return {
+        // 常见的广告宽高
         _adSize: [
             '300x250', '250x250', '240x400', '336x280', '180x150',
             '720x300', '468x60', '234x60', '88x31', '120x90',
             '120x60', '120x240', '125x125', '728x90', '160x600',
             '120x600', '300x600'
         ],
+        // 常见的屏幕宽高
         _screenSize: [
             '320x200', '320x240', '640x480', '800x480', '800x480',
             '1024x600', '1024x768', '1280x800', '1440x900', '1920x1200',
             '2560x1600'
         ],
+        // 常见的视频宽高
         _videoSize: ['720x480', '768x576', '1280x720', '1920x1080'],
         /*
             生成一个随机的图片地址。
@@ -1013,16 +1016,17 @@ define('mock/random/color',[],function() {
 		},
 		// 随机生成一个无脑的颜色，格式为 '#RRGGBB'。
 		_brainlessColor: function() {
-			// TODO
-			// var formats = 'rgb hsl hsv'.split(' ')
-			// var hues = 'navy blue aqua teal olive green lime yellow orange red maroon fuchsia purple silver gray black'.split(' ')
-			// [Use ~~ and 0| instead of Math.floor for positive numbers](https://github.com/jed/140bytes/wiki/Byte-saving-techniques#use--and-0-instead-of-mathfloor-for-positive-numbers)
 			var color = Math.floor(
 				Math.random() *
 				(16 * 16 * 16 * 16 * 16 * 16 - 1)
 			).toString(16)
 			color = "#" + ("000000" + color).slice(-6)
 			return color.toUpperCase()
+
+			// or
+			// var formats = 'rgb hsl hsv'.split(' ')
+			// var hues = 'navy blue aqua teal olive green lime yellow orange red maroon fuchsia purple silver gray black'.split(' ')
+			// [Use ~~ and 0| instead of Math.floor for positive numbers](https://github.com/jed/140bytes/wiki/Byte-saving-techniques#use--and-0-instead-of-mathfloor-for-positive-numbers)
 		},
 		// http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
 		// https://github.com/devongovett/color-generator/blob/master/index.js
@@ -7050,7 +7054,7 @@ define(
                 return result
             },
             'function': function(options) {
-                // TODO 参数该如何设计
+                // ( context, options )
                 return options.template.call(options.context.currentContext, options)
             },
             'regexp': function(options) {

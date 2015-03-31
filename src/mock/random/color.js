@@ -246,16 +246,17 @@ define(function() {
 		},
 		// 随机生成一个无脑的颜色，格式为 '#RRGGBB'。
 		_brainlessColor: function() {
-			// TODO
-			// var formats = 'rgb hsl hsv'.split(' ')
-			// var hues = 'navy blue aqua teal olive green lime yellow orange red maroon fuchsia purple silver gray black'.split(' ')
-			// [Use ~~ and 0| instead of Math.floor for positive numbers](https://github.com/jed/140bytes/wiki/Byte-saving-techniques#use--and-0-instead-of-mathfloor-for-positive-numbers)
 			var color = Math.floor(
 				Math.random() *
 				(16 * 16 * 16 * 16 * 16 * 16 - 1)
 			).toString(16)
 			color = "#" + ("000000" + color).slice(-6)
 			return color.toUpperCase()
+
+			// or
+			// var formats = 'rgb hsl hsv'.split(' ')
+			// var hues = 'navy blue aqua teal olive green lime yellow orange red maroon fuchsia purple silver gray black'.split(' ')
+			// [Use ~~ and 0| instead of Math.floor for positive numbers](https://github.com/jed/140bytes/wiki/Byte-saving-techniques#use--and-0-instead-of-mathfloor-for-positive-numbers)
 		},
 		// http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
 		// https://github.com/devongovett/color-generator/blob/master/index.js
