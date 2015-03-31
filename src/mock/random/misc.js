@@ -24,6 +24,8 @@ define(['./address_dict.js'], function(DICT) {
 			return this.natural(1, 100)
 		},
 		/*
+		    随机生成一个 GUID。
+
 		    http://www.broofa.com/2008/09/javascript-uuid-function/
 		    [UUID 规范](http://www.ietf.org/rfc/rfc4122.txt)
 		        UUIDs (Universally Unique IDentifier)
@@ -46,17 +48,6 @@ define(['./address_dict.js'], function(DICT) {
 		                "A" / "B" / "C" / "D" / "E" / "F"
 		    
 		    https://github.com/victorquinn/chancejs/blob/develop/chance.js#L1349
-
-		    ##### Random.guid()
-
-		    随机生成一个 GUID。
-
-		    * Random.guid()
-		    
-		    使用示例如下所示：
-
-		        Random.guid()
-		        // => "662C63B4-FD43-66F4-3328-C54E3FF0D56E"
 		*/
 		guid: function() {
 			var pool = "abcdefABCDEF1234567890",
@@ -71,20 +62,11 @@ define(['./address_dict.js'], function(DICT) {
 			return this.guid()
 		},
 		/*
+		    随机生成一个 18 位身份证。
+
 		    [身份证](http://baike.baidu.com/view/1697.htm#4)
 		        地址码 6 + 出生日期码 8 + 顺序码 3 + 校验码 1
 		    [《中华人民共和国行政区划代码》国家标准(GB/T2260)](http://zhidao.baidu.com/question/1954561.html)
-
-		    ##### Random.id()
-
-		    随机生成一个 18 位身份证。
-
-		    * Random.id()
-		    
-		    使用示例如下所示：
-
-		        Random.id()
-		        // => "420000200710091854"
 		*/
 		id: function() {
 			var id,
@@ -94,7 +76,7 @@ define(['./address_dict.js'], function(DICT) {
 				],
 				last = [
 					"1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"
-				];
+				]
 
 			id = this.pick(DICT).id +
 				this.date('yyyyMMdd') +
@@ -109,31 +91,15 @@ define(['./address_dict.js'], function(DICT) {
 		},
 
 		/*
-		    自增主键
-		    auto increment primary key
-
-		    ##### Random.increment()
-
 		    生成一个全局的自增整数。
-
-		    * Random.increment(step)
-
-		    参数的含义和默认值如下所示：
-		    * 参数 step：可选。整数自增的步长。默认值为 1。
-
-		    使用示例如下所示：
-
-		        Random.increment()
-		        // => 1
-		        Random.increment(100)
-		        // => 101
-		        Random.increment(1000)
-		        // => 1101
+		    类似自增主键（auto increment primary key）。
 		*/
-		autoIncrementInteger: 0,
-		increment: function(step) {
-			return this.autoIncrementInteger += (+step || 1)
-		},
+		increment: function() {
+			var key = 0
+			return function(step) {
+				return key += (+step || 1)
+			}
+		}(),
 		inc: function(step) {
 			return this.increment(step)
 		}
