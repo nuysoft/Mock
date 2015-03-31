@@ -1,6 +1,6 @@
 /* global define */
 /*
-    ### Mock.Random
+    # Mock.Random
     
     工具类，用于生成各种随机数据。
 */
