@@ -1238,18 +1238,7 @@ define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
 */
 define('mock/random/name',[],function() {
 	return {
-		/*
-		    ##### Random.first()
-
-		    随机生成一个常见的英文名。
-
-		    * Random.first()
-		    
-		    使用示例如下所示：
-
-		        Random.first()
-		        // => "Nancy"
-		*/
+		// 随机生成一个常见的英文名。
 		first: function() {
 			var names = [
 				// male
@@ -1271,20 +1260,9 @@ define('mock/random/name',[],function() {
 				"Brenda", "Amy", "Anna"
 			])
 			return this.pick(names)
-				// return this.capitalize(this.word())
+				// or this.capitalize(this.word())
 		},
-		/*
-		    ##### Random.last()
-
-		    随机生成一个常见的英文姓。
-
-		    * Random.last()
-		    
-		    使用示例如下所示：
-
-		        Random.last()
-		        // => "Martinez"
-		*/
+		// 随机生成一个常见的英文姓。
 		last: function() {
 			var names = [
 				"Smith", "Johnson", "Williams", "Brown", "Jones",
@@ -1298,33 +1276,14 @@ define('mock/random/name',[],function() {
 			return this.pick(names)
 				// return this.capitalize(this.word())
 		},
-		/*
-		    ##### Random.name(middle)
-
-		    随机生成一个常见的英文姓名。
-		    
-		    * Random.name()
-		    * Random.name(middle)
-
-		    参数的含义和默认值如下所示：
-
-		    * 参数 middle：可选。布尔值。指示是否生成中间名。
-		    
-		    使用示例如下所示：
-
-		        Random.name()
-		        // => "Larry Wilson"
-		        Random.name(true)
-		        // => "Helen Carol Martinez"
-		*/
+		// 随机生成一个常见的英文姓名。
 		name: function(middle) {
-			return this.first() + ' ' + (middle ? this.first() + ' ' : '') + this.last()
+			return this.first() + ' ' +
+				(middle ? this.first() + ' ' : '') +
+				this.last()
 		},
 		/*
-		    * Random.cfirst()
-
 		    随机生成一个常见的中文姓。
-
 		    [世界常用姓氏排行](http://baike.baidu.com/view/1719115.htm)
 		    [玄派网 - 网络小说创作辅助平台](http://xuanpai.sinaapp.com/)
 		 */
@@ -1344,10 +1303,7 @@ define('mock/random/name',[],function() {
 			return this.pick(names)
 		},
 		/*
-		    * Random.clast()
-
 		    随机生成一个常见的中文名。
-
 		    [中国最常见名字前50名_三九算命网](http://www.name999.net/xingming/xingshi/20131004/48.html)
 		 */
 		clast: function() {
@@ -1358,9 +1314,7 @@ define('mock/random/name',[],function() {
 			).split(' ')
 			return this.pick(names)
 		},
-		/*
-		    随机生成一个常见的中文姓名。
-		*/
+		// 随机生成一个常见的中文姓名。
 		cname: function() {
 			return this.cfirst() + this.clast()
 		}
@@ -1373,17 +1327,7 @@ define('mock/random/name',[],function() {
 define('mock/random/web',[],function() {
     return {
         /*
-            ##### Random.url()
-
             随机生成一个 URL。
-
-            * Random.url()
-            * Random.url(protocol, domain, port, path) TODO
-            
-            使用示例如下所示：
-
-                Random.url()
-                // => "http://vrcq.edu/ekqtyfi"
 
             [URL 规范](http://www.w3.org/Addressing/URL/url-spec.txt)
                 http                    Hypertext Transfer Protocol 
@@ -1398,76 +1342,45 @@ define('mock/random/web',[],function() {
                 telnet rlogin tn3270    Reference to interactive sessions
                 wais                    Wide Area Information Servers 
         */
-        url: function() {
-            return this.protocol() + '://' +
-                this.domain() + '/' +
-                this.word()
-                // return 'http://' + this.domain() + '/' + this.word()
+        url: function(protocol, host) {
+            return (protocol || this.protocol()) + '://' + // protocol?
+                (host || this.domain()) + // host?
+                '/' + this.word()
         },
-        // 协议簇
-        protocols: 'http ftp gopher mailto mid cid news nntp prospero telnet rlogin tn3270 wais'.split(' '),
+        // 随机生成一个 URL 协议。
         protocol: function() {
-            return this.pick(this.protocols)
+            return this.pick(
+                // 协议簇
+                'http ftp gopher mailto mid cid news nntp prospero telnet rlogin tn3270 wais'.split(' ')
+            )
         },
-        /*
-            ##### Random.domain()
-
-            随机生成一个域名。
-
-            * Random.domain()
-            
-            使用示例如下所示：
-
-                Random.domain()
-                // => "kozfnb.org"
-        */
+        // 随机生成一个域名。
         domain: function(tld) {
             return this.word() + '.' + (tld || this.tld())
         },
         /*
+            随机生成一个顶级域名。
             国际顶级域名 international top-level domain-names, iTLDs
             国家顶级域名 national top-level domainnames, nTLDs
             [域名后缀大全](http://www.163ns.com/zixun/post/4417.html)
         */
-        tlds: (
-            // 域名后缀
-            'com net org edu gov int mil cn ' +
-            // 国内域名
-            'com.cn net.cn gov.cn org.cn ' +
-            // 中文国内域名
-            '中国 中国互联.公司 中国互联.网络 ' +
-            // 新国际域名
-            'tel biz cc tv info name hk mobi asia cd travel pro museum coop aero ' +
-            // 世界各国域名后缀
-            'ad ae af ag ai al am an ao aq ar as at au aw az ba bb bd be bf bg bh bi bj bm bn bo br bs bt bv bw by bz ca cc cf cg ch ci ck cl cm cn co cq cr cu cv cx cy cz de dj dk dm do dz ec ee eg eh es et ev fi fj fk fm fo fr ga gb gd ge gf gh gi gl gm gn gp gr gt gu gw gy hk hm hn hr ht hu id ie il in io iq ir is it jm jo jp ke kg kh ki km kn kp kr kw ky kz la lb lc li lk lr ls lt lu lv ly ma mc md mg mh ml mm mn mo mp mq mr ms mt mv mw mx my mz na nc ne nf ng ni nl no np nr nt nu nz om qa pa pe pf pg ph pk pl pm pn pr pt pw py re ro ru rw sa sb sc sd se sg sh si sj sk sl sm sn so sr st su sy sz tc td tf tg th tj tk tm tn to tp tr tt tv tw tz ua ug uk us uy va vc ve vg vn vu wf ws ye yu za zm zr zw'
-        ).split(' '),
-        /*
-            ##### Random.tld()
-
-            随机生成一个顶级域名。
-
-            * Random.tld()
-            
-            使用示例如下所示：
-
-                Random.tld()
-                // => "io"
-        */
         tld: function() { // Top Level Domain
-            return this.pick(this.tlds)
+            return this.pick(
+                (
+                    // 域名后缀
+                    'com net org edu gov int mil cn ' +
+                    // 国内域名
+                    'com.cn net.cn gov.cn org.cn ' +
+                    // 中文国内域名
+                    '中国 中国互联.公司 中国互联.网络 ' +
+                    // 新国际域名
+                    'tel biz cc tv info name hk mobi asia cd travel pro museum coop aero ' +
+                    // 世界各国域名后缀
+                    'ad ae af ag ai al am an ao aq ar as at au aw az ba bb bd be bf bg bh bi bj bm bn bo br bs bt bv bw by bz ca cc cf cg ch ci ck cl cm cn co cq cr cu cv cx cy cz de dj dk dm do dz ec ee eg eh es et ev fi fj fk fm fo fr ga gb gd ge gf gh gi gl gm gn gp gr gt gu gw gy hk hm hn hr ht hu id ie il in io iq ir is it jm jo jp ke kg kh ki km kn kp kr kw ky kz la lb lc li lk lr ls lt lu lv ly ma mc md mg mh ml mm mn mo mp mq mr ms mt mv mw mx my mz na nc ne nf ng ni nl no np nr nt nu nz om qa pa pe pf pg ph pk pl pm pn pr pt pw py re ro ru rw sa sb sc sd se sg sh si sj sk sl sm sn so sr st su sy sz tc td tf tg th tj tk tm tn to tp tr tt tv tw tz ua ug uk us uy va vc ve vg vn vu wf ws ye yu za zm zr zw'
+                ).split(' ')
+            )
         },
-        /*
-            ##### Random.email()
-
-            随机生成一个邮件地址。
-
-            * Random.email()
-            
-            使用示例如下所示：
-
-                Random.email()
-                // => "x.davis@jackson.edu"
-        */
+        // 随机生成一个邮件地址。
         email: function(domain) {
             return this.character('lower') + '.' + this.word() + '@' +
                 (
@@ -1477,18 +1390,7 @@ define('mock/random/web',[],function() {
                 // return this.character('lower') + '.' + this.last().toLowerCase() + '@' + this.last().toLowerCase() + '.' + this.tld()
                 // return this.word() + '@' + (domain || this.domain())
         },
-        /*
-            ##### Random.ip()
-
-            随机生成一个 IP 地址。
-
-            * Random.ip()
-            
-            使用示例如下所示：
-
-                Random.ip()
-                // => "34.206.109.169"
-        */
+        // 随机生成一个 IP 地址。
         ip: function() {
             return this.natural(0, 255) + '.' +
                 this.natural(0, 255) + '.' +
@@ -5641,6 +5543,8 @@ define('mock/random/misc',['./address_dict.js'], function(DICT) {
 			return this.natural(1, 100)
 		},
 		/*
+		    随机生成一个 GUID。
+
 		    http://www.broofa.com/2008/09/javascript-uuid-function/
 		    [UUID 规范](http://www.ietf.org/rfc/rfc4122.txt)
 		        UUIDs (Universally Unique IDentifier)
@@ -5663,17 +5567,6 @@ define('mock/random/misc',['./address_dict.js'], function(DICT) {
 		                "A" / "B" / "C" / "D" / "E" / "F"
 		    
 		    https://github.com/victorquinn/chancejs/blob/develop/chance.js#L1349
-
-		    ##### Random.guid()
-
-		    随机生成一个 GUID。
-
-		    * Random.guid()
-		    
-		    使用示例如下所示：
-
-		        Random.guid()
-		        // => "662C63B4-FD43-66F4-3328-C54E3FF0D56E"
 		*/
 		guid: function() {
 			var pool = "abcdefABCDEF1234567890",
@@ -5688,20 +5581,11 @@ define('mock/random/misc',['./address_dict.js'], function(DICT) {
 			return this.guid()
 		},
 		/*
+		    随机生成一个 18 位身份证。
+
 		    [身份证](http://baike.baidu.com/view/1697.htm#4)
 		        地址码 6 + 出生日期码 8 + 顺序码 3 + 校验码 1
 		    [《中华人民共和国行政区划代码》国家标准(GB/T2260)](http://zhidao.baidu.com/question/1954561.html)
-
-		    ##### Random.id()
-
-		    随机生成一个 18 位身份证。
-
-		    * Random.id()
-		    
-		    使用示例如下所示：
-
-		        Random.id()
-		        // => "420000200710091854"
 		*/
 		id: function() {
 			var id,
@@ -5711,7 +5595,7 @@ define('mock/random/misc',['./address_dict.js'], function(DICT) {
 				],
 				last = [
 					"1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2"
-				];
+				]
 
 			id = this.pick(DICT).id +
 				this.date('yyyyMMdd') +
@@ -5726,31 +5610,15 @@ define('mock/random/misc',['./address_dict.js'], function(DICT) {
 		},
 
 		/*
-		    自增主键
-		    auto increment primary key
-
-		    ##### Random.increment()
-
 		    生成一个全局的自增整数。
-
-		    * Random.increment(step)
-
-		    参数的含义和默认值如下所示：
-		    * 参数 step：可选。整数自增的步长。默认值为 1。
-
-		    使用示例如下所示：
-
-		        Random.increment()
-		        // => 1
-		        Random.increment(100)
-		        // => 101
-		        Random.increment(1000)
-		        // => 1101
+		    类似自增主键（auto increment primary key）。
 		*/
-		autoIncrementInteger: 0,
-		increment: function(step) {
-			return this.autoIncrementInteger += (+step || 1)
-		},
+		increment: function() {
+			var key = 0
+			return function(step) {
+				return key += (+step || 1)
+			}
+		}(),
 		inc: function(step) {
 			return this.increment(step)
 		}
