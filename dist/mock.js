@@ -281,36 +281,35 @@ define('mock/random/basic',[],function() {
         },
         // 返回一个随机字符串。
         string: function(pool, min, max) {
-            var length;
-
-            // string( pool, min, max )
-            if (arguments.length === 3) {
-                length = this.natural(min, max)
-            }
-            if (arguments.length === 2) {
-                // string( pool, length )
-                if (typeof arguments[0] === 'string') {
-                    length = min
-                } else {
-                    // string( min, max )
-                    length = this.natural(pool, min)
+            var len
+            switch (arguments.length) {
+                case 0: // ()
+                    len = this.natural(3, 7)
+                    break
+                case 1: // ( length )
+                    len = pool
                     pool = undefined
-                }
-            }
-            // string( length )
-            if (arguments.length === 1) {
-                length = pool
-                pool = undefined
-            }
-            // string()
-            if (arguments.length === 0) {
-                length = this.natural(3, 7)
+                    break
+                case 2:
+                    // ( pool, length )
+                    if (typeof arguments[0] === 'string') {
+                        len = min
+                    } else {
+                        // ( min, max )
+                        len = this.natural(pool, min)
+                        pool = undefined
+                    }
+                    break
+                case 3:
+                    len = this.natural(min, max)
+                    break
             }
 
             var text = ''
-            for (var i = 0; i < length; i++) {
+            for (var i = 0; i < len; i++) {
                 text += this.character(pool)
             }
+            
             return text
         },
         str: function( /*pool, min, max*/ ) {
