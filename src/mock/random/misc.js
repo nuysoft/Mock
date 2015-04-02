@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # Miscellaneous
+    ## Miscellaneous
 */
 define(['./address_dict.js'], function(DICT) {
 	return {

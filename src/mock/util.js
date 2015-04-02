@@ -1,8 +1,9 @@
 /* global define */
+/*
+    ## Utilities
+*/
 define(function() {
-    /*
-        Utilities
-    */
+
     var Util = {}
 
     Util.extend = function extend() {

@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # Color
+    ## Color
 
     http://blog.csdn.net/idfaya/article/details/6770414
         颜色空间RGB与HSV(HSL)的转换

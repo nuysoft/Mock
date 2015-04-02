@@ -1,6 +1,6 @@
 /* global define, document, module */
 /*
-    # Image
+    ## Image
 */
 define(function() {
     return {

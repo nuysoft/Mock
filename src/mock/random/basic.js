@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # Basics
+    ## Basics
 */
 define(function() {
     return {

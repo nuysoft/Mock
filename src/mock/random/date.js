@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # Date
+    ## Date
 */
 define(function() {
     var patternLetters = {

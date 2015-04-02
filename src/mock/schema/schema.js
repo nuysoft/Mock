@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # toJSONSchema
+    ## toJSONSchema
  */
 define(
     [

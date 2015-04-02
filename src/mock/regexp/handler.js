@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # RegExp Handler
+    ## RegExp Handler
 
     https://github.com/ForbesLindesay/regexp
     https://github.com/dmajda/pegjs

@@ -1,6 +1,6 @@
 /* global define */
 /*
-	Parser
+	## Parser
 
 	解析数据模板（属性名部分）。
 

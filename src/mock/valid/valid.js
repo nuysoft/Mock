@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # valid(template, data)
+    ## valid(template, data)
 
     校验真实数据 data 是否与数据模板 template 匹配。
     

@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # Text
+    ## Text
 */
 define(['./basic', './helper'], function(Basic, Helper) {
 

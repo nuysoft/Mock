@@ -84,10 +84,11 @@ define('mock/constant',[],function() {
     }
 });
 /* global define */
+/*
+    ## Utilities
+*/
 define('mock/util',[],function() {
-    /*
-        Utilities
-    */
+
     var Util = {}
 
     Util.extend = function extend() {
@@ -214,7 +215,7 @@ define('mock/util',[],function() {
 });
 /* global define */
 /*
-    # Basics
+    ## Basics
 */
 define('mock/random/basic',[],function() {
     return {
@@ -344,7 +345,7 @@ define('mock/random/basic',[],function() {
 });
 /* global define */
 /*
-    # Date
+    ## Date
 */
 define('mock/random/date',[],function() {
     var patternLetters = {
@@ -488,7 +489,7 @@ define('mock/random/date',[],function() {
 });
 /* global define, document, module */
 /*
-    # Image
+    ## Image
 */
 define('mock/random/image',[],function() {
     return {
@@ -770,7 +771,7 @@ define('mock/random/image',[],function() {
 });
 /* global define */
 /*
-    # Color
+    ## Color
 
     http://blog.csdn.net/idfaya/article/details/6770414
         颜色空间RGB与HSV(HSL)的转换
@@ -1055,7 +1056,7 @@ define('mock/random/color',[],function() {
 });
 /* global define */
 /*
-    # Helpers
+    ## Helpers
 */
 define('mock/random/helper',[],function() {
 	return {
@@ -1151,7 +1152,7 @@ define('mock/random/helper',[],function() {
 });
 /* global define */
 /*
-    # Text
+    ## Text
 */
 define('mock/random/text',['./basic', './helper'], function(Basic, Helper) {
 
@@ -1326,7 +1327,7 @@ define('mock/random/name',[],function() {
 });
 /* global define */
 /*
-    #### Web
+    ## Web
 */
 define('mock/random/web',[],function() {
     return {
@@ -1405,7 +1406,7 @@ define('mock/random/web',[],function() {
 });
 /* global define */
 /*
-    # Address
+    ## Address 字典数据
 
     字典数据来源 http://www.atatech.org/articles/30028?rnd=254259856
 
@@ -5476,7 +5477,7 @@ define('mock/random/address_dict.js',[],function() {
 });
 /* global define */
 /*
-    # Address
+    ## Address
 */
 define('mock/random/address',['./address_dict.js'], function(DICT) {
     var REGION = ['东北', '华北', '华东', '华中', '华南', '西南', '西北']
@@ -5523,7 +5524,7 @@ define('mock/random/address',['./address_dict.js'], function(DICT) {
 });
 /* global define */
 /*
-    # Miscellaneous
+    ## Miscellaneous
 */
 define('mock/random/misc',['./address_dict.js'], function(DICT) {
 	return {
@@ -5630,7 +5631,7 @@ define('mock/random/misc',['./address_dict.js'], function(DICT) {
 });
 /* global define */
 /*
-    # Mock.Random
+    ## Mock.Random
     
     工具类，用于生成各种随机数据。
 */
@@ -5664,7 +5665,7 @@ define(
 );
 /* global define */
 /*
-	Parser
+	## Parser
 
 	解析数据模板（属性名部分）。
 
@@ -6307,7 +6308,7 @@ define('mock/regexp/parser',[], function() {
 });
 /* global define */
 /*
-    # RegExp Handler
+    ## RegExp Handler
 
     https://github.com/ForbesLindesay/regexp
     https://github.com/dmajda/pegjs
@@ -7644,7 +7645,7 @@ define('mock/xhr/xhr',['mock/util'], function(Util) {
 });
 /* global define */
 /*
-    # toJSONSchema
+    ## toJSONSchema
  */
 define(
     'mock/schema/schema',[
@@ -7690,7 +7691,7 @@ define(
 );
 /* global define */
 /*
-    # valid(template, data)
+    ## valid(template, data)
 
     校验真实数据 data 是否与数据模板 template 匹配。
     
