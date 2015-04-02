@@ -325,7 +325,7 @@ define(
                     for (i = 0; i < placeholders.length; i++) {
                         ph = placeholders[i]
 
-                        // TODO 只有转义斜杠是偶数时，才不需要解析占位符？
+                        // 遇到转义斜杠，不需要解析占位符
                         if (/^\\/.test(ph)) {
                             placeholders.splice(i--, 1)
                             continue

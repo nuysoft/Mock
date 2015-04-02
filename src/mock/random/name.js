@@ -1,6 +1,6 @@
 /* global define */
 /*
-    # Name
+    ## Name
 
     [Beyond the Top 1000 Names](http://www.ssa.gov/oact/babynames/limits.html)
 */
@@ -42,7 +42,7 @@ define(function() {
 				"Young", "Allen"
 			]
 			return this.pick(names)
-				// return this.capitalize(this.word())
+				// or this.capitalize(this.word())
 		},
 		// 随机生成一个常见的英文姓名。
 		name: function(middle) {

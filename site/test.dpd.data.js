@@ -360,7 +360,7 @@ define([], function() {
                 'Mock.mock(\'@csentence(3, 5)\')',
                 ''
             ],
-            'Random.cword( pool? )': [
+            'Random.cword( pool?, min?, max? )': [
                 '// Random.cword()',
                 'Random.cword()',
                 'Mock.mock(\'@cword\')',
@@ -369,6 +369,22 @@ define([], function() {
                 '// Random.cword( pool )',
                 'Random.cword(\'零一二三四五六七八九十\')',
                 'Mock.mock(\'@cword("零一二三四五六七八九十")\')',
+                '',
+                '// Random.cword( length )',
+                'Random.cword(3)',
+                'Mock.mock(\'@cword(3)\')',
+                '',
+                '// Random.cword( pool, length )',
+                'Random.cword(\'零一二三四五六七八九十\', 3)',
+                'Mock.mock(\'@cword("零一二三四五六七八九十", 3)\')',
+                '',
+                '// Random.cword( min, max )',
+                'Random.cword(3, 5)',
+                'Mock.mock(\'@cword(3, 5)\')',
+                '',
+                '// Random.cword( pool, min, max )',
+                'Random.cword(\'零一二三四五六七八九十\', 5, 7)',
+                'Mock.mock(\'@cword("零一二三四五六七八九十", 5, 7)\')',
             ],
             'Random.ctitle( min?, max? )': [
                 '// Random.ctitle()',
