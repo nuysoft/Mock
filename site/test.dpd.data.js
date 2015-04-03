@@ -255,6 +255,24 @@ define([], function() {
                 'Random.color()',
                 'Mock.mock(\'@color\')',
                 'Mock.mock(\'@color()\')'
+            ],
+            'Random.hex()': [
+                '// Random.hex()',
+                'Random.hex()',
+                'Mock.mock(\'@hex\')',
+                'Mock.mock(\'@hex()\')'
+            ],
+            'Random.rgb()': [
+                '// Random.rgb()',
+                'Random.rgb()',
+                'Mock.mock(\'@rgb\')',
+                'Mock.mock(\'@rgb()\')'
+            ],
+            'Random.hsl()': [
+                '// Random.hsl()',
+                'Random.hsl()',
+                'Mock.mock(\'@hsl\')',
+                'Mock.mock(\'@hsl()\')'
             ]
         },
         'Text': {

@@ -239,9 +239,20 @@ describe('Random', function() {
     })
 
     var RE_COLOR = /^#[0-9a-fA-F]{6}$/
+    var RE_COLOR_RGB = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/
+    var RE_COLOR_HSL = /^hsl\(\d{1,3}, \d{1,3}, \d{1,3}\)$/
     describe('Color', function() {
         doit('Random.color()', function(data) {
             expect(RE_COLOR.test(data)).to.true
+        })
+        doit('Random.hex()', function(data) {
+            expect(RE_COLOR.test(data)).to.true
+        })
+        doit('Random.rgb()', function(data) {
+            expect(RE_COLOR_RGB.test(data)).to.true
+        })
+        doit('Random.hsl()', function(data) {
+            expect(RE_COLOR_HSL.test(data)).to.true
         })
     })
 
