@@ -775,7 +775,7 @@ define('mock/random/image',[],function() {
     http://blog.csdn.net/idfaya/article/details/6770414
         颜色空间RGB与HSV(HSL)的转换
 */
-define('mock/random/color-convert',[],function() {
+define('mock/random/color_convert',[],function() {
 	// https://github.com/harthur/color-convert/blob/master/conversions.js
 	return {
 		rgb2hsl: function rgb2hsl(rgb) {
@@ -932,46 +932,100 @@ define('mock/random/color-convert',[],function() {
 			l /= 2;
 			return [h, sl * 100, l * 100];
 		},
-
 		// http://www.140byt.es/keywords/color
 		rgb2hex: function(
 			a, // red, as a number from 0 to 255
 			b, // green, as a number from 0 to 255
 			c // blue, as a number from 0 to 255
 		) {
-			return "#" + // return a number sign, and
-				( // combine the octets into a 32-bit integer as: [1][a][b][c]    
-					( // operator precedence is (+) > (<<) > (|)
-						256 // [1][0]
-						+ a // [1][a] 
-						<< 8 // [1][a][0]
-						| b // [1][a][b]
-					) << 8 // [1][a][b][0]
-					| c // [1][a][b][c]
-				)
-				.toString(16) // then serialize to a hex string, and
-				.slice(1) // remove the 1 to get the number with 0s intact.
+			return "#" + ((256 + a << 8 | b) << 8 | c).toString(16).slice(1)
 		},
 		hex2rgb: function(
 			a // take a "#xxxxxx" hex string,
 		) {
-			a = +( // turn it into a number by taking the
-				"0x" + // hexadecimal prefix and the
-				a.slice(1) // numerical portion,
-				.replace( // and
-					a.length > 4 // if the #xxxxxx form is used
-					&& /./g, // replace each character
-					'$&$&' // with itself twice.
-				)
-			);
-
-			return [ // return an array
-				a >> 16, // with red,
-				a >> 8 & 255, // blue,
-				a & 255 // and green components.
-			]
+			a = '0x' + a.slice(1).replace(a.length > 4 ? a : /./g, '$&$&') | 0;
+			return [a >> 16, a >> 8 & 255, a & 255]
 		}
 	}
+});
+/* global define */
+/*
+    ## Color 字典数据
+
+    字典数据来源 [A nicer color palette for the web](http://clrs.cc/)
+*/
+define('mock/random/color_dict',[],function() {
+    return {
+        // name value nicer
+        navy: {
+            value: '#000080',
+            nicer: '#001F3F'
+        },
+        blue: {
+            value: '#0000ff',
+            nicer: '#0074D9'
+        },
+        aqua: {
+            value: '#00ffff',
+            nicer: '#7FDBFF'
+        },
+        teal: {
+            value: '#008080',
+            nicer: '#39CCCC'
+        },
+        olive: {
+            value: '#008000',
+            nicer: '#3D9970'
+        },
+        green: {
+            value: '#008000',
+            nicer: '#2ECC40'
+        },
+        lime: {
+            value: '#00ff00',
+            nicer: '#01FF70'
+        },
+        yellow: {
+            value: '#ffff00',
+            nicer: '#FFDC00'
+        },
+        orange: {
+            value: '#ffa500',
+            nicer: '#FF851B'
+        },
+        red: {
+            value: '#ff0000',
+            nicer: '#FF4136'
+        },
+        maroon: {
+            value: '#800000',
+            nicer: '#85144B'
+        },
+        fuchsia: {
+            value: '#ff00ff',
+            nicer: '#F012BE'
+        },
+        purple: {
+            value: '#800080',
+            nicer: '#B10DC9'
+        },
+        silver: {
+            value: '#c0c0c0',
+            nicer: '#DDDDDD'
+        },
+        gray: {
+            value: '#808080',
+            nicer: '#AAAAAA'
+        },
+        black: {
+            value: '#000000',
+            nicer: '#111111'
+        },
+        white: {
+            value: '#FFFFFF',
+            nicer: '#FFFFFF'
+        }
+    }
 });
 /* global define */
 /*
@@ -980,7 +1034,7 @@ define('mock/random/color-convert',[],function() {
     http://llllll.li/randomColor/
         A color generator for JavaScript.
         randomColor generates attractive colors by default. More specifically, randomColor produces bright colors with a reasonably high saturation. This makes randomColor particularly useful for data visualizations and generative art.
-    
+
     http://randomcolour.com/
         var bg_colour = Math.floor(Math.random() * 16777215).toString(16);
         bg_colour = "#" + ("000000" + bg_colour).slice(-6);
@@ -1003,40 +1057,18 @@ define('mock/random/color-convert',[],function() {
         chance.color({format: 'rgb'})
         // => 'rgb(110,52,164)'
 
-    http://clrs.cc/
-        COLORS
-        A nicer color palette for the web.
-        Navy        #000080     #001F3F
-        Blue        #0000ff     #0074D9
-        Aqua        #00ffff     #7FDBFF
-        Teal        #008080     #39CCCC
-        Olive       #008000     #3D9970
-        Green       #008000     #2ECC40
-        Lime        #00ff00     #01FF70
-        Yellow      #ffff00     #FFDC00
-        Orange      #ffa500     #FF851B
-        Red         #ff0000     #FF4136
-        Maroon      #800000     #85144B
-        Fuchsia     #ff00ff     #F012BE
-        Purple      #800080     #B10DC9
-        Silver      #c0c0c0     #DDDDDD
-        Gray        #808080     #AAAAAA
-        Black       #000000     #111111
-        White       #FFFFFF     #FFFFFF
-
     http://tool.c7sky.com/webcolor
         网页设计常用色彩搭配表
-
-    http://www.colorsontheweb.com/colorwheel.asp
-        Color Wheel
     
     https://github.com/One-com/one-color
         An OO-based JavaScript color parser/computation toolkit with support for RGB, HSV, HSL, CMYK, and alpha channels.
+        API 很赞
 
     https://github.com/harthur/color
         JavaScript color conversion and manipulation library
 
     https://github.com/leaverou/css-colors
+        Share & convert CSS colors
     http://leaverou.github.io/css-colors/#slategray
         Type a CSS color keyword, #hex, hsl(), rgba(), whatever:
 
@@ -1053,72 +1085,73 @@ define('mock/random/color-convert',[],function() {
         物体被照亮的程度,采用单位面积所接受的光通量来表示,表示单位为勒[克斯](Lux,lx) ,即 1m / m2 。
 
     http://stackoverflow.com/questions/1484506/random-color-generator-in-javascript
-		var letters = '0123456789ABCDEF'.split('')
-		var color = '#'
-		for (var i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 16)]
-		}
-		return color
-	
-		// 随机生成一个无脑的颜色，格式为 '#RRGGBB'。
-		// _brainlessColor()
-		var color = Math.floor(
-			Math.random() *
-			(16 * 16 * 16 * 16 * 16 * 16 - 1)
-		).toString(16)
-		color = "#" + ("000000" + color).slice(-6)
-		return color.toUpperCase()
+        var letters = '0123456789ABCDEF'.split('')
+        var color = '#'
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)]
+        }
+        return color
+    
+        // 随机生成一个无脑的颜色，格式为 '#RRGGBB'。
+        // _brainlessColor()
+        var color = Math.floor(
+            Math.random() *
+            (16 * 16 * 16 * 16 * 16 * 16 - 1)
+        ).toString(16)
+        color = "#" + ("000000" + color).slice(-6)
+        return color.toUpperCase()
 */
-define('mock/random/color',['./color-convert'], function(Convert) {
-	return {
-		// 随机生成一个有吸引力的颜色，格式为 '#RRGGBB'。
-		color: function() {
-			return this.hex()
-		},
-		// #DAC0DE
-		hex: function() {
-			var hsv = this._goldenRatioColor()
-			var rgb = Convert.hsv2rgb(hsv)
-			var hex = Convert.rgb2hex(rgb[0], rgb[1], rgb[2])
-			return hex
-		},
-		// rgb(128,255,255)
-		rgb: function() {
-			var hsv = this._goldenRatioColor()
-			var rgb = Convert.hsv2rgb(hsv)
-			return 'rgb(' +
-				parseInt(rgb[0], 10) + ', ' +
-				parseInt(rgb[1], 10) + ', ' +
-				parseInt(rgb[2], 10) + ')'
-		},
-		// hsl(300,80%,90%)
-		hsl: function() {
-			var hsv = this._goldenRatioColor()
-			var hsl = Convert.hsv2hsl(hsv)
-			return 'hsl(' +
-				parseInt(hsl[0], 10) + ', ' +
-				parseInt(hsl[1], 10) + ', ' +
-				parseInt(hsl[2], 10) + ')'
-		},
-		// http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-		// https://github.com/devongovett/color-generator/blob/master/index.js
-		// 随机生成一个有吸引力的颜色。
-		_goldenRatioColor: function(saturation, value) {
-			this._goldenRatio = 0.618033988749895
-			this._hue = this._hue || Math.random()
-			this._hue += this._goldenRatio
-			this._hue %= 1
+define('mock/random/color',['./color_convert', './color_dict'], function(Convert, DICT) {
+    return {
+        // 随机生成一个有吸引力的颜色，格式为 '#RRGGBB'。
+        color: function(name) {
+            if (name || DICT[name]) return DICT[name].nicer
+            return this.hex()
+        },
+        // #DAC0DE
+        hex: function() {
+            var hsv = this._goldenRatioColor()
+            var rgb = Convert.hsv2rgb(hsv)
+            var hex = Convert.rgb2hex(rgb[0], rgb[1], rgb[2])
+            return hex
+        },
+        // rgb(128,255,255)
+        rgb: function() {
+            var hsv = this._goldenRatioColor()
+            var rgb = Convert.hsv2rgb(hsv)
+            return 'rgb(' +
+                parseInt(rgb[0], 10) + ', ' +
+                parseInt(rgb[1], 10) + ', ' +
+                parseInt(rgb[2], 10) + ')'
+        },
+        // hsl(300,80%,90%)
+        hsl: function() {
+            var hsv = this._goldenRatioColor()
+            var hsl = Convert.hsv2hsl(hsv)
+            return 'hsl(' +
+                parseInt(hsl[0], 10) + ', ' +
+                parseInt(hsl[1], 10) + ', ' +
+                parseInt(hsl[2], 10) + ')'
+        },
+        // http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+        // https://github.com/devongovett/color-generator/blob/master/index.js
+        // 随机生成一个有吸引力的颜色。
+        _goldenRatioColor: function(saturation, value) {
+            this._goldenRatio = 0.618033988749895
+            this._hue = this._hue || Math.random()
+            this._hue += this._goldenRatio
+            this._hue %= 1
 
-			if (typeof saturation !== "number") saturation = 0.5;
-			if (typeof value !== "number") value = 0.95;
+            if (typeof saturation !== "number") saturation = 0.5;
+            if (typeof value !== "number") value = 0.95;
 
-			return [
-				this._hue * 360,
-				saturation * 100,
-				value * 100
-			]
-		}
-	}
+            return [
+                this._hue * 360,
+                saturation * 100,
+                value * 100
+            ]
+        }
+    }
 });
 /* global define */
 /*

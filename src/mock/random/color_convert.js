@@ -162,44 +162,19 @@ define(function() {
 			l /= 2;
 			return [h, sl * 100, l * 100];
 		},
-
 		// http://www.140byt.es/keywords/color
 		rgb2hex: function(
 			a, // red, as a number from 0 to 255
 			b, // green, as a number from 0 to 255
 			c // blue, as a number from 0 to 255
 		) {
-			return "#" + // return a number sign, and
-				( // combine the octets into a 32-bit integer as: [1][a][b][c]    
-					( // operator precedence is (+) > (<<) > (|)
-						256 // [1][0]
-						+ a // [1][a] 
-						<< 8 // [1][a][0]
-						| b // [1][a][b]
-					) << 8 // [1][a][b][0]
-					| c // [1][a][b][c]
-				)
-				.toString(16) // then serialize to a hex string, and
-				.slice(1) // remove the 1 to get the number with 0s intact.
+			return "#" + ((256 + a << 8 | b) << 8 | c).toString(16).slice(1)
 		},
 		hex2rgb: function(
 			a // take a "#xxxxxx" hex string,
 		) {
-			a = +( // turn it into a number by taking the
-				"0x" + // hexadecimal prefix and the
-				a.slice(1) // numerical portion,
-				.replace( // and
-					a.length > 4 // if the #xxxxxx form is used
-					&& /./g, // replace each character
-					'$&$&' // with itself twice.
-				)
-			);
-
-			return [ // return an array
-				a >> 16, // with red,
-				a >> 8 & 255, // blue,
-				a & 255 // and green components.
-			]
+			a = '0x' + a.slice(1).replace(a.length > 4 ? a : /./g, '$&$&') | 0;
+			return [a >> 16, a >> 8 & 255, a & 255]
 		}
 	}
 })
