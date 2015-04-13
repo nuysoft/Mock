@@ -1,4 +1,4 @@
-/*! mockjs 05-03-2015 15:35:16 */
+/*! mockjs 13-04-2015 14:26:58 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -1056,7 +1056,10 @@
     if (typeof module === "object" && module.exports) {
         module.exports = Mock;
     } else if (typeof define === "function" && define.amd) {
-        define(function() {
+        define("mock", [], function() {
+            return Mock;
+        });
+        define("mockjs", [], function() {
             return Mock;
         });
     } else if (typeof define === "function" && define.cmd) {

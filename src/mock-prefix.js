@@ -5,6 +5,6 @@
 */
 (function(undefined) {
 	var Mock = {
-		version: '0.1.8',
+		version: '0.1.9',
 		_mocked: {}
 	}

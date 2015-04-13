@@ -7,5 +7,6 @@ build
 *.TODO
 PLAN.md
 xhr.js
+bak
 MockHttpRequest.js
 coverage

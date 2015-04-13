@@ -17,7 +17,10 @@ if (typeof module === 'object' && module.exports) {
 
 } else if (typeof define === "function" && define.amd) {
     // AMD modules
-    define(function() {
+    define('mock', [], function() {
+        return Mock
+    })
+    define('mockjs', [], function() {
         return Mock
     })
 
