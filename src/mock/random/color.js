@@ -99,7 +99,7 @@ define(['./color_convert', './color_dict'], function(Convert, DICT) {
         rgba: function() {
             var hsv = this._goldenRatioColor()
             var rgb = Convert.hsv2rgb(hsv)
-            return 'rgb(' +
+            return 'rgba(' +
                 parseInt(rgb[0], 10) + ', ' +
                 parseInt(rgb[1], 10) + ', ' +
                 parseInt(rgb[2], 10) + ', ' +

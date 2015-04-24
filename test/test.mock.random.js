@@ -240,7 +240,7 @@ describe('Random', function() {
 
     var RE_COLOR = /^#[0-9a-fA-F]{6}$/
     var RE_COLOR_RGB = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/
-    var RE_COLOR_RGBA = /^rgb\(\d{1,3}, \d{1,3}, \d{1,3}, 0\.\d{1,2}\)$/
+    var RE_COLOR_RGBA = /^rgba\(\d{1,3}, \d{1,3}, \d{1,3}, 0\.\d{1,2}\)$/
     var RE_COLOR_HSL = /^hsl\(\d{1,3}, \d{1,3}, \d{1,3}\)$/
     describe('Color', function() {
         doit('Random.color()', function(data) {
