@@ -1124,7 +1124,7 @@ define('mock/random/color',['./color_convert', './color_dict'], function(Convert
                 parseInt(rgb[1], 10) + ', ' +
                 parseInt(rgb[2], 10) + ')'
         },
-        // rgb(128,255,255)
+        // rgb(128,255,255,0.3)
         rgba: function() {
             var hsv = this._goldenRatioColor()
             var rgb = Convert.hsv2rgb(hsv)

@@ -268,6 +268,12 @@ define([], function() {
                 'Mock.mock(\'@rgb\')',
                 'Mock.mock(\'@rgb()\')'
             ],
+            'Random.rgba()': [
+                '// Random.rgba()',
+                'Random.rgba()',
+                'Mock.mock(\'@rgba\')',
+                'Mock.mock(\'@rgba()\')'
+            ],
             'Random.hsl()': [
                 '// Random.hsl()',
                 'Random.hsl()',
