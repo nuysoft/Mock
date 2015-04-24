@@ -95,6 +95,16 @@ define(['./color_convert', './color_dict'], function(Convert, DICT) {
                 parseInt(rgb[1], 10) + ', ' +
                 parseInt(rgb[2], 10) + ')'
         },
+        // rgb(128,255,255)
+        rgba: function() {
+            var hsv = this._goldenRatioColor()
+            var rgb = Convert.hsv2rgb(hsv)
+            return 'rgb(' +
+                parseInt(rgb[0], 10) + ', ' +
+                parseInt(rgb[1], 10) + ', ' +
+                parseInt(rgb[2], 10) + ', ' +
+                Math.random().toFixed(2) + ')'
+        },
         // hsl(300,80%,90%)
         hsl: function() {
             var hsv = this._goldenRatioColor()

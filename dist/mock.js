@@ -1124,6 +1124,16 @@ define('mock/random/color',['./color_convert', './color_dict'], function(Convert
                 parseInt(rgb[1], 10) + ', ' +
                 parseInt(rgb[2], 10) + ')'
         },
+        // rgb(128,255,255)
+        rgba: function() {
+            var hsv = this._goldenRatioColor()
+            var rgb = Convert.hsv2rgb(hsv)
+            return 'rgb(' +
+                parseInt(rgb[0], 10) + ', ' +
+                parseInt(rgb[1], 10) + ', ' +
+                parseInt(rgb[2], 10) + ', ' +
+                Math.random().toFixed(2) + ')'
+        },
         // hsl(300,80%,90%)
         hsl: function() {
             var hsv = this._goldenRatioColor()
@@ -8179,7 +8189,7 @@ define('mock/valid/valid',['mock/util', 'mock/schema/schema'], function(Util, to
 
     return valid
 });
-/* global define, module */
+/* global define, module, window */
 define(
     'mock',[
         'mock/handler',
@@ -8215,7 +8225,10 @@ define(
             RegExpHandler: RegExpHandler,
             toJSONSchema: toJSONSchema,
             valid: valid,
-            _mocked: {}
+            _mocked: {},
+            mockjax: function() {
+                window.XMLHttpRequest = this.XHR
+            }
         }
 
         // 避免循环依赖

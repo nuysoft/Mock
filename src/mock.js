@@ -1,4 +1,4 @@
-/* global define, module */
+/* global define, module, window */
 define(
     [
         'mock/handler',
@@ -34,7 +34,10 @@ define(
             RegExpHandler: RegExpHandler,
             toJSONSchema: toJSONSchema,
             valid: valid,
-            _mocked: {}
+            _mocked: {},
+            mockjax: function() {
+                window.XMLHttpRequest = this.XHR
+            }
         }
 
         // 避免循环依赖
