@@ -141,6 +141,19 @@ define(['mock/util'], function(Util) {
         }
     }
 
+    MockXMLHttpRequest._settings = {
+        timeout: '10-100',
+        /*
+            timeout: 50,
+            timeout: '10-100',
+         */
+    }
+
+    MockXMLHttpRequest.setup = function(settings) {
+        Util.extend(MockXMLHttpRequest._settings, settings)
+        return MockXMLHttpRequest._settings
+    }
+
     Util.extend(MockXMLHttpRequest, XHR_STATES)
     Util.extend(MockXMLHttpRequest.prototype, XHR_STATES)
 
@@ -168,6 +181,17 @@ define(['mock/util'], function(Util) {
                     type: method
                 }
             })
+
+            this.custom.timeout = function(timeout) {
+                if (typeof timeout === 'number') return timeout
+                if (typeof timeout === 'string' && !~timeout.indexOf('-')) return parseInt(timeout, 10)
+                if (typeof timeout === 'string' && ~timeout.indexOf('-')) {
+                    var tmp = timeout.split('-')
+                    var min = parseInt(tmp[0], 10)
+                    var max = parseInt(tmp[1], 10)
+                    return Math.round(Math.random() * (max - min)) + min
+                }
+            }(MockXMLHttpRequest._settings.timeout)
 
             // 查找与请求参数匹配的数据模板
             var item = find(this.custom.options)
@@ -236,9 +260,15 @@ define(['mock/util'], function(Util) {
             }
 
             // 拦截 XHR
+
+            // X-Requested-With header
+            this.setRequestHeader('X-Requested-With', 'MockXMLHttpRequest')
+
+            // loadstart The fetch initiates.
             this.dispatchEvent(new Event('loadstart', false, false, this))
-            if (this.custom.async) setTimeout(done, 50) // 异步
-            else done()
+
+            if (this.custom.async) setTimeout(done, this.custom.timeout) // 异步
+            else done() // 同步
 
             function done() {
                 that.readyState = MockXMLHttpRequest.HEADERS_RECEIVED

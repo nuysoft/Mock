@@ -30,6 +30,9 @@ define(
             heredoc: Util.heredoc,
             Random: Random,
             XHR: XHR,
+            setup: function(settings) {
+                return XHR.setup(settings)
+            },
             RegExpParser: RegExpParser,
             RegExpHandler: RegExpHandler,
             toJSONSchema: toJSONSchema,

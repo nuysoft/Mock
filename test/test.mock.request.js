@@ -73,6 +73,10 @@ describe('Request', function() {
                 }]
             })
 
+            Mock.setup({
+                // timeout: 100,
+                timeout: '10-50',
+            })
             $.ajax({
                 url: url,
                 dataType: 'json'
