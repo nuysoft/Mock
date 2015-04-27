@@ -95,7 +95,7 @@ define(function() {
     /*
         ### Mock.heredoc(fn)
 
-        * Mock.mockjax(fn)
+        * Mock.heredoc(fn)
 
         以直观、安全的方式书写（多行）HTML 模板。
 

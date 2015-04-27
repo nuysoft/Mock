@@ -34,10 +34,7 @@ define(
             RegExpHandler: RegExpHandler,
             toJSONSchema: toJSONSchema,
             valid: valid,
-            _mocked: {},
-            mockjax: function() {
-                window.XMLHttpRequest = this.XHR
-            }
+            _mocked: {}
         }
 
         // 避免循环依赖
@@ -63,6 +60,8 @@ define(
                 template = rtype
                 rtype = undefined
             }
+            // 拦截 XHR
+            window.XMLHttpRequest = XHR
             Mock._mocked[rurl + (rtype || '')] = {
                 rurl: rurl,
                 rtype: rtype,

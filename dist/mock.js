@@ -180,7 +180,7 @@ define('mock/util',[],function() {
     /*
         ### Mock.heredoc(fn)
 
-        * Mock.mockjax(fn)
+        * Mock.heredoc(fn)
 
         以直观、安全的方式书写（多行）HTML 模板。
 
@@ -7626,7 +7626,7 @@ define('mock/xhr/xhr',['mock/util'], function(Util) {
 
             // 拦截 XHR
             this.dispatchEvent(new Event('loadstart', false, false, this))
-            if (this.custom.async) setTimeout(done, 10)
+            if (this.custom.async) setTimeout(done, 50) // 异步
             else done()
 
             function done() {
@@ -8225,10 +8225,7 @@ define(
             RegExpHandler: RegExpHandler,
             toJSONSchema: toJSONSchema,
             valid: valid,
-            _mocked: {},
-            mockjax: function() {
-                window.XMLHttpRequest = this.XHR
-            }
+            _mocked: {}
         }
 
         // 避免循环依赖
@@ -8254,6 +8251,8 @@ define(
                 template = rtype
                 rtype = undefined
             }
+            // 拦截 XHR
+            window.XMLHttpRequest = XHR
             Mock._mocked[rurl + (rtype || '')] = {
                 rurl: rurl,
                 rtype: rtype,

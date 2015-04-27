@@ -237,7 +237,7 @@ define(['mock/util'], function(Util) {
 
             // 拦截 XHR
             this.dispatchEvent(new Event('loadstart', false, false, this))
-            if (this.custom.async) setTimeout(done, 10)
+            if (this.custom.async) setTimeout(done, 50) // 异步
             else done()
 
             function done() {
