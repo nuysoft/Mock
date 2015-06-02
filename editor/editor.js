@@ -135,8 +135,9 @@
             lineNumbers: true,
             lineWrapping: true,
             autofocus: true,
-            mode: 'javascript',
-            theme: 'neat'
+            mode: 'application/json',
+            theme: 'neat',
+            autoCloseBrackets: true
         })
     tplEditor.on('change', function(instance) {
         render(instance.getValue())
@@ -156,7 +157,8 @@
             lineNumbers: true,
             autofocus: false,
             mode: 'javascript',
-            theme: 'neat'
+            theme: 'neat',
+            autoCloseBrackets: true
         })
 
     // Syntax Demo
