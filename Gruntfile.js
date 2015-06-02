@@ -122,7 +122,7 @@ module.exports = function(grunt) {
             },
             release: {
                 options: {
-                    sourceMap: 'mock-min.map'
+                    sourceMap: './mock-min.map'
                 },
                 files: [{
                     expand: true,

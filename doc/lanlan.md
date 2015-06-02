@@ -755,6 +755,6 @@ th {
 </style>
 <link rel="stylesheet" href="../bower_components/highlightjs/styles/rainbow.css">
 <script src="../bower_components/highlightjs/highlight.pack.js"></script>
-<script src="../bower_components/jquery/jquery.js"></script>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
 <script src="../dist/mock.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>

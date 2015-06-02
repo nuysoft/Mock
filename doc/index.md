@@ -31,13 +31,13 @@ Mock.js 是一款<!-- 有用且好用的  -->模拟数据生成器，旨在帮�
 
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
-        Development Version (0.1.5)
-    </a> - <i>71kB, Uncompressed</i>
+        Development Version (0.1.10)
+    </a> - <i>73kB, Uncompressed</i>
 </p>
 <p>
     <a href="./dist/mock-min.js" class="btn btn-primary w250">
-        Production Version (0.1.5)
-    </a> - <i>31kB, Minified</i>
+        Production Version (0.1.10)
+    </a> - <i>32kB, Minified</i>
 </p>
 <p>
     <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">
@@ -1239,11 +1239,11 @@ TODO 统计 -->
 * Random.chineseName()
 * Random.chineseName(count)
 
-随机生成一个常见的英文姓名。
+随机生成一个常见的中文姓名。
 
 **参数的含义和默认值**如下所示：
 
-* 参数 count：可选。数字。指示姓名的字数，默认为 2 到 3 的随机姓名。
+* 参数 count：可选。数字。指示姓名的字数，默认为 2 个或 3 个字的随机姓名。
 
 **使用示例**如下所示：
 
@@ -1251,6 +1251,8 @@ TODO 统计 -->
     // => "林则徐"
     Random.chineseName(2)
     // => "马云"
+
+> `Random.chineseName()` 可以简写为 `Random.cname()`。从 Mock 0.2 开始，将只保留 `Random.cname()`。
 
 ### Web
 

@@ -89,7 +89,7 @@
   <body>
     <div id="sidebar" class="interface"></div>
   
-    <script src="./bower_components/jquery/jquery.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.js"></script>
     <script src="./dist/mock.js"></script>
     
     
@@ -124,13 +124,13 @@
 <h2 id="-">下载</h2>
 <p>
     <a href="./dist/mock.js" class="btn btn-success w250">
-        Development Version (0.1.5)
-    </a> - <i>71kB, Uncompressed</i>
+        Development Version (0.1.10)
+    </a> - <i>73kB, Uncompressed</i>
 </p>
 <p>
     <a href="./dist/mock-min.js" class="btn btn-primary w250">
-        Production Version (0.1.5)
-    </a> - <i>31kB, Minified</i>
+        Production Version (0.1.10)
+    </a> - <i>32kB, Minified</i>
 </p>
 <p>
     <a href="https://github.com/nuysoft/Mock" class="btn btn-default w250">
@@ -1318,16 +1318,19 @@ Random.name(true)
 <li>Random.chineseName()</li>
 <li>Random.chineseName(count)</li>
 </ul>
-<p>随机生成一个常见的英文姓名。</p>
+<p>随机生成一个常见的中文姓名。</p>
 <p><strong>参数的含义和默认值</strong>如下所示：</p>
 <ul>
-<li>参数 count：可选。数字。指示姓名的字数，默认为 2 到 3 的随机姓名。</li>
+<li>参数 count：可选。数字。指示姓名的字数，默认为 2 个或 3 个字的随机姓名。</li>
 </ul>
 <p><strong>使用示例</strong>如下所示：</p>
 <pre><code>Random.chineseName()
 // =&gt; &quot;林则徐&quot;
 Random.chineseName(2)
 // =&gt; &quot;马云&quot;</code></pre>
+<blockquote>
+<p><code>Random.chineseName()</code> 可以简写为 <code>Random.cname()</code>。从 Mock 0.2 开始，将只保留 <code>Random.cname()</code>。</p>
+</blockquote>
 <h3 id="web">Web</h3>
 <h4 id="random-url-">Random.url()</h4>
 <ul>

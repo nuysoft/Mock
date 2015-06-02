@@ -1,7 +1,8 @@
 {
-  "name": "Mock.js",
-  "version": "0.1.8",
-  "homepage": "https://github.com/nuysoft/MockService",
+  "name": "mockjs",
+  "title": "Mock.js",
+  "version": "0.1.10",
+  "homepage": "http://mockjs.com/",
   "authors": [
     "nuysoft <nuysoft@gmail.com>"
   ],
@@ -21,7 +22,6 @@
     "bootstrap": "",
     "codemirror": "~3.20.0",
     "highlightjs": "~8.0.0",
-    "kissy": "~1.4.3",
     "seajs": "*",
     "js-beautify": "~1.5.1"
   }
