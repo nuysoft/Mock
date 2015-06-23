@@ -103,7 +103,7 @@ if (typeof Zepto != 'undefined') {
         Zepto.ajax = function(options) {
             var item = find(options)
             if (item) {
-                var data = Mock.mock(item.template)
+                var data = convert(item, options)
                 if (options.success) options.success(data, xhr, options)
                 if (options.complete) options.complete(xhr.status, xhr, options)
                 return xhr
