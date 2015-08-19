@@ -1,6 +1,5 @@
 /* global require, chai, describe, before, it */
 /* global window */
-// 数据占位符定义（Data Placeholder Definition，DPD）
 var expect = chai.expect
 var Mock, Random, $, _
 
