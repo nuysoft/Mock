@@ -22,7 +22,7 @@
     [Regexp Demo](http://demos.forbeslindesay.co.uk/regexp/)
 */
 define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
-    
+
     function valid(template, data) {
         var schema = toJSONSchema(template)
         var result = Diff.diff(schema, data)
@@ -88,7 +88,7 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
         name: function(schema, data, name, result) {
             var length = result.length
 
-            Assert.equal('name', name, name + '', schema.name + '', result)
+            Assert.equal('name', schema.path, name + '', schema.name + '', result)
 
             if (result.length !== length) return false
             return true
@@ -96,7 +96,7 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
         type: function(schema, data, name, result) {
             var length = result.length
 
-            Assert.equal('type', name, Util.type(data), schema.type, result)
+            Assert.equal('type', schema.path, Util.type(data), schema.type, result)
 
             if (result.length !== length) return false
             return true
@@ -110,7 +110,7 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
 
             // 无生成规则
             if (!schema.rule.parameters) {
-                Assert.equal('value', name, data, schema.template, result)
+                Assert.equal('value', schema.path, data, schema.template, result)
                 return
             }
 
@@ -123,25 +123,25 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
                     // 整数部分
                     // |min-max
                     if (rule.min !== undefined && rule.max !== undefined) {
-                        Assert.greaterThanOrEqualTo('value', name, parts[0], rule.min, result,
-                            'numeric instance is lower than the required minimum (minimum: {expected}, found: {actual})')
-                        Assert.lessThanOrEqualTo('value', name, parts[0], rule.max, result)
+                        Assert.greaterThanOrEqualTo('value', schema.path, parts[0], rule.min, result)
+                            // , 'numeric instance is lower than the required minimum (minimum: {expected}, found: {actual})')
+                        Assert.lessThanOrEqualTo('value', schema.path, parts[0], rule.max, result)
                     }
                     // |count
                     if (rule.min !== undefined && rule.max === undefined) {
-                        Assert.equal('value', name, parts[0], rule.min, result, '[value] ' + name)
+                        Assert.equal('value', schema.path, parts[0], rule.min, result, '[value] ' + name)
                     }
 
                     // 小数部分
                     if (rule.decimal) {
                         // |dmin-dmax
                         if (rule.dmin !== undefined && rule.dmax !== undefined) {
-                            Assert.greaterThanOrEqualTo('value', name, parts[1].length, rule.dmin, result)
-                            Assert.lessThanOrEqualTo('value', name, parts[1].length, rule.dmax, result)
+                            Assert.greaterThanOrEqualTo('value', schema.path, parts[1].length, rule.dmin, result)
+                            Assert.lessThanOrEqualTo('value', schema.path, parts[1].length, rule.dmax, result)
                         }
                         // |dcount
                         if (rule.dmin !== undefined && rule.dmax === undefined) {
-                            Assert.equal('value', name, parts[1].length, rule.dmin, result)
+                            Assert.equal('value', schema.path, parts[1].length, rule.dmin, result)
                         }
                     }
 
@@ -156,12 +156,12 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
 
                     // |min-max
                     if (rule.min !== undefined && rule.max !== undefined) {
-                        Assert.greaterThanOrEqualTo('value', name, actualRepeatCount, rule.min, result)
-                        Assert.lessThanOrEqualTo('value', name, actualRepeatCount, rule.max, result)
+                        Assert.greaterThanOrEqualTo('value', schema.path, actualRepeatCount, rule.min, result)
+                        Assert.lessThanOrEqualTo('value', schema.path, actualRepeatCount, rule.max, result)
                     }
                     // |count
                     if (rule.min !== undefined && rule.max === undefined) {
-                        Assert.equal('value', name, actualRepeatCount, rule.min, result)
+                        Assert.equal('value', schema.path, actualRepeatCount, rule.min, result)
                     }
                     break
             }
@@ -178,17 +178,17 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
 
             // 无生成规则
             if (!schema.rule.parameters) {
-                Assert.equal('properties length', name, keys.length, schema.properties.length, result)
+                Assert.equal('properties length', schema.path, keys.length, schema.properties.length, result)
             } else {
                 // 有生成规则
                 // |min-max
                 if (rule.min !== undefined && rule.max !== undefined) {
-                    Assert.greaterThanOrEqualTo('properties length', name, keys.length, rule.min, result)
-                    Assert.lessThanOrEqualTo('properties length', name, keys.length, rule.max, result)
+                    Assert.greaterThanOrEqualTo('properties length', schema.path, keys.length, rule.min, result)
+                    Assert.lessThanOrEqualTo('properties length', schema.path, keys.length, rule.max, result)
                 }
                 // |count
                 if (rule.min !== undefined && rule.max === undefined) {
-                    Assert.equal('properties length', name, keys.length, rule.min, result)
+                    Assert.equal('properties length', schema.path, keys.length, rule.min, result)
                 }
             }
 
@@ -217,19 +217,19 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
 
             // 无生成规则
             if (!schema.rule.parameters) {
-                Assert.equal('items length', name, data.length, schema.items.length, result)
+                Assert.equal('items length', schema.path, data.length, schema.items.length, result)
             } else {
                 // 有生成规则
                 // |min-max
                 if (rule.min !== undefined && rule.max !== undefined) {
-                    Assert.greaterThanOrEqualTo('items', name, data.length, (rule.min * schema.items.length), result,
+                    Assert.greaterThanOrEqualTo('items', schema.path, data.length, (rule.min * schema.items.length), result,
                         '[{utype}] array is too short: {path} must have at least {expected} elements but instance has {actual} elements')
-                    Assert.lessThanOrEqualTo('items', name, data.length, (rule.max * schema.items.length), result,
+                    Assert.lessThanOrEqualTo('items', schema.path, data.length, (rule.max * schema.items.length), result,
                         '[{utype}] array is too long: {path} must have at most {expected} elements but instance has {actual} elements')
                 }
                 // |count
                 if (rule.min !== undefined && rule.max === undefined) {
-                    Assert.equal('items length', name, data.length, (rule.min * schema.items.length), result)
+                    Assert.equal('items length', schema.path, data.length, (rule.min * schema.items.length), result)
                 }
             }
 
@@ -265,84 +265,97 @@ define(['mock/util', 'mock/schema/schema'], function(Util, toJSONSchema) {
     */
     var Assert = {
         message: function(item) {
-            return ( /*item.message ||*/
+            return (item.message ||
                     '[{utype}] Expect {path}\'{ltype} is {action} {expected}, but is {actual}')
                 .replace('{utype}', item.type.toUpperCase())
                 .replace('{ltype}', item.type.toLowerCase())
-                .replace('{path}', item.path)
+                .replace('{path}', Util.isArray(item.path) && item.path.join('.') || item.path)
                 .replace('{action}', item.action)
                 .replace('{expected}', item.expected)
                 .replace('{actual}', item.actual)
         },
         equal: function(type, path, actual, expected, result, message) {
             if (actual === expected) return true
-            result.push({
+            var item = {
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
-                action: 'equal to'
-            })
+                action: 'equal to',
+                message: message
+            }
+            item.message = Assert.message(item)
+            result.push(item)
             return false
         },
         notEqual: function(type, path, actual, expected, result, message) {
             if (actual !== expected) return true
-            result.push({
+            var item = {
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
                 action: 'not equal to',
                 message: message
-            })
+            }
+            item.message = Assert.message(item)
+            result.push(item)
             return false
         },
         greaterThan: function(type, path, actual, expected, result, message) {
             if (actual > expected) return true
-            result.push({
+            var item = {
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
                 action: 'greater than',
                 message: message
-            })
+            }
+            item.message = Assert.message(item)
+            result.push(item)
             return false
         },
         lessThan: function(type, path, actual, expected, result, message) {
             if (actual < expected) return true
-            result.push({
+            var item = {
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
                 action: 'less to',
                 message: message
-            })
+            }
+            item.message = Assert.message(item)
+            result.push(item)
             return false
         },
         greaterThanOrEqualTo: function(type, path, actual, expected, result, message) {
             if (actual >= expected) return true
-            result.push({
+            var item = {
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
                 action: 'greater than or equal to',
                 message: message
-            })
+            }
+            item.message = Assert.message(item)
+            result.push(item)
             return false
         },
         lessThanOrEqualTo: function(type, path, actual, expected, result, message) {
             if (actual <= expected) return true
-            result.push({
+            var item = {
                 path: path,
                 type: type,
                 actual: actual,
                 expected: expected,
                 action: 'less than or equal to',
                 message: message
-            })
+            }
+            item.message = Assert.message(item)
+            result.push(item)
             return false
         }
     }

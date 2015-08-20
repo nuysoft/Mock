@@ -24,7 +24,7 @@ define(['./address_dict.js'], function(DICT) {
             var province = this.pick(DICT)
             var city = this.pick(province.children)
             var county = this.pick(city.children) || {
-                name: ''
+                name: '-'
             }
             return prefix ? [province.name, city.name, county.name].join(' ') : county.name
         },

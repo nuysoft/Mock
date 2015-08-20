@@ -22,7 +22,10 @@ describe('Mock.valid', function() {
     }
 
     function title(tpl, data, result, test) {
-        test.title = stringify(tpl) + ' VS ' + stringify(data) + '\n' + stringify(result)
+        test.title = stringify(tpl) + ' VS ' + stringify(data) + '\n\tresult: ' + stringify(result)
+        for (var i = 0; i < result.length; i++) {
+            // test.title += '\n\t' + result[i].message
+        }
     }
 
     function doit(tpl, data, len) {
@@ -150,6 +153,23 @@ describe('Mock.valid', function() {
             name1: '1',
             name2: '2'
         }, 2)
+        doit({
+            a: {
+                b: {
+                    c: {
+                        d: 1
+                    }
+                }
+            }
+        }, {
+            a: {
+                b: {
+                    c: {
+                        d: 2
+                    }
+                }
+            }
+        }, 1)
     })
     describe('Value - Array', function() {
         doit([1, 2, 3], [1, 2, 3], 0)
