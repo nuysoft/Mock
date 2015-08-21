@@ -7840,7 +7840,7 @@ define(
                 rule: Parser.parse(name)
             }
             result.path = path.slice(0)
-            result.path.push(name === undefined ? 'ROOT' : result.name)
+            result.path.push(name === undefined ? 'data' : result.name)
 
             switch (result.type) {
                 case 'array':
