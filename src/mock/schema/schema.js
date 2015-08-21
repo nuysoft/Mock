@@ -1,6 +1,10 @@
 /* global define */
 /*
     ## toJSONSchema
+
+    把 Mock.js 风格的数据模板转换成 JSON Schema。
+
+    > [JSON Schema](http://json-schema.org/)
  */
 define(
     [
@@ -19,7 +23,7 @@ define(
                 rule: Parser.parse(name)
             }
             result.path = path.slice(0)
-            result.path.push(name === undefined ? 'data' : result.name)
+            result.path.push(name === undefined ? 'ROOT' : result.name)
 
             switch (result.type) {
                 case 'array':

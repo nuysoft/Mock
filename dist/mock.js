@@ -79,8 +79,10 @@ define('mock/constant',[],function() {
         GUID: 1,
         RE_KEY: /(.+)\|(?:\+(\d+)|([\+\-]?\d+-?[\+\-]?\d*)?(?:\.(\d+-?\d*))?)/,
         RE_RANGE: /([\+\-]?\d+)-?([\+\-]?\d+)?/,
-        RE_PLACEHOLDER: /\\*@([^@#%&()\?\s]+)(?:\((.*?)\))?/g
-            // /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g
+        RE_PLACEHOLDER: /\\*@([^@#%&()\?\s]+)(?:\((.*?)\))?/g,
+        // /\\*@([^@#%&()\?\s\/\.]+)(?:\((.*?)\))?/g
+        RE_INDEX: /^index$/,
+        RE_KEY: /^key$/
     }
 });
 /* global define */
@@ -5846,13 +5848,13 @@ define('mock/parser',['mock/constant', 'mock/random/random'], function(Constant,
 			var max = range && range[2] && parseInt(range[2], 10) // || 1
 				// repeat || min-max || 1
 				// var count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1
-			var count = range ? !range[2] ? parseInt(range[1], 10) : Random.integer(min, max) : null
+			var count = range ? !range[2] ? parseInt(range[1], 10) : Random.integer(min, max) : undefined
 
 			var decimal = parameters && parameters[4] && parameters[4].match(Constant.RE_RANGE)
 			var dmin = decimal && parseInt(decimal[1], 10) // || 0,
 			var dmax = decimal && parseInt(decimal[2], 10) // || 0,
 				// int || dmin-dmax || 0
-			var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : null
+			var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : undefined
 
 			var result = {
 				// 1 name, 2 inc, 3 range, 4 decimal
@@ -6910,7 +6912,8 @@ define(
                 root, templateRoot
         */
         Handler.gen = function(template, name, context) {
-            name = name = (name || '') + ''
+            /* jshint -W041 */
+            name = name == undefined ? '' : (name + '')
 
             context = context || {}
             context = {
@@ -7267,6 +7270,10 @@ define(
 
                 // 占位符优先引用数据模板中的属性
                 if (obj && (key in obj)) return obj[key]
+
+                // @index @key
+                // if (Constant.RE_INDEX.test(key)) return +options.name
+                // if (Constant.RE_KEY.test(key)) return options.name
 
                 // 绝对路径 or 相对路径
                 if (
@@ -7822,6 +7829,10 @@ define('mock/xhr/xhr',['mock/util'], function(Util) {
 /* global define */
 /*
     ## toJSONSchema
+
+    把 Mock.js 风格的数据模板转换成 JSON Schema。
+
+    > [JSON Schema](http://json-schema.org/)
  */
 define(
     'mock/schema/schema',[
@@ -7840,7 +7851,7 @@ define(
                 rule: Parser.parse(name)
             }
             result.path = path.slice(0)
-            result.path.push(name === undefined ? 'data' : result.name)
+            result.path.push(name === undefined ? 'ROOT' : result.name)
 
             switch (result.type) {
                 case 'array':

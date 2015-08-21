@@ -61,7 +61,8 @@ define(
                 root, templateRoot
         */
         Handler.gen = function(template, name, context) {
-            name = name = (name || '') + ''
+            /* jshint -W041 */
+            name = name == undefined ? '' : (name + '')
 
             context = context || {}
             context = {
@@ -418,6 +419,10 @@ define(
 
                 // 占位符优先引用数据模板中的属性
                 if (obj && (key in obj)) return obj[key]
+
+                // @index @key
+                // if (Constant.RE_INDEX.test(key)) return +options.name
+                // if (Constant.RE_KEY.test(key)) return options.name
 
                 // 绝对路径 or 相对路径
                 if (
