@@ -10,6 +10,7 @@
     "src",
     "test",
     "site",
+    "plugins",
     "package.json",
     "gulpfile.js",
     "AUTHORS.txt",
