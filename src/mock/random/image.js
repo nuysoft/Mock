@@ -245,8 +245,10 @@ module.exports = {
                 安装问题：
                 * http://stackoverflow.com/questions/22953206/gulp-issues-with-cario-install-command-not-found-when-trying-to-installing-canva
                 * https://github.com/Automattic/node-canvas/issues/415
+                * https://github.com/Automattic/node-canvas/wiki/_pages
+
+                PS：node-canvas 的安装过程实在是太繁琐了，所以不放入 package.json 的 dependencies。
              */
-            // node
             var Canvas = module.require('canvas')
             canvas = new Canvas()
         }
