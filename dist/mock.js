@@ -83,6 +83,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _mocked: {}
 	}
 
+	Mock.version = '1.0.0-alpha1'
+
 	// 避免循环依赖
 	XHR.Mock = Mock
 
