@@ -11,7 +11,7 @@ define(
         _.each(data, function(typeTpls, type) {
             var wrapper = $('<div class="mb20">').appendTo('#DTD')
             wrapper.append('<a name="' + type + '"></a>') // .replace(/[\W]/g, '-')
-            wrapper.append('<h3>' + type + '</h3>')
+            wrapper.append('<div class="fontsize-16">' + type + '</div>')
             _.each(typeTpls, function(syntaxTpls, syntax) {
                 wrapper.append('<a name="' + syntax + '"></a>') // .replace(/[\W]/g, '-')
                 wrapper.append('<h4><code>' + syntax + '</code></h4>')
@@ -48,14 +48,23 @@ define(
             $('pre code').each(function(i, block) {
                 hljs.highlightBlock(block)
             })
+
+            $(document.body).on('click', '.rerun', function(event) {
+                var result = $(event.target).parent('.result').parent('.col-sm-6')
+                var data = result.prev()
+                var code = result.find('pre code').text(
+                    JSON.stringify(
+                        eval(data.find('pre').text()), null, 2
+                    )
+                )
+                hljs.highlightBlock(code[0])
+            })
         })
     }
 )
 
 ;
 (function() {
-    return
-
     var rows = $('#DTD').find('div.row')
     _.each(rows, function(row, index) {
         var $columns = $(row).find('> .code, > .result')

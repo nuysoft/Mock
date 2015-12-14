@@ -4,5 +4,6 @@
     "strict": false,
     "undef": true,
     "unused": "strict",
-    "multistr": true
+    "multistr": true,
+    "node": true
 }

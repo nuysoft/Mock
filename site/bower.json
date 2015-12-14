@@ -1,6 +1,8 @@
 {
   "name": "test",
-  "dependencies": {},
+  "dependencies": {
+    "vue": "~1.0.11"
+  },
   "devDependencies": {
     "mockjs": "refactoring",
     "requirejs": "*",

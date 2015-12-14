@@ -1,12 +1,8 @@
-/* global require */
-/* global console */
-
 var gulp = require('gulp')
 var jshint = require('gulp-jshint')
+var webpack = require("webpack")
 var connect = require('gulp-connect')
 var mochaPhantomJS = require('gulp-mocha-phantomjs')
-var rjs = require('gulp-requirejs')
-var concat = require('gulp-concat')
 var exec = require('child_process').exec
 
 var istanbul = require('gulp-istanbul')
@@ -57,6 +53,40 @@ gulp.task('jshint', function() {
         .pipe(jshint.reporter('jshint-stylish'))
 })
 
+// https://webpack.github.io/docs/usage-with-gulp.html
+gulp.task("webpack", function( /*callback*/ ) {
+    webpack({
+        entry: './src/mock.js',
+        output: {
+            path: './dist',
+            filename: 'mock.js',
+            library: 'Mock',
+            libraryTarget: 'umd'
+        }
+    }, function(err /*, stats*/ ) {
+        // console.log(err, stats)
+        if (err) throw err
+    })
+    webpack({
+        entry: './src/mock.js',
+        devtool: 'source-map',
+        output: {
+            path: './dist',
+            filename: 'mock-min.js',
+            library: 'Mock',
+            libraryTarget: 'umd'
+        },
+        plugins: [
+            new webpack.optimize.UglifyJsPlugin({
+                minimize: true
+            })
+        ]
+    }, function(err /*, stats*/ ) {
+        // console.log(err, stats)
+        if (err) throw err
+    })
+})
+
 // https://github.com/mrhooray/gulp-mocha-phantomjs
 gulp.task('mocha', function() {
     return gulp.src('test/test.mock.html')
@@ -65,43 +95,23 @@ gulp.task('mocha', function() {
         }))
 })
 
-// https://github.com/RobinThrift/gulp-requirejs
-gulp.task('rjs', function() {
-    var build = {
-        baseUrl: 'src',
-        out: 'dist/mock.js',
-        name: 'mock',
-        paths: {
-            canvas: 'empty:'
-        }
-    }
-    rjs(build)
-        .pipe(gulp.dest('.')) // pipe it to the output DIR
-})
-
-// https://github.com/wearefractal/gulp-concat
-gulp.task('concat', function() {
-    return gulp.src(['src/umd.js', 'dist/mock.js'])
-        .pipe(concat('mock.js'))
-        .pipe(gulp.dest('./dist/'))
-})
 
 // https://github.com/floatdrop/gulp-watch
-var watchTasks = ['hello', 'madge', 'jshint', 'rjs', 'concat', 'mocha']
+var watchTasks = ['hello', 'madge', 'jshint', 'webpack', 'mocha']
 gulp.task('watch', function( /*callback*/ ) {
     gulp.watch(['src/**/*.js', 'gulpfile.js', 'test/*'], watchTasks)
 })
 
 // https://github.com/pahen/madge
 gulp.task('madge', function( /*callback*/ ) {
-    exec('madge --format amd ./src/',
+    exec('madge ./src/',
         function(error, stdout /*, stderr*/ ) {
             if (error) console.log('exec error: ' + error)
             console.log('module dependencies:')
             console.log(stdout)
         }
     )
-    exec('madge --format amd --image ./dependencies.png ./src/',
+    exec('madge --image ./src/dependencies.png ./src/',
         function(error /*, stdout, stderr*/ ) {
             if (error) console.log('exec error: ' + error)
         }
@@ -151,4 +161,4 @@ gulp.task('publish', function() {
 })
 
 gulp.task('default', watchTasks.concat(['watch', 'connect']))
-gulp.task('build', ['jshint', 'rjs', 'concat', 'mocha'])
+gulp.task('build', ['jshint', 'webpack', 'mocha'])

@@ -14,16 +14,16 @@
     "commander": "*"
   },
   "devDependencies": {
-    "gulp": "*",
-    "gulp-concat": "^2.5.2",
+    "gulp": "^3.9.0",
     "gulp-connect": "*",
-    "gulp-coveralls": "*",
-    "gulp-istanbul": "*",
-    "gulp-jshint": "*",
-    "gulp-mocha": "*",
-    "gulp-mocha-phantomjs": "*",
-    "gulp-requirejs": "*",
-    "jshint-stylish": "*"
+    "gulp-coveralls": "^0.1.4",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-jshint": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
+    "gulp-mocha-phantomjs": "^0.10.1",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^2.1.0",
+    "webpack": "^1.12.9"
   },
   "repository": {
     "type": "git",

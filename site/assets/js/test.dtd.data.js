@@ -78,10 +78,10 @@ define(['jquery', 'underscore', 'mock'], function($, _, Mock) {
 				Mock.heredoc(function() {
 					/*
 {
-    'foo': 'Syntax Demo',
-    'name': function() {
-        return this.foo
-    }
+  'foo': 'Syntax Demo',
+  'name': function() {
+    return this.foo
+  }
 }
                      */
 				})
@@ -92,21 +92,21 @@ define(['jquery', 'underscore', 'mock'], function($, _, Mock) {
 				Mock.heredoc(function() {
 					/*
 {
-    'regexp': /[a-z][A-Z][0-9]/
+  'regexp': /[a-z][A-Z][0-9]/
 }
                      */
 				}),
 				Mock.heredoc(function() {
 					/*
 {
-    'regexp': /\w\W\s\S\d\D/
+  'regexp': /\w\W\s\S\d\D/
 }
                      */
 				}),
 				Mock.heredoc(function() {
 					/*
 {
-    'regexp': /\d{5,10}/
+  'regexp': /\d{5,10}/
 }
                      */
 				})

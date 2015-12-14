@@ -1,7 +1,6 @@
 {
   "name": "mockjs",
   "title": "Mock.js",
-  "version": "0.2.0-alpha1",
   "main": "dist/mock.js",
   "license": "MIT",
   "ignore": [
