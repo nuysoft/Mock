@@ -31,7 +31,13 @@ program
     var FN_ARGS = /^function\s*[^\(]*\(\s*([^\)]*)\)/m
     var FN_ARG_SPLIT = /,/
     var FN_ARG = /^\s*(_?)(\S+?)\1\s*$/
-    var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+    var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
+    var EXCLUDE = [
+        'extend',
+        'dataImage', // mock/random/image
+        'capitalize', 'upper', 'lower', 'pick', 'shuffle', 'order', // mock/random/helper.js
+        'increment', 'inc' // mock/random/misc.js
+    ]
 
     function parseArgs(fn) {
         var fnText = fn.toString().replace(STRIP_COMMENTS, '')
@@ -40,6 +46,9 @@ program
     }
 
     Object.keys(Random).forEach(function(key) {
+        if (key[0] === '_') return
+        if (EXCLUDE.indexOf(key) !== -1) return
+
         var fn = Random[key]
         if (typeof fn === 'function') {
             var argDecl = parseArgs(fn)

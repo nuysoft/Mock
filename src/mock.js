@@ -2,10 +2,12 @@
 var Handler = require('./mock/handler')
 var Util = require('./mock/util')
 var Random = require('./mock/random')
-var XHR = require('./mock/xhr')
 var RE = require('./mock/regexp')
 var toJSONSchema = require('./mock/schema')
 var valid = require('./mock/valid')
+
+var XHR
+if (typeof window !== 'undefined') XHR = require('./mock/xhr')
 
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -27,10 +29,10 @@ var Mock = {
     _mocked: {}
 }
 
-Mock.version = '1.0.0-alpha1'
+Mock.version = '1.0.0-beta1'
 
 // 避免循环依赖
-XHR.Mock = Mock
+if (XHR) XHR.Mock = Mock
 
 /*
     * Mock.mock( template )
@@ -53,7 +55,7 @@ Mock.mock = function(rurl, rtype, template) {
         rtype = undefined
     }
     // 拦截 XHR
-    window.XMLHttpRequest = XHR
+    if (XHR) window.XMLHttpRequest = XHR
     Mock._mocked[rurl + (rtype || '')] = {
         rurl: rurl,
         rtype: rtype,
@@ -61,7 +63,5 @@ Mock.mock = function(rurl, rtype, template) {
     }
     return Mock
 }
-
-console.log(this)
 
 module.exports = Mock
