@@ -1,4 +1,4 @@
-/*! mockjs 02-06-2015 22:03:43 */
+/*! mockjs 14-12-2015 16:19:19 */
 /*! src/mock-prefix.js */
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -7,7 +7,7 @@
 */
 (function(undefined) {
     var Mock = {
-        version: "0.1.9",
+        version: "0.1.11",
         _mocked: {}
     };
     /*! src/util.js */
@@ -1016,7 +1016,7 @@
             Zepto.ajax = function(options) {
                 var item = find(options);
                 if (item) {
-                    var data = Mock.mock(item.template);
+                    var data = convert(item, options);
                     if (options.success) options.success(data, xhr, options);
                     if (options.complete) options.complete(xhr.status, xhr, options);
                     return xhr;
