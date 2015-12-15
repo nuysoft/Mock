@@ -1,7 +1,7 @@
 {
   "name": "mockjs",
   "title": "Mock.js",
-  "description": "模拟请求 & 模拟数据",
+  "description": "生成随机数据 & 拦截 Ajax 请求",
   "version": "1.0.0-beta1",
   "homepage": "http://mockjs.com/",
   "keywords": [
