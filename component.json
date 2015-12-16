@@ -1,0 +1,15 @@
+{
+	"name": "mockJvs",
+	"version": "1.0.0",
+	"main": [
+	"./dist/mock.js"
+	],
+	"dependencies": {},
+	"readmeFilename": "README.md",
+	"_id": "mockJvs@1.0.0",
+	"description": "mock data",
+	"repository": {
+	"type": "git",
+	"url": "git@github.com:lightpeng/Mock.git"
+	}
+}
