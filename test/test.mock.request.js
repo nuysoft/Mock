@@ -100,7 +100,11 @@ describe('Request', function() {
             var that = this
             var url = 'rurl_function.json'
 
-            Mock.mock(/rurl_function\.json/, function( /*options*/ ) {
+            Mock.mock(/rurl_function\.json/, function(options) {
+                expect(options).to.not.equal(undefined)
+                expect(options.url).to.be.equal(url)
+                expect(options.type).to.be.equal('GET')
+                expect(options.body).to.be.equal(null)
                 return Mock.mock({
                     'list|1-10': [{
                         'id|+1': 1,
@@ -112,6 +116,85 @@ describe('Request', function() {
             $.ajax({
                 url: url,
                 dataType: 'json'
+            }).done(function(data /*, status, jqXHR*/ ) {
+                that.test.title += url + ' => ' + stringify(data)
+                expect(data).to.have.property('list')
+                    .that.be.an('array').with.length.within(1, 10)
+                _.each(data.list, function(item, index, list) {
+                    if (index > 0) expect(item.id).to.be.equal(list[index - 1].id + 1)
+                })
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown)
+            }).always(function() {
+                done()
+            })
+        })
+    })
+
+    describe('Mock.mock( rurl, function(options) ) + GET + data', function() {
+        it('', function(done) {
+            var that = this
+            var url = 'rurl_function.json'
+
+            Mock.mock(/rurl_function\.json/, function(options) {
+                expect(options).to.not.equal(undefined)
+                expect(options.url).to.be.equal(url + '?foo=1')
+                expect(options.type).to.be.equal('GET')
+                expect(options.body).to.be.equal(null)
+                return Mock.mock({
+                    'list|1-10': [{
+                        'id|+1': 1,
+                        'email': '@EMAIL'
+                    }]
+                })
+            })
+
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                data: {
+                    foo: 1
+                }
+            }).done(function(data /*, status, jqXHR*/ ) {
+                that.test.title += url + ' => ' + stringify(data)
+                expect(data).to.have.property('list')
+                    .that.be.an('array').with.length.within(1, 10)
+                _.each(data.list, function(item, index, list) {
+                    if (index > 0) expect(item.id).to.be.equal(list[index - 1].id + 1)
+                })
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown)
+            }).always(function() {
+                done()
+            })
+        })
+    })
+
+    describe('Mock.mock( rurl, function(options) ) + POST + data', function() {
+        it('', function(done) {
+            var that = this
+            var url = 'rurl_function.json'
+
+            Mock.mock(/rurl_function\.json/, function(options) {
+                expect(options).to.not.equal(undefined)
+                expect(options.url).to.be.equal(url)
+                expect(options.type).to.be.equal('POST')
+                expect(options.body).to.be.equal('foo=1')
+                return Mock.mock({
+                    'list|1-10': [{
+                        'id|+1': 1,
+                        'email': '@EMAIL'
+                    }]
+                })
+            })
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    foo: 1
+                }
             }).done(function(data /*, status, jqXHR*/ ) {
                 that.test.title += url + ' => ' + stringify(data)
                 expect(data).to.have.property('list')
@@ -193,12 +276,20 @@ describe('Request', function() {
             var url = 'rurl_rtype_function.json'
             var count = 0
 
-            Mock.mock(/rurl_rtype_function\.json/, /get/, function() {
+            Mock.mock(/rurl_rtype_function\.json/, /get/, function(options) {
+                expect(options).to.not.equal(undefined)
+                expect(options.url).to.be.equal(url)
+                expect(options.type).to.be.equal('GET')
+                expect(options.body).to.be.equal(null)
                 return {
                     type: 'get'
                 }
             })
             Mock.mock(/rurl_rtype_function\.json/, /post|put/, function(options) {
+                expect(options).to.not.equal(undefined)
+                expect(options.url).to.be.equal(url)
+                expect(['POST', 'PUT']).to.include(options.type)
+                expect(options.body).to.be.equal(null)
                 return {
                     type: options.type.toLowerCase()
                 }
@@ -226,6 +317,78 @@ describe('Request', function() {
                 url: url,
                 type: 'put',
                 dataType: 'json'
+            }).done(function(data /*, status, jqXHR*/ ) {
+                that.test.title += 'PUT ' + url + ' => ' + stringify(data)
+                expect(data).to.have.property('type', 'put')
+            }).done(success).always(complete)
+
+
+            function success( /*data*/ ) {
+                count++
+            }
+
+            function complete() {
+                if (count === 3) done()
+            }
+
+        })
+    })
+    describe('Mock.mock( rurl, rtype, function(options) ) + data', function() {
+        it('', function(done) {
+            var that = this
+            var url = 'rurl_rtype_function.json'
+            var count = 0
+
+            Mock.mock(/rurl_rtype_function\.json/, /get/, function(options) {
+                expect(options).to.not.equal(undefined)
+                expect(options.url).to.be.equal(url + '?foo=1')
+                expect(options.type).to.be.equal('GET')
+                expect(options.body).to.be.equal(null)
+                return {
+                    type: 'get'
+                }
+            })
+            Mock.mock(/rurl_rtype_function\.json/, /post|put/, function(options) {
+                expect(options).to.not.equal(undefined)
+                expect(options.url).to.be.equal(url)
+                expect(['POST', 'PUT']).to.include(options.type)
+                expect(options.body).to.be.equal('foo=1')
+                return {
+                    type: options.type.toLowerCase()
+                }
+            })
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    foo: 1
+                }
+            }).done(function(data /*, status, jqXHR*/ ) {
+                that.test.title += 'GET ' + url + ' => ' + stringify(data)
+                expect(data).to.have.property('type', 'get')
+            }).done(success).always(complete)
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    foo: 1
+                }
+            }).done(function(data /*, status, jqXHR*/ ) {
+                that.test.title += 'POST ' + url + ' => ' + stringify(data)
+                expect(data).to.have.property('type', 'post')
+            }).done(success).always(complete)
+
+            $.ajax({
+                url: url,
+                type: 'put',
+                dataType: 'json',
+                data: {
+                    foo: 1
+                }
             }).done(function(data /*, status, jqXHR*/ ) {
                 that.test.title += 'PUT ' + url + ' => ' + stringify(data)
                 expect(data).to.have.property('type', 'put')
