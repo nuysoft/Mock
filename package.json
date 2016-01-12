@@ -2,7 +2,7 @@
   "name": "mockjs",
   "title": "Mock.js",
   "description": "生成随机数据 & 拦截 Ajax 请求",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0",
   "homepage": "http://mockjs.com/",
   "keywords": [
     "mock",

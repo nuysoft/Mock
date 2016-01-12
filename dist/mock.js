@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _mocked: {}
 	}
 
-	Mock.version = '1.0.0-beta2'
+	Mock.version = '1.0.0'
 
 	// 避免循环依赖
 	if (XHR) XHR.Mock = Mock
