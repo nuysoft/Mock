@@ -423,6 +423,9 @@ describe('Random', function() {
         doit('Random.pick()', function(data) {
             expect(data).to.be.undefined
         })
+        doit('Random.pick("a", "e", "i", "o", "u")', function(data) {
+            expect(["a", "e", "i", "o", "u"]).to.include(data)
+        })
         doit('Random.pick(["a", "e", "i", "o", "u"])', function(data) {
             expect(["a", "e", "i", "o", "u"]).to.include(data)
         })

@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _mocked: {}
 	}
 
-	Mock.version = '1.0.0'
+	Mock.version = '1.0.1-beta1'
 
 	// 避免循环依赖
 	if (XHR) XHR.Mock = Mock
@@ -2050,11 +2050,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 14 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Helpers
 	*/
+
+	var Util = __webpack_require__(3)
+
 	module.exports = {
 		// 把字符串的第一个字母转换为大写。
 		capitalize: function(word) {
@@ -2070,17 +2073,37 @@ return /******/ (function(modules) { // webpackBootstrap
 		},
 		// 从数组中随机选取一个元素，并返回。
 		pick: function pick(arr, min, max) {
-			arr = arr || []
-			switch (arguments.length) {
-				case 1:
-					return arr[this.natural(0, arr.length - 1)]
-				case 2:
-					max = min
-						/* falls through */
-				case 3:
-					return this.shuffle(arr, min, max)
+			// pick( item1, item2 ... )
+			if (!Util.isArray(arr)) {
+				arr = [].slice.call(arguments)
+				min = 1
+				max = 1
+			} else {
+				// pick( [ item1, item2 ... ] )
+				if (min === undefined) min = 1
 
+				// pick( [ item1, item2 ... ], count )
+				if (max === undefined) max = min
 			}
+
+			if (min === 1 && max === 1) return arr[this.natural(0, arr.length - 1)]
+
+			// pick( [ item1, item2 ... ], min, max )
+			return this.shuffle(arr, min, max)
+
+			// 通过参数个数判断方法签名，扩展性太差！#90
+			// switch (arguments.length) {
+			// 	case 1:
+			// 		// pick( [ item1, item2 ... ] )
+			// 		return arr[this.natural(0, arr.length - 1)]
+			// 	case 2:
+			// 		// pick( [ item1, item2 ... ], count )
+			// 		max = min
+			// 			/* falls through */
+			// 	case 3:
+			// 		// pick( [ item1, item2 ... ], min, max )
+			// 		return this.shuffle(arr, min, max)
+			// }
 		},
 		/*
 		    打乱数组中元素的顺序，并返回。
