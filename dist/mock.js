@@ -8019,7 +8019,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    6. 兼容 XMLHttpRequest 和 ActiveXObject
 	        new window.XMLHttpRequest()
 	        new window.ActiveXObject("Microsoft.XMLHTTP")
-	    
+
 	    关键方法的逻辑：
 	    * new   此时尚无法确定是否需要拦截，所以创建原生 XHR 对象是必须的。
 	    * open  此时可以取到 URL，可以决定是否进行拦截。
@@ -8028,7 +8028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    规范：
 	    http://xhr.spec.whatwg.org/
 	    http://www.w3.org/TR/XMLHttpRequest2/
-	    
+
 	    参考实现：
 	    https://github.com/philikon/MockHttpRequest/blob/master/lib/mock.js
 	    https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js
@@ -8288,15 +8288,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            that.status = 200
 	            that.statusText = HTTP_STATUS_CODES[200]
-	            that.responseText = JSON.stringify(
+	            that.response = that.responseText = JSON.stringify(
 	                convert(that.custom.template, that.custom.options),
 	                null, 4
 	            )
 
 	            that.readyState = MockXMLHttpRequest.DONE
-	            that.dispatchEvent(new Event('readystatechange'/*, false, false, that*/))
-	            that.dispatchEvent(new Event('load'/*, false, false, that*/));
-	            that.dispatchEvent(new Event('loadend'/*, false, false, that*/));
+	            that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
+	            that.dispatchEvent(new Event('load' /*, false, false, that*/ ));
+	            that.dispatchEvent(new Event('loadend' /*, false, false, that*/ ));
 	        }
 	    },
 	    // https://xhr.spec.whatwg.org/#the-abort()-method
@@ -8348,7 +8348,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return headers
 	    },
 	    overrideMimeType: function( /*mime*/ ) {},
-	    responseType: '', // '', 'text', 'arraybuffer', 'blob', 'document', 'json' 
+	    responseType: '', // '', 'text', 'arraybuffer', 'blob', 'document', 'json'
 	    response: null,
 	    responseText: '',
 	    responseXML: null
