@@ -8288,6 +8288,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            that.status = 200
 	            that.statusText = HTTP_STATUS_CODES[200]
+
+	            // fix #92 #93 by @qddegtya
 	            that.response = that.responseText = JSON.stringify(
 	                convert(that.custom.template, that.custom.options),
 	                null, 4
