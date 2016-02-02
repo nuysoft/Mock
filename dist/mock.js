@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _mocked: {}
 	}
 
-	Mock.version = '1.0.1-beta1'
+	Mock.version = '1.0.1-beta2'
 
 	// 避免循环依赖
 	if (XHR) XHR.Mock = Mock
@@ -8089,7 +8089,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	var XHR_EVENTS = 'readystatechange loadstart progress abort error load timeout loadend'.split(' ')
-
+	var XHR_REQUEST_PROPERTIES = 'timeout withCredentials'.split(' ')
 	var XHR_RESPONSE_PROPERTIES = 'readyState responseURL status statusText responseType response responseText responseXML'.split(' ')
 
 	// https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js#L32
@@ -8207,7 +8207,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        function handle(event) {
 	            // 同步属性 NativeXMLHttpRequest => MockXMLHttpRequest
-	            for (var i = 0, len = XHR_RESPONSE_PROPERTIES.length; i < len; i++) {
+	            for (var i = 0; i < XHR_RESPONSE_PROPERTIES.length; i++) {
 	                try {
 	                    that[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]]
 	                } catch (e) {}
@@ -8230,6 +8230,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // xhr.open()
 	            if (username) xhr.open(method, url, async, username, password)
 	            else xhr.open(method, url, async)
+
+	            // 同步属性 MockXMLHttpRequest => NativeXMLHttpRequest
+	            for (var j = 0; j < XHR_REQUEST_PROPERTIES.length; j++) {
+	                try {
+	                    xhr[XHR_REQUEST_PROPERTIES[j]] = that[XHR_REQUEST_PROPERTIES[j]]
+	                } catch (e) {}
+	            }
 
 	            return
 	        }

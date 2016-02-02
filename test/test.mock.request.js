@@ -60,6 +60,35 @@ describe('Request', function() {
             })
         })
     })
+    describe('jQuery.ajax() XHR Fields', function() {
+        it('', function(done) {
+            var that = this
+            var url = Math.random()
+            var xhr
+            $.ajax({
+                xhr: function() {
+                    xhr = $.ajaxSettings.xhr()
+                    return xhr
+                },
+                url: url,
+                dataType: 'json',
+                xhrFields: {
+                    timeout: 123,
+                    withCredentials: true
+                }
+            }).done(function( /*data, textStatus, jqXHR*/ ) {
+                // 不会进入
+            }).fail(function(jqXHR /*, textStatus, errorThrown*/ ) {
+                // 浏览器 || PhantomJS
+                expect([404, 0]).to.include(jqXHR.status)
+                that.test.title += url + ' => ' + jqXHR.status
+                expect(xhr.timeout).to.be.equal(123)
+                expect(xhr.withCredentials).to.be.equal(true)
+            }).always(function() {
+                done()
+            })
+        })
+    })
 
     describe('Mock.mock( rurl, template )', function() {
         it('', function(done) {

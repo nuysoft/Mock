@@ -81,7 +81,7 @@ var XHR_STATES = {
 }
 
 var XHR_EVENTS = 'readystatechange loadstart progress abort error load timeout loadend'.split(' ')
-
+var XHR_REQUEST_PROPERTIES = 'timeout withCredentials'.split(' ')
 var XHR_RESPONSE_PROPERTIES = 'readyState responseURL status statusText responseType response responseText responseXML'.split(' ')
 
 // https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js#L32
@@ -199,7 +199,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         function handle(event) {
             // 同步属性 NativeXMLHttpRequest => MockXMLHttpRequest
-            for (var i = 0, len = XHR_RESPONSE_PROPERTIES.length; i < len; i++) {
+            for (var i = 0; i < XHR_RESPONSE_PROPERTIES.length; i++) {
                 try {
                     that[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]]
                 } catch (e) {}
@@ -222,6 +222,13 @@ Util.extend(MockXMLHttpRequest.prototype, {
             // xhr.open()
             if (username) xhr.open(method, url, async, username, password)
             else xhr.open(method, url, async)
+
+            // 同步属性 MockXMLHttpRequest => NativeXMLHttpRequest
+            for (var j = 0; j < XHR_REQUEST_PROPERTIES.length; j++) {
+                try {
+                    xhr[XHR_REQUEST_PROPERTIES[j]] = that[XHR_REQUEST_PROPERTIES[j]]
+                } catch (e) {}
+            }
 
             return
         }
