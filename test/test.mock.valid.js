@@ -23,9 +23,10 @@ describe('Mock.valid', function() {
 
     function title(tpl, data, result, test) {
         test.title = stringify(tpl) + ' VS ' + stringify(data) + '\n\tresult: ' + stringify(result)
-        for (var i = 0; i < result.length; i++) {
-            // test.title += '\n\t' + result[i].message
-        }
+        // if (result.length) test.title += '\n\tresult: '
+        // for (var i = 0; i < result.length; i++) {
+        //     test.title += '\n\t' + result[i].message // stringify(result)
+        // }
     }
 
     function doit(tpl, data, len) {
@@ -129,6 +130,38 @@ describe('Mock.valid', function() {
             name: 'valuevaluevaluevalue'
         }, 1)
     })
+    describe('Value - RgeExp', function() {
+        doit({
+            name: /value/
+        }, {
+            name: 'value'
+        }, 0)
+        doit({
+            name: /value/
+        }, {
+            name: 'vvvvv'
+        }, 1)
+        doit({
+            'name|1-10': /value/
+        }, {
+            name: 'valuevaluevaluevaluevalue'
+        }, 0)
+        doit({
+            'name|1-10': /value/
+        }, {
+            name: 'vvvvvvvvvvvvvvvvvvvvvvvvv'
+        }, 1)
+        doit({
+            'name|1-10': /^value$/
+        }, {
+            name: 'valuevaluevaluevaluevalue'
+        }, 0)
+        doit({
+            name: /[a-z][A-Z][0-9]/
+        }, {
+            name: 'yL5'
+        }, 0)
+    })
     describe('Value - Object', function() {
         doit({
             name: 1
@@ -211,5 +244,17 @@ describe('Mock.valid', function() {
         }, {
             'name': [1, 2, 3]
         }, 2)
+    })
+    describe('Value - Placeholder', function() {
+        doit({
+            name: '@email'
+        }, {
+            name: 'nuysoft@gmail.com'
+        }, 0)
+        doit({
+            name: '@int'
+        }, {
+            name: 123
+        }, 0)
     })
 })

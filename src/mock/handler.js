@@ -358,8 +358,13 @@ Handler.extend({
         return options.template.call(options.context.currentContext, options)
     },
     'regexp': function(options) {
-        // regexp.source
-        var source = options.template.source
+        var source = ''
+
+        // 'name': /regexp/,
+        /* jshint -W041 */
+        if (options.rule.count == undefined) {
+            source += options.template.source // regexp.source
+        }
 
         // 'name|1-5': /regexp/,
         for (var i = 0; i < options.rule.count; i++) {
