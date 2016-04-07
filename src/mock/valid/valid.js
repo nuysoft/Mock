@@ -28,7 +28,8 @@ function valid(template, data) {
     var schema = toJSONSchema(template)
     var result = Diff.diff(schema, data)
     for (var i = 0; i < result.length; i++) {
-        // console.log(Assert.message(result[i]))
+        // console.log(template, data)
+        // console.warn(Assert.message(result[i]))
     }
     return result
 }
@@ -97,10 +98,24 @@ var Diff = {
         var length = result.length
 
         switch (schema.type) {
-            // 跳过含有『占位符』的属性值，因为『占位符』返回值的类型可能和模板不一致，例如 '@int' 会返回一个整形值
             case 'string':
+                // 跳过含有『占位符』的属性值，因为『占位符』返回值的类型可能和模板不一致，例如 '@int' 会返回一个整形值
                 if (schema.template.match(Constant.RE_PLACEHOLDER)) return true
                 break
+            case 'array':
+                if (schema.rule.parameters) {
+                    // name|count: array
+                    if (schema.rule.min !== undefined && schema.rule.max === undefined) {
+                        // 跳过 name|1: array，因为最终值的类型（很可能）不是数组，也不一定与 `array` 中的类型一致
+                        if (schema.rule.count === 1) return true
+                    }
+                    // 跳过 name|+inc: array
+                    if (schema.rule.parameters[2]) return true
+                }
+                break
+            case 'function':
+                // 跳过 `'name': function`，因为函数可以返回任何类型的值。
+                return true
         }
 
         Assert.equal('type', schema.path, Util.type(data), schema.type, result)
@@ -112,7 +127,7 @@ var Diff = {
 
         var rule = schema.rule
         var templateType = schema.type
-        if (templateType === 'object' || templateType === 'array') return
+        if (templateType === 'object' || templateType === 'array' || templateType === 'function') return true
 
         // 无生成规则
         if (!rule.parameters) {
@@ -139,9 +154,9 @@ var Diff = {
                 // 整数部分
                 // |min-max
                 if (rule.min !== undefined && rule.max !== undefined) {
-                    Assert.greaterThanOrEqualTo('value', schema.path, parts[0], rule.min, result)
+                    Assert.greaterThanOrEqualTo('value', schema.path, parts[0], Math.min(rule.min, rule.max), result)
                         // , 'numeric instance is lower than the required minimum (minimum: {expected}, found: {actual})')
-                    Assert.lessThanOrEqualTo('value', schema.path, parts[0], rule.max, result)
+                    Assert.lessThanOrEqualTo('value', schema.path, parts[0], Math.max(rule.min, rule.max), result)
                 }
                 // |count
                 if (rule.min !== undefined && rule.max === undefined) {
@@ -169,7 +184,7 @@ var Diff = {
             case 'string':
                 // 'aaa'.match(/a/g)
                 actualRepeatCount = data.match(new RegExp(schema.template, 'g'))
-                actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : actualRepeatCount
+                actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : 0
 
                 // |min-max
                 if (rule.min !== undefined && rule.max !== undefined) {
@@ -185,7 +200,7 @@ var Diff = {
 
             case 'regexp':
                 actualRepeatCount = data.match(new RegExp(schema.template.source.replace(/^\^|\$$/g, ''), 'g'))
-                actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : actualRepeatCount
+                actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : 0
 
                 // |min-max
                 if (rule.min !== undefined && rule.max !== undefined) {
@@ -215,12 +230,13 @@ var Diff = {
             // 有生成规则
             // |min-max
             if (rule.min !== undefined && rule.max !== undefined) {
-                Assert.greaterThanOrEqualTo('properties length', schema.path, keys.length, rule.min, result)
-                Assert.lessThanOrEqualTo('properties length', schema.path, keys.length, rule.max, result)
+                Assert.greaterThanOrEqualTo('properties length', schema.path, keys.length, Math.min(rule.min, rule.max), result)
+                Assert.lessThanOrEqualTo('properties length', schema.path, keys.length, Math.max(rule.min, rule.max), result)
             }
             // |count
             if (rule.min !== undefined && rule.max === undefined) {
-                Assert.equal('properties length', schema.path, keys.length, rule.min, result)
+                // |1, |>1
+                if (rule.count !== 1) Assert.equal('properties length', schema.path, keys.length, rule.min, result)
             }
         }
 
@@ -230,7 +246,13 @@ var Diff = {
             result.push.apply(
                 result,
                 this.diff(
-                    schema.properties[i],
+                    function() {
+                        var property
+                        Util.each(schema.properties, function(item /*, index*/ ) {
+                            if (item.name === keys[i]) property = item
+                        })
+                        return property || schema.properties[i]
+                    }(),
                     data[keys[i]],
                     keys[i]
                 )
@@ -253,15 +275,19 @@ var Diff = {
             // 有生成规则
             // |min-max
             if (rule.min !== undefined && rule.max !== undefined) {
-                Assert.greaterThanOrEqualTo('items', schema.path, data.length, (rule.min * schema.items.length), result,
+                Assert.greaterThanOrEqualTo('items', schema.path, data.length, (Math.min(rule.min, rule.max) * schema.items.length), result,
                     '[{utype}] array is too short: {path} must have at least {expected} elements but instance has {actual} elements')
-                Assert.lessThanOrEqualTo('items', schema.path, data.length, (rule.max * schema.items.length), result,
+                Assert.lessThanOrEqualTo('items', schema.path, data.length, (Math.max(rule.min, rule.max) * schema.items.length), result,
                     '[{utype}] array is too long: {path} must have at most {expected} elements but instance has {actual} elements')
             }
             // |count
             if (rule.min !== undefined && rule.max === undefined) {
-                Assert.equal('items length', schema.path, data.length, (rule.min * schema.items.length), result)
+                // |1, |>1
+                if (rule.count === 1) return result.length === length
+                else Assert.equal('items length', schema.path, data.length, (rule.min * schema.items.length), result)
             }
+            // |+inc
+            if (rule.parameters[2]) return result.length === length
         }
 
         if (result.length !== length) return false

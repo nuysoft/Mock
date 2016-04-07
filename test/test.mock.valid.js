@@ -23,6 +23,7 @@ describe('Mock.valid', function() {
 
     function title(tpl, data, result, test) {
         test.title = stringify(tpl) + ' VS ' + stringify(data) + '\n\tresult: ' + stringify(result)
+
         // if (result.length) test.title += '\n\tresult: '
         // for (var i = 0; i < result.length; i++) {
         //     test.title += '\n\t' + result[i].message // stringify(result)
@@ -32,8 +33,8 @@ describe('Mock.valid', function() {
     function doit(tpl, data, len) {
         it('', function() {
             var result = Mock.valid(tpl, data)
-            expect(result).to.be.an('array').with.length(len)
             title(tpl, data, result, this.test)
+            expect(result).to.be.an('array').with.length(len)
         })
     }
 
@@ -209,6 +210,51 @@ describe('Mock.valid', function() {
 
         doit([1, 2, 3], [1, 2, 3, 4], 1)
 
+        // 'name|1': array
+        doit({
+            'name|1': [1, 2, 3]
+        }, {
+            'name': 1
+        }, 0)
+        doit({
+            'name|1': [1, 2, 3]
+        }, {
+            'name': 2
+        }, 0)
+        doit({
+            'name|1': [1, 2, 3]
+        }, {
+            'name': 3
+        }, 0)
+        doit({ // 不检测
+            'name|1': [1, 2, 3]
+        }, {
+            'name': 4
+        }, 0)
+
+        // 'name|+1': array
+        doit({
+            'name|+1': [1, 2, 3]
+        }, {
+            'name': 1
+        }, 0)
+        doit({
+            'name|+1': [1, 2, 3]
+        }, {
+            'name': 2
+        }, 0)
+        doit({
+            'name|+1': [1, 2, 3]
+        }, {
+            'name': 3
+        }, 0)
+        doit({
+            'name|+1': [1, 2, 3]
+        }, {
+            'name': 4
+        }, 0)
+
+        // 'name|min-max': array
         doit({
             'name|2-3': [1]
         }, {
@@ -244,6 +290,8 @@ describe('Mock.valid', function() {
         }, {
             'name': [1, 2, 3]
         }, 2)
+
+        // 'name|count': array
     })
     describe('Value - Placeholder', function() {
         doit({

@@ -40,8 +40,8 @@ module.exports = {
 		var count = range ? !range[2] ? parseInt(range[1], 10) : Random.integer(min, max) : undefined
 
 		var decimal = parameters && parameters[4] && parameters[4].match(Constant.RE_RANGE)
-		var dmin = decimal && parseInt(decimal[1], 10) // || 0,
-		var dmax = decimal && parseInt(decimal[2], 10) // || 0,
+		var dmin = decimal && decimal[1] && parseInt(decimal[1], 10) // || 0,
+		var dmax = decimal && decimal[2] && parseInt(decimal[2], 10) // || 0,
 			// int || dmin-dmax || 0
 		var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : undefined
 
