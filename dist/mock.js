@@ -7766,6 +7766,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        // 有生成规则
+	        var actualRepeatCount
 	        switch (templateType) {
 	            case 'number':
 	                var parts = (data + '').split('.')
@@ -7803,7 +7804,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            case 'string':
 	                // 'aaa'.match(/a/g)
-	                var actualRepeatCount = data.match(new RegExp(schema.template, 'g'))
+	                actualRepeatCount = data.match(new RegExp(schema.template, 'g'))
 	                actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : actualRepeatCount
 
 	                // |min-max
@@ -7819,7 +7820,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                break
 
 	            case 'regexp':
-	                var actualRepeatCount = data.match(new RegExp(schema.template.source.replace(/^\^|\$$/g, ''), 'g'))
+	                actualRepeatCount = data.match(new RegExp(schema.template.source.replace(/^\^|\$$/g, ''), 'g'))
 	                actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : actualRepeatCount
 
 	                // |min-max
@@ -8422,7 +8423,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	// EventTarget
 	Util.extend(MockXMLHttpRequest.prototype, {
-	    addEventListene: function addEventListene(type, handle) {
+	    addEventListener: function addEventListener(type, handle) {
 	        var events = this.custom.events
 	        if (!events[type]) events[type] = []
 	        events[type].push(handle)

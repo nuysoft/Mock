@@ -130,6 +130,7 @@ var Diff = {
         }
 
         // 有生成规则
+        var actualRepeatCount
         switch (templateType) {
             case 'number':
                 var parts = (data + '').split('.')
@@ -167,7 +168,7 @@ var Diff = {
 
             case 'string':
                 // 'aaa'.match(/a/g)
-                var actualRepeatCount = data.match(new RegExp(schema.template, 'g'))
+                actualRepeatCount = data.match(new RegExp(schema.template, 'g'))
                 actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : actualRepeatCount
 
                 // |min-max
@@ -183,7 +184,7 @@ var Diff = {
                 break
 
             case 'regexp':
-                var actualRepeatCount = data.match(new RegExp(schema.template.source.replace(/^\^|\$$/g, ''), 'g'))
+                actualRepeatCount = data.match(new RegExp(schema.template.source.replace(/^\^|\$$/g, ''), 'g'))
                 actualRepeatCount = actualRepeatCount ? actualRepeatCount.length : actualRepeatCount
 
                 // |min-max

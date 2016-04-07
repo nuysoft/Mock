@@ -357,7 +357,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
 // EventTarget
 Util.extend(MockXMLHttpRequest.prototype, {
-    addEventListene: function addEventListene(type, handle) {
+    addEventListener: function addEventListener(type, handle) {
         var events = this.custom.events
         if (!events[type]) events[type] = []
         events[type].push(handle)

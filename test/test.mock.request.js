@@ -434,4 +434,12 @@ describe('Request', function() {
 
         })
     })
+    describe('#105 addEventListener', function() {
+        it('addEventListene => addEventListener', function(done) {
+            var xhr = new Mock.XHR()
+            expect(xhr.addEventListener).to.not.equal(undefined)
+            expect(xhr.addEventListene).to.equal(undefined)
+            done()
+        })
+    })
 })
