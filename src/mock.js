@@ -29,7 +29,7 @@ var Mock = {
     _mocked: {}
 }
 
-Mock.version = '1.0.1-beta2'
+Mock.version = '1.0.1-beta3'
 
 // 避免循环依赖
 if (XHR) XHR.Mock = Mock
