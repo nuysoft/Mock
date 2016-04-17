@@ -32,7 +32,11 @@
   "main": "./dist/mock.js",
   "scripts": {
     "test": "gulp mocha",
-    "coveralls": "gulp coveralls"
+    "coveralls": "gulp coveralls",
+    "prebuild":"npm run dev && npm run product",
+    "build":"gulp build",
+    "dev":"NODE_ENV=dev webpack --colors --config ./bin/webpack.config.js",
+    "product":"NODE_ENV=product webpack --colors --config ./bin/webpack.config.js"
   },
   "bin": {
     "random": "bin/random"

@@ -53,41 +53,8 @@ gulp.task('jshint', function() {
         .pipe(jshint.reporter('jshint-stylish'))
 })
 
-// https://webpack.github.io/docs/usage-with-gulp.html
-gulp.task("webpack", function( /*callback*/ ) {
-    webpack({
-        entry: './src/mock.js',
-        output: {
-            path: './dist',
-            filename: 'mock.js',
-            library: 'Mock',
-            libraryTarget: 'umd'
-        }
-    }, function(err /*, stats*/ ) {
-        // console.log(err, stats)
-        if (err) throw err
-    })
-    webpack({
-        entry: './src/mock.js',
-        devtool: 'source-map',
-        output: {
-            path: './dist',
-            filename: 'mock-min.js',
-            library: 'Mock',
-            libraryTarget: 'umd'
-        },
-        plugins: [
-            new webpack.optimize.UglifyJsPlugin({
-                minimize: true
-            })
-        ]
-    }, function(err /*, stats*/ ) {
-        // console.log(err, stats)
-        if (err) throw err
-    })
-})
-
 // https://github.com/mrhooray/gulp-mocha-phantomjs
+
 gulp.task('mocha', function() {
     return gulp.src('test/test.mock.html')
         .pipe(mochaPhantomJS({
@@ -147,6 +114,7 @@ gulp.task('istanbulForMochaPhantomJS', function(cb) {
 })
 
 // https://github.com/markdalgleish/gulp-coveralls
+// try cat ./coverage/lcov.info | coveralls ?
 gulp.task('coveralls', ['istanbul'], function() {
     return gulp.src('coverage/**/lcov.info')
         .pipe(coveralls())
@@ -161,4 +129,4 @@ gulp.task('publish', function() {
 })
 
 gulp.task('default', watchTasks.concat(['watch', 'connect']))
-gulp.task('build', ['jshint', 'webpack', 'mocha'])
+gulp.task('build', ['jshint','mocha'])
