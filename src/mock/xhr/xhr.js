@@ -169,12 +169,13 @@ Util.extend(MockXMLHttpRequest.prototype, {
     // https://xhr.spec.whatwg.org/#the-open()-method
     // Sets the request method, request URL, and synchronous flag.
     open: function(method, url, async, username, password) {
+        async = typeof async === 'boolean' ? async : true
         var that = this
 
         Util.extend(this.custom, {
             method: method,
             url: url,
-            async: typeof async === 'boolean' ? async : true,
+            async: async,
             username: username,
             password: password,
             options: {
@@ -264,6 +265,10 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         // 原生 XHR
         if (!this.match) {
+            // 设置 responseType (注意: 同步请求的情况 responseType 为只读, 会报错)
+            if(this.custom.async){
+                this.custom.xhr.responseType = this.responseType
+            }
             this.custom.xhr.send(data)
             return
         }
