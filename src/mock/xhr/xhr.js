@@ -169,12 +169,13 @@ Util.extend(MockXMLHttpRequest.prototype, {
     // https://xhr.spec.whatwg.org/#the-open()-method
     // Sets the request method, request URL, and synchronous flag.
     open: function(method, url, async, username, password) {
+        async = typeof async === 'boolean' ? async : true
         var that = this
 
         Util.extend(this.custom, {
             method: method,
             url: url,
-            async: typeof async === 'boolean' ? async : true,
+            async: async,
             username: username,
             password: password,
             options: {
