@@ -265,6 +265,10 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         // 原生 XHR
         if (!this.match) {
+            // 设置 responseType (注意: 同步请求的情况 responseType 为只读, 会报错)
+            if(this.custom.async){
+                this.custom.xhr.responseType = this.responseType
+            }
             this.custom.xhr.send(data)
             return
         }
