@@ -36,14 +36,24 @@ module.exports = {
         dmin = Math.max(Math.min(dmin, 17), 0)
         dmax = dmax === undefined ? 17 : dmax
         dmax = Math.max(Math.min(dmax, 17), 0)
-        var ret = this.integer(min, max) + '.';
-        for (var i = 0, dcount = this.natural(dmin, dmax); i < dcount; i++) {
-            ret += (
-                // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
-                (i < dcount - 1) ? this.character('number') : this.character('123456789')
-            )
-        }
-        return parseFloat(ret, 10)
+        var ret = Math.random() * (max - min) + min
+        var dcount = this.natural(dmin, dmax)
+        if (dcount > 0) {
+            var precision = 1
+            if (dcount > 1) {
+                // 最后一位不能为 0，如果最后一位为 0，会被 JS 引擎忽略掉。
+                ret = parseFloat(ret.toFixed(dcount - 1) + this.character('123456789'))
+                precision = dcount
+            }
+            // 如果得到的值比 max 大，返回预期范围内且精度符合要求的值。
+            if (parseFloat(ret.toFixed(precision)) > max) {
+                if (max.toString().indexOf('.') === -1) {
+                    max = max - 1 / (precision * 10)
+                }
+                ret = max.toFixed(precision + 1).slice(0, -1)
+            }
+        } // 如果 dcount <= 0，返回默认精度。
+        return parseFloat(ret)
     },
     // 返回一个随机字符。
     character: function(pool) {
