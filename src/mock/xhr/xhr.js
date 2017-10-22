@@ -260,6 +260,9 @@ Util.extend(MockXMLHttpRequest.prototype, {
     // Initiates the request.
     send: function send(data) {
         var that = this
+        var response
+        var compiler
+
         this.custom.options.body = data
 
         // 原生 XHR
@@ -276,8 +279,23 @@ Util.extend(MockXMLHttpRequest.prototype, {
         // loadstart The fetch initiates.
         this.dispatchEvent(new Event('loadstart' /*, false, false, this*/ ))
 
-        if (this.custom.async) setTimeout(done, this.custom.timeout) // 异步
-        else done() // 同步
+        compiler = convert(that.custom.template, that.custom.options)
+
+        if (typeof compiler.then === 'function') {
+            // Promise
+            compiler.then(function (data) {
+                response = data
+                done()
+            })
+        } else if (this.custom.async) {
+            // 异步
+            response = compiler
+            setTimeout(done, this.custom.timeout)
+        } else {
+            // 同步
+            response = compiler
+            done()
+        }
 
         function done() {
             that.readyState = MockXMLHttpRequest.HEADERS_RECEIVED
@@ -289,10 +307,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
             that.statusText = HTTP_STATUS_CODES[200]
 
             // fix #92 #93 by @qddegtya
-            that.response = that.responseText = JSON.stringify(
-                convert(that.custom.template, that.custom.options),
-                null, 4
-            )
+            that.response = that.responseText = JSON.stringify(response, null, 4)
 
             that.readyState = MockXMLHttpRequest.DONE
             that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
