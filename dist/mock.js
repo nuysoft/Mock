@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* global require, module, window */
 	var Handler = __webpack_require__(1)
@@ -122,9 +122,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Mock
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* 
 	    ## Handler
@@ -667,9 +667,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Handler
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Constant
@@ -705,9 +705,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // RE_KEY: /^key$/
 	}
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Utilities
@@ -836,9 +836,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Util
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 		## Parser
@@ -912,9 +912,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Mock.Random
@@ -941,9 +941,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Random
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Basics
@@ -1072,9 +1072,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Date
@@ -1218,9 +1218,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* global document  */
 	/*
@@ -1506,9 +1506,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
@@ -1522,9 +1522,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Color
@@ -1664,9 +1664,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Color Convert
@@ -1846,9 +1846,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Color 字典数据
@@ -1927,9 +1927,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Text
@@ -2053,9 +2053,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Helpers
@@ -2174,9 +2174,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Name
@@ -2266,9 +2266,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Web
@@ -2347,9 +2347,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Address
@@ -2399,9 +2399,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // state: function() {},
 	}
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Address 字典数据
@@ -6472,9 +6472,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = DICT_FIXED
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Miscellaneous
@@ -6582,9 +6582,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var Parser = __webpack_require__(21)
 	var Handler = __webpack_require__(22)
@@ -6593,9 +6593,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		Handler: Handler
 	}
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// https://github.com/nuysoft/regexp
 	// forked from https://github.com/ForbesLindesay/regexp
@@ -7168,9 +7168,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = parser
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## RegExp Handler
@@ -7565,15 +7565,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Handler
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(24)
 
-/***/ },
+/***/ }),
 /* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## toJSONSchema
@@ -7624,15 +7624,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toJSONSchema
 
 
-/***/ },
+/***/ }),
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(26)
 
-/***/ },
+/***/ }),
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## valid(template, data)
@@ -8080,17 +8080,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = valid
 
-/***/ },
+/***/ }),
 /* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(28)
 
-/***/ },
+/***/ }),
 /* 28 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	/* global window, document, location, Event, setTimeout */
+	/* global window, document, location, CustomEvent, setTimeout */
 	/*
 	    ## MockXMLHttpRequest
 
@@ -8142,22 +8142,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	window._XMLHttpRequest = window.XMLHttpRequest
 	window._ActiveXObject = window.ActiveXObject
 
-	/*
-	    PhantomJS
-	    TypeError: '[object EventConstructor]' is not a constructor (evaluating 'new Event("readystatechange")')
-
-	    https://github.com/bluerail/twitter-bootstrap-rails-confirm/issues/18
-	    https://github.com/ariya/phantomjs/issues/11289
-	*/
-	try {
-	    new window.Event('custom')
-	} catch (exception) {
-	    window.Event = function(type, bubbles, cancelable, detail) {
-	        var event = document.createEvent('CustomEvent') // MUST be 'CustomEvent'
-	        event.initCustomEvent(type, bubbles, cancelable, detail)
-	        return event
+	/**
+	 * IE polyfill for the CustomEvent constructor at MDN
+	 * https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+	 */
+	;(function () {
+	    if (typeof window.CustomEvent === "function") return false;
+	    function CustomEvent(event, params) {
+	        params = params || { bubbles: false, cancelable: false, detail: undefined };
+	        var evt = document.createEvent('CustomEvent');
+	        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+	        return evt;
 	    }
-	}
+	    CustomEvent.prototype = window.Event.prototype;
+	    window.CustomEvent = CustomEvent;
+	})();
 
 	var XHR_STATES = {
 	    // The object has been constructed.
@@ -8297,7 +8296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                } catch (e) {}
 	            }
 	            // 触发 MockXMLHttpRequest 上的同名事件
-	            that.dispatchEvent(new Event(event.type /*, false, false, that*/ ))
+	            that.dispatchEvent(new CustomEvent(event.type))
 	        }
 
 	        // 如果未找到匹配的数据模板，则采用原生 XHR 发送请求。
@@ -8329,7 +8328,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.match = true
 	        this.custom.template = item
 	        this.readyState = MockXMLHttpRequest.OPENED
-	        this.dispatchEvent(new Event('readystatechange' /*, false, false, this*/ ))
+	        this.dispatchEvent(new CustomEvent('readystatechange'))
 	    },
 	    // https://xhr.spec.whatwg.org/#the-setrequestheader()-method
 	    // Combines a header in author request headers.
@@ -8366,16 +8365,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.setRequestHeader('X-Requested-With', 'MockXMLHttpRequest')
 
 	        // loadstart The fetch initiates.
-	        this.dispatchEvent(new Event('loadstart' /*, false, false, this*/ ))
+	        this.dispatchEvent(new CustomEvent('loadstart'))
 
 	        if (this.custom.async) setTimeout(done, this.custom.timeout) // 异步
 	        else done() // 同步
 
 	        function done() {
 	            that.readyState = MockXMLHttpRequest.HEADERS_RECEIVED
-	            that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
+	            that.dispatchEvent(new CustomEvent('readystatechange'))
 	            that.readyState = MockXMLHttpRequest.LOADING
-	            that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
+	            that.dispatchEvent(new CustomEvent('readystatechange'))
 
 	            that.status = 200
 	            that.statusText = HTTP_STATUS_CODES[200]
@@ -8387,9 +8386,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            )
 
 	            that.readyState = MockXMLHttpRequest.DONE
-	            that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
-	            that.dispatchEvent(new Event('load' /*, false, false, that*/ ));
-	            that.dispatchEvent(new Event('loadend' /*, false, false, that*/ ));
+	            that.dispatchEvent(new CustomEvent('readystatechange'))
+	            that.dispatchEvent(new CustomEvent('load'))
+	            that.dispatchEvent(new CustomEvent('loadend'))
 	        }
 	    },
 	    // https://xhr.spec.whatwg.org/#the-abort()-method
@@ -8403,8 +8402,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // 拦截 XHR
 	        this.readyState = MockXMLHttpRequest.UNSENT
-	        this.dispatchEvent(new Event('abort', false, false, this))
-	        this.dispatchEvent(new Event('error', false, false, this))
+	        this.dispatchEvent(new CustomEvent('abort', {
+	            detail: this,
+	        }))
+	        this.dispatchEvent(new CustomEvent('error', {
+	            detail: this,
+	        }))
 	    }
 	})
 
@@ -8533,7 +8536,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = MockXMLHttpRequest
 
-/***/ }
+
+/***/ })
 /******/ ])
 });
 ;
