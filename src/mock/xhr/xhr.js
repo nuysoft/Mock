@@ -1,4 +1,4 @@
-/* global window, document, location, Event, setTimeout */
+/* global window, document, location, CustomEvent, setTimeout */
 /*
     ## MockXMLHttpRequest
 
@@ -50,22 +50,21 @@ var Util = require('../util')
 window._XMLHttpRequest = window.XMLHttpRequest
 window._ActiveXObject = window.ActiveXObject
 
-/*
-    PhantomJS
-    TypeError: '[object EventConstructor]' is not a constructor (evaluating 'new Event("readystatechange")')
-
-    https://github.com/bluerail/twitter-bootstrap-rails-confirm/issues/18
-    https://github.com/ariya/phantomjs/issues/11289
-*/
-try {
-    new window.Event('custom')
-} catch (exception) {
-    window.Event = function(type, bubbles, cancelable, detail) {
-        var event = document.createEvent('CustomEvent') // MUST be 'CustomEvent'
-        event.initCustomEvent(type, bubbles, cancelable, detail)
-        return event
+/**
+ * IE polyfill for the CustomEvent constructor at MDN
+ * https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent
+ */
+;(function () {
+    if (typeof window.CustomEvent === "function") return false;
+    function CustomEvent(event, params) {
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+        return evt;
     }
-}
+    CustomEvent.prototype = window.Event.prototype;
+    window.CustomEvent = CustomEvent;
+})();
 
 var XHR_STATES = {
     // The object has been constructed.
@@ -205,7 +204,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
                 } catch (e) {}
             }
             // 触发 MockXMLHttpRequest 上的同名事件
-            that.dispatchEvent(new Event(event.type /*, false, false, that*/ ))
+            that.dispatchEvent(new CustomEvent(event.type))
         }
 
         // 如果未找到匹配的数据模板，则采用原生 XHR 发送请求。
@@ -237,7 +236,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
         this.match = true
         this.custom.template = item
         this.readyState = MockXMLHttpRequest.OPENED
-        this.dispatchEvent(new Event('readystatechange' /*, false, false, this*/ ))
+        this.dispatchEvent(new CustomEvent('readystatechange'))
     },
     // https://xhr.spec.whatwg.org/#the-setrequestheader()-method
     // Combines a header in author request headers.
@@ -274,16 +273,16 @@ Util.extend(MockXMLHttpRequest.prototype, {
         this.setRequestHeader('X-Requested-With', 'MockXMLHttpRequest')
 
         // loadstart The fetch initiates.
-        this.dispatchEvent(new Event('loadstart' /*, false, false, this*/ ))
+        this.dispatchEvent(new CustomEvent('loadstart'))
 
         if (this.custom.async) setTimeout(done, this.custom.timeout) // 异步
         else done() // 同步
 
         function done() {
             that.readyState = MockXMLHttpRequest.HEADERS_RECEIVED
-            that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
+            that.dispatchEvent(new CustomEvent('readystatechange'))
             that.readyState = MockXMLHttpRequest.LOADING
-            that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
+            that.dispatchEvent(new CustomEvent('readystatechange'))
 
             that.status = 200
             that.statusText = HTTP_STATUS_CODES[200]
@@ -295,9 +294,9 @@ Util.extend(MockXMLHttpRequest.prototype, {
             )
 
             that.readyState = MockXMLHttpRequest.DONE
-            that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
-            that.dispatchEvent(new Event('load' /*, false, false, that*/ ));
-            that.dispatchEvent(new Event('loadend' /*, false, false, that*/ ));
+            that.dispatchEvent(new CustomEvent('readystatechange'))
+            that.dispatchEvent(new CustomEvent('load'))
+            that.dispatchEvent(new CustomEvent('loadend'))
         }
     },
     // https://xhr.spec.whatwg.org/#the-abort()-method
@@ -311,8 +310,12 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         // 拦截 XHR
         this.readyState = MockXMLHttpRequest.UNSENT
-        this.dispatchEvent(new Event('abort', false, false, this))
-        this.dispatchEvent(new Event('error', false, false, this))
+        this.dispatchEvent(new CustomEvent('abort', {
+            detail: this,
+        }))
+        this.dispatchEvent(new CustomEvent('error', {
+            detail: this,
+        }))
     }
 })
 
