@@ -8,6 +8,7 @@ before_script:
   - bower install
   - cd test
   - bower install
+  - npm install
   - cd ..
 after_script:
   - npm run coveralls

@@ -1,6 +1,6 @@
 {
   "name": "test",
   "dependencies": {
-    "chai": "^1.10.0"
+    "mocha": "^4.0.1"
   }
 }
