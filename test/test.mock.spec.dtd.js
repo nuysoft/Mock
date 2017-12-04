@@ -2,7 +2,7 @@
 // 数据模板定义（Data Temaplte Definition，DTD）
 /*
     ## BDD
-    1. 结构 
+    1. 结构
         describe suite
             [ describe ]
             before after beforeEach afterEach
@@ -18,7 +18,7 @@
             .to.be.a .to.be.an
             .that
             .least .most .within
-    3. 速度 
+    3. 速度
         搜索 test.speed
         slow > 75
         75 / 2 < medium < 75
@@ -29,7 +29,7 @@ var Mock, $, _
 
 describe('DTD', function() {
     before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
+        requirejs(['mock', 'underscore', 'jquery'], function() {
             Mock = arguments[0]
             _ = arguments[1]
             $ = arguments[2]
@@ -48,28 +48,28 @@ describe('DTD', function() {
             var data = Mock.mock(this.test.title)
             expect(data).to.equal(this.test.title)
         })
-        it(1, function() {
-            var data = Mock.mock(this.test.title)
-            expect(data).to.equal(this.test.title)
+        it('number', function() {
+            var data = Mock.mock(1)
+            expect(data).to.equal(1)
         })
-        it(true, function() {
-            var data = Mock.mock(this.test.title)
-            expect(data).to.equal(this.test.title)
+        it('true', function() {
+            var data = Mock.mock(true)
+            expect(data).to.equal(true)
         })
-        it(false, function() {
-            var data = Mock.mock(this.test.title)
-            expect(data).to.equal(this.test.title)
+        it('false', function() {
+            var data = Mock.mock(false)
+            expect(data).to.equal(false)
         })
-        it({}, function() {
-            var data = Mock.mock(this.test.title)
-            expect(data).to.deep.equal(this.test.title)
+        it('object', function() {
+            var data = Mock.mock({})
+            expect(data).to.deep.equal({})
         })
-        it([], function() {
-            var data = Mock.mock(this.test.title)
-            expect(data).to.deep.equal(this.test.title)
+        it('array', function() {
+            var data = Mock.mock([])
+            expect(data).to.deep.equal([])
         })
-        it(function() {}, function() {
-            var data = Mock.mock(this.test.title)
+        it('function', function() {
+            var data = Mock.mock(function() {})
             expect(data).to.equal(undefined)
         })
     })
@@ -205,7 +205,7 @@ describe('DTD', function() {
         })
     })
     describe('Boolean', function() {
-        // `'name|1': value` 
+        // `'name|1': value`
         it('name|1', function() {
             var data = Mock.mock({
                 'name|1': true
@@ -500,7 +500,7 @@ describe('DTD', function() {
                 }
             }
 
-            it(regexp, function() {
+            it(regexp.toString(), function() {
                 var data = Mock.mock(regexp)
                 this.test.title += ' => ' + data
                 expect(regexp.test(data)).to.be.true

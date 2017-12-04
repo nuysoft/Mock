@@ -7,7 +7,7 @@ var Mock, Random, $, _, Random
 /* jshint -W061 */
 describe('Random', function() {
     before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
+        requirejs(['mock', 'underscore', 'jquery'], function() {
             Mock = arguments[0]
             window.Random = Random = Mock.Random
             _ = arguments[1]
