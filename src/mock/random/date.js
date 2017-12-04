@@ -113,6 +113,7 @@ module.exports = {
         format = format || 'yyyy-MM-dd HH:mm:ss'
 
         var date = new Date()
+        var extraDay = 0
 
         /* jshint -W086 */
         // 参考自 http://momentjs.cn/docs/#/manipulating/start-of/
@@ -121,6 +122,7 @@ module.exports = {
                 date.setMonth(0)
             case 'month':
                 date.setDate(1)
+            case 'weekiso':
             case 'week':
             case 'day':
                 date.setHours(0)
@@ -132,8 +134,10 @@ module.exports = {
                 date.setMilliseconds(0)
         }
         switch (unit) {
+            case 'weekiso':
+                extraDay++
             case 'week':
-                date.setDate(date.getDate() - date.getDay())
+                date.setDate(date.getDate() - date.getDay() + extraDay)
         }
 
         return this._formatDate(date, format)
