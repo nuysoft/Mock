@@ -212,6 +212,9 @@ describe('Random', function() {
         doit('Random.now("week")', function(data) {
             expect(data).to.be.ok
         })
+        doit('Random.now("weekiso")', function(data) {
+            expect(data).to.be.ok
+        })
         doit('Random.now("yyyy-MM-dd HH:mm:ss SS")', function(data) {
             expect(data).to.be.ok
         })
