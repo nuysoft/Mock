@@ -6,7 +6,7 @@ var Mock, $, _
 
 describe('Schema', function() {
     before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
+        requirejs(['mock', 'underscore', 'jquery'], function() {
             Mock = arguments[0]
             window.XMLHttpRequest = Mock.XHR
             _ = arguments[1]

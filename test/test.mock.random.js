@@ -7,7 +7,7 @@ var Mock, Random, $, _, Random
 /* jshint -W061 */
 describe('Random', function() {
     before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
+        requirejs(['mock', 'underscore', 'jquery'], function() {
             Mock = arguments[0]
             window.Random = Random = Mock.Random
             _ = arguments[1]
@@ -210,6 +210,9 @@ describe('Random', function() {
             expect(data).to.be.ok
         })
         doit('Random.now("week")', function(data) {
+            expect(data).to.be.ok
+        })
+        doit('Random.now("weekiso")', function(data) {
             expect(data).to.be.ok
         })
         doit('Random.now("yyyy-MM-dd HH:mm:ss SS")', function(data) {

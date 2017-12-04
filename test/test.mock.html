@@ -4,7 +4,7 @@
     <title>Test: Mock</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./bower_components/mocha/mocha.css" rel="stylesheet">
+    <link href="./node_modules/mocha/mocha.css" rel="stylesheet">
     <style type="text/css">
         li.test h2 {
             font-family: monospace;
@@ -16,13 +16,13 @@
 <body>
     <div id="mocha"></div>
     <!-- Include local Mocha. -->
-    <script src="./bower_components/mocha/mocha.js"></script>
+    <script src="./node_modules/mocha/mocha.js"></script>
     <script src="./bower_components/chai/chai.js"></script>
     <script>mocha.setup('bdd')</script>
     <!-- Include RequireJS -->
     <script src="./bower_components/requirejs/require.js"></script>
     <script type="text/javascript">
-        require.config({
+        requirejs.config({
             paths: {
                 'mock': '../dist/mock',
                 jquery: 'bower_components/jquery/dist/jquery',
@@ -44,7 +44,7 @@
     <script src="./test.mock.request.js"></script>
     <script src="./test.mock.schema.js"></script>
     <script src="./test.mock.valid.js"></script>
-    
+
     <!-- PhantomJS -->
     <script type="text/javascript">
          if (window.mochaPhantomJS) {

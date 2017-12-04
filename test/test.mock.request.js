@@ -5,7 +5,7 @@ var Mock, $, _
 
 describe('Request', function() {
     before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
+        requirejs(['mock', 'underscore', 'jquery'], function() {
             Mock = arguments[0]
             _ = arguments[1]
             $ = arguments[2]

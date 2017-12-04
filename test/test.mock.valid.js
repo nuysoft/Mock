@@ -5,7 +5,7 @@ var Mock, Random, $, _
 
 describe('Mock.valid', function() {
     before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
+        requirejs(['mock', 'underscore', 'jquery'], function() {
             Mock = arguments[0]
             window.Random = Random = Mock.Random
             _ = arguments[1]
