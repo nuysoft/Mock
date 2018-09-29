@@ -267,7 +267,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
             // 修复timeout和withCredentials不生效的问题
             Util.extend(that.custom.xhr, {
                 timeout: that.timeout,
-                withCredentials: !!that.withCredentials
+                withCredentials: that.withCredentials
             });
 
             this.custom.xhr.send(data)
