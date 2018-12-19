@@ -289,8 +289,10 @@ Util.extend(MockXMLHttpRequest.prototype, {
             that.statusText = HTTP_STATUS_CODES[200]
 
             // fix #92 #93 by @qddegtya
-            that.response = that.responseText = JSON.stringify(
-                convert(that.custom.template, that.custom.options),
+            // fix #151 by @shuiqin
+            that.response = convert(that.custom.template, that.custom.options)
+            that.responseText = JSON.stringify(
+                that.response,
                 null, 4
             )
 
