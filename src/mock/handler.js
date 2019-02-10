@@ -262,7 +262,11 @@ Handler.extend({
                     // 'id|+1': 1
                 inc = key.match(Constant.RE_KEY)
                 if (inc && inc[2] && Util.type(options.template[key]) === 'number') {
-                    options.template[key] += parseInt(inc[2], 10)
+                    // 支持浮点数自增 'id|+0.1': 0.2 
+	                options.template[key] = (function(f,d){var c,b,a;try{c=f.toString().split(".")[1].length}catch(g){c=0}
+                                                           try{b=d.toString().split(".")[1].length}catch(g){b=0}
+                                                           a=Math.pow(10,Math.max(c,b));return(f*a+d*a)/a})
+                                            (options.template[key],parseFloat(inc[2]));
                 }
             }
         }
