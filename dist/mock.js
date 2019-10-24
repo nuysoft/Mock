@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* global require, module, window */
 	var Handler = __webpack_require__(1)
@@ -122,9 +122,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Mock
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* 
 	    ## Handler
@@ -617,29 +617,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 
-	        key = keyPathParts[keyPathParts.length - 1]
-	        var currentContext = options.context.root
-	        var templateCurrentContext = options.context.templateRoot
-	        for (var i = 1; i < absolutePathParts.length - 1; i++) {
-	            currentContext = currentContext[absolutePathParts[i]]
-	            templateCurrentContext = templateCurrentContext[absolutePathParts[i]]
-	        }
-	        // 引用的值已经计算好
-	        if (currentContext && (key in currentContext)) return currentContext[key]
+	        try {
+	            key = keyPathParts[keyPathParts.length - 1]
+	            var currentContext = options.context.root
+	            var templateCurrentContext = options.context.templateRoot
+	            for (var i = 1; i < absolutePathParts.length - 1; i++) {
+	                currentContext = currentContext[absolutePathParts[i]]
+	                templateCurrentContext = templateCurrentContext[absolutePathParts[i]]
+	            }
+	            // 引用的值已经计算好
+	            if (currentContext && (key in currentContext)) return currentContext[key]
+	    
+	            // 尚未计算，递归引用数据模板中的属性
+	            if (templateCurrentContext &&
+	                (typeof templateCurrentContext === 'object') &&
+	                (key in templateCurrentContext) &&
+	                (originalKey !== templateCurrentContext[key]) // fix #15 避免自己依赖自己
+	            ) {
+	                // 先计算被引用的属性值
+	                templateCurrentContext[key] = Handler.gen(templateCurrentContext[key], key, {
+	                    currentContext: currentContext,
+	                    templateCurrentContext: templateCurrentContext
+	                })
+	                return templateCurrentContext[key]
+	            }
+	        } catch(err) { }
 
-	        // 尚未计算，递归引用数据模板中的属性
-	        if (templateCurrentContext &&
-	            (typeof templateCurrentContext === 'object') &&
-	            (key in templateCurrentContext) &&
-	            (originalKey !== templateCurrentContext[key]) // fix #15 避免自己依赖自己
-	        ) {
-	            // 先计算被引用的属性值
-	            templateCurrentContext[key] = Handler.gen(templateCurrentContext[key], key, {
-	                currentContext: currentContext,
-	                templateCurrentContext: templateCurrentContext
-	            })
-	            return templateCurrentContext[key]
-	        }
+	        return '@' + keyPathParts.join('/')
 	    },
 	    // https://github.com/kissyteam/kissy/blob/master/src/path/src/path.js
 	    normalizePath: function(pathParts) {
@@ -667,9 +671,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Handler
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Constant
@@ -705,9 +709,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // RE_KEY: /^key$/
 	}
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Utilities
@@ -836,9 +840,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Util
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 		## Parser
@@ -912,9 +916,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Mock.Random
@@ -941,9 +945,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Random
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Basics
@@ -1072,9 +1076,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Date
@@ -1218,9 +1222,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* global document  */
 	/*
@@ -1506,9 +1510,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)(module)))
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
@@ -1522,9 +1526,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Color
@@ -1664,9 +1668,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Color Convert
@@ -1846,9 +1850,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Color 字典数据
@@ -1927,9 +1931,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Text
@@ -2053,9 +2057,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Helpers
@@ -2174,9 +2178,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Name
@@ -2266,9 +2270,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Web
@@ -2347,9 +2351,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Address
@@ -2399,9 +2403,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // state: function() {},
 	}
 
-/***/ },
+/***/ }),
 /* 18 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/*
 	    ## Address 字典数据
@@ -6472,9 +6476,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = DICT_FIXED
 
-/***/ },
+/***/ }),
 /* 19 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Miscellaneous
@@ -6582,9 +6586,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		}
 	}
 
-/***/ },
+/***/ }),
 /* 20 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var Parser = __webpack_require__(21)
 	var Handler = __webpack_require__(22)
@@ -6593,9 +6597,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		Handler: Handler
 	}
 
-/***/ },
+/***/ }),
 /* 21 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// https://github.com/nuysoft/regexp
 	// forked from https://github.com/ForbesLindesay/regexp
@@ -7168,9 +7172,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = parser
 
-/***/ },
+/***/ }),
 /* 22 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## RegExp Handler
@@ -7565,15 +7569,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = Handler
 
-/***/ },
+/***/ }),
 /* 23 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(24)
 
-/***/ },
+/***/ }),
 /* 24 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## toJSONSchema
@@ -7624,15 +7628,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = toJSONSchema
 
 
-/***/ },
+/***/ }),
 /* 25 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(26)
 
-/***/ },
+/***/ }),
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## valid(template, data)
@@ -8080,15 +8084,15 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = valid
 
-/***/ },
+/***/ }),
 /* 27 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(28)
 
-/***/ },
+/***/ }),
 /* 28 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* global window, document, location, Event, setTimeout */
 	/*
@@ -8533,7 +8537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	module.exports = MockXMLHttpRequest
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
