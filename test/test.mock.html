@@ -4,7 +4,7 @@
     <title>Test: Mock</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./bower_components/mocha/mocha.css" rel="stylesheet">
+    <link href="https://unpkg.com/mocha@3.x/mocha.css" rel="stylesheet">
     <style type="text/css">
         li.test h2 {
             font-family: monospace;
@@ -16,17 +16,18 @@
 <body>
     <div id="mocha"></div>
     <!-- Include local Mocha. -->
-    <script src="./bower_components/mocha/mocha.js"></script>
-    <script src="./bower_components/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha@3.x/mocha.js"></script>
+    <script src="https://unpkg.com/chai@4.2.0/chai.js"></script>
     <script>mocha.setup('bdd')</script>
     <!-- Include RequireJS -->
-    <script src="./bower_components/requirejs/require.js"></script>
+    <script src="https://unpkg.com/requirejs@2.x/require.js"></script>
     <script type="text/javascript">
+        window.require = window.requirejs;
         require.config({
             paths: {
                 'mock': '../dist/mock',
-                jquery: 'bower_components/jquery/dist/jquery',
-                underscore: 'bower_components/underscore/underscore'
+                jquery: 'https://unpkg.com/jquery@2.2.4/dist/jquery',
+                underscore: 'https://unpkg.com/underscore@1.9.1/underscore'
             }
         })
     </script>

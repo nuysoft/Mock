@@ -89,6 +89,13 @@ describe('DPD', function() {
             expect(data.child).to.have.property('parentId', data.id)
         })
 
+        it('Relative Path Fallback in Corner Case', function() {
+            const STRING = 'https://test.org/@a/build/test.html'
+            var data = Mock.mock({
+                a: STRING
+            })
+            expect(data.a).to.equal(STRING)
+        })
     })
     describe('Complex', function() {
         var tpl = {
