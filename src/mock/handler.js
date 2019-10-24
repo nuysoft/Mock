@@ -489,29 +489,33 @@ Handler.extend({
             }
         }
 
-        key = keyPathParts[keyPathParts.length - 1]
-        var currentContext = options.context.root
-        var templateCurrentContext = options.context.templateRoot
-        for (var i = 1; i < absolutePathParts.length - 1; i++) {
-            currentContext = currentContext[absolutePathParts[i]]
-            templateCurrentContext = templateCurrentContext[absolutePathParts[i]]
-        }
-        // 引用的值已经计算好
-        if (currentContext && (key in currentContext)) return currentContext[key]
+        try {
+            key = keyPathParts[keyPathParts.length - 1]
+            var currentContext = options.context.root
+            var templateCurrentContext = options.context.templateRoot
+            for (var i = 1; i < absolutePathParts.length - 1; i++) {
+                currentContext = currentContext[absolutePathParts[i]]
+                templateCurrentContext = templateCurrentContext[absolutePathParts[i]]
+            }
+            // 引用的值已经计算好
+            if (currentContext && (key in currentContext)) return currentContext[key]
+    
+            // 尚未计算，递归引用数据模板中的属性
+            if (templateCurrentContext &&
+                (typeof templateCurrentContext === 'object') &&
+                (key in templateCurrentContext) &&
+                (originalKey !== templateCurrentContext[key]) // fix #15 避免自己依赖自己
+            ) {
+                // 先计算被引用的属性值
+                templateCurrentContext[key] = Handler.gen(templateCurrentContext[key], key, {
+                    currentContext: currentContext,
+                    templateCurrentContext: templateCurrentContext
+                })
+                return templateCurrentContext[key]
+            }
+        } catch(err) { }
 
-        // 尚未计算，递归引用数据模板中的属性
-        if (templateCurrentContext &&
-            (typeof templateCurrentContext === 'object') &&
-            (key in templateCurrentContext) &&
-            (originalKey !== templateCurrentContext[key]) // fix #15 避免自己依赖自己
-        ) {
-            // 先计算被引用的属性值
-            templateCurrentContext[key] = Handler.gen(templateCurrentContext[key], key, {
-                currentContext: currentContext,
-                templateCurrentContext: templateCurrentContext
-            })
-            return templateCurrentContext[key]
-        }
+        return '@' + keyPathParts.join('/')
     },
     // https://github.com/kissyteam/kissy/blob/master/src/path/src/path.js
     normalizePath: function(pathParts) {
