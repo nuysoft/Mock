@@ -264,6 +264,12 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         // 原生 XHR
         if (!this.match) {
+            // 把属性加到原生上去
+            for (var i = 0; i < XHR_RESPONSE_PROPERTIES.length; i++) {
+                try {
+                    this.custom.xhr[XHR_RESPONSE_PROPERTIES[i]] = that[XHR_RESPONSE_PROPERTIES[i]]
+                } catch (e) {}
+            }
             this.custom.xhr.send(data)
             return
         }
