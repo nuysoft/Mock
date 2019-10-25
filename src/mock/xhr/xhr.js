@@ -82,7 +82,7 @@ var XHR_STATES = {
 
 var XHR_EVENTS = 'readystatechange loadstart progress abort error load timeout loadend'.split(' ')
 var XHR_REQUEST_PROPERTIES = 'timeout withCredentials'.split(' ')
-var XHR_RESPONSE_PROPERTIES = 'readyState responseURL status statusText responseType response responseText responseXML'.split(' ')
+var XHR_RESPONSE_PROPERTIES = 'readyState responseURL status statusText responseType response responseText responseXML upload'.split(' ')
 
 // https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js#L32
 var HTTP_STATUS_CODES = {
@@ -213,7 +213,6 @@ Util.extend(MockXMLHttpRequest.prototype, {
             // 创建原生 XHR 对象，调用原生 open()，监听所有原生事件
             var xhr = createNativeXMLHttpRequest()
             this.custom.xhr = xhr
-
             // 初始化所有事件，用于监听原生 XHR 对象的事件
             for (var i = 0; i < XHR_EVENTS.length; i++) {
                 xhr.addEventListener(XHR_EVENTS[i], handle)
