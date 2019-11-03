@@ -49,7 +49,7 @@ module.exports = {
             (background ? '/' + background : '') +
             (foreground ? '/' + foreground : '') +
             (format ? '.' + format : '') +
-            (text ? '&text=' + text : '')
+            (text ? '&text=' + encodeURI(text) : '')
     },
     img: function() {
         return this.image.apply(this, arguments)
