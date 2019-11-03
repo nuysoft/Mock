@@ -285,14 +285,14 @@ Util.extend(MockXMLHttpRequest.prototype, {
             that.readyState = MockXMLHttpRequest.LOADING
             that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
 
-            that.status = 200
-            that.statusText = HTTP_STATUS_CODES[200]
-
             // fix #92 #93 by @qddegtya
             that.response = that.responseText = JSON.stringify(
                 convert(that.custom.template, that.custom.options),
                 null, 4
             )
+
+            that.status = that.custom.options.status || 200
+            that.statusText = HTTP_STATUS_CODES[that.status]
 
             that.readyState = MockXMLHttpRequest.DONE
             that.dispatchEvent(new Event('readystatechange' /*, false, false, that*/ ))
@@ -435,8 +435,15 @@ function find(options) {
 
 // 数据模板 ＝> 响应数据
 function convert(item, options) {
-    return Util.isFunction(item.template) ?
-        item.template(options) : MockXMLHttpRequest.Mock.mock(item.template)
+    if (Util.isFunction(item.template)) {
+        var data = item.template(options)
+        // 数据模板中的返回参构造处理
+        // _status 控制返回状态码
+        data._status && data._status !== 0 && (options.status = data._status)
+        delete data._status
+        return data
+    }
+    return MockXMLHttpRequest.Mock.mock(item.template)
 }
 
 module.exports = MockXMLHttpRequest
