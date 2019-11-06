@@ -72,10 +72,7 @@ program.parse(process.argv)
 
 ;
 (function() {
-    var cmd = program.args[0]
-    if (!cmd) {
-        process.stdout.write(program.helpInformation())
-        program.emit('--help')
-        process.exit()
+    if (process.argv.length <= 2) {
+        program.help();
     }
 })()
