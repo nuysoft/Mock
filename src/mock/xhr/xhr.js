@@ -415,7 +415,7 @@ function find(options) {
         var item = MockXMLHttpRequest.Mock._mocked[sUrlType]
         if (
             (!item.rurl || match(item.rurl, options.url)) &&
-            (!item.rtype || match(item.rtype, options.type.toLowerCase()))
+            (!item.rtype || match(item.rtype.toLowerCase(), options.type.toLowerCase()))
         ) {
             // console.log('[mock]', options.url, '>', item.rurl)
             return item
