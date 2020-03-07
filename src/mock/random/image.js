@@ -45,7 +45,7 @@ module.exports = {
         if (foreground && ~foreground.indexOf('#')) foreground = foreground.slice(1)
 
         // http://dummyimage.com/600x400/cc00cc/470047.png&text=hello
-        return 'http://dummyimage.com/' + size +
+        return 'https://dummyimage.com/' + size +
             (background ? '/' + background : '') +
             (foreground ? '/' + foreground : '') +
             (format ? '.' + format : '') +
