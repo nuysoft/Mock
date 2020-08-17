@@ -81,7 +81,7 @@ var XHR_STATES = {
 }
 
 var XHR_EVENTS = 'readystatechange loadstart progress abort error load timeout loadend'.split(' ')
-var XHR_REQUEST_PROPERTIES = 'timeout withCredentials'.split(' ')
+var XHR_REQUEST_PROPERTIES = 'responseType timeout withCredentials'.split(' ')
 var XHR_RESPONSE_PROPERTIES = 'readyState responseURL status statusText responseType response responseText responseXML'.split(' ')
 
 // https://github.com/trek/FakeXMLHttpRequest/blob/master/fake_xml_http_request.js#L32
