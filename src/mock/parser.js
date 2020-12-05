@@ -43,7 +43,8 @@ module.exports = {
 		var dmin = decimal && decimal[1] && parseInt(decimal[1], 10) // || 0,
 		var dmax = decimal && decimal[2] && parseInt(decimal[2], 10) // || 0,
 			// int || dmin-dmax || 0
-		var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : undefined
+		// var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : undefined
+		var dcount = decimal ? !decimal[2] && decimal[1] ? parseInt(decimal[1], 10) : Random.integer(dmin, dmax) : undefined
 
 		var result = {
 			// 1 name, 2 inc, 3 range, 4 decimal
