@@ -223,13 +223,6 @@ Util.extend(MockXMLHttpRequest.prototype, {
             if (username) xhr.open(method, url, async, username, password)
             else xhr.open(method, url, async)
 
-            // 同步属性 MockXMLHttpRequest => NativeXMLHttpRequest
-            for (var j = 0; j < XHR_REQUEST_PROPERTIES.length; j++) {
-                try {
-                    xhr[XHR_REQUEST_PROPERTIES[j]] = that[XHR_REQUEST_PROPERTIES[j]]
-                } catch (e) {}
-            }
-
             return
         }
 
@@ -264,7 +257,14 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         // 原生 XHR
         if (!this.match) {
-            this.custom.xhr.send(data)
+            var xhr = this.custom.xhr
+            // 同步属性 MockXMLHttpRequest => NativeXMLHttpRequest
+            for (var j = 0; j < XHR_REQUEST_PROPERTIES.length; j++) {
+                try {
+                    xhr[XHR_REQUEST_PROPERTIES[j]] = this[XHR_REQUEST_PROPERTIES[j]]
+                } catch (e) {}
+            }
+            xhr.send(data)
             return
         }
 
