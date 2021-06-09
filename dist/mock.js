@@ -193,9 +193,10 @@ var Mock = (function () {
         upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
         number: "0123456789",
         symbol: "!@#$%^&*()[]",
-        alpha: undefined.lower + undefined.upper,
-        default: undefined.lower + undefined.upper + undefined.number + undefined.symbol,
     };
+    pools.alpha = pools.lower + pools.upper;
+    pools.default = pools.lower + pools.upper + pools.number + pools.symbol;
+
     const character = function (pool = "default") {
         if (pools.hasOwnProperty(pool.toLocaleLowerCase())) {
             pool = pools[pool.toLowerCase()];
@@ -290,7 +291,7 @@ var Mock = (function () {
         range: range$1,
     };
 
-    var _patternLetters = patternLetters = {
+    var _patternLetters = {
         yyyy: "getFullYear",
         yy: function (date) {
             return ("" + date.getFullYear()).slice(2);
@@ -1155,7 +1156,6 @@ var Mock = (function () {
     */
 
     var Util = require("../util");
-
     var helper = {
         // 把字符串的第一个字母转换为大写。
         capitalize: function (word) {
@@ -1200,16 +1200,7 @@ var Mock = (function () {
     	        })
     	*/
         shuffle: function shuffle(arr, min, max) {
-            arr = arr || [];
-            var old = arr.slice(0),
-                result = [],
-                index = 0,
-                length = old.length;
-            for (var i = 0; i < length; i++) {
-                index = this.natural(0, old.length - 1);
-                result.push(old[index]);
-                old.splice(index, 1);
-            }
+            let result = shuffle(arr);
             switch (arguments.length) {
                 case 0:
                 case 1:
@@ -5840,47 +5831,47 @@ var Mock = (function () {
 
     /* jshint -W041 */
     var parser$1 = {
-    	parse: function(name) {
-    		name = name == undefined ? '' : (name + '');
+        parse: function (name) {
+            name = name == undefined ? "" : name + "";
 
-    		var parameters = (name || '').match(constant.RE_KEY);
+            var parameters = (name || "").match(constant.RE_KEY);
 
-    		var range = parameters && parameters[3] && parameters[3].match(constant.RE_RANGE);
-    		var min = range && range[1] && parseInt(range[1], 10); // || 1
-    		var max = range && range[2] && parseInt(range[2], 10); // || 1
-    			// repeat || min-max || 1
-    			// var count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1
-    		var count = range ? !range[2] ? parseInt(range[1], 10) : Random.integer(min, max) : undefined;
+            var range = parameters && parameters[3] && parameters[3].match(constant.RE_RANGE);
+            var min = range && range[1] && parseInt(range[1], 10); // || 1
+            var max = range && range[2] && parseInt(range[2], 10); // || 1
+            // repeat || min-max || 1
+            // var count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1
+            var count = range ? (!range[2] ? parseInt(range[1], 10) : Random.integer(min, max)) : undefined;
 
-    		var decimal = parameters && parameters[4] && parameters[4].match(constant.RE_RANGE);
-    		var dmin = decimal && decimal[1] && parseInt(decimal[1], 10); // || 0,
-    		var dmax = decimal && decimal[2] && parseInt(decimal[2], 10); // || 0,
-    			// int || dmin-dmax || 0
-    		var dcount = decimal ? !decimal[2] && parseInt(decimal[1], 10) || Random.integer(dmin, dmax) : undefined;
+            var decimal = parameters && parameters[4] && parameters[4].match(constant.RE_RANGE);
+            var dmin = decimal && decimal[1] && parseInt(decimal[1], 10); // || 0,
+            var dmax = decimal && decimal[2] && parseInt(decimal[2], 10); // || 0,
+            // int || dmin-dmax || 0
+            var dcount = decimal ? (!decimal[2] && parseInt(decimal[1], 10)) || Random.integer(dmin, dmax) : undefined;
 
-    		var result = {
-    			// 1 name, 2 inc, 3 range, 4 decimal
-    			parameters: parameters,
-    			// 1 min, 2 max
-    			range: range,
-    			min: min,
-    			max: max,
-    			// min-max
-    			count: count,
-    			// 是否有 decimal
-    			decimal: decimal,
-    			dmin: dmin,
-    			dmax: dmax,
-    			// dmin-dimax
-    			dcount: dcount
-    		};
+            var result = {
+                // 1 name, 2 inc, 3 range, 4 decimal
+                parameters: parameters,
+                // 1 min, 2 max
+                range: range,
+                min: min,
+                max: max,
+                // min-max
+                count: count,
+                // 是否有 decimal
+                decimal: decimal,
+                dmin: dmin,
+                dmax: dmax,
+                // dmin-dimax
+                dcount: dcount,
+            };
 
-    		for (var r in result) {
-    			if (result[r] != undefined) return result
-    		}
+            for (var r in result) {
+                if (result[r] != undefined) return result;
+            }
 
-    		return {}
-    	}
+            return {};
+        },
     };
 
     // https://github.com/nuysoft/regexp
@@ -6502,11 +6493,11 @@ var Mock = (function () {
 
 
 
-        /*
+    /*
             
         */
     var Handler$1 = {
-        extend: util.extend
+        extend: util.extend,
     };
 
     // http://en.wikipedia.org/wiki/ASCII#ASCII_printable_code_chart
@@ -6555,90 +6546,77 @@ var Mock = (function () {
     var NUMBER = ascii(48, 57);
     var OTHER = ascii(32, 47) + ascii(58, 64) + ascii(91, 96) + ascii(123, 126); // 排除 95 _ ascii(91, 94) + ascii(96, 96)
     var PRINTABLE = ascii(32, 126);
-    var SPACE = ' \f\n\r\t\v\u00A0\u2028\u2029';
+    var SPACE = " \f\n\r\t\v\u00A0\u2028\u2029";
     var CHARACTER_CLASSES = {
-        '\\w': LOWER + UPPER + NUMBER + '_', // ascii(95, 95)
-        '\\W': OTHER.replace('_', ''),
-        '\\s': SPACE,
-        '\\S': function() {
+        "\\w": LOWER + UPPER + NUMBER + "_", // ascii(95, 95)
+        "\\W": OTHER.replace("_", ""),
+        "\\s": SPACE,
+        "\\S": (function () {
             var result = PRINTABLE;
             for (var i = 0; i < SPACE.length; i++) {
-                result = result.replace(SPACE[i], '');
+                result = result.replace(SPACE[i], "");
             }
-            return result
-        }(),
-        '\\d': NUMBER,
-        '\\D': LOWER + UPPER + OTHER
+            return result;
+        })(),
+        "\\d": NUMBER,
+        "\\D": LOWER + UPPER + OTHER,
     };
 
     function ascii(from, to) {
-        var result = '';
+        var result = "";
         for (var i = from; i <= to; i++) {
             result += String.fromCharCode(i);
         }
-        return result
+        return result;
     }
 
     // var ast = RegExpParser.parse(regexp.source)
-    Handler$1.gen = function(node, result, cache) {
+    Handler$1.gen = function (node, result, cache) {
         cache = cache || {
-            guid: 1
+            guid: 1,
         };
-        return Handler$1[node.type] ? Handler$1[node.type](node, result, cache) :
-            Handler$1.token(node, result, cache)
+        return Handler$1[node.type] ? Handler$1[node.type](node, result, cache) : Handler$1.token(node, result, cache);
     };
 
     Handler$1.extend({
         /* jshint unused:false */
-        token: function(node, result, cache) {
+        token: function (node, result, cache) {
             switch (node.type) {
-                case 'start':
-                case 'end':
-                    return ''
-                case 'any-character':
-                    return Random.character()
-                case 'backspace':
-                    return ''
-                case 'word-boundary': // TODO
-                    return ''
-                case 'non-word-boundary': // TODO
-                    break
-                case 'digit':
-                    return Random.pick(
-                        NUMBER.split('')
-                    )
-                case 'non-digit':
-                    return Random.pick(
-                        (LOWER + UPPER + OTHER).split('')
-                    )
-                case 'form-feed':
-                    break
-                case 'line-feed':
-                    return node.body || node.text
-                case 'carriage-return':
-                    break
-                case 'white-space':
-                    return Random.pick(
-                        SPACE.split('')
-                    )
-                case 'non-white-space':
-                    return Random.pick(
-                        (LOWER + UPPER + NUMBER).split('')
-                    )
-                case 'tab':
-                    break
-                case 'vertical-tab':
-                    break
-                case 'word': // \w [a-zA-Z0-9]
-                    return Random.pick(
-                        (LOWER + UPPER + NUMBER).split('')
-                    )
-                case 'non-word': // \W [^a-zA-Z0-9]
-                    return Random.pick(
-                        OTHER.replace('_', '').split('')
-                    )
+                case "start":
+                case "end":
+                    return "";
+                case "any-character":
+                    return Random.character();
+                case "backspace":
+                    return "";
+                case "word-boundary": // TODO
+                    return "";
+                case "non-word-boundary": // TODO
+                    break;
+                case "digit":
+                    return Random.pick(NUMBER.split(""));
+                case "non-digit":
+                    return Random.pick((LOWER + UPPER + OTHER).split(""));
+                case "form-feed":
+                    break;
+                case "line-feed":
+                    return node.body || node.text;
+                case "carriage-return":
+                    break;
+                case "white-space":
+                    return Random.pick(SPACE.split(""));
+                case "non-white-space":
+                    return Random.pick((LOWER + UPPER + NUMBER).split(""));
+                case "tab":
+                    break;
+                case "vertical-tab":
+                    break;
+                case "word": // \w [a-zA-Z0-9]
+                    return Random.pick((LOWER + UPPER + NUMBER).split(""));
+                case "non-word": // \W [^a-zA-Z0-9]
+                    return Random.pick(OTHER.replace("_", "").split(""));
             }
-            return node.body || node.text
+            return node.body || node.text;
         },
         /*
             {
@@ -6653,13 +6631,9 @@ var Mock = (function () {
                 }
             }
         */
-        alternate: function(node, result, cache) {
+        alternate: function (node, result, cache) {
             // node.left/right {}
-            return this.gen(
-                Random.boolean() ? node.left : node.right,
-                result,
-                cache
-            )
+            return this.gen(Random.boolean() ? node.left : node.right, result, cache);
         },
         /*
             {
@@ -6669,35 +6643,35 @@ var Mock = (function () {
                 body: []
             }
         */
-        match: function(node, result, cache) {
-            result = '';
-                // node.body []
+        match: function (node, result, cache) {
+            result = "";
+            // node.body []
             for (var i = 0; i < node.body.length; i++) {
                 result += this.gen(node.body[i], result, cache);
             }
-            return result
+            return result;
         },
         // ()
-        'capture-group': function(node, result, cache) {
+        "capture-group": function (node, result, cache) {
             // node.body {}
             result = this.gen(node.body, result, cache);
             cache[cache.guid++] = result;
-            return result
+            return result;
         },
         // (?:...)
-        'non-capture-group': function(node, result, cache) {
+        "non-capture-group": function (node, result, cache) {
             // node.body {}
-            return this.gen(node.body, result, cache)
+            return this.gen(node.body, result, cache);
         },
         // (?=p)
-        'positive-lookahead': function(node, result, cache) {
+        "positive-lookahead": function (node, result, cache) {
             // node.body
-            return this.gen(node.body, result, cache)
+            return this.gen(node.body, result, cache);
         },
         // (?!p)
-        'negative-lookahead': function(node, result, cache) {
+        "negative-lookahead": function (node, result, cache) {
             // node.body
-            return ''
+            return "";
         },
         /*
             {
@@ -6721,15 +6695,15 @@ var Mock = (function () {
                 }
             }
         */
-        quantified: function(node, result, cache) {
-            result = '';
-                // node.quantifier {}
+        quantified: function (node, result, cache) {
+            result = "";
+            // node.quantifier {}
             var count = this.quantifier(node.quantifier);
             // node.body {}
             for (var i = 0; i < count; i++) {
                 result += this.gen(node.body, result, cache);
             }
-            return result
+            return result;
         },
         /*
             quantifier: {
@@ -6741,97 +6715,91 @@ var Mock = (function () {
                 greedy: true
             }
         */
-        quantifier: function(node, result, cache) {
+        quantifier: function (node, result, cache) {
             var min = Math.max(node.min, 0);
-            var max = isFinite(node.max) ? node.max :
-                min + Random.integer(3, 7);
-            return Random.integer(min, max)
+            var max = isFinite(node.max) ? node.max : min + Random.integer(3, 7);
+            return Random.integer(min, max);
         },
         /*
             
         */
-        charset: function(node, result, cache) {
+        charset: function (node, result, cache) {
             // node.invert
-            if (node.invert) return this['invert-charset'](node, result, cache)
+            if (node.invert) return this["invert-charset"](node, result, cache);
 
             // node.body []
             var literal = Random.pick(node.body);
-            return this.gen(literal, result, cache)
+            return this.gen(literal, result, cache);
         },
-        'invert-charset': function(node, result, cache) {
+        "invert-charset": function (node, result, cache) {
             var pool = PRINTABLE;
             for (var i = 0, item; i < node.body.length; i++) {
                 item = node.body[i];
                 switch (item.type) {
-                    case 'literal':
-                        pool = pool.replace(item.body, '');
-                        break
-                    case 'range':
+                    case "literal":
+                        pool = pool.replace(item.body, "");
+                        break;
+                    case "range":
                         var min = this.gen(item.start, result, cache).charCodeAt();
                         var max = this.gen(item.end, result, cache).charCodeAt();
                         for (var ii = min; ii <= max; ii++) {
-                            pool = pool.replace(String.fromCharCode(ii), '');
+                            pool = pool.replace(String.fromCharCode(ii), "");
                         }
-                        /* falls through */
+                    /* falls through */
                     default:
                         var characters = CHARACTER_CLASSES[item.text];
                         if (characters) {
                             for (var iii = 0; iii <= characters.length; iii++) {
-                                pool = pool.replace(characters[iii], '');
+                                pool = pool.replace(characters[iii], "");
                             }
                         }
                 }
             }
-            return Random.pick(pool.split(''))
+            return Random.pick(pool.split(""));
         },
-        range: function(node, result, cache) {
+        range: function (node, result, cache) {
             // node.start, node.end
             var min = this.gen(node.start, result, cache).charCodeAt();
             var max = this.gen(node.end, result, cache).charCodeAt();
-            return String.fromCharCode(
-                Random.integer(min, max)
-            )
+            return String.fromCharCode(Random.integer(min, max));
         },
-        literal: function(node, result, cache) {
-            return node.escaped ? node.body : node.text
+        literal: function (node, result, cache) {
+            return node.escaped ? node.body : node.text;
         },
         // Unicode \u
-        unicode: function(node, result, cache) {
-            return String.fromCharCode(
-                parseInt(node.code, 16)
-            )
+        unicode: function (node, result, cache) {
+            return String.fromCharCode(parseInt(node.code, 16));
         },
         // 十六进制 \xFF
-        hex: function(node, result, cache) {
-            return String.fromCharCode(
-                parseInt(node.code, 16)
-            )
+        hex: function (node, result, cache) {
+            return String.fromCharCode(parseInt(node.code, 16));
         },
         // 八进制 \0
-        octal: function(node, result, cache) {
-            return String.fromCharCode(
-                parseInt(node.code, 8)
-            )
+        octal: function (node, result, cache) {
+            return String.fromCharCode(parseInt(node.code, 8));
         },
         // 反向引用
-        'back-reference': function(node, result, cache) {
-            return cache[node.code] || ''
+        "back-reference": function (node, result, cache) {
+            return cache[node.code] || "";
         },
         /*
             http://en.wikipedia.org/wiki/C0_and_C1_control_codes
         */
-        CONTROL_CHARACTER_MAP: function() {
-            var CONTROL_CHARACTER = '@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \\ ] ^ _'.split(' ');
-            var CONTROL_CHARACTER_UNICODE = '\u0000 \u0001 \u0002 \u0003 \u0004 \u0005 \u0006 \u0007 \u0008 \u0009 \u000A \u000B \u000C \u000D \u000E \u000F \u0010 \u0011 \u0012 \u0013 \u0014 \u0015 \u0016 \u0017 \u0018 \u0019 \u001A \u001B \u001C \u001D \u001E \u001F'.split(' ');
+        CONTROL_CHARACTER_MAP: (function () {
+            var CONTROL_CHARACTER = "@ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \\ ] ^ _".split(" ");
+            var CONTROL_CHARACTER_UNICODE =
+                "\u0000 \u0001 \u0002 \u0003 \u0004 \u0005 \u0006 \u0007 \u0008 \u0009 \u000A \u000B \u000C \u000D \u000E \u000F \u0010 \u0011 \u0012 \u0013 \u0014 \u0015 \u0016 \u0017 \u0018 \u0019 \u001A \u001B \u001C \u001D \u001E \u001F".split(
+                    " "
+                );
             var map = {};
             for (var i = 0; i < CONTROL_CHARACTER.length; i++) {
                 map[CONTROL_CHARACTER[i]] = CONTROL_CHARACTER_UNICODE[i];
             }
-            return map
-        }(),
-        'control-character': function(node, result, cache) {
-            return this.CONTROL_CHARACTER_MAP[node.code]
-        }
+            return map;
+        })(),
+        "control-character": function (node, result, cache) {
+            return this.CONTROL_CHARACTER_MAP[node.code];
+        },
     });
 
     var handler$1 = Handler$1;
@@ -6883,7 +6851,7 @@ var Mock = (function () {
 
 
     var Handler = {
-        extend: util.extend
+        extend: util.extend,
     };
 
     /*
@@ -6898,25 +6866,25 @@ var Mock = (function () {
             path, templatePath
             root, templateRoot
     */
-    Handler.gen = function(template, name, context) {
+    Handler.gen = function (template, name, context) {
         /* jshint -W041 */
-        name = name == undefined ? '' : (name + '');
+        name = name == undefined ? "" : name + "";
 
         context = context || {};
         context = {
-                // 当前访问路径，只有属性名，不包括生成规则
-                path: context.path || [constant.GUID],
-                templatePath: context.templatePath || [constant.GUID++],
-                // 最终属性值的上下文
-                currentContext: context.currentContext,
-                // 属性值模板的上下文
-                templateCurrentContext: context.templateCurrentContext || template,
-                // 最终值的根
-                root: context.root || context.currentContext,
-                // 模板的根
-                templateRoot: context.templateRoot || context.templateCurrentContext || template
-            };
-            // console.log('path:', context.path.join('.'), template)
+            // 当前访问路径，只有属性名，不包括生成规则
+            path: context.path || [constant.GUID],
+            templatePath: context.templatePath || [constant.GUID++],
+            // 最终属性值的上下文
+            currentContext: context.currentContext,
+            // 属性值模板的上下文
+            templateCurrentContext: context.templateCurrentContext || template,
+            // 最终值的根
+            root: context.root || context.currentContext,
+            // 模板的根
+            templateRoot: context.templateRoot || context.templateCurrentContext || template,
+        };
+        // console.log('path:', context.path.join('.'), template)
 
         var rule = parser$1.parse(name);
         var type = util.type(template);
@@ -6931,30 +6899,31 @@ var Mock = (function () {
                 // 属性名 + 生成规则
                 name: name,
                 // 属性名
-                parsedName: name ? name.replace(constant.RE_KEY, '$1') : name,
+                parsedName: name ? name.replace(constant.RE_KEY, "$1") : name,
 
                 // 解析后的生成规则
                 rule: rule,
                 // 相关上下文
-                context: context
+                context: context,
             });
 
             if (!context.root) context.root = data;
-            return data
+            return data;
         }
 
-        return template
+        return template;
     };
 
     Handler.extend({
-        array: function(options) {
+        array: function (options) {
             var result = [],
-                i, ii;
+                i,
+                ii;
 
             // 'name|1': []
             // 'name|count': []
             // 'name|min-max': []
-            if (options.template.length === 0) return result
+            if (options.template.length === 0) return result;
 
             // 'arr': [{ 'email': '@EMAIL' }, { 'email': '@EMAIL' }]
             if (!options.rule.parameters) {
@@ -6968,7 +6937,7 @@ var Mock = (function () {
                             currentContext: result,
                             templateCurrentContext: options.template,
                             root: options.context.root || result,
-                            templateRoot: options.context.templateRoot || options.template
+                            templateRoot: options.context.templateRoot || options.template,
                         })
                     );
                     options.context.path.pop();
@@ -6987,7 +6956,7 @@ var Mock = (function () {
                             currentContext: result,
                             templateCurrentContext: options.template,
                             root: options.context.root || result,
-                            templateRoot: options.context.templateRoot || options.template
+                            templateRoot: options.context.templateRoot || options.template,
                         })
                     );
                     options.context.path.pop();
@@ -7005,16 +6974,13 @@ var Mock = (function () {
                             currentContext: result,
                             templateCurrentContext: options.template,
                             root: options.context.root || result,
-                            templateRoot: options.context.templateRoot || options.template
-                        })[
-                            options.template.__order_index % options.template.length
-                        ];
+                            templateRoot: options.context.templateRoot || options.template,
+                        })[options.template.__order_index % options.template.length];
 
                         options.template.__order_index += +options.rule.parameters[2];
 
                         options.context.path.pop();
                         options.context.templatePath.pop();
-
                     } else {
                         // 'data|1-10': [{}]
                         for (i = 0; i < options.rule.count; i++) {
@@ -7029,7 +6995,7 @@ var Mock = (function () {
                                         currentContext: result,
                                         templateCurrentContext: options.template,
                                         root: options.context.root || result,
-                                        templateRoot: options.context.templateRoot || options.template
+                                        templateRoot: options.context.templateRoot || options.template,
                                     })
                                 );
                                 options.context.path.pop();
@@ -7039,11 +7005,16 @@ var Mock = (function () {
                     }
                 }
             }
-            return result
+            return result;
         },
-        object: function(options) {
+        object: function (options) {
             var result = {},
-                keys, fnKeys, key, parsedKey, inc, i;
+                keys,
+                fnKeys,
+                key,
+                parsedKey,
+                inc,
+                i;
 
             // 'obj|min-max': {}
             /* jshint -W041 */
@@ -7053,7 +7024,7 @@ var Mock = (function () {
                 keys = keys.slice(0, options.rule.count);
                 for (i = 0; i < keys.length; i++) {
                     key = keys[i];
-                    parsedKey = key.replace(constant.RE_KEY, '$1');
+                    parsedKey = key.replace(constant.RE_KEY, "$1");
                     options.context.path.push(parsedKey);
                     options.context.templatePath.push(key);
                     result[parsedKey] = Handler.gen(options.template[key], key, {
@@ -7062,18 +7033,17 @@ var Mock = (function () {
                         currentContext: result,
                         templateCurrentContext: options.template,
                         root: options.context.root || result,
-                        templateRoot: options.context.templateRoot || options.template
+                        templateRoot: options.context.templateRoot || options.template,
                     });
                     options.context.path.pop();
                     options.context.templatePath.pop();
                 }
-
             } else {
                 // 'obj': {}
                 keys = [];
                 fnKeys = []; // #25 改变了非函数属性的顺序，查找起来不方便
                 for (key in options.template) {
-                    (typeof options.template[key] === 'function' ? fnKeys : keys).push(key);
+                    (typeof options.template[key] === "function" ? fnKeys : keys).push(key);
                 }
                 keys = keys.concat(fnKeys);
 
@@ -7091,7 +7061,7 @@ var Mock = (function () {
 
                 for (i = 0; i < keys.length; i++) {
                     key = keys[i];
-                    parsedKey = key.replace(constant.RE_KEY, '$1');
+                    parsedKey = key.replace(constant.RE_KEY, "$1");
                     options.context.path.push(parsedKey);
                     options.context.templatePath.push(key);
                     result[parsedKey] = Handler.gen(options.template[key], key, {
@@ -7100,55 +7070,58 @@ var Mock = (function () {
                         currentContext: result,
                         templateCurrentContext: options.template,
                         root: options.context.root || result,
-                        templateRoot: options.context.templateRoot || options.template
+                        templateRoot: options.context.templateRoot || options.template,
                     });
                     options.context.path.pop();
                     options.context.templatePath.pop();
-                        // 'id|+1': 1
+                    // 'id|+1': 1
                     inc = key.match(constant.RE_KEY);
-                    if (inc && inc[2] && util.type(options.template[key]) === 'number') {
+                    if (inc && inc[2] && util.type(options.template[key]) === "number") {
                         options.template[key] += parseInt(inc[2], 10);
                     }
                 }
             }
-            return result
+            return result;
         },
-        number: function(options) {
+        number: function (options) {
             var result, parts;
-            if (options.rule.decimal) { // float
-                options.template += '';
-                parts = options.template.split('.');
-                    // 'float1|.1-10': 10,
-                    // 'float2|1-100.1-10': 1,
-                    // 'float3|999.1-10': 1,
-                    // 'float4|.3-10': 123.123,
+            if (options.rule.decimal) {
+                // float
+                options.template += "";
+                parts = options.template.split(".");
+                // 'float1|.1-10': 10,
+                // 'float2|1-100.1-10': 1,
+                // 'float3|999.1-10': 1,
+                // 'float4|.3-10': 123.123,
                 parts[0] = options.rule.range ? options.rule.count : parts[0];
-                parts[1] = (parts[1] || '').slice(0, options.rule.dcount);
+                parts[1] = (parts[1] || "").slice(0, options.rule.dcount);
                 while (parts[1].length < options.rule.dcount) {
-                    parts[1] += (
+                    parts[1] +=
                         // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
-                        (parts[1].length < options.rule.dcount - 1) ? Random.character('number') : Random.character('123456789')
-                    );
+                        parts[1].length < options.rule.dcount - 1 ? Random.character("number") : Random.character("123456789");
                 }
-                result = parseFloat(parts.join('.'), 10);
-            } else { // integer
+                result = parseFloat(parts.join("."), 10);
+            } else {
+                // integer
                 // 'grade1|1-100': 1,
                 result = options.rule.range && !options.rule.parameters[2] ? options.rule.count : options.template;
             }
-            return result
+            return result;
         },
-        boolean: function(options) {
+        boolean: function (options) {
             var result;
             // 'prop|multiple': false, 当前值是相反值的概率倍数
             // 'prop|probability-probability': false, 当前值与相反值的概率
             result = options.rule.parameters ? Random.bool(options.rule.min, options.rule.max, options.template) : options.template;
-            return result
+            return result;
         },
-        string: function(options) {
-            var result = '',
-                i, placeholders, ph, phed;
+        string: function (options) {
+            var result = "",
+                i,
+                placeholders,
+                ph,
+                phed;
             if (options.template.length) {
-
                 //  'foo': '★',
                 /* jshint -W041 */
                 if (options.rule.count == undefined) {
@@ -7167,32 +7140,32 @@ var Mock = (function () {
                     // 遇到转义斜杠，不需要解析占位符
                     if (/^\\/.test(ph)) {
                         placeholders.splice(i--, 1);
-                        continue
+                        continue;
                     }
 
                     phed = Handler.placeholder(ph, options.context.currentContext, options.context.templateCurrentContext, options);
 
                     // 只有一个占位符，并且没有其他字符
-                    if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) { // 
+                    if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) {
+                        //
                         result = phed;
-                        break
+                        break;
                     }
                     result = result.replace(ph, phed);
                 }
-
             } else {
                 // 'ASCII|1-10': '',
                 // 'ASCII': '',
                 result = options.rule.range ? Random.string(options.rule.count) : options.template;
             }
-            return result
+            return result;
         },
-        'function': function(options) {
+        function: function (options) {
             // ( context, options )
-            return options.template.call(options.context.currentContext, options)
+            return options.template.call(options.context.currentContext, options);
         },
-        'regexp': function(options) {
-            var source = '';
+        regexp: function (options) {
+            var source = "";
 
             // 'name': /regexp/,
             /* jshint -W041 */
@@ -7205,30 +7178,26 @@ var Mock = (function () {
                 source += options.template.source;
             }
 
-            return regexp.Handler.gen(
-                regexp.Parser.parse(
-                    source
-                )
-            )
-        }
+            return regexp.Handler.gen(regexp.Parser.parse(source));
+        },
     });
 
     Handler.extend({
-        _all: function() {
+        _all: function () {
             var re = {};
             for (var key in Random) re[key.toLowerCase()] = key;
-            return re
+            return re;
         },
         // 处理占位符，转换为最终值
-        placeholder: function(placeholder, obj, templateContext, options) {
+        placeholder: function (placeholder, obj, templateContext, options) {
             // console.log(options.context.path)
             // 1 key, 2 params
-            constant.RE_PLACEHOLDER.exec('');
+            constant.RE_PLACEHOLDER.exec("");
             var parts = constant.RE_PLACEHOLDER.exec(placeholder),
                 key = parts && parts[1],
                 lkey = key && key.toLowerCase(),
                 okey = this._all()[lkey],
-                params = parts && parts[2] || '';
+                params = (parts && parts[2]) || "";
             var pathParts = this.splitPathToArray(key);
 
             // 解析占位符的参数
@@ -7240,7 +7209,7 @@ var Mock = (function () {
                     应该属于 Window Firefox 30.0 的 BUG
                 */
                 /* jshint -W061 */
-                params = eval('(function(){ return [].splice.call(arguments, 0 ) })(' + params + ')');
+                params = eval("(function(){ return [].splice.call(arguments, 0 ) })(" + params + ")");
             } catch (error) {
                 // 2. 如果失败，只能解析为字符串
                 // console.error(error)
@@ -7250,38 +7219,36 @@ var Mock = (function () {
             }
 
             // 占位符优先引用数据模板中的属性
-            if (obj && (key in obj)) return obj[key]
+            if (obj && key in obj) return obj[key];
 
             // @index @key
             // if (Constant.RE_INDEX.test(key)) return +options.name
             // if (Constant.RE_KEY.test(key)) return options.name
 
             // 绝对路径 or 相对路径
-            if (
-                key.charAt(0) === '/' ||
-                pathParts.length > 1
-            ) return this.getValueByKeyPath(key, options)
+            if (key.charAt(0) === "/" || pathParts.length > 1) return this.getValueByKeyPath(key, options);
 
             // 递归引用数据模板中的属性
-            if (templateContext &&
-                (typeof templateContext === 'object') &&
-                (key in templateContext) &&
-                (placeholder !== templateContext[key]) // fix #15 避免自己依赖自己
+            if (
+                templateContext &&
+                typeof templateContext === "object" &&
+                key in templateContext &&
+                placeholder !== templateContext[key] // fix #15 避免自己依赖自己
             ) {
                 // 先计算被引用的属性值
                 templateContext[key] = Handler.gen(templateContext[key], key, {
                     currentContext: obj,
-                    templateCurrentContext: templateContext
+                    templateCurrentContext: templateContext,
                 });
-                return templateContext[key]
+                return templateContext[key];
             }
 
             // 如果未找到，则原样返回
-            if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder
+            if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder;
 
             // 递归解析参数中的占位符
             for (var i = 0; i < params.length; i++) {
-                constant.RE_PLACEHOLDER.exec('');
+                constant.RE_PLACEHOLDER.exec("");
                 if (constant.RE_PLACEHOLDER.test(params[i])) {
                     params[i] = Handler.placeholder(params[i], obj, templateContext, options);
                 }
@@ -7289,37 +7256,32 @@ var Mock = (function () {
 
             var handle = Random[key] || Random[lkey] || Random[okey];
             switch (util.type(handle)) {
-                case 'array':
+                case "array":
                     // 自动从数组中取一个，例如 @areas
-                    return Random.pick(handle)
-                case 'function':
+                    return Random.pick(handle);
+                case "function":
                     // 执行占位符方法（大多数情况）
                     handle.options = options;
                     var re = handle.apply(Random, params);
-                    if (re === undefined) re = ''; // 因为是在字符串中，所以默认为空字符串。
+                    if (re === undefined) re = ""; // 因为是在字符串中，所以默认为空字符串。
                     delete handle.options;
-                    return re
+                    return re;
             }
         },
-        getValueByKeyPath: function(key, options) {
+        getValueByKeyPath: function (key, options) {
             var originalKey = key;
             var keyPathParts = this.splitPathToArray(key);
             var absolutePathParts = [];
 
             // 绝对路径
-            if (key.charAt(0) === '/') {
-                absolutePathParts = [options.context.path[0]].concat(
-                    this.normalizePath(keyPathParts)
-                );
+            if (key.charAt(0) === "/") {
+                absolutePathParts = [options.context.path[0]].concat(this.normalizePath(keyPathParts));
             } else {
                 // 相对路径
                 if (keyPathParts.length > 1) {
                     absolutePathParts = options.context.path.slice(0);
                     absolutePathParts.pop();
-                    absolutePathParts = this.normalizePath(
-                        absolutePathParts.concat(keyPathParts)
-                    );
-
+                    absolutePathParts = this.normalizePath(absolutePathParts.concat(keyPathParts));
                 }
             }
 
@@ -7332,47 +7294,48 @@ var Mock = (function () {
                     templateCurrentContext = templateCurrentContext[absolutePathParts[i]];
                 }
                 // 引用的值已经计算好
-                if (currentContext && (key in currentContext)) return currentContext[key]
-        
+                if (currentContext && key in currentContext) return currentContext[key];
+
                 // 尚未计算，递归引用数据模板中的属性
-                if (templateCurrentContext &&
-                    (typeof templateCurrentContext === 'object') &&
-                    (key in templateCurrentContext) &&
-                    (originalKey !== templateCurrentContext[key]) // fix #15 避免自己依赖自己
+                if (
+                    templateCurrentContext &&
+                    typeof templateCurrentContext === "object" &&
+                    key in templateCurrentContext &&
+                    originalKey !== templateCurrentContext[key] // fix #15 避免自己依赖自己
                 ) {
                     // 先计算被引用的属性值
                     templateCurrentContext[key] = Handler.gen(templateCurrentContext[key], key, {
                         currentContext: currentContext,
-                        templateCurrentContext: templateCurrentContext
+                        templateCurrentContext: templateCurrentContext,
                     });
-                    return templateCurrentContext[key]
+                    return templateCurrentContext[key];
                 }
-            } catch(err) { }
+            } catch (err) {}
 
-            return '@' + keyPathParts.join('/')
+            return "@" + keyPathParts.join("/");
         },
         // https://github.com/kissyteam/kissy/blob/master/src/path/src/path.js
-        normalizePath: function(pathParts) {
+        normalizePath: function (pathParts) {
             var newPathParts = [];
             for (var i = 0; i < pathParts.length; i++) {
                 switch (pathParts[i]) {
-                    case '..':
+                    case "..":
                         newPathParts.pop();
-                        break
-                    case '.':
-                        break
+                        break;
+                    case ".":
+                        break;
                     default:
                         newPathParts.push(pathParts[i]);
                 }
             }
-            return newPathParts
+            return newPathParts;
         },
-        splitPathToArray: function(path) {
+        splitPathToArray: function (path) {
             var parts = path.split(/\/+/);
             if (!parts[parts.length - 1]) parts = parts.slice(0, -1);
             if (!parts[0]) parts = parts.slice(1);
             return parts;
-        }
+        },
     });
 
     var handler = Handler;

@@ -1,4 +1,4 @@
-export default patternLetters = {
+export default {
     yyyy: "getFullYear",
     yy: function (date) {
         return ("" + date.getFullYear()).slice(2);
