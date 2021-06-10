@@ -3,8 +3,8 @@
 
     [Beyond the Top 1000 Names](http://www.ssa.gov/oact/babynames/limits.html)
 */
-import name from "./name.json";
-let { firstName, lastName, cfirstName, clastName } = name;
+import Name from "./name.json";
+let { firstName, lastName, cfirstName, clastName } = Name;
 import { pick } from "./helper.js";
 // 随机生成一个常见的英文名。
 function first() {

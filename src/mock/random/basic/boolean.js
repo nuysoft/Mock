@@ -7,4 +7,4 @@ const boolean = function (min, max, cur) {
     }
     return Math.random() >= 0.5;
 };
-export { boolean };
+export { boolean, boolean as bool };

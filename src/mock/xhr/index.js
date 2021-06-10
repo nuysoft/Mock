@@ -1,1 +1,1 @@
-module.exports = require('./xhr')
+export { MockXMLHttpRequest } from "./xhr";

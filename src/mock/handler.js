@@ -31,11 +31,12 @@
 
 */
 
-var Constant = require("./constant");
-var Util = require("./util");
-var Parser = require("./parser");
-var Random = require("./random");
-var RE = require("./regexp");
+import Constant from "./constant.js";
+import * as Util from "./util.js";
+import Parser from "./parser.js";
+import { bool, character, pick, shuffle, string } from "./random/index.js";
+import * as Random from "./random/index.js";
+import * as RE from "./regexp/index.js";
 
 var Handler = {
     extend: Util.extend,
@@ -136,7 +137,7 @@ Handler.extend({
                 // fix #17
                 options.context.path.push(options.name);
                 options.context.templatePath.push(options.name);
-                result = Random.pick(
+                result = pick(
                     Handler.gen(options.template, undefined, {
                         path: options.context.path,
                         templatePath: options.context.templatePath,
@@ -207,7 +208,7 @@ Handler.extend({
         /* jshint -W041 */
         if (options.rule.min != undefined) {
             keys = Util.keys(options.template);
-            keys = Random.shuffle(keys);
+            keys = shuffle(keys);
             keys = keys.slice(0, options.rule.count);
             for (i = 0; i < keys.length; i++) {
                 key = keys[i];
@@ -285,7 +286,7 @@ Handler.extend({
             while (parts[1].length < options.rule.dcount) {
                 parts[1] +=
                     // 最后一位不能为 0：如果最后一位为 0，会被 JS 引擎忽略掉。
-                    parts[1].length < options.rule.dcount - 1 ? Random.character("number") : Random.character("123456789");
+                    parts[1].length < options.rule.dcount - 1 ? character("number") : character("123456789");
             }
             result = parseFloat(parts.join("."), 10);
         } else {
@@ -299,7 +300,7 @@ Handler.extend({
         var result;
         // 'prop|multiple': false, 当前值是相反值的概率倍数
         // 'prop|probability-probability': false, 当前值与相反值的概率
-        result = options.rule.parameters ? Random.bool(options.rule.min, options.rule.max, options.template) : options.template;
+        result = options.rule.parameters ? bool(options.rule.min, options.rule.max, options.template) : options.template;
         return result;
     },
     string: function (options) {
@@ -352,7 +353,7 @@ Handler.extend({
         } else {
             // 'ASCII|1-10': '',
             // 'ASCII': '',
-            result = options.rule.range ? Random.string(options.rule.count) : options.template;
+            result = options.rule.range ? string(options.rule.count) : options.template;
         }
         return result;
     },
@@ -454,7 +455,7 @@ Handler.extend({
         switch (Util.type(handle)) {
             case "array":
                 // 自动从数组中取一个，例如 @areas
-                return Random.pick(handle);
+                return pick(handle);
             case "function":
                 // 执行占位符方法（大多数情况）
                 handle.options = options;
@@ -534,4 +535,4 @@ Handler.extend({
     },
 });
 
-module.exports = Handler;
+export default Handler;

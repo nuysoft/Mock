@@ -14,4 +14,4 @@ const character = function (pool = "default") {
     }
     return pool.charAt(natural(0, pool.length - 1));
 };
-export { character };
+export { character, character as char };

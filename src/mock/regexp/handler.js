@@ -53,8 +53,8 @@
         null-character      \o      NUL 字符
  */
 
-var Util = require("../util");
-var Random = require("../random");
+import * as Util from "../util.js";
+import { character, pick, boolean, integer } from "../random/index.js";
 /*
         
     */
@@ -124,12 +124,9 @@ var CHARACTER_CLASSES = {
     "\\D": LOWER + UPPER + OTHER,
 };
 
+// 从 from 到 to 包含两个端点的字符串
 function ascii(from, to) {
-    var result = "";
-    for (var i = from; i <= to; i++) {
-        result += String.fromCharCode(i);
-    }
-    return result;
+    return [...Array(to - from + 1).keys()].map((i) => String.fromCharCode(i + from)).join("");
 }
 
 // var ast = RegExpParser.parse(regexp.source)
@@ -148,7 +145,7 @@ Handler.extend({
             case "end":
                 return "";
             case "any-character":
-                return Random.character();
+                return character();
             case "backspace":
                 return "";
             case "word-boundary": // TODO
@@ -156,9 +153,9 @@ Handler.extend({
             case "non-word-boundary": // TODO
                 break;
             case "digit":
-                return Random.pick(NUMBER.split(""));
+                return pick(NUMBER.split(""));
             case "non-digit":
-                return Random.pick((LOWER + UPPER + OTHER).split(""));
+                return pick((LOWER + UPPER + OTHER).split(""));
             case "form-feed":
                 break;
             case "line-feed":
@@ -166,17 +163,17 @@ Handler.extend({
             case "carriage-return":
                 break;
             case "white-space":
-                return Random.pick(SPACE.split(""));
+                return pick(SPACE.split(""));
             case "non-white-space":
-                return Random.pick((LOWER + UPPER + NUMBER).split(""));
+                return pick((LOWER + UPPER + NUMBER).split(""));
             case "tab":
                 break;
             case "vertical-tab":
                 break;
             case "word": // \w [a-zA-Z0-9]
-                return Random.pick((LOWER + UPPER + NUMBER).split(""));
+                return pick((LOWER + UPPER + NUMBER).split(""));
             case "non-word": // \W [^a-zA-Z0-9]
-                return Random.pick(OTHER.replace("_", "").split(""));
+                return pick(OTHER.replace("_", "").split(""));
             case "null-character":
                 break;
         }
@@ -197,7 +194,7 @@ Handler.extend({
     */
     alternate: function (node, result, cache) {
         // node.left/right {}
-        return this.gen(Random.boolean() ? node.left : node.right, result, cache);
+        return this.gen(boolean() ? node.left : node.right, result, cache);
     },
     /*
         {
@@ -281,8 +278,8 @@ Handler.extend({
     */
     quantifier: function (node, result, cache) {
         var min = Math.max(node.min, 0);
-        var max = isFinite(node.max) ? node.max : min + Random.integer(3, 7);
-        return Random.integer(min, max);
+        var max = isFinite(node.max) ? node.max : min + integer(3, 7);
+        return integer(min, max);
     },
     /*
         
@@ -292,7 +289,7 @@ Handler.extend({
         if (node.invert) return this["invert-charset"](node, result, cache);
 
         // node.body []
-        var literal = Random.pick(node.body);
+        var literal = pick(node.body);
         return this.gen(literal, result, cache);
     },
     "invert-charset": function (node, result, cache) {
@@ -319,13 +316,13 @@ Handler.extend({
                     }
             }
         }
-        return Random.pick(pool.split(""));
+        return pick(pool.split(""));
     },
     range: function (node, result, cache) {
         // node.start, node.end
         var min = this.gen(node.start, result, cache).charCodeAt();
         var max = this.gen(node.end, result, cache).charCodeAt();
-        return String.fromCharCode(Random.integer(min, max));
+        return String.fromCharCode(integer(min, max));
     },
     literal: function (node, result, cache) {
         return node.escaped ? node.body : node.text;
@@ -366,4 +363,4 @@ Handler.extend({
     },
 });
 
-module.exports = Handler;
+export { Handler };

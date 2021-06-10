@@ -4,7 +4,10 @@
 import { integer } from "./basic/number.js"; // 随机生成整数的函数
 import _patternLetters from "./date/_patternLetters.js";
 const reRule = new RegExp(`(${Object.keys(_patternLetters).join("|")})`, "g");
-
+// 返回一个随机的日期字符串。
+function date(format = "yyyy-MM-dd") {
+    return this._formatDate(this._randomDate(), format);
+}
 export default {
     // 日期占位符集合。
     _patternLetters,
@@ -12,27 +15,17 @@ export default {
     _rformat: reRule,
     // 格式化日期。
     _formatDate: function (date, format) {
-        return format.replace(
-            this._rformat,
-            function creatNewSubString($0, flag) {
-                // 这个函数用于捕获格式化日期的关键字，然后进行替换
-                let targetPattern = patternLetters[flag];
-                return typeof targetPattern === "function"
-                    ? targetPattern(date)
-                    : targetPattern in patternLetters
-                    ? creatNewSubString($0, targetPattern)
-                    : date[targetPattern]();
-            }
-        );
+        return format.replace(this._rformat, function creatNewSubString($0, flag) {
+            // 这个函数用于捕获格式化日期的关键字，然后进行替换
+            let targetPattern = _patternLetters[flag];
+            return typeof targetPattern === "function" ? targetPattern(date) : targetPattern in _patternLetters ? creatNewSubString($0, targetPattern) : date[targetPattern]();
+        });
     },
     // 生成一个随机的 Date 对象。
     _randomDate: function (min = new Date(0), max = new Date()) {
         return new Date(integer(min.getTime(), max.getTime()));
     },
-    // 返回一个随机的日期字符串。
-    date: function (format = "yyyy-MM-dd") {
-        return this._formatDate(this._randomDate(), format);
-    },
+
     // 返回一个随机的时间字符串。
     time: function (format = "HH:mm:ss") {
         return this._formatDate(this._randomDate(), format);
@@ -41,6 +34,7 @@ export default {
     datetime: function (format = "yyyy-MM-dd HH:mm:ss") {
         return this._formatDate(this._randomDate(), format);
     },
+    date,
 
     // 返回当前的日期和时间字符串。
     now: function (unit, format) {
@@ -83,8 +77,8 @@ export default {
     },
     // KonghaYao 新增函数：生成固定时间段的时间戳
     timestamp: function (min, max) {
-        if (min instanceof Date && max instanceof Date)
-            return this._randomDate(min, max);
+        if (min instanceof Date && max instanceof Date) return this._randomDate(min, max);
         return this._randomDate();
     },
 };
+export { date };

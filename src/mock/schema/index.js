@@ -1,1 +1,1 @@
-module.exports = require('./schema')
+export { toJSONSchema } from "./schema.js";

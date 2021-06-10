@@ -22,11 +22,11 @@
 		```
  */
 
-var Constant = require("./constant");
-var Random = require("./random");
+import Constant from "./constant.js";
+import { integer } from "./random/index.js";
 
 /* jshint -W041 */
-module.exports = {
+export default {
     parse: function (name) {
         name = name == undefined ? "" : name + "";
 
@@ -36,36 +36,33 @@ module.exports = {
         var min = range && range[1] && parseInt(range[1], 10); // || 1
         var max = range && range[2] && parseInt(range[2], 10); // || 1
         // repeat || min-max || 1
-        // var count = range ? !range[2] && parseInt(range[1], 10) || Random.integer(min, max) : 1
-        var count = range ? (!range[2] ? parseInt(range[1], 10) : Random.integer(min, max)) : undefined;
+        // var count = range ? !range[2] && parseInt(range[1], 10) || integer(min, max) : 1
+        var count = range ? (!range[2] ? parseInt(range[1], 10) : integer(min, max)) : undefined;
 
         var decimal = parameters && parameters[4] && parameters[4].match(Constant.RE_RANGE);
         var dmin = decimal && decimal[1] && parseInt(decimal[1], 10); // || 0,
         var dmax = decimal && decimal[2] && parseInt(decimal[2], 10); // || 0,
         // int || dmin-dmax || 0
-        var dcount = decimal ? (!decimal[2] && parseInt(decimal[1], 10)) || Random.integer(dmin, dmax) : undefined;
+        var dcount = decimal ? (!decimal[2] && parseInt(decimal[1], 10)) || integer(dmin, dmax) : undefined;
 
         var result = {
             // 1 name, 2 inc, 3 range, 4 decimal
-            parameters: parameters,
+            parameters,
             // 1 min, 2 max
-            range: range,
-            min: min,
-            max: max,
+            range,
+            min,
+            max,
             // min-max
-            count: count,
+            count,
             // 是否有 decimal
-            decimal: decimal,
-            dmin: dmin,
-            dmax: dmax,
-            // dmin-dimax
-            dcount: dcount,
+            decimal,
+            dmin,
+            dmax,
+            dcount, // dmin-dimax
         };
 
-        for (var r in result) {
-            if (result[r] != undefined) return result;
-        }
-
+        let isReturn = Object.keys(result).some((key) => key !== undefined);
+        if (isReturn) return result;
         return {};
     },
 };

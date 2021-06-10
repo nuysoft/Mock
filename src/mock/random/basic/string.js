@@ -27,4 +27,4 @@ const string = function (...args) {
     }
     return [...Array(len).keys()].map((i) => character(pool)).join("");
 };
-export { string };
+export { string, string as str };

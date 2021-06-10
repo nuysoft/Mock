@@ -1,13 +1,15 @@
 /* global require, module, window */
-var Handler = require('./mock/handler')
-var Util = require('./mock/util')
-var Random = require('./mock/random')
-var RE = require('./mock/regexp')
-var toJSONSchema = require('./mock/schema')
-var valid = require('./mock/valid')
+import Handler from "./mock/handler.js";
+import * as Util from "./mock/util.js";
+import * as Random from "./mock/random/index.js";
+import * as RE from "./mock/regexp/index.js";
+import { toJSONSchema } from "./mock/schema/index.js";
+import { valid } from "./mock/valid/index.js";
 
-var XHR
-if (typeof window !== 'undefined') XHR = require('./mock/xhr')
+import { MockXMLHttpRequest } from "./mock/xhr/index.js";
+
+var XHR;
+if (typeof window !== "undefined") XHR = MockXMLHttpRequest;
 
 /*!
     Mock - 模拟请求 & 模拟数据
@@ -15,24 +17,24 @@ if (typeof window !== 'undefined') XHR = require('./mock/xhr')
     墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
 */
 var Mock = {
-    Handler: Handler,
-    Random: Random,
-    Util: Util,
-    XHR: XHR,
-    RE: RE,
-    toJSONSchema: toJSONSchema,
-    valid: valid,
+    Handler,
+    Random,
+    Util,
+    XHR,
+    RE,
+    toJSONSchema,
+    valid,
     heredoc: Util.heredoc,
-    setup: function(settings) {
-        return XHR.setup(settings)
+    setup: function (settings) {
+        return XHR.setup(settings);
     },
-    _mocked: {}
-}
+    _mocked: {},
+};
 
-Mock.version = '1.0.1-beta3'
+Mock.version = "1.0.1-beta3";
 
 // 避免循环依赖
-if (XHR) XHR.Mock = Mock
+if (XHR) XHR.Mock = Mock;
 
 /*
     * Mock.mock( template )
@@ -44,24 +46,24 @@ if (XHR) XHR.Mock = Mock
 
     根据数据模板生成模拟数据。
 */
-Mock.mock = function(rurl, rtype, template) {
+Mock.mock = function (rurl, rtype, template) {
     // Mock.mock(template)
     if (arguments.length === 1) {
-        return Handler.gen(rurl)
+        return Handler.gen(rurl);
     }
     // Mock.mock(rurl, template)
     if (arguments.length === 2) {
-        template = rtype
-        rtype = undefined
+        template = rtype;
+        rtype = undefined;
     }
     // 拦截 XHR
-    if (XHR) window.XMLHttpRequest = XHR
-    Mock._mocked[rurl + (rtype || '')] = {
+    if (XHR) window.XMLHttpRequest = XHR;
+    Mock._mocked[rurl + (rtype || "")] = {
         rurl: rurl,
         rtype: rtype,
-        template: template
-    }
-    return Mock
-}
+        template: template,
+    };
+    return Mock;
+};
 
-module.exports = Mock
+export default Mock;

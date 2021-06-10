@@ -1,1 +1,1 @@
-module.exports = require('./valid')
+export { valid } from "./valid.js";

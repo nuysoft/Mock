@@ -14,4 +14,4 @@ const integer = function (min, max) {
 const natural = function (min, max) {
     return Math.abs(integer(min, max));
 };
-export { integer, isNumber, random, natural };
+export { integer, isNumber, random, natural, integer as int };

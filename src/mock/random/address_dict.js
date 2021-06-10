@@ -58,17 +58,18 @@ function createTree(list) {
     });
     return result;
 }
+const ids = Object.keys(DICT);
+function isInIds(what) {}
 // 转化数组内对象的表现形式
 const fixed = Object.entries(DICT).map(([id, value]) => {
-    var pid =
-        id.slice(2, 6) === "0000"
-            ? undefined
-            : id.slice(4, 6) == "00"
-            ? id.slice(0, 2) + "0000"
-            : id.slice(0, 4) + "00";
+    var pid = id.slice(2, 6) === "0000" ? undefined : id.slice(4, 6) == "00" ? id.slice(0, 2) + "0000" : id.slice(0, 4) + "00";
+    if (!(pid in ids)) {
+        // 修复 pid 并不存在，但是是归属于顶级的错误
+        pid = id.slice(0, 2) + "0000";
+    }
     return {
-        id: id,
-        pid: pid,
+        id,
+        pid,
         name: value,
     };
 });

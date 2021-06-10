@@ -30,9 +30,9 @@
     "build": "rollup --config rollup.config.build.js",
     "docs": "docsify serve docs"
   },
-  
   "dependencies": {
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
