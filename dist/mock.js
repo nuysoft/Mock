@@ -47,17 +47,17 @@ var root = freeGlobal || freeSelf || Function('return this')();
 var Symbol = root.Symbol;
 
 /** Used for built-in method references. */
-var objectProto$5 = Object.prototype;
+var objectProto$8 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$3 = objectProto$5.hasOwnProperty;
+var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1 = objectProto$5.toString;
+var nativeObjectToString$1 = objectProto$8.toString;
 
 /** Built-in value references. */
 var symToStringTag$1 = Symbol ? Symbol.toStringTag : undefined;
@@ -70,7 +70,7 @@ var symToStringTag$1 = Symbol ? Symbol.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag(value) {
-  var isOwn = hasOwnProperty$3.call(value, symToStringTag$1),
+  var isOwn = hasOwnProperty$6.call(value, symToStringTag$1),
       tag = value[symToStringTag$1];
 
   try {
@@ -90,14 +90,14 @@ function getRawTag(value) {
 }
 
 /** Used for built-in method references. */
-var objectProto$4 = Object.prototype;
+var objectProto$7 = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString = objectProto$4.toString;
+var nativeObjectToString = objectProto$7.toString;
 
 /**
  * Converts `value` to a string using `Object.prototype.toString`.
@@ -292,6 +292,26 @@ function isObject(value) {
   return value != null && (type == 'object' || type == 'function');
 }
 
+/**
+ * This method returns the first argument it receives.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Util
+ * @param {*} value Any value.
+ * @returns {*} Returns `value`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ *
+ * console.log(_.identity(object) === object);
+ * // => true
+ */
+function identity(value) {
+  return value;
+}
+
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
     funcTag$1 = '[object Function]',
@@ -325,6 +345,137 @@ function isFunction(value) {
   return tag == funcTag$1 || tag == genTag || tag == asyncTag || tag == proxyTag;
 }
 
+/** Used to detect overreaching core-js shims. */
+var coreJsData = root['__core-js_shared__'];
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
+}
+
+/** Used for built-in method references. */
+var funcProto$1 = Function.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString$1 = funcProto$1.toString;
+
+/**
+ * Converts `func` to its source code.
+ *
+ * @private
+ * @param {Function} func The function to convert.
+ * @returns {string} Returns the source code.
+ */
+function toSource(func) {
+  if (func != null) {
+    try {
+      return funcToString$1.call(func);
+    } catch (e) {}
+    try {
+      return (func + '');
+    } catch (e) {}
+  }
+  return '';
+}
+
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype,
+    objectProto$6 = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
+
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString.call(hasOwnProperty$5).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
+
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative(value) {
+  if (!isObject(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource(value));
+}
+
+/**
+ * Gets the value at `key` of `object`.
+ *
+ * @private
+ * @param {Object} [object] The object to query.
+ * @param {string} key The key of the property to get.
+ * @returns {*} Returns the property value.
+ */
+function getValue(object, key) {
+  return object == null ? undefined : object[key];
+}
+
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
+}
+
+/**
+ * A faster alternative to `Function#apply`, this function invokes `func`
+ * with the `this` binding of `thisArg` and the arguments of `args`.
+ *
+ * @private
+ * @param {Function} func The function to invoke.
+ * @param {*} thisArg The `this` binding of `func`.
+ * @param {Array} args The arguments to invoke `func` with.
+ * @returns {*} Returns the result of `func`.
+ */
+function apply(func, thisArg, args) {
+  switch (args.length) {
+    case 0: return func.call(thisArg);
+    case 1: return func.call(thisArg, args[0]);
+    case 2: return func.call(thisArg, args[0], args[1]);
+    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+  }
+  return func.apply(thisArg, args);
+}
+
 /**
  * Copies the values of `source` to `array`.
  *
@@ -343,6 +494,102 @@ function copyArray(source, array) {
   }
   return array;
 }
+
+/** Used to detect hot functions by number of calls within a span of milliseconds. */
+var HOT_COUNT = 800,
+    HOT_SPAN = 16;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeNow = Date.now;
+
+/**
+ * Creates a function that'll short out and invoke `identity` instead
+ * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+ * milliseconds.
+ *
+ * @private
+ * @param {Function} func The function to restrict.
+ * @returns {Function} Returns the new shortable function.
+ */
+function shortOut(func) {
+  var count = 0,
+      lastCalled = 0;
+
+  return function() {
+    var stamp = nativeNow(),
+        remaining = HOT_SPAN - (stamp - lastCalled);
+
+    lastCalled = stamp;
+    if (remaining > 0) {
+      if (++count >= HOT_COUNT) {
+        return arguments[0];
+      }
+    } else {
+      count = 0;
+    }
+    return func.apply(undefined, arguments);
+  };
+}
+
+/**
+ * Creates a function that returns `value`.
+ *
+ * @static
+ * @memberOf _
+ * @since 2.4.0
+ * @category Util
+ * @param {*} value The value to return from the new function.
+ * @returns {Function} Returns the new constant function.
+ * @example
+ *
+ * var objects = _.times(2, _.constant({ 'a': 1 }));
+ *
+ * console.log(objects);
+ * // => [{ 'a': 1 }, { 'a': 1 }]
+ *
+ * console.log(objects[0] === objects[1]);
+ * // => true
+ */
+function constant(value) {
+  return function() {
+    return value;
+  };
+}
+
+var defineProperty = (function() {
+  try {
+    var func = getNative(Object, 'defineProperty');
+    func({}, '', {});
+    return func;
+  } catch (e) {}
+}());
+
+/**
+ * The base implementation of `setToString` without support for hot loop shorting.
+ *
+ * @private
+ * @param {Function} func The function to modify.
+ * @param {Function} string The `toString` result.
+ * @returns {Function} Returns `func`.
+ */
+var baseSetToString = !defineProperty ? identity : function(func, string) {
+  return defineProperty(func, 'toString', {
+    'configurable': true,
+    'enumerable': false,
+    'value': constant(string),
+    'writable': true
+  });
+};
+
+/**
+ * Sets the `toString` method of `func` to return `string`.
+ *
+ * @private
+ * @param {Function} func The function to modify.
+ * @param {Function} string The `toString` result.
+ * @returns {Function} Returns `func`.
+ */
+var setToString = shortOut(baseSetToString);
 
 /** Used as references for various `Number` constants. */
 var MAX_SAFE_INTEGER$1 = 9007199254740991;
@@ -366,6 +613,169 @@ function isIndex(value, length) {
     (type == 'number' ||
       (type != 'symbol' && reIsUint.test(value))) &&
         (value > -1 && value % 1 == 0 && value < length);
+}
+
+/**
+ * The base implementation of `assignValue` and `assignMergeValue` without
+ * value checks.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function baseAssignValue(object, key, value) {
+  if (key == '__proto__' && defineProperty) {
+    defineProperty(object, key, {
+      'configurable': true,
+      'enumerable': true,
+      'value': value,
+      'writable': true
+    });
+  } else {
+    object[key] = value;
+  }
+}
+
+/**
+ * Performs a
+ * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * comparison between two values to determine if they are equivalent.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to compare.
+ * @param {*} other The other value to compare.
+ * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+ * @example
+ *
+ * var object = { 'a': 1 };
+ * var other = { 'a': 1 };
+ *
+ * _.eq(object, object);
+ * // => true
+ *
+ * _.eq(object, other);
+ * // => false
+ *
+ * _.eq('a', 'a');
+ * // => true
+ *
+ * _.eq('a', Object('a'));
+ * // => false
+ *
+ * _.eq(NaN, NaN);
+ * // => true
+ */
+function eq(value, other) {
+  return value === other || (value !== value && other !== other);
+}
+
+/** Used for built-in method references. */
+var objectProto$5 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
+
+/**
+ * Assigns `value` to `key` of `object` if the existing value is not equivalent
+ * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+ * for equality comparisons.
+ *
+ * @private
+ * @param {Object} object The object to modify.
+ * @param {string} key The key of the property to assign.
+ * @param {*} value The value to assign.
+ */
+function assignValue(object, key, value) {
+  var objValue = object[key];
+  if (!(hasOwnProperty$4.call(object, key) && eq(objValue, value)) ||
+      (value === undefined && !(key in object))) {
+    baseAssignValue(object, key, value);
+  }
+}
+
+/**
+ * Copies properties of `source` to `object`.
+ *
+ * @private
+ * @param {Object} source The object to copy properties from.
+ * @param {Array} props The property identifiers to copy.
+ * @param {Object} [object={}] The object to copy properties to.
+ * @param {Function} [customizer] The function to customize copied values.
+ * @returns {Object} Returns `object`.
+ */
+function copyObject(source, props, object, customizer) {
+  var isNew = !object;
+  object || (object = {});
+
+  var index = -1,
+      length = props.length;
+
+  while (++index < length) {
+    var key = props[index];
+
+    var newValue = customizer
+      ? customizer(object[key], source[key], key, object, source)
+      : undefined;
+
+    if (newValue === undefined) {
+      newValue = source[key];
+    }
+    if (isNew) {
+      baseAssignValue(object, key, newValue);
+    } else {
+      assignValue(object, key, newValue);
+    }
+  }
+  return object;
+}
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMax = Math.max;
+
+/**
+ * A specialized version of `baseRest` which transforms the rest array.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @param {Function} transform The rest array transform.
+ * @returns {Function} Returns the new function.
+ */
+function overRest(func, start, transform) {
+  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+  return function() {
+    var args = arguments,
+        index = -1,
+        length = nativeMax(args.length - start, 0),
+        array = Array(length);
+
+    while (++index < length) {
+      array[index] = args[start + index];
+    }
+    index = -1;
+    var otherArgs = Array(start + 1);
+    while (++index < start) {
+      otherArgs[index] = args[index];
+    }
+    otherArgs[start] = transform(array);
+    return apply(func, this, otherArgs);
+  };
+}
+
+/**
+ * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @param {number} [start=func.length-1] The start position of the rest parameter.
+ * @returns {Function} Returns the new function.
+ */
+function baseRest(func, start) {
+  return setToString(overRest(func, start, identity), func + '');
 }
 
 /** Used as references for various `Number` constants. */
@@ -431,8 +841,65 @@ function isArrayLike(value) {
   return value != null && isLength(value.length) && !isFunction(value);
 }
 
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+/**
+ * Creates a function like `_.assign`.
+ *
+ * @private
+ * @param {Function} assigner The function to assign values.
+ * @returns {Function} Returns the new assigner function.
+ */
+function createAssigner(assigner) {
+  return baseRest(function(object, sources) {
+    var index = -1,
+        length = sources.length,
+        customizer = length > 1 ? sources[length - 1] : undefined,
+        guard = length > 2 ? sources[2] : undefined;
+
+    customizer = (assigner.length > 3 && typeof customizer == 'function')
+      ? (length--, customizer)
+      : undefined;
+
+    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+      customizer = length < 3 ? undefined : customizer;
+      length = 1;
+    }
+    object = Object(object);
+    while (++index < length) {
+      var source = sources[index];
+      if (source) {
+        assigner(object, source, index, customizer);
+      }
+    }
+    return object;
+  });
+}
+
 /** Used for built-in method references. */
-var objectProto$3 = Object.prototype;
+var objectProto$4 = Object.prototype;
 
 /**
  * Checks if `value` is likely a prototype object.
@@ -443,7 +910,7 @@ var objectProto$3 = Object.prototype;
  */
 function isPrototype(value) {
   var Ctor = value && value.constructor,
-      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$3;
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$4;
 
   return value === proto;
 }
@@ -482,13 +949,13 @@ function baseIsArguments(value) {
 }
 
 /** Used for built-in method references. */
-var objectProto$2 = Object.prototype;
+var objectProto$3 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
+var hasOwnProperty$3 = objectProto$3.hasOwnProperty;
 
 /** Built-in value references. */
-var propertyIsEnumerable = objectProto$2.propertyIsEnumerable;
+var propertyIsEnumerable = objectProto$3.propertyIsEnumerable;
 
 /**
  * Checks if `value` is likely an `arguments` object.
@@ -509,7 +976,7 @@ var propertyIsEnumerable = objectProto$2.propertyIsEnumerable;
  * // => false
  */
 var isArguments = baseIsArguments(function() { return arguments; }()) ? baseIsArguments : function(value) {
-  return isObjectLike(value) && hasOwnProperty$2.call(value, 'callee') &&
+  return isObjectLike(value) && hasOwnProperty$3.call(value, 'callee') &&
     !propertyIsEnumerable.call(value, 'callee');
 };
 
@@ -682,10 +1149,10 @@ var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
 var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
 
 /** Used for built-in method references. */
-var objectProto$1 = Object.prototype;
+var objectProto$2 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
+var hasOwnProperty$2 = objectProto$2.hasOwnProperty;
 
 /**
  * Creates an array of the enumerable property names of the array-like `value`.
@@ -705,7 +1172,7 @@ function arrayLikeKeys(value, inherited) {
       length = result.length;
 
   for (var key in value) {
-    if ((inherited || hasOwnProperty$1.call(value, key)) &&
+    if ((inherited || hasOwnProperty$2.call(value, key)) &&
         !(skipIndexes && (
            // Safari 9 has enumerable `arguments.length` in strict mode.
            key == 'length' ||
@@ -740,10 +1207,10 @@ function overArg(func, transform) {
 var nativeKeys = overArg(Object.keys, Object);
 
 /** Used for built-in method references. */
-var objectProto = Object.prototype;
+var objectProto$1 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty = objectProto.hasOwnProperty;
+var hasOwnProperty$1 = objectProto$1.hasOwnProperty;
 
 /**
  * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
@@ -758,7 +1225,7 @@ function baseKeys(object) {
   }
   var result = [];
   for (var key in Object(object)) {
-    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+    if (hasOwnProperty$1.call(object, key) && key != 'constructor') {
       result.push(key);
     }
   }
@@ -796,6 +1263,115 @@ function baseKeys(object) {
 function keys$1(object) {
   return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
 }
+
+/**
+ * This function is like
+ * [`Object.keys`](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * except that it includes inherited enumerable properties.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function nativeKeysIn(object) {
+  var result = [];
+  if (object != null) {
+    for (var key in Object(object)) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * The base implementation of `_.keysIn` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeysIn(object) {
+  if (!isObject(object)) {
+    return nativeKeysIn(object);
+  }
+  var isProto = isPrototype(object),
+      result = [];
+
+  for (var key in object) {
+    if (!(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+      result.push(key);
+    }
+  }
+  return result;
+}
+
+/**
+ * Creates an array of the own and inherited enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keysIn(new Foo);
+ * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+ */
+function keysIn(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object, true) : baseKeysIn(object);
+}
+
+/**
+ * This method is like `_.assign` except that it iterates over own and
+ * inherited source properties.
+ *
+ * **Note:** This method mutates `object`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @alias extend
+ * @category Object
+ * @param {Object} object The destination object.
+ * @param {...Object} [sources] The source objects.
+ * @returns {Object} Returns `object`.
+ * @see _.assign
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * function Bar() {
+ *   this.c = 3;
+ * }
+ *
+ * Foo.prototype.b = 2;
+ * Bar.prototype.d = 4;
+ *
+ * _.assignIn({ 'a': 0 }, new Foo, new Bar);
+ * // => { 'a': 1, 'b': 2, 'c': 3, 'd': 4 }
+ */
+var assignIn = createAssigner(function(object, source) {
+  copyObject(source, keysIn(source), object);
+});
 
 /**
  * Converts `value` to a string. An empty string is returned for `null`
@@ -1229,46 +1805,6 @@ function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
 }
 
-function extend() {
-    var target = arguments[0] || {},
-        i = 1,
-        length = arguments.length,
-        options,
-        name,
-        src,
-        copy,
-        clone;
-
-    if (length === 1) {
-        target = this;
-        i = 0;
-    }
-
-    for (; i < length; i++) {
-        options = arguments[i];
-        if (!options) continue;
-
-        for (name in options) {
-            src = target[name];
-            copy = options[name];
-
-            if (target === copy) continue;
-            if (copy === undefined) continue;
-
-            if (isArray(copy) || isObject(copy)) {
-                if (isArray(copy)) clone = src && isArray(src) ? src : [];
-                if (isObject(copy)) clone = src && isObject(src) ? src : {};
-
-                target[name] = extend(clone, copy);
-            } else {
-                target[name] = copy;
-            }
-        }
-    }
-
-    return target;
-}
-
 function each(obj, iterator, context) {
     // each
     var i, key;
@@ -1337,7 +1873,7 @@ var Util = /*#__PURE__*/Object.freeze({
     values: values,
     noop: noop,
     type: type$1,
-    extend: extend,
+    extend: assignIn,
     isObjectOrArray: isObjectOrArray,
     isNumeric: isNumeric,
     isString: isString,
@@ -7139,48 +7675,45 @@ var Random = /*#__PURE__*/Object.freeze({
 		}
 		```
  */
-
 /* jshint -W041 */
-var Parser = {
-    parse: function (name) {
-        name = name == undefined ? "" : name + "";
+function parser$1(name) {
+    name = name == undefined ? "" : name + "";
 
-        var parameters = (name || "").match(Constant.RE_KEY);
+    var parameters = (name || "").match(Constant.RE_KEY);
 
-        var range = parameters && parameters[3] && parameters[3].match(Constant.RE_RANGE);
-        var min = range && range[1] && parseInt(range[1], 10); // || 1
-        var max = range && range[2] && parseInt(range[2], 10); // || 1
-        // repeat || min-max || 1
-        // var count = range ? !range[2] && parseInt(range[1], 10) || integer(min, max) : 1
-        var count = range ? (!range[2] ? parseInt(range[1], 10) : integer(min, max)) : undefined;
+    var range = parameters && parameters[3] && parameters[3].match(Constant.RE_RANGE);
+    var min = range && range[1] && parseInt(range[1], 10); // || 1
+    var max = range && range[2] && parseInt(range[2], 10); // || 1
+    // repeat || min-max || 1
+    // var count = range ? !range[2] && parseInt(range[1], 10) || integer(min, max) : 1
+    var count = range ? (!range[2] ? parseInt(range[1], 10) : integer(min, max)) : undefined;
 
-        var decimal = parameters && parameters[4] && parameters[4].match(Constant.RE_RANGE);
-        var dmin = decimal && decimal[1] && parseInt(decimal[1], 10); // || 0,
-        var dmax = decimal && decimal[2] && parseInt(decimal[2], 10); // || 0,
-        // int || dmin-dmax || 0
-        var dcount = decimal ? (!decimal[2] && parseInt(decimal[1], 10)) || integer(dmin, dmax) : undefined;
+    var decimal = parameters && parameters[4] && parameters[4].match(Constant.RE_RANGE);
+    var dmin = decimal && decimal[1] && parseInt(decimal[1], 10); // || 0,
+    var dmax = decimal && decimal[2] && parseInt(decimal[2], 10); // || 0,
+    // int || dmin-dmax || 0
+    var dcount = decimal ? (!decimal[2] && parseInt(decimal[1], 10)) || integer(dmin, dmax) : undefined;
 
-        var result = {
-            // 1 name, 2 inc, 3 range, 4 decimal
-            parameters,
-            // 1 min, 2 max
-            range,
-            min,
-            max,
-            // min-max
-            count,
-            // 是否有 decimal
-            decimal,
-            dmin,
-            dmax,
-            dcount, // dmin-dimax
-        };
+    var result = {
+        // 1 name, 2 inc, 3 range, 4 decimal
+        parameters,
+        // 1 min, 2 max
+        range,
+        min,
+        max,
+        // min-max
+        count,
+        // 是否有 decimal
+        decimal,
+        dmin,
+        dmax,
+        dcount, // dmin-dimax
+    };
 
-        let isReturn = Object.keys(result).some((key) => key !== undefined);
-        if (isReturn) return result;
-        return {};
-    },
-};
+    let isReturn = Object.keys(result).some((key) => key !== undefined);
+    if (isReturn) return result;
+    return {};
+}
 
 // https://github.com/nuysoft/regexp
 
@@ -8087,7 +8620,7 @@ var parser = (function () {
         
     */
 var Handler$1 = {
-    extend: extend,
+    extend: assignIn,
 };
 
 // http://en.wikipedia.org/wiki/ASCII#ASCII_printable_code_chart
@@ -8429,7 +8962,7 @@ var RE = /*#__PURE__*/Object.freeze({
 */
 
 var Handler = {
-    extend: extend,
+    extend: assignIn,
 };
 
 /*
@@ -8464,8 +8997,8 @@ Handler.gen = function (template, name, context) {
     };
     // console.log('path:', context.path.join('.'), template)
 
-    var rule = Parser.parse(name);
-    var type = type$1(template);
+    var rule = parser$1(name);
+    var type = type(template);
     var data;
 
     if (Handler[type]) {
@@ -8587,7 +9120,7 @@ Handler.extend({
     },
     object: function (options) {
         var result = {},
-            keys$1,
+            keys,
             fnKeys,
             key,
             parsedKey,
@@ -8597,11 +9130,11 @@ Handler.extend({
         // 'obj|min-max': {}
         /* jshint -W041 */
         if (options.rule.min != undefined) {
-            keys$1 = keys(options.template);
-            keys$1 = shuffle(keys$1);
-            keys$1 = keys$1.slice(0, options.rule.count);
-            for (i = 0; i < keys$1.length; i++) {
-                key = keys$1[i];
+            keys = Object.keys(options.template);
+            keys = shuffle(keys);
+            keys = keys.slice(0, options.rule.count);
+            for (i = 0; i < keys.length; i++) {
+                key = keys[i];
                 parsedKey = key.replace(Constant.RE_KEY, "$1");
                 options.context.path.push(parsedKey);
                 options.context.templatePath.push(key);
@@ -8618,16 +9151,16 @@ Handler.extend({
             }
         } else {
             // 'obj': {}
-            keys$1 = [];
+            keys = [];
             fnKeys = []; // #25 改变了非函数属性的顺序，查找起来不方便
             for (key in options.template) {
-                (typeof options.template[key] === "function" ? fnKeys : keys$1).push(key);
+                (typeof options.template[key] === "function" ? fnKeys : keys).push(key);
             }
-            keys$1 = keys$1.concat(fnKeys);
+            keys = keys.concat(fnKeys);
 
             /*
                 会改变非函数属性的顺序
-                keys = Util.keys(options.template)
+                keys = Object.keys(options.template)
                 keys.sort(function(a, b) {
                     var afn = typeof options.template[a] === 'function'
                     var bfn = typeof options.template[b] === 'function'
@@ -8637,8 +9170,8 @@ Handler.extend({
                 })
             */
 
-            for (i = 0; i < keys$1.length; i++) {
-                key = keys$1[i];
+            for (i = 0; i < keys.length; i++) {
+                key = keys[i];
                 parsedKey = key.replace(Constant.RE_KEY, "$1");
                 options.context.path.push(parsedKey);
                 options.context.templatePath.push(key);
@@ -8930,7 +9463,7 @@ function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
         name: typeof name === "string" ? name.replace(Constant.RE_KEY, "$1") : name,
         template,
         type: type$1(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
-        rule: Parser.parse(name),
+        rule: parser$1.parse(name),
         path: path.slice(0),
     };
     result.path.push(name === undefined ? "ROOT" : result.name);
@@ -9496,12 +10029,12 @@ MockXMLHttpRequest._settings = {
 };
 
 MockXMLHttpRequest.setup = function (settings) {
-    extend(MockXMLHttpRequest._settings, settings);
+    assignIn(MockXMLHttpRequest._settings, settings);
     return MockXMLHttpRequest._settings;
 };
 
-extend(MockXMLHttpRequest, XHR_STATES);
-extend(MockXMLHttpRequest.prototype, XHR_STATES);
+assignIn(MockXMLHttpRequest, XHR_STATES);
+assignIn(MockXMLHttpRequest.prototype, XHR_STATES);
 
 // 标记当前对象为 MockXMLHttpRequest
 MockXMLHttpRequest.prototype.mock = true;
@@ -9510,13 +10043,13 @@ MockXMLHttpRequest.prototype.mock = true;
 MockXMLHttpRequest.prototype.match = false;
 
 // 初始化 Request 相关的属性和方法
-extend(MockXMLHttpRequest.prototype, {
+assignIn(MockXMLHttpRequest.prototype, {
     // https://xhr.spec.whatwg.org/#the-open()-method
     // Sets the request method, request URL, and synchronous flag.
     open: function (method, url, async, username, password) {
         var that = this;
 
-        extend(this.custom, {
+        assignIn(this.custom, {
             method: method,
             url: url,
             async: typeof async === "boolean" ? async : true,
@@ -9660,7 +10193,7 @@ extend(MockXMLHttpRequest.prototype, {
 });
 
 // 初始化 Response 相关的属性和方法
-extend(MockXMLHttpRequest.prototype, {
+assignIn(MockXMLHttpRequest.prototype, {
     responseURL: "",
     status: MockXMLHttpRequest.UNSENT,
     statusText: "",
@@ -9699,7 +10232,7 @@ extend(MockXMLHttpRequest.prototype, {
 });
 
 // EventTarget
-extend(MockXMLHttpRequest.prototype, {
+assignIn(MockXMLHttpRequest.prototype, {
     addEventListener: function addEventListener(type, handle) {
         var events = this.custom.events;
         if (!events[type]) events[type] = [];

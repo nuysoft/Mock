@@ -32,14 +32,14 @@
 */
 
 import Constant from "./constant.js";
-import * as Util from "./util.js";
-import Parser from "./parser.js";
+import { type, isNumeric, extend } from "./util.js";
+import { parser as Parser } from "./parser.js";
 import { bool, character, pick, shuffle, string } from "./random/index.js";
 import * as Random from "./random/index.js";
 import * as RE from "./regexp/index.js";
 
 var Handler = {
-    extend: Util.extend,
+    extend: extend,
 };
 
 /*
@@ -74,8 +74,8 @@ Handler.gen = function (template, name, context) {
     };
     // console.log('path:', context.path.join('.'), template)
 
-    var rule = Parser.parse(name);
-    var type = Util.type(template);
+    var rule = Parser(name);
+    var type = type(template);
     var data;
 
     if (Handler[type]) {
@@ -207,7 +207,7 @@ Handler.extend({
         // 'obj|min-max': {}
         /* jshint -W041 */
         if (options.rule.min != undefined) {
-            keys = Util.keys(options.template);
+            keys = Object.keys(options.template);
             keys = shuffle(keys);
             keys = keys.slice(0, options.rule.count);
             for (i = 0; i < keys.length; i++) {
@@ -237,7 +237,7 @@ Handler.extend({
 
             /*
                 会改变非函数属性的顺序
-                keys = Util.keys(options.template)
+                keys = Object.keys(options.template)
                 keys.sort(function(a, b) {
                     var afn = typeof options.template[a] === 'function'
                     var bfn = typeof options.template[b] === 'function'
@@ -264,7 +264,7 @@ Handler.extend({
                 options.context.templatePath.pop();
                 // 'id|+1': 1
                 inc = key.match(Constant.RE_KEY);
-                if (inc && inc[2] && Util.type(options.template[key]) === "number") {
+                if (inc && inc[2] && type(options.template[key]) === "number") {
                     options.template[key] += parseInt(inc[2], 10);
                 }
             }
@@ -339,7 +339,7 @@ Handler.extend({
                     result = phed;
                     break;
 
-                    if (Util.isNumeric(phed)) {
+                    if (isNumeric(phed)) {
                         result = parseFloat(phed, 10);
                         break;
                     }
@@ -452,7 +452,7 @@ Handler.extend({
         }
 
         var handle = Random[key] || Random[lkey] || Random[okey];
-        switch (Util.type(handle)) {
+        switch (type(handle)) {
             case "array":
                 // 自动从数组中取一个，例如 @areas
                 return pick(handle);

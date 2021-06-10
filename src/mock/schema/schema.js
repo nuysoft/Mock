@@ -7,7 +7,7 @@
  */
 import Constant from "../constant.js";
 import * as Util from "../util.js";
-import Parser from "../parser.js";
+import { parser } from "../parser.js";
 
 function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
     // type rule properties items
@@ -15,7 +15,7 @@ function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
         name: typeof name === "string" ? name.replace(Constant.RE_KEY, "$1") : name,
         template,
         type: Util.type(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
-        rule: Parser.parse(name),
+        rule: parser.parse(name),
         path: path.slice(0),
     };
     result.path.push(name === undefined ? "ROOT" : result.name);
