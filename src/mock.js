@@ -18,7 +18,7 @@ if (typeof window !== "undefined") XHR = MockXMLHttpRequest;
     
     此版本为 esm 版本 
     KonghaYao 修改于 2021/6/11
-    https://github.com/KonghaYao
+    https://github.com/KonghaYao/
 */
 var Mock = {
     Handler,

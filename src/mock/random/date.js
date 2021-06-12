@@ -70,8 +70,8 @@ function _randomDate(min = new Date(0), max = new Date()) {
 }
 
 function timestamp(min, max) {
-    if (min instanceof Date && max instanceof Date) return _randomDate(min, max);
-    return _randomDate();
+    if (min instanceof Date && max instanceof Date) return _randomDate(min, max).getTime();
+    return _randomDate().getTime();
 }
 
 export {
