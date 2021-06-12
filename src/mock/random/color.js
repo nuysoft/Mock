@@ -71,13 +71,10 @@
         color = "#" + ("000000" + color).slice(-6)
         return color.toUpperCase()
 */
-
-import { hsv2hsl, hsv2rgb, rgb2hex } from "./color_convert.js";
-import DICT from "./color_dict.js";
-
-// http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-// https://github.com/devongovett/color-generator/blob/master/index.js
-// 随机生成一个有吸引力的颜色。
+import Color from "color"; //使用 color 这个库进行颜色转换
+import DICT from "./color/color_dict.js";
+import { pick } from "./helper.js";
+import RandomColor from "./color/color_dict_cn.json";
 
 let _hue;
 function _goldenRatioColor(saturation, value) {
@@ -89,40 +86,37 @@ function _goldenRatioColor(saturation, value) {
     if (typeof saturation !== "number") saturation = 0.5;
     if (typeof value !== "number") value = 0.95;
 
-    return [_hue * 360, saturation * 100, value * 100];
+    return Color.hsv(_hue * 360, saturation * 100, value * 100);
 }
 
-// 随机生成一个有吸引力的颜色，格式为 '#RRGGBB'。
+// 中国色 数据来自于 http://zhongguose.com
+
+// 随机生成一个有吸引力的颜色，格式为 '#RRGGBB' hex。
 function color(name) {
     if (name || DICT[name]) return DICT[name].nicer;
-    return hex();
+    return pick(RandomColor).hex;
 }
 
 // #DAC0DE
 function hex() {
     var hsv = _goldenRatioColor();
-    var rgb = hsv2rgb(hsv);
-    var hex = rgb2hex(rgb[0], rgb[1], rgb[2]);
-    return hex;
+    return hsv.hex();
 }
 
 // rgb(128,255,255)
 function rgb() {
     var hsv = _goldenRatioColor();
-    var rgb = hsv2rgb(hsv);
-    return "rgb(" + parseInt(rgb[0], 10) + ", " + parseInt(rgb[1], 10) + ", " + parseInt(rgb[2], 10) + ")";
+    return hsv.hsv().string();
 }
 // rgba(128,255,255,0.3)
 function rgba() {
     var hsv = _goldenRatioColor();
-    var rgb = hsv2rgb(hsv);
-    return "rgba(" + parseInt(rgb[0], 10) + ", " + parseInt(rgb[1], 10) + ", " + parseInt(rgb[2], 10) + ", " + Math.random().toFixed(2) + ")";
+    return hsv.alpha(Math.random().toFixed(2)).hsv().string();
 }
 
 // hsl(300,80%,90%)
 function hsl() {
     var hsv = _goldenRatioColor();
-    var hsl = hsv2hsl(hsv);
-    return "hsl(" + parseInt(hsl[0], 10) + ", " + parseInt(hsl[1], 10) + ", " + parseInt(hsl[2], 10) + ")";
+    return hsv.hsl().string();
 }
 export { color, hex, rgb, rgba, hsl, _goldenRatioColor };

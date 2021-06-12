@@ -25,6 +25,6 @@ const string = function (...args) {
             len = natural(min, max);
             break;
     }
-    return [...Array(len).keys()].map((i) => character(pool)).join("");
+    return [...Array(len).keys()].map(() => character(pool)).join("");
 };
 export { string, string as str };

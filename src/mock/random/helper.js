@@ -4,12 +4,15 @@
 
 import { natural } from "./basic/number.js";
 import { shuffle as _shuffle, capitalize } from "lodash-es";
+
 const upper = function (str) {
     return (str + "").toUpperCase();
 };
+
 const lower = function (str) {
     return (str + "").toLowerCase();
 };
+
 // 从数组中随机选取一个元素，并返回。
 const pick = function (...args) {
     let [arr, min, max] = args;
@@ -26,17 +29,11 @@ const pick = function (...args) {
     }
     if (min === 1 && max === 1) return arr[natural(0, arr.length - 1)];
     // pick( [ item1, item2 ... ], min, max )
-    return this.shuffle(arr, min, max);
+    return shuffle(arr, min, max);
 };
 /*
     打乱数组中元素的顺序，并返回。
     Given an array, scramble the order and return it.
-
-    其他的实现思路：
-        // https://code.google.com/p/jslibs/wiki/JavascriptTips
-        result = result.sort(function() {
-            return Math.random() - 0.5
-        })
 */
 const shuffle = function (arr, min, max) {
     let result = _shuffle(arr);
@@ -45,11 +42,9 @@ const shuffle = function (arr, min, max) {
         case 1:
             return result;
         case 2:
-            max = min;
+            max = min; // 这里 max = undefined
         /* falls through */
         case 3:
-            min = parseInt(min, 10);
-            max = parseInt(max, 10);
             return result.slice(0, natural(min, max));
     }
 };
@@ -63,16 +58,16 @@ const shuffle = function (arr, min, max) {
 
 	    不支持单独调用！
 	*/
-const order = function order(array) {
-    order.cache = order.cache || {};
-
-    if (arguments.length > 1) array = [].slice.call(arguments, 0);
+const Cache = {};
+const order = function (...array) {
+    // 重载 (item1,item2,item3) 和 ([item1,item2,item3])
+    if (array.length === 1) array = array[0];
 
     // options.context.path/templatePath
     var options = order.options;
     var templatePath = options.context.templatePath.join(".");
 
-    var cache = (order.cache[templatePath] = order.cache[templatePath] || {
+    var cache = (Cache[templatePath] = Cache[templatePath] || {
         index: 0,
         array: array,
     });

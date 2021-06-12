@@ -6,20 +6,24 @@
 import Name from "./name.json";
 let { firstName, lastName, cfirstName, clastName } = Name;
 import { pick } from "./helper.js";
+
 // 随机生成一个常见的英文名。
 function first() {
     var names = firstName.male.concat();
     return pick(names);
 }
+
 // 随机生成一个常见的英文姓。
 function last() {
     return pick(lastName);
 }
+
 // 随机生成一个常见的英文姓名。
 function name(middle) {
     middle = middle ? ` ${first()} ` : " ";
     return `${first()}${middle}${last()}`;
 }
+
 /*
 	随机生成一个常见的中文姓。
 	[世界常用姓氏排行](http://baike.baidu.com/view/1719115.htm)

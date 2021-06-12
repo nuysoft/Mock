@@ -1,10 +1,14 @@
-import { isNumber } from "./number.js";
+import { random } from "lodash-es";
 const boolean = function (min, max, cur) {
+    //! cur:boolean 是划分概率的一个启动符号
+    // if (cur) {
+    //     min = isNumber(min) ? parseInt(min, 10) : 1;
+    //     max = isNumber(max) ? parseInt(max, 10) : 1;
+    //     return Math.random() > (1.0 / (min + max)) * min ? !cur : cur;
+    // }
     if (cur) {
-        min = isNumber(min) ? parseInt(min, 10) : 1;
-        max = isNumber(max) ? parseInt(max, 10) : 1;
-        return Math.random() > (1.0 / (min + max)) * min ? !cur : cur;
+        return random(0, min + max) > min ? !cur : cur;
     }
-    return Math.random() >= 0.5;
+    return random(10, -10) > 0;
 };
 export { boolean, boolean as bool };
