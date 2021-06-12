@@ -14,20 +14,22 @@
     {
       "type": "MIT",
       "url": "https://github.com/nuysoft/Mock/blob/master/MIT-LICENSE.txt"
+    },{
+      "type": "MIT",
+      "url": "https://gitee.com/dongzhongzhidong/Mock/LICENSE"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/nuysoft/Mock.git"
+    "url": "git://gitee.com/dongzhongzhidong/Mock.git"
   },
   "main": "./dist/mock.js",
   "spm": {
-    "main": "dist/mock.js"
+    "main": "./dist/mock.js"
   },
   "scripts": {
     "dev": "rollup  --config rollup.config.dev.js -w",
-    "build": "rollup --config rollup.config.build.js",
-    "docs": "docsify serve docs"
+    "build": "rollup --config rollup.config.build.js"
   },
   "dependencies": {
     "color": "^3.1.3",

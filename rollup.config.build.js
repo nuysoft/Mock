@@ -9,7 +9,7 @@ export default {
     output: [
         {
             // 打包出口
-            dir: "./dist",
+            file: "./dist/mock.js",
             format: "es",
         },
         {
@@ -23,18 +23,19 @@ export default {
         del({ targets: "dist/*" }),
         json(),
         resolve({
-            jsnext: true,
-            main: true,
             browser: true,
         }),
         commonjs({
-            // non-CommonJS modules will be ignored, but you can also
-            // specifically include/exclude files
-            include: ["node_modules/**", "./src/**"], // Default: undefined
             ignoreGlobal: false,
             sourceMap: false, // Default: true
         }), // 将 CommonJS 转换成 ES2015 模块供 Rollup 处理
         terser(),
-        license(),
+        license({
+            banner: {
+                content: {
+                    file: "./LICENSE",
+                },
+            },
+        }),
     ],
 };
