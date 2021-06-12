@@ -1,8 +1,8 @@
 {
-  "name": "mockjs",
+  "name": "mockjs-esm",
   "title": "Mock.js",
-  "description": "模拟请求 & 模拟数据",
-  "version": "0.1.11",
+  "description": "Mockjs 的 esm 版本，基础 api 一致",
+  "version": "0.9.0",
   "homepage": "http://mockjs.com/",
   "keywords": [
     "mock",
@@ -16,7 +16,6 @@
       "url": "https://github.com/nuysoft/Mock/blob/master/MIT-LICENSE.txt"
     }
   ],
-  "author": "nuysoft@gmail.com",
   "repository": {
     "type": "git",
     "url": "git://github.com/nuysoft/Mock.git"
