@@ -198,7 +198,7 @@ function arrayMap(array, iteratee) {
 var isArray = Array.isArray;
 
 /** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0;
+var INFINITY$1 = 1 / 0;
 
 /** Used to convert symbols to primitives and strings. */
 var symbolProto = Symbol ? Symbol.prototype : undefined,
@@ -225,7 +225,41 @@ function baseToString(value) {
     return symbolToString ? symbolToString.call(value) : '';
   }
   var result = (value + '');
-  return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+  return (result == '0' && (1 / value) == -INFINITY$1) ? '-0' : result;
+}
+
+/** Used to match a single whitespace character. */
+var reWhitespace = /\s/;
+
+/**
+ * Used by `_.trim` and `_.trimEnd` to get the index of the last non-whitespace
+ * character of `string`.
+ *
+ * @private
+ * @param {string} string The string to inspect.
+ * @returns {number} Returns the index of the last non-whitespace character.
+ */
+function trimmedEndIndex(string) {
+  var index = string.length;
+
+  while (index-- && reWhitespace.test(string.charAt(index))) {}
+  return index;
+}
+
+/** Used to match leading whitespace. */
+var reTrimStart = /^\s+/;
+
+/**
+ * The base implementation of `_.trim`.
+ *
+ * @private
+ * @param {string} string The string to trim.
+ * @returns {string} Returns the trimmed string.
+ */
+function baseTrim(string) {
+  return string
+    ? string.slice(0, trimmedEndIndex(string) + 1).replace(reTrimStart, '')
+    : string;
 }
 
 /**
@@ -256,6 +290,104 @@ function baseToString(value) {
 function isObject(value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
+}
+
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = baseTrim(value);
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0,
+    MAX_INTEGER = 1.7976931348623157e+308;
+
+/**
+ * Converts `value` to a finite number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.12.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted number.
+ * @example
+ *
+ * _.toFinite(3.2);
+ * // => 3.2
+ *
+ * _.toFinite(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toFinite(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toFinite('3.2');
+ * // => 3.2
+ */
+function toFinite(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  return value === value ? value : 0;
 }
 
 /**
@@ -1671,7 +1803,7 @@ var isRegExp = nodeIsRegExp ? baseUnary(nodeIsRegExp) : baseIsRegExp;
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeFloor = Math.floor,
-    nativeRandom = Math.random;
+    nativeRandom$1 = Math.random;
 
 /**
  * The base implementation of `_.random` without support for returning
@@ -1683,7 +1815,84 @@ var nativeFloor = Math.floor,
  * @returns {number} Returns the random number.
  */
 function baseRandom(lower, upper) {
-  return lower + nativeFloor(nativeRandom() * (upper - lower + 1));
+  return lower + nativeFloor(nativeRandom$1() * (upper - lower + 1));
+}
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseFloat = parseFloat;
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeMin = Math.min,
+    nativeRandom = Math.random;
+
+/**
+ * Produces a random number between the inclusive `lower` and `upper` bounds.
+ * If only one argument is provided a number between `0` and the given number
+ * is returned. If `floating` is `true`, or either `lower` or `upper` are
+ * floats, a floating-point number is returned instead of an integer.
+ *
+ * **Note:** JavaScript follows the IEEE-754 standard for resolving
+ * floating-point values which can produce unexpected results.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.7.0
+ * @category Number
+ * @param {number} [lower=0] The lower bound.
+ * @param {number} [upper=1] The upper bound.
+ * @param {boolean} [floating] Specify returning a floating-point number.
+ * @returns {number} Returns the random number.
+ * @example
+ *
+ * _.random(0, 5);
+ * // => an integer between 0 and 5
+ *
+ * _.random(5);
+ * // => also an integer between 0 and 5
+ *
+ * _.random(5, true);
+ * // => a floating-point number between 0 and 5
+ *
+ * _.random(1.2, 5.2);
+ * // => a floating-point number between 1.2 and 5.2
+ */
+function random(lower, upper, floating) {
+  if (floating && typeof floating != 'boolean' && isIterateeCall(lower, upper, floating)) {
+    upper = floating = undefined;
+  }
+  if (floating === undefined) {
+    if (typeof upper == 'boolean') {
+      floating = upper;
+      upper = undefined;
+    }
+    else if (typeof lower == 'boolean') {
+      floating = lower;
+      lower = undefined;
+    }
+  }
+  if (lower === undefined && upper === undefined) {
+    lower = 0;
+    upper = 1;
+  }
+  else {
+    lower = toFinite(lower);
+    if (upper === undefined) {
+      upper = lower;
+      lower = 0;
+    } else {
+      upper = toFinite(upper);
+    }
+  }
+  if (lower > upper) {
+    var temp = lower;
+    lower = upper;
+    upper = temp;
+  }
+  if (floating || lower % 1 || upper % 1) {
+    var rand = nativeRandom();
+    return nativeMin(lower + (rand * (upper - lower + freeParseFloat('1e-' + ((rand + '').length - 1)))), upper);
+  }
+  return baseRandom(lower, upper);
 }
 
 /**
@@ -1859,15 +2068,9 @@ var Util = /*#__PURE__*/Object.freeze({
 const isNumber = function (el) {
     return typeof el === "number" && !isNaN(el);
 };
-const random = function (min, max) {
-    return Math.random() * (max - min) + min;
-};
-
 // 返回一个随机的整数。
 const integer = function (min, max) {
-    min = isNumber(min) ? parseInt(min, 10) : -9007199254740992;
-    max = isNumber(max) ? parseInt(max, 10) : 9007199254740992; // 2^53
-    return Math.round(random(min, max));
+    return random(min, max, false);
 };
 const natural = function (min, max) {
     return Math.abs(integer(min, max));
@@ -1944,21 +2147,9 @@ const range$1 = function (...args) {
 };
 
 const float = function (min, max, dmin, dmax) {
-    dmin = isNumber(dmin) ? dmin : 0;
-    dmax = isNumber(dmax) ? dmax : 17;
-    dmin = Math.max(Math.min(dmin, 17), 0);
-    dmax = Math.max(Math.min(dmax, 17), 0);
-    let dcount = natural(dmin, dmax);
-    var ret =
-        integer(min, max) +
-        "." +
-        [...Array(dcount).keys()]
-            .map((i) => {
-                // 最后一位不能为 0，所以必须进行处理
-                return i < dcount - 1 ? this.character("number") : this.character("123456789");
-            })
-            .join("");
-    return parseFloat(ret, 10);
+    let dcount = random(dmin, dmax, false);
+
+    return random(min, max, dcount);
 };
 
 /*
@@ -9179,45 +9370,22 @@ function splitPathToArray(path) {
     return parts;
 }
 
-const _all = Object.keys(Random).reduce((col, key) => {
-    col[key.toLowerCase()] = key;
-    return col;
-}, {});
+// 占位符即是字符串函数的意思
 function placeholder(placeholder, obj, templateContext, options) {
     // console.log(options.context.path)
     // 1 key, 2 params
     Constant.RE_PLACEHOLDER.exec("");
-    var parts = Constant.RE_PLACEHOLDER.exec(placeholder),
-        key = parts && parts[1],
-        lkey = key && key.toLowerCase(),
-        okey = _all[lkey],
-        params = (parts && parts[2]) || "";
-    var pathParts = splitPathToArray(key);
+    var [, key, params = ""] = Constant.RE_PLACEHOLDER.exec(placeholder);
+
+    var lkey = key && key.toLowerCase(),
+        pathParts = splitPathToArray(key);
 
     // 解析占位符的参数
-    try {
-        // 1. 尝试保持参数的类型
-        /*
-            #24 [Window Firefox 30.0 引用 占位符 抛错](https://github.com/nuysoft/Mock/issues/24)
-            [BX9056: 各浏览器下 window.eval 方法的执行上下文存在差异](http://www.w3help.org/zh-cn/causes/BX9056)
-            应该属于 Window Firefox 30.0 的 BUG
-        */
-        /* jshint -W061 */
-        params = eval("(function(){ return [].splice.call(arguments, 0 ) })(" + params + ")");
-    } catch (error) {
-        // 2. 如果失败，只能解析为字符串
-        // console.error(error)
-        // if (error instanceof ReferenceError) params = parts[2].split(/,\s*/);
-        // else throw error
-        params = parts[2].split(/,\s*/);
-    }
+    // !不进行低版本浏览器的匹配
+    params = params.split(/\s*,\s*/);
 
     // 占位符优先引用数据模板中的属性
     if (obj && key in obj) return obj[key];
-
-    // @index @key
-    // if (Constant.RE_INDEX.test(key)) return +options.name
-    // if (Constant.RE_KEY.test(key)) return options.name
 
     // 绝对路径 or 相对路径
     if (key.charAt(0) === "/" || pathParts.length > 1) return getValueByKeyPath(key, options);
@@ -9238,7 +9406,7 @@ function placeholder(placeholder, obj, templateContext, options) {
     }
 
     // 如果未找到，则原样返回
-    if (!(key in Random) && !(lkey in Random) && !(okey in Random)) return placeholder;
+    if (!(key in Random) && !(lkey in Random)) return placeholder;
 
     // 递归解析参数中的占位符
     for (var i = 0; i < params.length; i++) {
@@ -9248,7 +9416,7 @@ function placeholder(placeholder, obj, templateContext, options) {
         }
     }
 
-    var handle = Random[key] || Random[lkey] || Random[okey];
+    var handle = Random[key] || Random[lkey];
     switch (type$1(handle)) {
         case "array":
             // 自动从数组中取一个，例如 @areas
@@ -9256,8 +9424,7 @@ function placeholder(placeholder, obj, templateContext, options) {
         case "function":
             // 执行占位符方法（大多数情况）
             handle.options = options;
-            var re = handle.apply(Random, params);
-            if (re === undefined) re = ""; // 因为是在字符串中，所以默认为空字符串。
+            var re = handle.apply(Random, params) || ""; // 因为是在字符串中，所以默认为空字符串。
             delete handle.options;
             return re;
     }
