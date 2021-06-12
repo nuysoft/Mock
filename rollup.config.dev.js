@@ -13,7 +13,7 @@ export default {
         },
         {
             // 打包出口
-            file: "./dist/Mock.min.js",
+            file: "./dist/mock.min.js",
             format: "iife",
             name: "Mock",
         },
