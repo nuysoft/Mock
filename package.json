@@ -2,7 +2,7 @@
   "name": "mockjs-esm",
   "title": "Mock.js",
   "description": "Mockjs 的 esm 版本，基础 api 一致",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "homepage": "http://mockjs.com/",
   "keywords": [
     "mock",
@@ -14,7 +14,8 @@
     {
       "type": "MIT",
       "url": "https://github.com/nuysoft/Mock/blob/master/MIT-LICENSE.txt"
-    },{
+    },
+    {
       "type": "MIT",
       "url": "https://gitee.com/dongzhongzhidong/Mock/LICENSE"
     }
