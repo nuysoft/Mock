@@ -1,6 +1,6 @@
 import { pick } from "../helper.js";
 import { word } from "../text.js";
-import { protocols } from "./web_dict.js";
+import { protocols, tlds } from "./web_dict.js";
 /*
     随机生成一个 URL。
 

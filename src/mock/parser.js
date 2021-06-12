@@ -25,10 +25,9 @@
 import Constant from "./constant.js";
 import { integer } from "./random/index.js";
 /* jshint -W041 */
-export function parser(name) {
-    name = name == undefined ? "" : name + "";
-
-    var parameters = (name || "").match(Constant.RE_KEY);
+export function parser(name = "") {
+    if (typeof name !== "string") name = name + "";
+    var parameters = name.match(Constant.RE_KEY);
 
     var range = parameters && parameters[3] && parameters[3].match(Constant.RE_RANGE);
     var min = range && range[1] && parseInt(range[1], 10); // || 1

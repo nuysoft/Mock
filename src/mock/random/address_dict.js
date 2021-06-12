@@ -31,19 +31,20 @@ function createTree(list) {
         (all, item) => {
             let { mapped, result } = all;
             let { id, pid } = item;
-            mapped[id] = item;
-            /* jshint -W041 */
-            // undefined 时是一个顶级元素
-            if (pid === undefined) {
+            mapped[id] = item; // 记录这个点
+
+            if (pid === id) {
+                // 自己为自己父级则为
                 result.push(item);
                 return { mapped, result };
             }
-            const parent = mapped[pid];
-            if (!parent) {
+            const hasParent = mapped.hasOwnProperty(pid);
+            if (!hasParent) {
                 //父级尚未插入到mapped记录中
                 bugList.push(item);
                 return { mapped, result };
             }
+            const parent = mapped[pid];
             parent.children = [...(parent.children || []), item];
             return { mapped, result };
         },
@@ -59,11 +60,11 @@ function createTree(list) {
     return result;
 }
 const ids = Object.keys(DICT);
-function isInIds(what) {}
+
 // 转化数组内对象的表现形式
 const fixed = Object.entries(DICT).map(([id, value]) => {
-    var pid = id.slice(2, 6) === "0000" ? undefined : id.slice(4, 6) == "00" ? id.slice(0, 2) + "0000" : id.slice(0, 4) + "00";
-    if (!(pid in ids)) {
+    var pid = id.slice(2, 6) === "0000" ? id : id.slice(4, 6) === "00" ? id.slice(0, 2) + "0000" : id.slice(0, 4) + "00";
+    if (!ids.includes(pid)) {
         // 修复 pid 并不存在，但是是归属于顶级的错误
         pid = id.slice(0, 2) + "0000";
     }

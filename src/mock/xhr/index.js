@@ -1,1 +1,1 @@
-export { MockXMLHttpRequest } from "./xhr";
+export { MockXMLHttpRequest } from "./xhr.js";

@@ -6,7 +6,7 @@
     > [JSON Schema](http://json-schema.org/)
  */
 import Constant from "../constant.js";
-import * as Util from "../util.js";
+import { type } from "../util.js";
 import { parser } from "../parser.js";
 
 function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
@@ -14,7 +14,7 @@ function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
     var result = {
         name: typeof name === "string" ? name.replace(Constant.RE_KEY, "$1") : name,
         template,
-        type: Util.type(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
+        type: type(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
         rule: parser.parse(name),
         path: path.slice(0),
     };

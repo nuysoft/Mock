@@ -13,7 +13,7 @@ function first() {
 }
 // 随机生成一个常见的英文姓。
 function last() {
-    return this.pick(lastName);
+    return pick(lastName);
 }
 // 随机生成一个常见的英文姓名。
 function name(middle) {

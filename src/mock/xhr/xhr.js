@@ -44,8 +44,8 @@
     onreadystatechange  readystatechange
  */
 
-import * as Util from "../util.js";
-
+import { type, isFunction } from "../util.js";
+import { assignIn as extend } from "lodash-es";
 // 备份原生 XMLHttpRequest
 window._XMLHttpRequest = window.XMLHttpRequest;
 window._ActiveXObject = window.ActiveXObject;
@@ -151,12 +151,12 @@ MockXMLHttpRequest._settings = {
 };
 
 MockXMLHttpRequest.setup = function (settings) {
-    Util.extend(MockXMLHttpRequest._settings, settings);
+    extend(MockXMLHttpRequest._settings, settings);
     return MockXMLHttpRequest._settings;
 };
 
-Util.extend(MockXMLHttpRequest, XHR_STATES);
-Util.extend(MockXMLHttpRequest.prototype, XHR_STATES);
+extend(MockXMLHttpRequest, XHR_STATES);
+extend(MockXMLHttpRequest.prototype, XHR_STATES);
 
 // 标记当前对象为 MockXMLHttpRequest
 MockXMLHttpRequest.prototype.mock = true;
@@ -165,13 +165,13 @@ MockXMLHttpRequest.prototype.mock = true;
 MockXMLHttpRequest.prototype.match = false;
 
 // 初始化 Request 相关的属性和方法
-Util.extend(MockXMLHttpRequest.prototype, {
+extend(MockXMLHttpRequest.prototype, {
     // https://xhr.spec.whatwg.org/#the-open()-method
     // Sets the request method, request URL, and synchronous flag.
-    open: function (method, url, async, username, password) {
+    open: function (method, url, async = true, username, password) {
         var that = this;
 
-        Util.extend(this.custom, {
+        extend(this.custom, {
             method: method,
             url: url,
             async: typeof async === "boolean" ? async : true,
@@ -315,7 +315,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
 });
 
 // 初始化 Response 相关的属性和方法
-Util.extend(MockXMLHttpRequest.prototype, {
+extend(MockXMLHttpRequest.prototype, {
     responseURL: "",
     status: MockXMLHttpRequest.UNSENT,
     statusText: "",
@@ -354,7 +354,7 @@ Util.extend(MockXMLHttpRequest.prototype, {
 });
 
 // EventTarget
-Util.extend(MockXMLHttpRequest.prototype, {
+extend(MockXMLHttpRequest.prototype, {
     addEventListener: function addEventListener(type, handle) {
         var events = this.custom.events;
         if (!events[type]) events[type] = [];
@@ -415,10 +415,10 @@ function find(options) {
     }
 
     function match(expected, actual) {
-        if (Util.type(expected) === "string") {
+        if (type(expected) === "string") {
             return expected === actual;
         }
-        if (Util.type(expected) === "regexp") {
+        if (type(expected) === "regexp") {
             return expected.test(actual);
         }
     }
@@ -426,6 +426,6 @@ function find(options) {
 
 // 数据模板 ＝> 响应数据
 function convert(item, options) {
-    return Util.isFunction(item.template) ? item.template(options) : MockXMLHttpRequest.Mock.mock(item.template);
+    return isFunction(item.template) ? item.template(options) : MockXMLHttpRequest.Mock.mock(item.template);
 }
 export { MockXMLHttpRequest };

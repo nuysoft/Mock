@@ -38,4 +38,7 @@
 
 //     return target;
 // }
-export { assignIn as extend } from "lodash-es";
+import { assignIn } from "lodash-es";
+export function extend(...args) {
+    return assignIn(this, ...args);
+}

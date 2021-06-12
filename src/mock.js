@@ -15,6 +15,10 @@ if (typeof window !== "undefined") XHR = MockXMLHttpRequest;
     Mock - 模拟请求 & 模拟数据
     https://github.com/nuysoft/Mock
     墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
+    
+    此版本为 esm 版本 
+    KonghaYao 修改于 2021/6/11
+    https://github.com/KonghaYao
 */
 var Mock = {
     Handler,
@@ -31,7 +35,7 @@ var Mock = {
     _mocked: {},
 };
 
-Mock.version = "1.0.1-beta3";
+Mock.version = "1.1.1-es6";
 
 // 避免循环依赖
 if (XHR) XHR.Mock = Mock;
@@ -46,24 +50,31 @@ if (XHR) XHR.Mock = Mock;
 
     根据数据模板生成模拟数据。
 */
-Mock.mock = function (rurl, rtype, template) {
-    // Mock.mock(template)
-    if (arguments.length === 1) {
-        return Handler.gen(rurl);
+Mock.mock = function (...args) {
+    let rurl,
+        rtype = "",
+        template;
+
+    switch (args.length) {
+        case 1:
+            // Mock.mock(template)
+            [template] = args;
+            return Handler.gen(template);
+        // 2 和 3 switch 穿透
+        case 2:
+            // Mock.mock(rurl, template)
+            [rurl, template] = args;
+        case 3:
+        default:
+            // 拦截 XHR
+            if (XHR) window.XMLHttpRequest = XHR;
+            Mock._mocked[rurl + rtype] = {
+                rurl,
+                rtype,
+                template,
+            };
+            return Mock;
     }
-    // Mock.mock(rurl, template)
-    if (arguments.length === 2) {
-        template = rtype;
-        rtype = undefined;
-    }
-    // 拦截 XHR
-    if (XHR) window.XMLHttpRequest = XHR;
-    Mock._mocked[rurl + (rtype || "")] = {
-        rurl: rurl,
-        rtype: rtype,
-        template: template,
-    };
-    return Mock;
 };
 
 export default Mock;

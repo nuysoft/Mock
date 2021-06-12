@@ -1,0 +1,44 @@
+.badge {
+    box-sizing: border-box;
+    min-width: 10px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0 6px 0 6px;
+    padding: 5px 6px;
+    font-weight: normal;
+    color: #999;
+    background-color: #e6e6e6;
+    display: inline-block;
+    width: 120px;
+    font-size: 10px;
+}
+
+.code,
+.result,
+.result {
+    position: relative;
+}
+.rerun {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    opacity: 0.3;
+    color: #339966;
+}
+.definition .result .mockicon.rerun:after,
+.definition .code .mockicon.rerun:after {
+    font-family: "mockicon";
+    content: "\e606";
+    font-size: 20px;
+    line-height: 1;
+}
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 2em;
+}

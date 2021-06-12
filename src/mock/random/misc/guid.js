@@ -29,6 +29,7 @@
 		UUID格式：xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx(8-4-4-16)
 		GUID格式：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (8-4-4-4-12)
 	*/
+import { v4 as uuid } from "uuid";
 export default function guid() {
     return uuid().replace(/(?<=[^-]{4}-[^-]{4}-[^-]{4}-[^-]{4})/, "-");
 }

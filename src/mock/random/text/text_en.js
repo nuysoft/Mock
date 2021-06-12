@@ -1,6 +1,6 @@
 import range from "./range.js";
 import { character } from "../basic.js";
-
+import { capitalize } from "../helper.js";
 // 随机生成一个句子，第一个单词的首字母大写。
 function sentence(min, max) {
     var len = range(12, 18, min, max);
