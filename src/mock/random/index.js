@@ -14,3 +14,4 @@ export * from "./web.js";
 export * from "./date.js";
 export * from "./image.js";
 export * from "./address.js";
+export * from "./file.js";

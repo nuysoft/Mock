@@ -14,22 +14,14 @@ const lower = function (str) {
 };
 
 // 从数组中随机选取一个元素，并返回。
-const pick = function (...args) {
-    let [arr, min, max] = args;
-    // pick( item1, item2 ... )
-    if (!(arr instanceof Array)) {
-        arr = args;
-        min = 1;
-        max = 1;
-    } else {
-        // pick( [ item1, item2 ... ] )
-        if (min === undefined) min = 1;
-        // pick( [ item1, item2 ... ], count )
-        if (max === undefined) max = min;
-    }
-    if (min === 1 && max === 1) return arr[natural(0, arr.length - 1)];
+// 更改 pick 函数 , 函数不进行重载
+const pick = function (arr, min, max) {
+    // pick( [ item1, item2 ... ] )
+    if (min === undefined && max === undefined) return arr[natural(0, arr.length - 1)];
     // pick( [ item1, item2 ... ], min, max )
-    return shuffle(arr, min, max);
+    if (min !== undefined && max !== undefined) return shuffle(arr, min, max);
+    // pick( [ item1, item2 ... ], count )
+    return shuffle(arr, 0, min);
 };
 /*
     打乱数组中元素的顺序，并返回。
@@ -45,7 +37,7 @@ const shuffle = function (arr, min, max) {
             max = min; // 这里 max = undefined
         /* falls through */
         case 3:
-            return result.slice(0, natural(min, max));
+            return result.slice(min, max);
     }
 };
 /*

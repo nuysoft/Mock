@@ -6,11 +6,11 @@ import { gen } from "./gen.js";
 import { splitPathToArray, getValueByKeyPath } from "./path.js";
 
 // 占位符即是字符串函数的意思
-export function placeholder(placeholder, obj, templateContext, options) {
+function placeholder(Placeholder, obj, templateContext, options) {
     // console.log(options.context.path)
     // 1 key, 2 params
     Constant.RE_PLACEHOLDER.exec("");
-    var [, key, params = ""] = Constant.RE_PLACEHOLDER.exec(placeholder);
+    var [, key, params = ""] = Constant.RE_PLACEHOLDER.exec(Placeholder);
 
     var lkey = key && key.toLowerCase(),
         pathParts = splitPathToArray(key);
@@ -30,7 +30,7 @@ export function placeholder(placeholder, obj, templateContext, options) {
         templateContext &&
         typeof templateContext === "object" &&
         key in templateContext &&
-        placeholder !== templateContext[key] // fix #15 避免自己依赖自己
+        Placeholder !== templateContext[key] // fix #15 避免自己依赖自己
     ) {
         // 先计算被引用的属性值
         templateContext[key] = gen(templateContext[key], key, {
@@ -41,15 +41,16 @@ export function placeholder(placeholder, obj, templateContext, options) {
     }
 
     // 如果未找到，则原样返回
-    if (!(key in Random) && !(lkey in Random)) return placeholder;
+    if (!(key in Random) && !(lkey in Random)) return Placeholder;
 
     // 递归解析参数中的占位符
-    for (var i = 0; i < params.length; i++) {
+    params = params.map((param) => {
         Constant.RE_PLACEHOLDER.exec("");
-        if (Constant.RE_PLACEHOLDER.test(params[i])) {
-            params[i] = placeholder(params[i], obj, templateContext, options);
+        if (Constant.RE_PLACEHOLDER.test(param)) {
+            return placeholder(param, obj, templateContext, options);
         }
-    }
+        return param;
+    });
 
     var handle = Random[key] || Random[lkey];
     switch (Type(handle)) {
@@ -64,3 +65,4 @@ export function placeholder(placeholder, obj, templateContext, options) {
             return re;
     }
 }
+export { placeholder };

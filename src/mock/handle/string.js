@@ -28,10 +28,6 @@ export function string(options) {
 
             // 只有一个占位符，并且没有其他字符
             if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) {
-                //
-                result = phed;
-                return true;
-
                 if (isNumeric(phed)) {
                     result = parseFloat(phed, 10);
                     return true;
@@ -39,7 +35,9 @@ export function string(options) {
                 if (/^(true|false)$/.test(phed)) {
                     result = phed === "true" ? true : phed === "false" ? false : phed; // 已经是布尔值
                     return true;
-                }
+                } //
+                result = phed;
+                return true;
             }
             result = result.replace(ph, phed);
         });
