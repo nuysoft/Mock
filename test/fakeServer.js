@@ -10,4 +10,5 @@ Mock.mock("fake/file", {
         },
     ],
 });
+
 axios.get("fake/file").then((res) => console.log(res));
