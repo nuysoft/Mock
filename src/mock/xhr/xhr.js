@@ -43,8 +43,7 @@
     onloadend           loadend
     onreadystatechange  readystatechange
  */
-
-import { type, isFunction } from "../util.js";
+import { find, convert } from "./ajax-tools.js";
 import { assignIn as extend } from "lodash-es";
 // 备份原生 XMLHttpRequest
 window._XMLHttpRequest = window.XMLHttpRequest;
@@ -404,28 +403,4 @@ function createNativeXMLHttpRequest() {
     }
 }
 
-// 查找与请求参数匹配的数据模板：URL，Type
-function find(options) {
-    for (var sUrlType in MockXMLHttpRequest.Mock._mocked) {
-        var item = MockXMLHttpRequest.Mock._mocked[sUrlType];
-        if ((!item.rurl || match(item.rurl, options.url)) && (!item.rtype || match(item.rtype, options.type.toLowerCase()))) {
-            // console.log('[mock]', options.url, '>', item.rurl)
-            return item;
-        }
-    }
-
-    function match(expected, actual) {
-        if (type(expected) === "string") {
-            return expected === actual;
-        }
-        if (type(expected) === "regexp") {
-            return expected.test(actual);
-        }
-    }
-}
-
-// 数据模板 ＝> 响应数据
-function convert(item, options) {
-    return isFunction(item.template) ? item.template(options) : MockXMLHttpRequest.Mock.mock(item.template);
-}
 export { MockXMLHttpRequest };

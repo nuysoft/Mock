@@ -5,7 +5,7 @@ import * as Random from "./mock/random/index.js";
 import * as RE from "./mock/regexp/index.js";
 import { toJSONSchema } from "./mock/schema/index.js";
 import { valid } from "./mock/valid/index.js";
-
+import { _mocked } from "./mock/_mocked.js";
 import { MockXMLHttpRequest } from "./mock/xhr/index.js";
 
 var XHR;
@@ -32,7 +32,7 @@ var Mock = {
     setup: function (settings) {
         return XHR.setup(settings);
     },
-    _mocked: {},
+    _mocked,
 };
 
 Mock.version = "1.1.1-es6";
@@ -52,7 +52,7 @@ if (XHR) XHR.Mock = Mock;
 */
 Mock.mock = function (...args) {
     let rurl,
-        rtype = "",
+        rtype = "get",
         template;
 
     switch (args.length) {
@@ -64,17 +64,21 @@ Mock.mock = function (...args) {
         case 2:
             // Mock.mock(rurl, template)
             [rurl, template] = args;
+            break;
         case 3:
-        default:
-            // 拦截 XHR
-            if (XHR) window.XMLHttpRequest = XHR;
-            Mock._mocked[rurl + rtype] = {
-                rurl,
-                rtype,
-                template,
-            };
-            return Mock;
+            // Mock.mock(rurl,rtype, template)
+            [rurl, rtype, template] = args;
+            break;
     }
+
+    // 拦截 XHR
+    if (XHR) window.XMLHttpRequest = XHR;
+    _mocked.$set({
+        rurl,
+        rtype,
+        template,
+    });
+    return Mock;
 };
 
 export default Mock;

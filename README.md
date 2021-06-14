@@ -17,6 +17,7 @@ Mockjs-esm 是 [Mockjs](http://mockjs.com/) 的 esm 版本，由于 [Mockjs](htt
 3. 源代码打包方式改为 rollup 打包，生成 esm 版本和 iife 版本。
 4. 扩充 [Mockjs](http://mockjs.com/) 的功能，比如提供 timestamp 模板等。
 5. 更改随机颜色为从 [中国色](http://zhongguose.com) 中抽取一种颜色。 (中国色 数据来自于 http://zhongguose.com)
+6. 删除 XHR 代理时的同步行为，这个行为已经不被浏览器所使用。
 
 ## 教程
 
