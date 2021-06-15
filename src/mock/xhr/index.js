@@ -3,4 +3,4 @@
 import { mockFetch } from "./fetch/fetch.js";
 typeof window !== "undefined" && mockFetch(); // 浏览器直接使用即可
 
-export { MockXMLHttpRequest } from "./xhr.js";
+export { MockXMLHttpRequest } from "./XMLHttpRequest/xhr.js";

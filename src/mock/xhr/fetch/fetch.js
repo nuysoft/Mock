@@ -13,6 +13,7 @@ import { _mocked } from "../../_mocked.js";
 import { find, convert } from "../ajax-tools.js";
 
 // 假的 Response 对象
+// import fakeResponse from "./src/response.js";
 import fakeResponse from "./src/response.js";
 
 async function fakeFetch(url, options = {}) {
