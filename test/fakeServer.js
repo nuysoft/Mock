@@ -10,8 +10,10 @@ Mock.mock("fake/file", {
         },
     ],
 });
+axios.get("fake/file").then((res) => console.warn(res));
+axios.get("https://cdn.jsdelivr.net/gh/fluency03/shijing/package.json").then((res) => console.warn({ res }));
 
-axios.get("fake/file").then((res) => console.log(res));
-fetch("fake/file")
-    .then((res) => res.json())
-    .then(console.log);
+// fetch("fake/file")
+//     .then((res) => res.json())
+//     .then(console.log);
+// fetch("https://cdn.jsdelivr.net/gh/fluency03/shijing/package.json").then((res) => console.log("fetch", res));
