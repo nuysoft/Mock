@@ -37,9 +37,6 @@ var Mock = {
 
 Mock.version = "1.1.1-es6";
 
-// 避免循环依赖
-if (XHR) XHR.Mock = Mock;
-
 /*
     * Mock.mock( template )
     * Mock.mock( function() )

@@ -29,7 +29,7 @@ class MockXMLHttpRequest extends XMLHttpRequest {
                 return null;
             }
         }
-        this._send(body);
+        return this._send(body);
     }
     get mock() {
         return this.$mock;
