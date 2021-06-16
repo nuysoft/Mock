@@ -2,7 +2,7 @@
   "name": "mockjs-esm",
   "title": "Mock.js",
   "description": "Mockjs 的 esm 版本，基础 api 一致",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "homepage": "http://mockjs.com/",
   "keywords": [
     "mock",
@@ -31,7 +31,8 @@
   "scripts": {
     "dev": "rollup  --config rollup.config.dev.js -w",
     "build": "rollup --config rollup.config.build.js",
-    "patch":"npm version patch && npm publish" },
+    "patch": "npm version patch && npm publish"
+  },
   "dependencies": {
     "color": "^3.1.3",
     "lodash-es": "^4.17.21",
