@@ -183,6 +183,9 @@ Util.extend(MockXMLHttpRequest.prototype, {
             }
         })
 
+        // 拓展this.custom属性, 用于设置responseHeaders等属性
+        Util.extend(this.custom, MockXMLHttpRequest._settings)
+
         this.custom.timeout = function(timeout) {
             if (typeof timeout === 'number') return timeout
             if (typeof timeout === 'string' && !~timeout.indexOf('-')) return parseInt(timeout, 10)
