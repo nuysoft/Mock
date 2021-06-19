@@ -183,6 +183,9 @@ Util.extend(MockXMLHttpRequest.prototype, {
             }
         })
 
+        // 拓展this.custom属性, 用于设置responseHeaders等属性
+        Util.extend(this.custom, MockXMLHttpRequest._settings)
+
         this.custom.timeout = function(timeout) {
             if (typeof timeout === 'number') return timeout
             if (typeof timeout === 'string' && !~timeout.indexOf('-')) return parseInt(timeout, 10)
@@ -235,6 +238,8 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         // 找到了匹配的数据模板，开始拦截 XHR 请求
         this.match = true
+        // 设置单个请求的属性
+        Util.extend(this.custom, item.config)
         this.custom.template = item
         this.readyState = MockXMLHttpRequest.OPENED
         this.dispatchEvent(new Event('readystatechange' /*, false, false, this*/ ))
