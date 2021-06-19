@@ -33,7 +33,6 @@ const defineGetAndSet = function (what) {
 class MockXMLHttpRequest extends XMLHttpRequest {
     constructor() {
         super(...arguments);
-        console.log(this);
     }
     _send = SEND;
     _open = OPEN;
@@ -50,7 +49,7 @@ class MockXMLHttpRequest extends XMLHttpRequest {
                 defineGetAndSet(this);
                 this.dispatchEvent(new Event("loadstart"));
 
-                setTimeout(this.$done.bind(this), this.$timeout);
+                setTimeout(this.$done.bind(this), this.timeout || 100);
                 return null;
             }
         }
