@@ -238,6 +238,8 @@ Util.extend(MockXMLHttpRequest.prototype, {
 
         // 找到了匹配的数据模板，开始拦截 XHR 请求
         this.match = true
+        // 设置单个请求的属性
+        Util.extend(this.custom, item.config)
         this.custom.template = item
         this.readyState = MockXMLHttpRequest.OPENED
         this.dispatchEvent(new Event('readystatechange' /*, false, false, this*/ ))

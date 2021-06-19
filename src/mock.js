@@ -41,10 +41,11 @@ if (XHR) XHR.Mock = Mock
     * Mock.mock( rurl, function(options) )
     * Mock.mock( rurl, rtype, template )
     * Mock.mock( rurl, rtype, function(options) )
+    * Mock.mock( rurl, rtype, function(options), config )
 
     根据数据模板生成模拟数据。
 */
-Mock.mock = function(rurl, rtype, template) {
+Mock.mock = function(rurl, rtype, template, config) {
     // Mock.mock(template)
     if (arguments.length === 1) {
         return Handler.gen(rurl)
@@ -59,7 +60,8 @@ Mock.mock = function(rurl, rtype, template) {
     Mock._mocked[rurl + (rtype || '')] = {
         rurl: rurl,
         rtype: rtype,
-        template: template
+        template: template,
+        config: config
     }
     return Mock
 }
