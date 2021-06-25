@@ -1,20 +1,20 @@
 import { natural } from "../basic.js";
-import range from "./range.js";
+import { random, sampleSize, times } from "lodash-es";
 
-function cparagraph(min, max) {
-    var len = range(3, 7, min, max);
-    return [...Array(len)].map(() => csentence()).join("");
+function cparagraph(min = 3, max = 7) {
+    var len = random(min, max);
+    return times(len, () => csentence()).join("\n");
 }
 
 // 随机生成一个中文句子。
-function csentence(min, max) {
-    var len = range(12, 18, min, max);
-    return [...Array(len)].map(() => cword()).join("") + "。";
+function csentence(min = 12, max = 18) {
+    var len = random(min, max);
+    return times(len, () => cword()).join("") + "。";
 }
 // 随机生成一句中文标题。
-function ctitle(min, max) {
-    var len = range(3, 7, min, max);
-    return [...Array(len)].map(() => cword()).join("");
+function ctitle(min = 3, max = 7) {
+    var len = random(min, max);
+    return times(len, () => cword()).join("");
 }
 // 最常用的 500 个汉字 http://baike.baidu.com/view/568436.htm
 const DICT_HANZI =
@@ -52,10 +52,8 @@ function cword(...args) {
             len = natural(min, max);
             break;
     }
-    const poolLength = pool.length;
-    if (len === 1) return pool.charAt(natural(0, poolLength));
 
-    return [...Array(len)].map(() => pool.charAt(natural(0, poolLength))).join("");
+    return sampleSize(pool, len).join("");
 }
 
 export { ctitle, csentence, cparagraph, cword };

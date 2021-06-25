@@ -1,4 +1,5 @@
 import { natural } from "./number.js";
+import { times } from "lodash-es";
 import { character } from "./character.js";
 const string = function (...args) {
     var len, pool, min, max;
@@ -25,6 +26,6 @@ const string = function (...args) {
             len = natural(min, max);
             break;
     }
-    return [...Array(len).keys()].map(() => character(pool)).join("");
+    return times(len, () => character(pool)).join("");
 };
 export { string, string as str };

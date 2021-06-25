@@ -10,14 +10,10 @@ function placeholder(Placeholder, obj, templateContext, options) {
     // console.log(options.context.path)
     // 1 key, 2 params
     Constant.RE_PLACEHOLDER.exec("");
-    var [, key, params = ""] = Constant.RE_PLACEHOLDER.exec(Placeholder);
+    var [, key, params] = Constant.RE_PLACEHOLDER.exec(Placeholder);
 
     var lkey = key && key.toLowerCase(),
         pathParts = splitPathToArray(key);
-
-    // 解析占位符的参数
-    // !不进行低版本浏览器的匹配
-    params = params.split(/\s*,\s*/);
 
     // 占位符优先引用数据模板中的属性
     if (obj && key in obj) return obj[key];
@@ -43,14 +39,20 @@ function placeholder(Placeholder, obj, templateContext, options) {
     // 如果未找到，则原样返回
     if (!(key in Random) && !(lkey in Random)) return Placeholder;
 
-    // 递归解析参数中的占位符
-    params = params.map((param) => {
-        Constant.RE_PLACEHOLDER.exec("");
-        if (Constant.RE_PLACEHOLDER.test(param)) {
-            return placeholder(param, obj, templateContext, options);
-        }
-        return param;
-    });
+    // 解析占位符的参数
+    // !不进行低版本浏览器的匹配
+    if (params) {
+        params = params.split(/\s*,\s*/).map((param) => {
+            // 递归解析参数中的占位符
+            Constant.RE_PLACEHOLDER.exec("");
+            if (Constant.RE_PLACEHOLDER.test(param)) {
+                return placeholder(param, obj, templateContext, options);
+            }
+            return param;
+        });
+    } else {
+        params = [];
+    }
 
     var handle = Random[key] || Random[lkey];
     switch (Type(handle)) {

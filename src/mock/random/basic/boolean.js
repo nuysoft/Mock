@@ -1,5 +1,5 @@
 import { random } from "lodash-es";
-const boolean = function (min, max, cur) {
+const boolean = function (min, max, cur = false) {
     //! cur:boolean 是划分概率的一个启动符号
     // if (cur) {
     //     min = isNumber(min) ? parseInt(min, 10) : 1;
@@ -9,6 +9,7 @@ const boolean = function (min, max, cur) {
     if (cur) {
         return random(0, min + max) > min ? !cur : cur;
     }
+    debugger;
     return random(10, -10) > 0;
 };
 export { boolean, boolean as bool };

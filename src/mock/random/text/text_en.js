@@ -1,28 +1,28 @@
-import range from "./range.js";
+import { random, times } from "lodash-es";
 import { character } from "../basic.js";
 import { capitalize } from "../helper.js";
 // 随机生成一个句子，第一个单词的首字母大写。
-function sentence(min, max) {
-    var len = range(12, 18, min, max);
-    let string = [...Array(len)].map(() => word()).join("");
+function sentence(min = 12, max = 18) {
+    var len = random(min, max);
+    let string = times(len, () => word()).join("");
     return capitalize(string) + ".";
 }
 
 // 随机生成一个单词。
-function word(min, max) {
-    var len = range(3, 10, min, max);
-    return [...Array(len)].map(() => character("lower")).join("");
+function word(min = 3, max = 10) {
+    var len = random(min, max);
+    return times(len, () => character("lower")).join("");
 }
 
 // 随机生成一段文本。
-function paragraph(min, max) {
-    var len = range(3, 7, min, max);
-    return [...Array(len)].map((i) => sentence());
+function paragraph(min = 3, max = 7) {
+    var len = random(min, max);
+    return times(len, () => sentence()).join("\n");
 }
 
 // 随机生成一句标题，其中每个单词的首字母大写。
-function title(min, max) {
-    var len = range(3, 7, min, max);
-    return [...Array(len)].map(() => capitalize(word())).join("");
+function title(min = 3, max = 7) {
+    var len = random(min, max);
+    return times(len, () => capitalize(word())).join("");
 }
 export { word, paragraph, sentence, title };

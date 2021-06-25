@@ -2,8 +2,7 @@
     ## Helpers
 */
 
-import { natural } from "./basic/number.js";
-import { shuffle as _shuffle, capitalize } from "lodash-es";
+import { shuffle as _shuffle, capitalize, sampleSize, random, sample } from "lodash-es";
 
 const upper = function (str) {
     return (str + "").toUpperCase();
@@ -15,13 +14,18 @@ const lower = function (str) {
 
 // 从数组中随机选取一个元素，并返回。
 // 更改 pick 函数 , 函数不进行重载
-const pick = function (arr, min, max) {
-    // pick( [ item1, item2 ... ] )
-    if (min === undefined && max === undefined) return arr[natural(0, arr.length - 1)];
-    // pick( [ item1, item2 ... ], min, max )
-    if (min !== undefined && max !== undefined) return shuffle(arr, min, max);
-    // pick( [ item1, item2 ... ], count )
-    return shuffle(arr, 0, min);
+const pick = function (arr, ...args) {
+    let min, max, count;
+    switch (args.length) {
+        case 0:
+            return sample(arr, 1);
+        case 1:
+            [count] = args;
+            return sampleSize(arr, count);
+        case 2:
+            [min, max] = args;
+            return sampleSize(arr, random(min, max));
+    }
 };
 /*
     打乱数组中元素的顺序，并返回。

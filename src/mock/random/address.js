@@ -24,7 +24,7 @@ function city(prefix) {
 function county(prefix) {
     var province = pick(DICT);
     var city = pick(province.children);
-    var county = pick(city) || {
+    var county = pick(city.children) || {
         name: "-",
     };
     return prefix ? [province.name, city.name, county.name].join(" ") : county.name;

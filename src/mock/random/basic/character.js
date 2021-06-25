@@ -1,4 +1,4 @@
-import { natural } from "./number.js";
+import { sample } from "lodash-es";
 const pools = {
     lower: "abcdefghijklmnopqrstuvwxyz",
     upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -12,6 +12,6 @@ const character = function (pool = "default") {
     if (pools.hasOwnProperty(pool.toLocaleLowerCase())) {
         pool = pools[pool.toLowerCase()];
     }
-    return pool.charAt(natural(0, pool.length - 1));
+    return sample(pool);
 };
 export { character, character as char };
