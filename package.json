@@ -2,7 +2,7 @@
   "name": "mockjs-esm",
   "title": "Mock.js",
   "description": "Mockjs 的 esm 版本，基础 api 一致",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "homepage": "http://mockjs.com/",
   "keywords": [
     "mock",
