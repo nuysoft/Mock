@@ -23,7 +23,7 @@ export function mock(...args) {
     }
 
     // 拦截 XHR
-    XHR && window && (window.XMLHttpRequest = XHR);
+    if (!XHR) globalThis.XMLHttpRequest = XHR;
 
     _mocked.$set({
         rurl,

@@ -1,4 +1,1 @@
-import { MockXMLHttpRequest } from './xhr/index.js';
-let XHR;
-if (typeof window !== 'undefined') XHR = MockXMLHttpRequest;
-export { XHR };
+export { MockXMLHttpRequest as XHR } from './xhr/index.js';

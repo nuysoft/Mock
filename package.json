@@ -24,20 +24,28 @@
         "type": "git",
         "url": "git://gitee.com/dongzhongzhidong/Mock.git"
     },
-    "main": "./dist/mock.esm.js",
-    "spm": {
-        "main": "./dist/mock.esm.js"
+    "main": "./dist/mock.cjs.js",
+    "module": "./dist/mock.esm.js",
+    "es2015": "./dist/mock.esm.js",
+    "exports": {
+        ".": {
+            "node": "./dist/mock.cjs.js",
+            "default": "./dist/mock.esm.js"
+        }
     },
     "scripts": {
         "dev": "rollup  --config rollup.config.dev.js -w",
         "build": "rollup --config rollup.config.build.js",
+        "dev:cjs": "rollup --config rollup.config.cjs.dev.js",
         "lint": "eslint src",
         "Lint": "prettier --write src/**/*.{ts,json,md,yml,js} & eslint src",
         "prettier": "prettier --write src/**/*.{ts,json,md,yml,js}"
     },
     "dependencies": {
         "color": "^3.1.3",
+        "lodash": "^4.17.21",
         "lodash-es": "^4.17.21",
+        "rollup-plugin-module-replacement": "^1.2.1",
         "uuid": "^8.3.2"
     },
     "devDependencies": {

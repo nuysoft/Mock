@@ -1,3 +1,4 @@
+const window = globalThis.window || {};
 const realFetch = window && window.fetch;
 function mockFetch() {
     // 代理 fetch 的初始化函数

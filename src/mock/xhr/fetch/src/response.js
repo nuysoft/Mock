@@ -8,6 +8,7 @@ import Body from './body.js';
 import { extractContentType } from './body/exactContentType.js';
 import { isRedirect } from './utils/is-redirect.js';
 import { RESPONSE as INTERNALS } from './INTERNALS.js';
+const Response = (globalThis.window && globalThis.window.Response) || class Null {};
 /**
  * Response class
  *

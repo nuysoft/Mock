@@ -2087,7 +2087,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.npmjs.org/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash@4.17.21, lodash@^4.17.11:
+lodash@4.17.21, lodash@^4.17.11, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -2443,6 +2443,13 @@ rollup-plugin-livereload@^2.0.0:
   integrity sha512-oC/8NqumGYuphkqrfszOHUUIwzKsaHBICw6QRwT5uD07gvePTS+HW+GFwu6f9K8W02CUuTvtIM9AWJrbj4wE1A==
   dependencies:
     livereload "^0.9.1"
+
+rollup-plugin-module-replacement@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/rollup-plugin-module-replacement/-/rollup-plugin-module-replacement-1.2.1.tgz#2c14115ca132cd2f95862c1ecd7325f96d987f3d"
+  integrity sha512-nFWmUGJGX6Fof9EAdyZqCabjniW7cGdm3w+O9/KZwphL30PG5S/tFAniwNEBm4eJA2fTEHj/kqFJEQJ+1bOq4w==
+  dependencies:
+    slash "^3.0.0"
 
 rollup-plugin-multi-input@^1.3.1:
   version "1.3.1"

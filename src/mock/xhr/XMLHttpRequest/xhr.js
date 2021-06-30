@@ -3,8 +3,15 @@
 import { find, convert } from '../ajax-tools.js';
 import HTTP_STATUS_CODES from './constant.js';
 
-const SEND = XMLHttpRequest.prototype.send;
-const OPEN = XMLHttpRequest.prototype.open;
+let XMLHttpRequest;
+let SEND;
+let OPEN;
+if (globalThis.window !== undefined) {
+    SEND = XMLHttpRequest.prototype.send;
+    OPEN = XMLHttpRequest.prototype.open;
+} else {
+    XMLHttpRequest = class NULL {};
+}
 
 // ! 虽然 XMLHttpRequest 不能够修改，但是可以通过设置 getter 和 setter 将属性映射到 $属性上，这样的话，原生 XHR 会将数据写入和读取的位置更改为新的对象属性上，这样就可以被我们修改了。
 
