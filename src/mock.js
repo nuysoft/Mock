@@ -7,7 +7,7 @@ import { toJSONSchema } from './mock/schema/index.js';
 import { valid } from './mock/valid/index.js';
 import { _mocked } from './mock/_mocked.js';
 import { XHR } from './mock/XHR.js';
-import { mock } from './mock';
+import { mock } from './mock/mock';
 
 /* !
     Mock - 模拟请求 & 模拟数据

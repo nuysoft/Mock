@@ -4,7 +4,7 @@ import { capitalize } from '../helper.js';
 // 随机生成一个句子，第一个单词的首字母大写。
 function sentence(min = 12, max = 18) {
     const len = random(min, max);
-    const string = times(len, () => word()).join('');
+    const string = times(len, () => word()).join(' ');
     return capitalize(string) + '.';
 }
 

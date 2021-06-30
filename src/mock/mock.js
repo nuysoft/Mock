@@ -1,5 +1,5 @@
-import Handler from './mock/handler.js';
-import { _mocked } from './mock/_mocked.js';
+import Handler from './handler.js';
+import { _mocked } from './_mocked.js';
 import { XHR } from './XHR.js';
 export function mock(...args) {
     let rurl;
