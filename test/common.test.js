@@ -1,4 +1,4 @@
-const Mock = require('../dist/mock.cjs.js');
+const Mock = require('mockjs-esm');
 
 const a = Mock.mock({
     'a|20': ['@cname'],

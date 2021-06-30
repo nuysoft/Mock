@@ -2,59 +2,72 @@
 
 ## 简介
 
-Mockjs-esm 是 [Mockjs](http://mockjs.com/) 的 esm 版本，由于 [Mockjs](http://mockjs.com/) 源代码实在太过久远，本人用了 4 天时间将 [Mockjs](http://mockjs.com/) 的大部分模块进行细分与简化，便于广大开发者学习。
+Mockjs-esm 是 [Mockjs](http://mockjs.com/) 的 esm 版本，由于 [Mockjs](http://mockjs.com/) 源代码实在太过久远，本人用了一个月时间将 [Mockjs](http://mockjs.com/) 的大部分模块进行细分与简化，使用 rollup 打包，便于广大开发者学习。
 
 ## 与 [Mockjs](http://mockjs.com/) 的异同点
 
 ### 同
 
 1. Mockjs-esm 沿袭 [Mockjs](http://mockjs.com/) 的所有 API，不对任何的 API 进行更改。
+2. 从 1.0.0 版本起对 node 版本也支持使用。
 
 ### 异
 
 1. 对源代码中的大部分循环遍历逻辑进行了修改。
 2. 引用 lodash 和 color 库对源代码中的随机函数和颜色转换等函数进行简化。（原作者当年是没有依靠任何库的，这一点令我很佩服）
-3. 源代码打包方式改为 rollup 打包，生成 esm 版本和 iife 版本。
+3. 源代码打包方式改为 rollup 打包，生成 esm 版本,cjs 版本和 iife 版本。
 4. 扩充 [Mockjs](http://mockjs.com/) 的功能，比如提供 timestamp 模板等。
 5. 更改随机颜色为从 [中国色](http://zhongguose.com) 中抽取一种颜色。 (中国色 数据来自于 http://zhongguose.com)
 6. 删除 XHR 代理时的同步行为，这个行为已经不被浏览器所使用。
 7. 使用继承代理的方式而不是覆盖 XHR 请求的方式代理 原生 XHR 行为。
+8. 代码通过 eslint 和 prettier 进行风格化管理，加强代码的可读性。
 
 ## 教程
 
 本项目维持与 [Mockjs](http://mockjs.com/) 一致的 API，故原作者的教程是完全可以实现的。
 官方网站：http://mockjs.com/
 
-## 新的功能
-
-1. 生成 timestamp
-
-```js
-Mock.mock("@timestamp"); // 生成数字型的 timestamp
-```
-
-2. 支持 fetch 代理
-
-```js
-Mock.mock("fake/1", "get", {
-    "timestamp|10": ["@timestamp"],
-});
-fetch("fake/1")
-    .then((res) => res.json())
-    .then(console.log);
-```
-
 ## 从 Mockjs 迁移到 Mockjs-esm
 
 不用修改任何的 API ，只需要改变 Mockjs 的引用方式即可。
+
+### iife 即浏览器使用
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/mockjs-esm/dist/mock.min.js"></script>
 ```
 
+### esm 即用 import 导入
+
 ```js
-import Mock from "Mock";
-import Mock from "https://cdn.jsdelivr.net/npm/mockjs-esm/dist/mock.esm.js";
+import Mock from 'Mock';
+import Mock from 'https://cdn.jsdelivr.net/npm/mockjs-esm/dist/mock.esm.js';
+```
+
+### cjs 即用 node 导入
+
+```js
+// npm i mockjs-esm
+const Mock = require('mockjs-esm');
+```
+
+## 新的功能
+
+1. 生成 timestamp
+
+```js
+Mock.mock('@timestamp'); // 生成数字型的 timestamp
+```
+
+2. 支持 fetch 代理
+
+```js
+Mock.mock('fake/1', 'get', {
+    'timestamp|10': ['@timestamp'],
+});
+fetch('fake/1')
+    .then((res) => res.json())
+    .then(console.log);
 ```
 
 ## 作者的闲聊
