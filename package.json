@@ -1,58 +1,58 @@
 {
-  "name": "mockjs-esm",
-  "title": "Mock.js",
-  "description": "Mockjs 的 esm 版本，基础 api 一致",
-  "version": "0.9.9",
-  "homepage": "http://mockjs.com/",
-  "keywords": [
-    "mock",
-    "mockJSON",
-    "mockAjax",
-    "mockTempalte"
-  ],
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/nuysoft/Mock/blob/master/MIT-LICENSE.txt"
+    "name": "mockjs-esm",
+    "title": "Mock.js",
+    "description": "Mockjs 的 esm 版本，基础 api 一致",
+    "version": "0.9.9",
+    "homepage": "http://mockjs.com/",
+    "keywords": [
+        "mock",
+        "mockJSON",
+        "mockAjax",
+        "mockTempalte"
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/nuysoft/Mock/blob/master/MIT-LICENSE.txt"
+        },
+        {
+            "type": "MIT",
+            "url": "https://gitee.com/dongzhongzhidong/Mock/LICENSE"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://gitee.com/dongzhongzhidong/Mock.git"
     },
-    {
-      "type": "MIT",
-      "url": "https://gitee.com/dongzhongzhidong/Mock/LICENSE"
+    "main": "./dist/mock.esm.js",
+    "spm": {
+        "main": "./dist/mock.esm.js"
+    },
+    "scripts": {
+        "dev": "rollup  --config rollup.config.dev.js -w",
+        "build": "rollup --config rollup.config.build.js"
+    },
+    "dependencies": {
+        "color": "^3.1.3",
+        "lodash-es": "^4.17.21",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.14.3",
+        "@babel/preset-env": "^7.14.4",
+        "@rollup/plugin-babel": "^5.3.0",
+        "@rollup/plugin-json": "^4.1.0",
+        "@rollup/plugin-multi-entry": "^4.0.0",
+        "@rollup/plugin-replace": "^2.4.2",
+        "rollup": "^2.50.5",
+        "rollup-plugin-babel": "^4.4.0",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-delete": "^2.0.0",
+        "rollup-plugin-license": "^2.4.0",
+        "rollup-plugin-livereload": "^2.0.0",
+        "rollup-plugin-multi-input": "^1.3.1",
+        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-serve": "^1.1.0",
+        "rollup-plugin-terser": "^7.0.2"
     }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://gitee.com/dongzhongzhidong/Mock.git"
-  },
-  "main": "./dist/mock.js",
-  "spm": {
-    "main": "./dist/mock.js"
-  },
-  "scripts": {
-    "dev": "rollup  --config rollup.config.dev.js -w",
-    "build": "rollup --config rollup.config.build.js"
-  },
-  "dependencies": {
-    "color": "^3.1.3",
-    "lodash-es": "^4.17.21",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.4",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-multi-entry": "^4.0.0",
-    "@rollup/plugin-replace": "^2.4.2",
-    "rollup": "^2.50.5",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-license": "^2.4.0",
-    "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-multi-input": "^1.3.1",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-serve": "^1.1.0",
-    "rollup-plugin-terser": "^7.0.2"
-  }
 }

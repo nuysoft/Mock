@@ -9,7 +9,7 @@ export default {
     output: [
         {
             // 打包出口
-            file: "./dist/mock.js",
+            file: "./dist/mock.esm.js",
             format: "es",
         },
         {
@@ -17,6 +17,12 @@ export default {
             file: "./dist/mock.min.js",
             format: "iife",
             name: "Mock",
+        },{
+            // 打包出口
+            file: "./dist/mock.cjs.js",
+            format: "cjs",
+            name: "Mock",
+            
         },
     ],
     plugins: [

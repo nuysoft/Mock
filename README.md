@@ -30,16 +30,18 @@ Mockjs-esm 是 [Mockjs](http://mockjs.com/) 的 esm 版本，由于 [Mockjs](htt
 1. 生成 timestamp
 
 ```js
-Mock.mock('@timestamp') // 生成数字型的 timestamp
+Mock.mock("@timestamp"); // 生成数字型的 timestamp
 ```
 
 2. 支持 fetch 代理
 
 ```js
-Mock.mock('fake/1','get',{
-    'timestamp|10':['@timestamp']
-})
-fetch('fake/1').then(res=>res.json()).then(console.log)
+Mock.mock("fake/1", "get", {
+    "timestamp|10": ["@timestamp"],
+});
+fetch("fake/1")
+    .then((res) => res.json())
+    .then(console.log);
 ```
 
 ## 从 Mockjs 迁移到 Mockjs-esm
@@ -47,7 +49,12 @@ fetch('fake/1').then(res=>res.json()).then(console.log)
 不用修改任何的 API ，只需要改变 Mockjs 的引用方式即可。
 
 ```html
-    <script src="https://cdn.jsdelivr.net/npm/mockjs-esm/dist/mock.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mockjs-esm/dist/mock.min.js"></script>
+```
+
+```js
+import Mock from "Mock";
+import Mock from "https://cdn.jsdelivr.net/npm/mockjs-esm/dist/mock.esm.js";
 ```
 
 ## 作者的闲聊
