@@ -1,6 +1,6 @@
 {
-    "firstName":{
-        "male":[
+    "firstName": {
+        "male": [
             "James",
             "John",
             "Robert",
@@ -35,7 +35,7 @@
             "Scott",
             "Eric"
         ],
-        "female":[
+        "female": [
             "Mary",
             "Patricia",
             "Linda",
@@ -70,7 +70,8 @@
             "Amy",
             "Anna"
         ]
-    },"lastName":[
+    },
+    "lastName": [
         "Smith",
         "Johnson",
         "Williams",
@@ -103,7 +104,8 @@
         "Hall",
         "Young",
         "Allen"
-    ],"cfirstName":[
+    ],
+    "cfirstName": [
         "王",
         "李",
         "张",
@@ -205,7 +207,7 @@
         "龚",
         "文"
     ],
-    "clastName":[
+    "clastName": [
         "伟",
         "芳",
         "娜",

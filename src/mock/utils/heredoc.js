@@ -10,13 +10,13 @@
         var tpl = Mock.heredoc(function() {
             /*!
         {{email}}{{age}}
-        <!-- Mock { 
+        <!-- Mock {
             email: '@EMAIL',
             age: '@INT(1,100)'
         } -->
             *\/
         })
-    
+
     **相关阅读**
     * [Creating multiline strings in JavaScript](http://stackoverflow.com/questions/805107/creating-multiline-strings-in-javascript)、
 */
@@ -26,8 +26,8 @@ export function heredoc(fn) {
     // 3. 移除起始和末尾的空格
     return fn
         .toString()
-        .replace(/^[^\/]+\/\*!?/, "")
-        .replace(/\*\/[^\/]+$/, "")
-        .replace(/^[\s\xA0]+/, "")
-        .replace(/[\s\xA0]+$/, ""); // .trim()
+        .replace(/^[^\/]+\/\*!?/, '')
+        .replace(/\*\/[^\/]+$/, '')
+        .replace(/^[\s\xA0]+/, '')
+        .replace(/[\s\xA0]+$/, ''); // .trim()
 }

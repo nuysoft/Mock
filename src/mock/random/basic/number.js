@@ -1,10 +1,10 @@
-import { random } from "lodash-es";
+import { random } from 'lodash-es';
 const isNumber = function (el) {
-    return typeof el === "number" && !isNaN(el);
+    return typeof el === 'number' && !isNaN(el);
 };
 const numberGate = function (input) {
     if (isNumber(input)) return input;
-    let res = parseInt(input);
+    const res = parseInt(input);
     return isNumber(res) ? res : undefined;
 };
 // 返回一个随机的整数。
@@ -28,7 +28,7 @@ const float = function (min, max, dmin, dmax) {
     dmax = numberGate(dmax) || 17;
     if (dmin < 1) dmin = 1;
     if (dmax > 17) dmax = 17;
-    let dcount = random(dmin, dmax, false);
+    const dcount = random(dmin, dmax, false);
     return parseFloat(random(min, max, true).toFixed(dcount));
 };
 export { integer, isNumber, random, natural, integer as int, float };

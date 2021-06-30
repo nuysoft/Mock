@@ -12,7 +12,7 @@
     华中   河南省 湖北省 湖南省
     西南   重庆市 四川省 贵州省 云南省 西藏自治区
     西北   陕西省 甘肃省 青海省 宁夏回族自治区 新疆维吾尔自治区
-    港澳台 香港特别行政区 澳门特别行政区 台湾省    
+    港澳台 香港特别行政区 澳门特别行政区 台湾省
 */
 
 // DICT  = { id : Name }
@@ -20,7 +20,7 @@
 // 11 表示 省级, 01 表示 市, 00 表示 区
 // 大致是上面这样分类的
 
-import DICT from "./address_ch.json";
+import DICT from './address_ch.json';
 
 // id pid/parentId name children
 
@@ -29,8 +29,8 @@ function createTree(list) {
     const bugList = []; // 用于一次遍历后没有找到父级元素的元素
     const { result, mapped } = list.reduce(
         (all, item) => {
-            let { mapped, result } = all;
-            let { id, pid } = item;
+            const { mapped, result } = all;
+            const { id, pid } = item;
             mapped[id] = item; // 记录这个点
 
             if (pid === id) {
@@ -40,7 +40,7 @@ function createTree(list) {
             }
             const hasParent = mapped.hasOwnProperty(pid);
             if (!hasParent) {
-                //父级尚未插入到mapped记录中
+                // 父级尚未插入到mapped记录中
                 bugList.push(item);
                 return { mapped, result };
             }
@@ -51,7 +51,7 @@ function createTree(list) {
         {
             mapped: {}, // 缓存已经记录过的数据
             result: [],
-        }
+        },
     );
     bugList.forEach((item) => {
         const parent = mapped[item.pid];
@@ -63,10 +63,11 @@ const ids = Object.keys(DICT);
 
 // 转化数组内对象的表现形式
 const fixed = Object.entries(DICT).map(([id, value]) => {
-    var pid = id.slice(2, 6) === "0000" ? id : id.slice(4, 6) === "00" ? id.slice(0, 2) + "0000" : id.slice(0, 4) + "00";
+    let pid =
+        id.slice(2, 6) === '0000' ? id : id.slice(4, 6) === '00' ? id.slice(0, 2) + '0000' : id.slice(0, 4) + '00';
     if (!ids.includes(pid)) {
         // 修复 pid 并不存在，但是是归属于顶级的错误
-        pid = id.slice(0, 2) + "0000";
+        pid = id.slice(0, 2) + '0000';
     }
     return {
         id,

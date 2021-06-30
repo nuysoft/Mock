@@ -1,5 +1,5 @@
 function _function(options) {
-    let {
+    const {
         template,
         context: { currentContext },
     } = options;

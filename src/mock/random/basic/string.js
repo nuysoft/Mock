@@ -1,8 +1,11 @@
-import { natural } from "./number.js";
-import { times } from "lodash-es";
-import { character } from "./character.js";
+import { natural } from './number.js';
+import { times } from 'lodash-es';
+import { character } from './character.js';
 const string = function (...args) {
-    var len, pool, min, max;
+    let len;
+    let pool;
+    let min;
+    let max;
     switch (args.length) {
         case 0: // ()
             len = natural(3, 7);
@@ -12,7 +15,7 @@ const string = function (...args) {
             break;
         case 2:
             // ( pool, length )
-            if (typeof arguments[0] === "string") {
+            if (typeof args[0] === 'string') {
                 [pool, len] = args;
             } else {
                 // ( min, max )
@@ -26,6 +29,6 @@ const string = function (...args) {
             len = natural(min, max);
             break;
     }
-    return times(len, () => character(pool)).join("");
+    return times(len, () => character(pool)).join('');
 };
 export { string, string as str };

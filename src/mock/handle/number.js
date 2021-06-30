@@ -1,6 +1,6 @@
-import { float } from "../random/basic/number.js";
-export function number({ rule: { decimal, range, count, dcount = 0, parameters }, template = "" }) {
-    var result;
+import { float } from '../random/basic/number.js';
+export function number({ rule: { decimal, range, count, dcount = 0, parameters }, template = '' }) {
+    let result;
     if (decimal) {
         // 'float1|.1-10': 10,
         // 'float2|1-100.1-10': 1,

@@ -9,7 +9,7 @@
         var bg_colour = Math.floor(Math.random() * 16777215).toString(16);
         bg_colour = "#" + ("000000" + bg_colour).slice(-6);
         document.bgColor = bg_colour;
-    
+
     http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
         Creating random colors is actually more difficult than it seems. The randomness itself is easy, but aesthetically pleasing randomness is more difficult.
         https://github.com/devongovett/color-generator
@@ -29,7 +29,7 @@
 
     http://tool.c7sky.com/webcolor
         网页设计常用色彩搭配表
-    
+
     https://github.com/One-com/one-color
         An OO-based JavaScript color parser/computation toolkit with support for RGB, HSV, HSL, CMYK, and alpha channels.
         API 很赞
@@ -61,7 +61,7 @@
             color += letters[Math.floor(Math.random() * 16)]
         }
         return color
-    
+
         // 随机生成一个无脑的颜色，格式为 '#RRGGBB'。
         // _brainlessColor()
         var color = Math.floor(
@@ -71,20 +71,20 @@
         color = "#" + ("000000" + color).slice(-6)
         return color.toUpperCase()
 */
-import Color from "color"; //使用 color 这个库进行颜色转换
-import DICT from "./color/color_dict.js";
-import { pick } from "./helper.js";
-import RandomColor from "./color/color_dict_cn.json";
+import Color from 'color'; // 使用 color 这个库进行颜色转换
+import DICT from './color/color_dict.js';
+import { pick } from './helper.js';
+import RandomColor from './color/color_dict_cn.json';
 
 let _hue;
 function _goldenRatioColor(saturation, value) {
-    let _goldenRatio = 0.618033988749895;
+    const _goldenRatio = 0.618033988749895;
     _hue = _hue || Math.random();
     _hue += _goldenRatio;
     _hue %= 1;
 
-    if (typeof saturation !== "number") saturation = 0.5;
-    if (typeof value !== "number") value = 0.95;
+    if (typeof saturation !== 'number') saturation = 0.5;
+    if (typeof value !== 'number') value = 0.95;
 
     return Color.hsv(_hue * 360, saturation * 100, value * 100);
 }
@@ -99,24 +99,24 @@ function color(name) {
 
 // #DAC0DE
 function hex() {
-    var hsv = _goldenRatioColor();
+    const hsv = _goldenRatioColor();
     return hsv.hex();
 }
 
 // rgb(128,255,255)
 function rgb() {
-    var hsv = _goldenRatioColor();
+    const hsv = _goldenRatioColor();
     return hsv.hsv().string();
 }
 // rgba(128,255,255,0.3)
 function rgba() {
-    var hsv = _goldenRatioColor();
+    const hsv = _goldenRatioColor();
     return hsv.alpha(Math.random().toFixed(2)).hsv().string();
 }
 
 // hsl(300,80%,90%)
 function hsl() {
-    var hsv = _goldenRatioColor();
+    const hsv = _goldenRatioColor();
     return hsv.hsl().string();
 }
 export { color, hex, rgb, rgba, hsl, _goldenRatioColor };

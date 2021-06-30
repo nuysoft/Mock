@@ -1,1 +1,1 @@
-export { valid } from "./valid.js";
+export { valid } from './valid.js';

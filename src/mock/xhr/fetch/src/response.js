@@ -4,10 +4,10 @@
  * Response class provides content decoding
  */
 
-import Body from "./body.js";
-import { extractContentType } from "./body/exactContentType.js";
-import { isRedirect } from "./utils/is-redirect.js";
-import { RESPONSE as INTERNALS } from "./INTERNALS.js";
+import Body from './body.js';
+import { extractContentType } from './body/exactContentType.js';
+import { isRedirect } from './utils/is-redirect.js';
+import { RESPONSE as INTERNALS } from './INTERNALS.js';
 /**
  * Response class
  *
@@ -20,17 +20,17 @@ export default class fakeResponse extends Body {
         super(body, options);
         const status = options.status != null ? options.status : 200;
         const headers = new Headers(options.headers);
-        if (body !== null && !headers.has("Content-Type")) {
+        if (body !== null && !headers.has('Content-Type')) {
             const contentType = extractContentType(body);
             if (contentType) {
-                headers.append("Content-Type", contentType);
+                headers.append('Content-Type', contentType);
             }
         }
         this[INTERNALS] = {
-            type: "default",
+            type: 'default',
             url: options.url,
             status,
-            statusText: options.statusText || "",
+            statusText: options.statusText || '',
             headers,
             counter: options.counter,
         };
@@ -41,7 +41,7 @@ export default class fakeResponse extends Body {
     }
 
     get url() {
-        return this[INTERNALS].url || "";
+        return this[INTERNALS].url || '';
     }
 
     get status() {
@@ -74,8 +74,8 @@ export default class fakeResponse extends Body {
      */
     clone() {
         // Don't allow cloning a used body
-        if (bodyUsed) {
-            throw new Error("cannot clone body after it is used");
+        if (this.bodyUsed) {
+            throw new Error('cannot clone body after it is used');
         }
         return new Response(this.body, {
             type: this.type,
@@ -92,7 +92,7 @@ export default class fakeResponse extends Body {
     /**
      * @param {string} url    The URL that the new response is to originate from.
      * @param {number} status An optional status code for the response (e.g., 302.)
-     * @returns {Response}    A Response object.
+     * @return {Response}    A Response object.
      */
     static redirect(url, status = 302) {
         if (!isRedirect(status)) {
@@ -108,13 +108,13 @@ export default class fakeResponse extends Body {
     }
 
     static error() {
-        const response = new Response(null, { status: 0, statusText: "" });
-        response[INTERNALS].type = "error";
+        const response = new Response(null, { status: 0, statusText: '' });
+        response[INTERNALS].type = 'error';
         return response;
     }
 
     get [Symbol.toStringTag]() {
-        return "Response";
+        return 'Response';
     }
 }
 

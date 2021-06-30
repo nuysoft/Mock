@@ -1,7 +1,12 @@
-import { pick } from "../random/index.js";
-import { gen } from "./gen.js";
-export function array({ name, rule: { min, max, parameters, count }, template, context: { path, templatePath, root, templateRoot } }) {
-    var result = [];
+import { pick } from '../random/index.js';
+import { gen } from './gen.js';
+export function array({
+    name,
+    rule: { min, max, parameters, count },
+    template,
+    context: { path, templatePath, root, templateRoot },
+}) {
+    let result = [];
 
     // 'name|1': []
     // 'name|count': []
@@ -19,7 +24,7 @@ export function array({ name, rule: { min, max, parameters, count }, template, c
                     templateCurrentContext: template,
                     root: root || result,
                     templateRoot: templateRoot || template,
-                })
+                }),
             );
         });
     } else {
@@ -34,7 +39,7 @@ export function array({ name, rule: { min, max, parameters, count }, template, c
                     templateCurrentContext: template,
                     root: root || result,
                     templateRoot: templateRoot || template,
-                })
+                }),
             );
         } else {
             // 'data|+1': [{}, {}]
@@ -63,7 +68,7 @@ export function array({ name, rule: { min, max, parameters, count }, template, c
                                 templateCurrentContext: template,
                                 root: root || result,
                                 templateRoot: templateRoot || template,
-                            })
+                            }),
                         );
                     });
                 });

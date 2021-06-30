@@ -1,10 +1,10 @@
-import Constant from "../constant.js";
-import { type as Type } from "../util.js";
-import { parser as Parser } from "../parser.js";
-import * as typeset from "./index.js";
+import Constant from '../constant.js';
+import { type as Type } from '../util.js';
+import { parser as Parser } from '../parser.js';
+import * as typeset from './index.js';
 let GID = 1; // 1.0.1 版本引用了 Constant.GUID 但是那个是常量，后面这个变量需要改变
-export function gen(template, name = "", context = {}) {
-    var newContext = {
+export function gen(template, name = '', context = {}) {
+    const newContext = {
         // 当前访问路径，只有属性名，不包括生成规则
         path: context.path || [GID],
         templatePath: context.templatePath || [GID++],
@@ -19,9 +19,9 @@ export function gen(template, name = "", context = {}) {
     };
     // console.log('path:', context.path.join('.'), template)
 
-    var type = Type(template);
-    let func = typeset[type];
-    var data;
+    const type = Type(template);
+    const func = typeset[type];
+    let data;
 
     if (func) {
         data = func({
@@ -32,7 +32,7 @@ export function gen(template, name = "", context = {}) {
             // 属性名 + 生成规则
             name,
             // 属性名
-            parsedName: name ? ("" + name).replace(Constant.RE_KEY, "$1") : name,
+            parsedName: name ? ('' + name).replace(Constant.RE_KEY, '$1') : name,
             // 解析后的生成规则
             rule: Parser(name),
             // 相关上下文

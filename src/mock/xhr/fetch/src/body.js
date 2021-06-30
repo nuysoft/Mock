@@ -4,10 +4,10 @@
  * Body interface provides common methods for Request and Response
  */
 
-import { isURLSearchParameters } from "./utils/is.js";
-import { BODY as INTERNALS } from "./INTERNALS.js";
+import { isURLSearchParameters } from './utils/is.js';
+import { BODY as INTERNALS } from './INTERNALS.js';
 
-import { consumeBody } from "./body/consumeBody.js";
+import { consumeBody } from './body/consumeBody.js';
 /**
  * Body mixin
  *
@@ -75,7 +75,7 @@ export default class Body {
      */
     async json() {
         const text = await this.text();
-        return JSON.parse(text || "{}");
+        return JSON.parse(text || '{}');
     }
 
     /**

@@ -1,5 +1,5 @@
 // 使用 lodash 提供的方式
-import { isObject, isArray } from "lodash-es";
+import { isObject, isArray } from 'lodash-es';
 export function type(obj) {
     return obj === null || obj === undefined
         ? String(obj)
@@ -16,4 +16,4 @@ export function isObjectOrArray(value) {
 export function isNumeric(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
 }
-export { isString, isObject, isArray, isRegExp, isFunction } from "lodash-es";
+export { isString, isObject, isArray, isRegExp, isFunction } from 'lodash-es';

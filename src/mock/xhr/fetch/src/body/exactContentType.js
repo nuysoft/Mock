@@ -1,4 +1,5 @@
-import { isURLSearchParameters } from "../utils/is.js";
+import { isURLSearchParameters } from '../utils/is.js';
+import { BODY as INTERNALS } from '../INTERNALS';
 /**
  * Performs the operation "extract a `Content-Type` value from |object|" as
  * specified in the specification:
@@ -7,7 +8,7 @@ import { isURLSearchParameters } from "../utils/is.js";
  * This function assumes that instance.body is present.
  *
  * @param {any} body Any options.body input
- * @returns {string | null}
+ * @return {string | null}
  */
 export const extractContentType = (body, request) => {
     // Body is null or undefined
@@ -16,13 +17,13 @@ export const extractContentType = (body, request) => {
     }
 
     // Body is string
-    if (typeof body === "string") {
-        return "text/plain;charset=UTF-8";
+    if (typeof body === 'string') {
+        return 'text/plain;charset=UTF-8';
     }
 
     // Body is a URLSearchParams
     if (isURLSearchParameters(body)) {
-        return "application/x-www-form-urlencoded;charset=UTF-8";
+        return 'application/x-www-form-urlencoded;charset=UTF-8';
     }
 
     // Body is blob
@@ -35,5 +36,5 @@ export const extractContentType = (body, request) => {
     }
 
     // Body constructor defaults other things to string
-    return "text/plain;charset=UTF-8";
+    return 'text/plain;charset=UTF-8';
 };

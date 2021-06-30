@@ -38,7 +38,8 @@
 
 //     return target;
 // }
-import { assignIn } from "lodash-es";
+/* eslint-disable no-invalid-this*/
+import { assignIn } from 'lodash-es';
 export function extend(...args) {
     return assignIn(this, ...args);
 }

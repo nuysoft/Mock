@@ -1,10 +1,10 @@
 /*
     ## Address
 */
-import DICT from "./address_dict.js";
-var REGION = ["东北", "华北", "华东", "华中", "华南", "西南", "西北"];
-import { pick } from "./helper.js";
-import { natural } from "./basic/number.js";
+import DICT from './address_dict.js';
+const REGION = ['东北', '华北', '华东', '华中', '华南', '西南', '西北'];
+import { pick } from './helper.js';
+import { natural } from './basic/number.js';
 
 // 随机生成一个大区。
 function region() {
@@ -16,23 +16,23 @@ function province() {
 }
 // 随机生成一个（中国）市。
 function city(prefix) {
-    var province = pick(DICT);
-    var city = pick(province.children);
-    return prefix ? [province.name, city.name].join(" ") : city.name;
+    const province = pick(DICT);
+    const city = pick(province.children);
+    return prefix ? [province.name, city.name].join(' ') : city.name;
 }
 // 随机生成一个（中国）县。
 function county(prefix) {
-    var province = pick(DICT);
-    var city = pick(province.children);
-    var county = pick(city.children) || {
-        name: "-",
+    const province = pick(DICT);
+    const city = pick(province.children);
+    const county = pick(city.children) || {
+        name: '-',
     };
-    return prefix ? [province.name, city.name, county.name].join(" ") : county.name;
+    return prefix ? [province.name, city.name, county.name].join(' ') : county.name;
 }
 // 随机生成一个邮政编码（六位数字）。
 function zip(len) {
-    var zip = "";
-    for (var i = 0; i < (len || 6); i++) zip += natural(0, 9);
+    let zip = '';
+    for (let i = 0; i < (len || 6); i++) zip += natural(0, 9);
     return zip;
 }
 

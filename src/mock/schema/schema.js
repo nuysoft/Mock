@@ -5,26 +5,26 @@
 
     > [JSON Schema](http://json-schema.org/)
  */
-import Constant from "../constant.js";
-import { type } from "../util.js";
-import { parser } from "../parser.js";
+import Constant from '../constant.js';
+import { type } from '../util.js';
+import { parser } from '../parser.js';
 
 function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
     // type rule properties items
-    var result = {
-        name: typeof name === "string" ? name.replace(Constant.RE_KEY, "$1") : name,
+    const result = {
+        name: typeof name === 'string' ? name.replace(Constant.RE_KEY, '$1') : name,
         template,
         type: type(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
         rule: parser.parse(name),
         path: path.slice(0),
     };
-    result.path.push(name === undefined ? "ROOT" : result.name);
+    result.path.push(name === undefined ? 'ROOT' : result.name);
 
     switch (result.type) {
-        case "array":
+        case 'array':
             result.items = template.map((value, index) => toJSONSchema(value, index, result.path));
             break;
-        case "object":
+        case 'object':
             result.properties = template.map((value, name) => toJSONSchema(value, name, result.path));
             break;
     }

@@ -1,26 +1,25 @@
-/* global require, module, window */
-import Handler from "./mock/handler.js";
-import * as Util from "./mock/util.js";
-import * as Random from "./mock/random/index.js";
-import * as RE from "./mock/regexp/index.js";
-import { toJSONSchema } from "./mock/schema/index.js";
-import { valid } from "./mock/valid/index.js";
-import { _mocked } from "./mock/_mocked.js";
-import { MockXMLHttpRequest } from "./mock/xhr/index.js";
+// global require, module, window
+import Handler from './mock/handler.js';
+import * as Util from './mock/util.js';
+import * as Random from './mock/random/index.js';
+import * as RE from './mock/regexp/index.js';
+import { toJSONSchema } from './mock/schema/index.js';
+import { valid } from './mock/valid/index.js';
+import { _mocked } from './mock/_mocked.js';
+import { XHR } from './mock/XHR.js';
+import { mock } from './mock';
 
-var XHR;
-if (typeof window !== "undefined") XHR = MockXMLHttpRequest;
-
-/*!
+/* !
     Mock - 模拟请求 & 模拟数据
     https://github.com/nuysoft/Mock
     墨智 mozhi.gyy@taobao.com nuysoft@gmail.com
-    
-    此版本为 esm 版本 
+
+    此版本为 esm 版本
     KonghaYao 修改于 2021/6/11
     https://github.com/KonghaYao/
 */
-var Mock = {
+
+const Mock = {
     Handler,
     Random,
     Util,
@@ -33,9 +32,10 @@ var Mock = {
         return XHR.setup(settings);
     },
     _mocked,
+    mock,
 };
 
-Mock.version = "1.1.1-es6";
+Mock.version = '1.1.1-es6';
 
 /*
     * Mock.mock( template )
@@ -47,35 +47,5 @@ Mock.version = "1.1.1-es6";
 
     根据数据模板生成模拟数据。
 */
-Mock.mock = function (...args) {
-    let rurl,
-        rtype = "get",
-        template;
-
-    switch (args.length) {
-        case 1:
-            // Mock.mock(template)
-            [template] = args;
-            return Handler.gen(template);
-        // 2 和 3 switch 穿透
-        case 2:
-            // Mock.mock(rurl, template)
-            [rurl, template] = args;
-            break;
-        case 3:
-            // Mock.mock(rurl,rtype, template)
-            [rurl, rtype, template] = args;
-            break;
-    }
-
-    // 拦截 XHR
-    if (XHR) window.XMLHttpRequest = XHR;
-    _mocked.$set({
-        rurl,
-        rtype,
-        template,
-    });
-    return Mock;
-};
 
 export default Mock;

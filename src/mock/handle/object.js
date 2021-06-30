@@ -1,18 +1,18 @@
-import { shuffle } from "../random/index.js";
-import Constant from "../constant.js";
-import { type as Type } from "../util.js";
-import { gen } from "./gen.js";
+import { shuffle } from '../random/index.js';
+import Constant from '../constant.js';
+import { type as Type } from '../util.js';
+import { gen } from './gen.js';
 export function object({ template, rule: { min, count }, context: { path, templatePath, root, templateRoot } }) {
-    var result = {},
-        keys = [],
-        fnKeys = [];
+    const result = {};
+    let keys = [];
+    const fnKeys = [];
 
     // 'obj|min-max': {}
     /* jshint -W041 */
     if (min != undefined) {
         keys = shuffle(Object.keys(template)).slice(0, count);
         keys.forEach((key) => {
-            let parsedKey = key.replace(Constant.RE_KEY, "$1");
+            const parsedKey = key.replace(Constant.RE_KEY, '$1');
 
             result[parsedKey] = gen(template[key], key, {
                 path: [...path, parsedKey],
@@ -26,8 +26,8 @@ export function object({ template, rule: { min, count }, context: { path, templa
     } else {
         // 'obj': {}
         // #25 改变了非函数属性的顺序，查找起来不方便
-        for (let key in template) {
-            (typeof template[key] === "function" ? fnKeys : keys).push(key);
+        for (const key in template) {
+            (typeof template[key] === 'function' ? fnKeys : keys).push(key);
         }
         keys = keys.concat(fnKeys);
 
@@ -44,7 +44,7 @@ export function object({ template, rule: { min, count }, context: { path, templa
         */
 
         keys.forEach((key) => {
-            let parsedKey = key.replace(Constant.RE_KEY, "$1");
+            const parsedKey = key.replace(Constant.RE_KEY, '$1');
             result[parsedKey] = gen(template[key], key, {
                 path: [...path, parsedKey],
                 templatePath: [...templatePath, key],
@@ -54,8 +54,8 @@ export function object({ template, rule: { min, count }, context: { path, templa
                 templateRoot: templateRoot || template,
             });
             // 'id|+1': 1
-            let inc = key.match(Constant.RE_KEY);
-            if (inc && inc[2] && Type(template[key]) === "number") {
+            const inc = key.match(Constant.RE_KEY);
+            if (inc && inc[2] && Type(template[key]) === 'number') {
                 template[key] += parseInt(inc[2], 10);
             }
         });

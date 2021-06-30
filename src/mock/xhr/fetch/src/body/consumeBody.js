@@ -18,7 +18,7 @@ export async function consumeBody(data) {
     }
 
     if (data.body instanceof FormData) {
-        return new Blob([Object.fromEntries(a.entries())]);
+        return new Blob([Object.fromEntries(data.body.entries())]);
     }
     return data.body;
 }

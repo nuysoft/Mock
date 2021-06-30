@@ -1,11 +1,11 @@
-/* global document  */
+/* eslint-disable no-redeclare*/
 /*
     ## Image
 */
 
-import size from "./image.json";
-import { pick } from "./helper.js";
-let { _adSize, _screenSize, _videoSize } = size;
+import size from './image.json';
+import { pick } from './helper.js';
+const { _adSize, _screenSize, _videoSize } = size;
 
 /*
     BrandColors
@@ -19,8 +19,8 @@ let { _adSize, _screenSize, _videoSize } = size;
         console.log('\'' + item.text() + '\'', ':', '\'' + item.next().text() + '\'', ',')
     })
 */
-import _brandColors from "./brandColors.json";
-import { color, hex } from "./color";
+import _brandColors from './brandColors.json';
+import { hex } from './color';
 const _brandNames = Object.keys(_brandColors);
 
 /*
@@ -28,12 +28,16 @@ const _brandNames = Object.keys(_brandColors);
 
     使用 api 替代图片源
         http://fpoimg.com/
-    参考自 
+    参考自
         http://rensanning.iteye.com/blog/1933310
         http://code.tutsplus.com/articles/the-top-8-placeholders-for-web-designers--net-19485
 */
 function image(...args) {
-    let size, background, foreground, format, text;
+    let size;
+    let background;
+    let foreground;
+    let format;
+    let text;
     switch (arguments.length) {
         case 4:
             [size, background, foreground, text] = args;
@@ -49,11 +53,13 @@ function image(...args) {
     if (!size) size = pick(_adSize);
 
     // 去除前面的 # 号
-    foreground = (foreground || hex()).replace(/^#/, "");
-    background = (background || hex()).replace(/^#/, "");
+    foreground = (foreground || hex()).replace(/^#/, '');
+    background = (background || hex()).replace(/^#/, '');
 
     // http://dummyimage.com/600x400/cc00cc/470047.png&text=hello
-    return `http://dummyimage.com/${size}${background ? "/" + background : ""}${foreground ? "/" + foreground : ""}${format ? "." + format : ""}${text ? "&text=" + text : ""}`;
+    return `http://dummyimage.com/${size}${background ? '/' + background : ''}${foreground ? '/' + foreground : ''}${
+        format ? '.' + format : ''
+    }${text ? '&text=' + text : ''}`;
 }
 /*
     生成一段随机的 Base64 图片编码。
@@ -66,9 +72,9 @@ function image(...args) {
     },
 */
 function dataImage(size, text) {
-    var canvas;
-    if (typeof document !== "undefined") {
-        canvas = document.createElement("canvas");
+    let canvas;
+    if (typeof document !== 'undefined') {
+        canvas = document.createElement('canvas');
     } else {
         /*
             https://github.com/Automattic/node-canvas
@@ -80,34 +86,34 @@ function dataImage(size, text) {
 
             PS：node-canvas 的安装过程实在是太繁琐了，所以不放入 package.json 的 dependencies。
          */
-        var Canvas = module.require("canvas");
+        const Canvas = module.require('canvas');
         canvas = new Canvas();
     }
 
-    var ctx = canvas && canvas.getContext && canvas.getContext("2d");
-    if (!canvas || !ctx) return "";
+    const ctx = canvas && canvas.getContext && canvas.getContext('2d');
+    if (!canvas || !ctx) return '';
 
     if (!size) size = pick(_adSize);
     text = text !== undefined ? text : size;
 
-    size = size.split("x");
+    size = size.split('x');
 
-    var width = parseInt(size[0], 10),
-        height = parseInt(size[1], 10),
-        background = _brandColors[pick(_brandNames)],
-        foreground = "#FFF",
-        text_height = 14,
-        font = "sans-serif";
+    const width = parseInt(size[0], 10);
+    const height = parseInt(size[1], 10);
+    const background = _brandColors[pick(_brandNames)];
+    const foreground = '#FFF';
+    const textHeight = 14;
+    const font = 'sans-serif';
 
     canvas.width = width;
     canvas.height = height;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, width, height);
     ctx.fillStyle = foreground;
-    ctx.font = "bold " + text_height + "px " + font;
+    ctx.font = 'bold ' + textHeight + 'px ' + font;
     ctx.fillText(text, width / 2, height / 2, width);
-    return canvas.toDataURL("image/png");
+    return canvas.toDataURL('image/png');
 }
 export { _adSize, _screenSize, _videoSize, image, image as img, _brandColors, _brandNames, dataImage };
