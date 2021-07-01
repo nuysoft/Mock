@@ -1,5 +1,5 @@
 const window = globalThis.window || {};
-const realFetch = window && window.fetch;
+const realFetch = window.fetch;
 function mockFetch() {
     // 代理 fetch 的初始化函数
     if (window.fetch && !window.fetch.hasOwnProperty('$mock')) {

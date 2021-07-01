@@ -6,7 +6,7 @@ import * as RE from './mock/regexp/index.js';
 import { toJSONSchema } from './mock/schema/index.js';
 import { valid } from './mock/valid/index.js';
 import { _mocked } from './mock/_mocked.js';
-import { XHR } from './mock/XHR.js';
+import { XHR } from './mock/xhr/index.js';
 import { mock } from './mock/mock';
 
 /* !

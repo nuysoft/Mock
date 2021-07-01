@@ -3,15 +3,11 @@
 import { find, convert } from '../ajax-tools.js';
 import HTTP_STATUS_CODES from './constant.js';
 
-let XMLHttpRequest;
-let SEND;
-let OPEN;
-if (globalThis.window !== undefined) {
-    SEND = XMLHttpRequest.prototype.send;
-    OPEN = XMLHttpRequest.prototype.open;
-} else {
-    XMLHttpRequest = class NULL {};
-}
+const voidFunc = function () {};
+const window = globalThis.window || {};
+const XMLHttpRequest = window !== undefined ? window.XMLHttpRequest : class NULL {};
+const SEND = XMLHttpRequest.prototype.send || voidFunc;
+const OPEN = XMLHttpRequest.prototype.open || voidFunc;
 
 // ! 虽然 XMLHttpRequest 不能够修改，但是可以通过设置 getter 和 setter 将属性映射到 $属性上，这样的话，原生 XHR 会将数据写入和读取的位置更改为新的对象属性上，这样就可以被我们修改了。
 
@@ -19,10 +15,11 @@ if (globalThis.window !== undefined) {
 // 也不可以在 XHR 实例上定义
 // 这样的话会导致无法接收到数据
 // 但是确认为是 mockjs 内的数据返回就可以直接修改 XHR 实例了
-const defineGetAndSet = function (what) {
+const defineGetAndSet = function (XHR) {
+    // 将这些 键值对 映射到 $Mock 属性对象的对应值上去
     const array = ['readyState', 'status', 'response', 'responseText', 'statusText'];
     Object.defineProperties(
-        what,
+        XHR,
         array.reduce((col, cur) => {
             col[cur] = {
                 get() {
@@ -54,7 +51,6 @@ class MockXMLHttpRequest extends XMLHttpRequest {
             if (this.$template) {
                 defineGetAndSet(this);
                 this.dispatchEvent(new Event('loadstart'));
-
                 setTimeout(this.$done.bind(this), this.timeout || 100);
                 return null;
             }
@@ -81,6 +77,7 @@ class MockXMLHttpRequest extends XMLHttpRequest {
     $template = null;
 
     $done() {
+        // 伪造 XHR 返回事件
         this.readyState = this.HEADERS_RECEIVED;
         this.dispatchEvent(new Event('readystatechange'));
         this.readyState = this.LOADING;
