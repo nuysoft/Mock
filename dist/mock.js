@@ -8303,13 +8303,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // 触发 MockXMLHttpRequest 上的同名事件
 	            that.dispatchEvent(new Event(event.type /*, false, false, that*/ ))
 	        }
-
+            
 	        // 如果未找到匹配的数据模板，则采用原生 XHR 发送请求。
 	        if (!item) {
 	            // 创建原生 XHR 对象，调用原生 open()，监听所有原生事件
 	            var xhr = createNativeXMLHttpRequest()
 	            this.custom.xhr = xhr
-
+                MockXMLHttpRequest.prototype.upload = xhr.upload;
 	            // 初始化所有事件，用于监听原生 XHR 对象的事件
 	            for (var i = 0; i < XHR_EVENTS.length; i++) {
 	                xhr.addEventListener(XHR_EVENTS[i], handle)
