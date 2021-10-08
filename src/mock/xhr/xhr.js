@@ -66,6 +66,19 @@ try {
         return event
     }
 }
+try {
+    new window.ProgressEvent('process')
+} catch (exception) {
+    // 如果低版本的浏览器不支持
+    window.ProgressEvent = function(type, nativeEvent) {
+        var progressEvent = document.createEvent('CustomEvent')
+        progressEvent.initCustomEvent(type, nativeEvent.cancelBubble, nativeEvent.cancelable, null)
+        progressEvent.lengthComputable = nativeEvent.lengthComputable;
+        progressEvent.loaded = nativeEvent.loaded;
+        progressEvent.total = nativeEvent.total;
+        return progressEvent
+    }
+}
 
 var XHR_STATES = {
     // The object has been constructed.
@@ -204,8 +217,13 @@ Util.extend(MockXMLHttpRequest.prototype, {
                     that[XHR_RESPONSE_PROPERTIES[i]] = xhr[XHR_RESPONSE_PROPERTIES[i]]
                 } catch (e) {}
             }
-            // 触发 MockXMLHttpRequest 上的同名事件
-            that.dispatchEvent(new Event(event.type /*, false, false, that*/ ))
+            if (event.type === 'progress' && event.lengthComputable) {
+                // 单独处理下载事件，下载的文件计算完成时发布原生的ProcessEvent
+                that.dispatchEvent(new window.ProgressEvent(event.type, event))
+            } else {
+                // 触发 MockXMLHttpRequest 上的同名事件
+                that.dispatchEvent(new Event(event.type /*, false, false, that*/ ))
+            }
         }
 
         // 如果未找到匹配的数据模板，则采用原生 XHR 发送请求。
