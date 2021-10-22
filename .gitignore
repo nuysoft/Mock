@@ -2,6 +2,7 @@ bak
 .DS_Store
 .*.swp
 .idea
+.vscode
 node_modules
 bower_components
 coverage
