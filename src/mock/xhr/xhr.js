@@ -398,6 +398,15 @@ Util.extend(MockXMLHttpRequest.prototype, {
         if (this[ontype]) this[ontype](event)
     }
 })
+// upload EventTarget
+Util.extend(MockXMLHttpRequest.prototype.upload, {
+    addEventListener: function addEventListener() {
+    },
+    removeEventListener: function removeEventListener() {
+    },
+    dispatchEvent: function dispatchEvent() {
+    }
+})
 
 // Inspired by jQuery
 function createNativeXMLHttpRequest() {
