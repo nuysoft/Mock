@@ -454,7 +454,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 
 	                phed = Handler.placeholder(ph, options.context.currentContext, options.context.templateCurrentContext, options)
-
+					if(phed.indexOf('$')>-1){
+						phed=phed.replace(/\$/g,'$ ');
+					}
 	                // 只有一个占位符，并且没有其他字符
 	                if (placeholders.length === 1 && ph === result && typeof phed !== typeof result) { // 
 	                    result = phed
@@ -479,7 +481,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // 'ASCII': '',
 	            result = options.rule.range ? Random.string(options.rule.count) : options.template
 	        }
-	        return result
+			return  result.indexOf(' ')>-1?result.replace(/ /g,''):result;
 	    },
 	    'function': function(options) {
 	        // ( context, options )
