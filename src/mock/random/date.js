@@ -90,7 +90,7 @@ module.exports = {
         return this._formatDate(this._randomDate(), format)
     },
     // 返回一个区间内随机的日期字符串。
-    date: function(min,max,format) {
+    dateRange: function(min,max,format) {
         format = format || 'yyyy-MM-dd'
         return this._formatDate(this._randomDate(new Date(min),new Date(max)), format)
     },
