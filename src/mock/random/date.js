@@ -82,12 +82,17 @@ module.exports = {
     _randomDate: function(min, max) { // min, max
         min = min === undefined ? new Date(0) : min
         max = max === undefined ? new Date() : max
-        return new Date(Math.random() * (max.getTime() - min.getTime()))
+        return new Date(Math.random() * (max.getTime() - min.getTime()) + min.getTime())
     },
     // 返回一个随机的日期字符串。
     date: function(format) {
         format = format || 'yyyy-MM-dd'
         return this._formatDate(this._randomDate(), format)
+    },
+    // 返回一个区间内随机的日期字符串。
+    date: function(min,max,format) {
+        format = format || 'yyyy-MM-dd'
+        return this._formatDate(this._randomDate(new Date(min),new Date(max)), format)
     },
     // 返回一个随机的时间字符串。
     time: function(format) {
