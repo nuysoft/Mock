@@ -1,98 +1,87 @@
-/* global require, chai, describe, before, it */
 /* global window */
 // 数据占位符定义（Data Placeholder Definition，DPD）
-var expect = chai.expect
-var Mock, $, _
+import { it, describe, expect, before } from 'vitest'
+import Mock from '../src/mock'
+import * as _ from 'lodash-es'
+import $ from 'jquery'
 
-describe('Schema', function() {
-    before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
-            Mock = arguments[0]
-            window.XMLHttpRequest = Mock.XHR
-            _ = arguments[1]
-            $ = arguments[2]
-            expect(Mock).to.not.equal(undefined)
-            expect(_).to.not.equal(undefined)
-            expect($).to.not.equal(undefined)
-            done()
-        })
-    })
+describe('Schema', function () {
 
     function stringify(json) {
-        return JSON.stringify(json /*, null, 4*/ )
+        return JSON.stringify(json /*, null, 4*/)
     }
 
     function doit(template, validator) {
-        it('', function() {
+        it(JSON.stringify(template), function () {
             var schema = Mock.toJSONSchema(template)
-            this.test.title = (stringify(template) || template.toString()) + ' => ' + stringify(schema)
+            // this.test.title = (stringify(template) || template.toString()) + ' => ' + stringify(schema)
             validator(schema)
         })
     }
 
-    describe('Type', function() {
-        doit(1, function(schema) {
+    describe('Type', function () {
+        doit(1, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'number')
             for (var n in schema.rule) {
-                expect(schema.rule[n]).to.be.null()
+                expect(schema.rule[n]).toBeFalsy()
             }
         })
-        doit(true, function(schema) {
+        doit(true, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'boolean')
             for (var n in schema.rule) {
-                expect(schema.rule[n]).to.be.null()
+                expect(schema.rule[n]).toBeFalsy()
             }
         })
-        doit('', function(schema) {
+        doit('', function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'string')
             for (var n in schema.rule) {
-                expect(schema.rule[n]).to.be.null()
+                expect(schema.rule[n]).toBeFalsy()
             }
         })
-        doit(function() {}, function(schema) {
+        doit(function () { }, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'function')
             for (var n in schema.rule) {
-                expect(schema.rule[n]).to.be.null()
+                expect(schema.rule[n]).toBeFalsy()
             }
         })
-        doit(/\d/, function(schema) {
+        doit(/\d/, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'regexp')
             for (var n in schema.rule) {
-                expect(schema.rule[n]).to.be.null()
+                expect(schema.rule[n]).toBeFalsy()
             }
         })
-        doit([], function(schema) {
+        doit([], function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'array')
             for (var n in schema.rule) {
-                expect(schema.rule[n]).to.be.null()
+                expect(schema.rule[n]).toBeFalsy()
             }
             expect(schema).to.have.property('items').with.length(0)
         })
-        doit({}, function(schema) {
+        doit({}, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
             for (var n in schema.rule) {
-                expect(schema.rule[n]).to.be.null()
+                expect(schema.rule[n]).toBeFalsy()
             }
             expect(schema).to.have.property('properties').with.length(0)
         })
 
     })
 
-    describe('Object', function() {
+    describe('Object', function () {
         doit({
             a: {
                 b: {
@@ -101,9 +90,9 @@ describe('Schema', function() {
                     }
                 }
             }
-        }, function(schema) {
+        }, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
 
             var properties;
@@ -139,14 +128,14 @@ describe('Schema', function() {
 
     })
 
-    describe('Array', function() {
+    describe('Array', function () {
         doit([
             [
                 ['foo', 'bar']
             ]
-        ], function(schema) {
+        ], function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'array')
 
             var items;
@@ -169,27 +158,27 @@ describe('Schema', function() {
         })
     })
 
-    describe('String Rule', function() {
+    describe('String Rule', function () {
         doit({
             'string|1-10': '★'
-        }, function(schema) {
+        }, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
 
             var properties;
             // root.properties
             properties = schema.properties
-            expect(properties).to.with.length(1)
+            expect(properties).to.with.length(1) 
             expect(properties[0]).to.have.property('type', 'string')
             expect(properties[0].rule).to.have.property('min', 1)
             expect(properties[0].rule).to.have.property('max', 10)
         })
         doit({
             'string|3': 'value',
-        }, function(schema) {
+        }, function (schema) {
             expect(schema.name).to.be.an('undefined')
-                // expect(schema).to.not.have.property('name')
+            // expect(schema).to.not.have.property('name')
             expect(schema).to.have.property('type', 'object')
 
             var properties;

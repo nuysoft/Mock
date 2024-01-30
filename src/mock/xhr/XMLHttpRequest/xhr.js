@@ -5,9 +5,9 @@ import HTTP_STATUS_CODES from './constant.js';
 
 const voidFunc = function () {};
 const window = globalThis.window || {};
-const XMLHttpRequest = window !== undefined ? window.XMLHttpRequest : class NULL {};
-const SEND = XMLHttpRequest.prototype.send || voidFunc;
-const OPEN = XMLHttpRequest.prototype.open || voidFunc;
+const XMLHttpRequest = window?.XMLHttpRequest ? window.XMLHttpRequest : class __NULL__ {};
+const SEND = XMLHttpRequest?.prototype?.send || voidFunc;
+const OPEN = XMLHttpRequest?.prototype?.open || voidFunc;
 
 // ! 虽然 XMLHttpRequest 不能够修改，但是可以通过设置 getter 和 setter 将属性映射到 $属性上，这样的话，原生 XHR 会将数据写入和读取的位置更改为新的对象属性上，这样就可以被我们修改了。
 
