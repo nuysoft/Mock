@@ -27,6 +27,8 @@ const pick = function (arr, ...args) {
         case 2:
             [min, max] = args;
             return sampleSize(arr, random(min, max));
+        default:
+            return sample([arr, ...args])
     }
 };
 /*
