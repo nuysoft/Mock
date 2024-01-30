@@ -1,20 +1,10 @@
 /* global console, require, chai, describe, before, it */
 // 数据占位符定义（Data Placeholder Definition，DPD）
-var expect = chai.expect
-var Mock, $, _
-
+import { it, describe, expect, before } from 'vitest'
+import Mock from '../src/mock'
+import $ from 'jquery'
+import { each } from 'lodash-es'
 describe('Request', function() {
-    before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
-            Mock = arguments[0]
-            _ = arguments[1]
-            $ = arguments[2]
-            expect(Mock).to.not.equal(undefined)
-            expect(_).to.not.equal(undefined)
-            expect($).to.not.equal(undefined)
-            done()
-        })
-    })
 
     function stringify(json) {
         return JSON.stringify(json /*, null, 4*/ )
