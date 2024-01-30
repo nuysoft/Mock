@@ -2,14 +2,8 @@
 // 数据占位符定义（Data Placeholder Definition，DPD）
 import { it, describe, expect, before } from 'vitest'
 import Mock from '../src/mock'
-import * as _ from 'lodash-es'
-import $ from 'jquery'
 
 describe('Schema', function () {
-
-    function stringify(json) {
-        return JSON.stringify(json /*, null, 4*/)
-    }
 
     function doit(template, validator) {
         it(JSON.stringify(template), function () {

@@ -86,8 +86,9 @@ function dataImage(size, text) {
 
             PS：node-canvas 的安装过程实在是太繁琐了，所以不放入 package.json 的 dependencies。
          */
-        const Canvas = module.require('canvas');
-        canvas = new Canvas();
+        throw new Error("请安装 canvas 依赖")
+        // const Canvas = module.require('canvas');
+        // canvas = new Canvas();
     }
 
     const ctx = canvas && canvas.getContext && canvas.getContext('2d');

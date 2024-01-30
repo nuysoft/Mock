@@ -31,5 +31,5 @@
     */
 import { v4 as uuid } from 'uuid';
 export default function guid() {
-    return uuid().replace(/(?<=[^-]{4}-[^-]{4}-[^-]{4}-[^-]{4})/, '-');
+    return uuid()
 }
