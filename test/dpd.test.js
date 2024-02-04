@@ -1,103 +1,90 @@
 /* global require, chai, describe, before, it */
 // 数据占位符定义（Data Placeholder Definition，DPD）
-var expect = chai.expect
-var Mock, $, _
+import { it, describe, expect, before } from 'vitest';
+import Mock from '../src/mock';
 
-describe('DPD', function() {
-    before(function(done) {
-        require(['mock', 'underscore', 'jquery'], function() {
-            Mock = arguments[0]
-            _ = arguments[1]
-            $ = arguments[2]
-            expect(Mock).to.not.equal(undefined)
-            expect(_).to.not.equal(undefined)
-            expect($).to.not.equal(undefined)
-            done()
-        })
-    })
-    describe('Reference', function() {
-        it('@EMAIL', function() {
-            var data = Mock.mock(this.test.title)
-            expect(data).to.not.equal(this.test.title)
-        })
-    })
-    describe('Priority', function() {
-        it('@EMAIL', function() {
+describe('DPD', function () {
+    describe('Reference', function () {
+        it('@EMAIL', function () {
+            var data = Mock.mock('@EMAIL');
+            expect(data).to.not.equal('@EMAIL');
+        });
+    });
+    describe('Priority', function () {
+        it('@EMAIL', function () {
             var data = Mock.mock({
                 email: 'nuysoft@gmail.com',
-                name: '@EMAIL'
-            })
-            this.test.title += ' => ' + data.name
-            expect(data.name).to.not.equal(data.email)
-        })
-        it('@email', function() {
+                name: '@EMAIL',
+            });
+            expect(data.name).to.not.equal(data.email);
+        });
+        it('@email', function () {
             var data = Mock.mock({
                 email: 'nuysoft@gmail.com',
-                name: '@email'
-            })
-            this.test.title += ' => ' + data.name
-            expect(data.name).to.equal(data.email)
-        })
-    })
-    describe('Escape', function() {
-        it('\@EMAIL', function() {
-            var data = Mock.mock(this.test.title)
-            this.test.title += ' => ' + data
-            expect(data).to.not.equal(this.test.title)
-        })
-        it('\\@EMAIL', function() {
-            var data = Mock.mock(this.test.title)
-            this.test.title += ' => ' + data
-            expect(data).to.not.equal(this.test.title)
-        })
-        it('\\\@EMAIL', function() {
-            var data = Mock.mock(this.test.title)
-            this.test.title += ' => ' + data
-            expect(data).to.not.equal(this.test.title)
-        })
-        it('\\\\@EMAIL', function() {
-            var data = Mock.mock(this.test.title)
-            this.test.title += ' => ' + data
-            expect(data).to.not.equal(this.test.title)
-        })
-    })
-    describe('Path', function() {
-        it('Absolute Path', function() {
+                name: '@email',
+            });
+            expect(data.name).to.equal(data.email);
+        });
+    });
+    describe('Escape', function () {
+        it('@EMAIL', function () {
+            var data = Mock.mock('@EMAIL');
+            expect(data).to.not.equal('@EMAIL');
+        });
+        it('\\@EMAIL', function () {
+            var data = Mock.mock('\\@EMAIL');
+            expect(data).to.not.equal('\\@EMAIL');
+        });
+        it('\\@EMAIL', function () {
+            var data = Mock.mock('\\@EMAIL');
+            expect(data).to.not.equal('\\@EMAIL');
+        });
+        it('\\\\@EMAIL', function () {
+            var data = Mock.mock('\\\\@EMAIL');
+            expect(data).to.not.equal('\\\\@EMAIL');
+        });
+    });
+    describe('Path', function () {
+        it('Absolute Path', function () {
             var data = Mock.mock({
                 id: '@UUID',
-                children: [{
-                    parentId: '@/id'
-                }],
+                children: [
+                    {
+                        parentId: '@/id',
+                    },
+                ],
                 child: {
-                    parentId: '@/id'
-                }
-            })
-            expect(data.children[0]).to.have.property('parentId', data.id)
-            expect(data.child).to.have.property('parentId', data.id)
-        })
-        it('Relative Path', function() {
+                    parentId: '@/id',
+                },
+            });
+            expect(data.children[0]).to.have.property('parentId', data.id);
+            expect(data.child).to.have.property('parentId', data.id);
+        });
+        it('Relative Path', function () {
             var data = Mock.mock({
                 id: '@UUID',
-                children: [{
-                    parentId: '@../../id'
-                }],
+                children: [
+                    {
+                        parentId: '@../../id',
+                    },
+                ],
                 child: {
-                    parentId: '@../id'
-                }
-            })
-            expect(data.children[0]).to.have.property('parentId', data.id)
-            expect(data.child).to.have.property('parentId', data.id)
-        })
+                    parentId: '@../id',
+                },
+            });
+            expect(data.children[0]).to.have.property('parentId', data.id);
+            expect(data.child).to.have.property('parentId', data.id);
+        });
 
-        it('Relative Path Fallback in Corner Case', function() {
-            const STRING = 'https://test.org/@a/build/test.html'
+        it('Relative Path Fallback in Corner Case', function () {
+            const STRING = 'https://test.org/@a/build/test.html';
             var data = Mock.mock({
-                a: STRING
-            })
-            expect(data.a).to.equal(STRING)
-        })
-    })
-    describe('Complex', function() {
+                a: STRING,
+            });
+            expect(data.a).to.equal(STRING);
+        });
+    });
+    describe('Complex', function () {
         var tpl = {
             basics: {
                 boolean1: '@BOOLEAN',
@@ -153,7 +140,7 @@ describe('DPD', function() {
                 nowMinute: '@NOW("minute")',
                 nowSecond: '@NOW("second")',
                 nowWeek: '@NOW("week")',
-                nowCustom: '@NOW("yyyy-MM-dd HH:mm:ss SS")'
+                nowCustom: '@NOW("yyyy-MM-dd HH:mm:ss SS")',
             },
             image: {
                 image1: '@IMAGE',
@@ -164,13 +151,13 @@ describe('DPD', function() {
 
                 dataImage1: '@DATAIMAGE',
                 dataImage2: '@DATAIMAGE("200x100")',
-                dataImage3: '@DATAIMAGE("300x100", "Hello Mock.js!")'
+                dataImage3: '@DATAIMAGE("300x100", "Hello Mock.js!")',
             },
             color: {
                 color: '@COLOR',
-                render: function() {
-                    $('.header').css('background', this.color)
-                }
+                render: function () {
+                    // $('.header').css('background', this.color);
+                },
             },
             text: {
                 title1: '@TITLE',
@@ -187,13 +174,13 @@ describe('DPD', function() {
 
                 paragraph1: '@PARAGRAPH',
                 paragraph2: '@PARAGRAPH(2)',
-                paragraph3: '@PARAGRAPH(1, 3)'
+                paragraph3: '@PARAGRAPH(1, 3)',
             },
             name: {
                 first: '@FIRST',
                 last: '@LAST',
                 name1: '@NAME',
-                name2: '@NAME(true)'
+                name2: '@NAME(true)',
             },
             web: {
                 url: '@URL',
@@ -206,17 +193,13 @@ describe('DPD', function() {
                 region: '@REGION',
                 province: '@PROVINCE',
                 city: '@CITY',
-                county: '@COUNTY'
+                county: '@COUNTY',
             },
             miscellaneous: {
                 guid: '@GUID',
                 id: '@ID',
-                'increment1|3': [
-                    '@INCREMENT'
-                ],
-                'increment2|3': [
-                    '@INCREMENT(10)'
-                ]
+                'increment1|3': ['@INCREMENT'],
+                'increment2|3': ['@INCREMENT(10)'],
             },
             helpers: {
                 capitalize1: '@CAPITALIZE()',
@@ -233,13 +216,12 @@ describe('DPD', function() {
                 pick3: '@PICK(["a", "b", "c"])',
 
                 shuffle1: '@SHUFFLE',
-                shuffle2: '@SHUFFLE(["a", "b", "c"])'
-            }
-        }
-        it('', function() {
-            var data = Mock.mock(tpl)
-            // this.test.title += JSON.stringify(data, null, 4)
-            expect(data).to.be.a('object')
-        })
-    })
-})
+                shuffle2: '@SHUFFLE(["a", "b", "c"])',
+            },
+        };
+        it('complex template', function () {
+            var data = Mock.mock(tpl);
+            expect(data).to.be.a('object');
+        });
+    });
+});

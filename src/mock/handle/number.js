@@ -1,14 +1,13 @@
 import { float } from '../random/basic/number.js';
-export function number({ rule: { decimal, range, count, dcount = 0, parameters }, template = '' }) {
+export function number({ rule: { min, max, dmax, dmin, decimal, range, count, dcount, parameters }, template = '' }) {
     let result;
+
     if (decimal) {
-        // 'float1|.1-10': 10,
-        // 'float2|1-100.1-10': 1,
-        // 'float3|999.1-10': 1,
-        // 'float4|.3-10': 123.123,
-        parameters.input.replace(/\|(\d*-?)(\d*)\.(\d*-?)(\d*)/, function (all, min, max, dmin, dmax) {
-            result = float(min, max, dmin, dmax); // 内置字符串转数字
-        });
+        if (min === undefined && max === undefined) min = max = parseInt(template);
+        if (max === undefined && min) max = min;
+        result = float(min ?? 0, max, dmin, dmax, count, dcount); // 内置字符串转数字
+        // console.log(min, max, dmax, dmin, decimal, range, count, dcount, template);
+        // console.log(result);
     } else {
         // integer
         // 'grade1|1-100': 1,

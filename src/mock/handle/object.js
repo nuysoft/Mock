@@ -10,7 +10,7 @@ export function object({ template, rule: { min, count }, context: { path, templa
     // 'obj|min-max': {}
     /* jshint -W041 */
     if (min != undefined) {
-        keys = shuffle(Object.keys(template)).slice(0, count);
+        keys = shuffle(Object.keys(template)).slice(0, min);
         keys.forEach((key) => {
             const parsedKey = key.replace(Constant.RE_KEY, '$1');
 
@@ -25,7 +25,6 @@ export function object({ template, rule: { min, count }, context: { path, templa
         });
     } else {
         // 'obj': {}
-        // #25 改变了非函数属性的顺序，查找起来不方便
         for (const key in template) {
             (typeof template[key] === 'function' ? fnKeys : keys).push(key);
         }

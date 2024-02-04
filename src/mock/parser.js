@@ -33,8 +33,7 @@ export function parser(name = '') {
     const min = range && range[1] && parseInt(range[1], 10); // || 1
     const max = range && range[2] && parseInt(range[2], 10); // || 1
     // repeat || min-max || 1
-    // var count = range ? !range[2] && parseInt(range[1], 10) || integer(min, max) : 1
-    const count = range ? (!range[2] ? parseInt(range[1], 10) : integer(min, max)) : undefined;
+    const count = range ? (!range[2] && parseInt(range[1], 10)) || integer(min, max) : undefined;
 
     const decimal = parameters && parameters[4] && parameters[4].match(Constant.RE_RANGE);
     const dmin = decimal && decimal[1] && parseInt(decimal[1], 10); // || 0,

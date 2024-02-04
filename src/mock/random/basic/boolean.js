@@ -7,7 +7,7 @@ const boolean = function (min, max, cur = false) {
     //     return Math.random() > (1.0 / (min + max)) * min ? !cur : cur;
     // }
     if (cur) {
-        return random(0, min + max) > min ? !cur : cur;
+        return random(0, min + max) > min ? !cur : !!cur;
     }
     return random(10, -10) > 0;
 };
