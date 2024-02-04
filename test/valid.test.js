@@ -1,13 +1,7 @@
-/* global require, chai, describe, before, it */
-/* global window */
 import { it, describe, expect, before } from 'vitest';
 import Mock from '../src/mock';
 
 describe('Mock.valid', function () {
-    function stringify(json) {
-        return JSON.stringify(json /*, null, 4*/);
-    }
-    const title = () => {};
     function doit(tpl, data, len) {
         it(JSON.stringify(tpl), function () {
             var result = Mock.valid(tpl, data);
