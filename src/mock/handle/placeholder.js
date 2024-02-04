@@ -63,7 +63,7 @@ function placeholder(Placeholder, obj, templateContext, options) {
         case 'function': {
             // 执行占位符方法（大多数情况）
             handle.options = options;
-            const re = handle.apply(Random, params) || ''; // 因为是在字符串中，所以默认为空字符串。
+            const re = handle.apply(Random, params) ?? ''; // 因为是在字符串中，所以默认为空字符串。
             delete handle.options;
             return re;
         }

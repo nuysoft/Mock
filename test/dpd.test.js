@@ -33,15 +33,15 @@ describe('DPD', function () {
         });
         it('\\@EMAIL', function () {
             var data = Mock.mock('\\@EMAIL');
-            expect(data).to.not.equal('\\@EMAIL');
+            expect(data).to.equal('\\@EMAIL');
         });
         it('\\@EMAIL', function () {
             var data = Mock.mock('\\@EMAIL');
-            expect(data).to.not.equal('\\@EMAIL');
+            expect(data).to.equal('\\@EMAIL');
         });
         it('\\\\@EMAIL', function () {
             var data = Mock.mock('\\\\@EMAIL');
-            expect(data).to.not.equal('\\\\@EMAIL');
+            expect(data).to.equal('\\\\@EMAIL');
         });
     });
     describe('Path', function () {

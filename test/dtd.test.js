@@ -351,6 +351,7 @@ describe('DTD', function () {
                 ],
             });
             expect(data).to.have.property('list').that.be.an('array').have.length.within(5, 10);
+            // console.log(data.list);
             expect(data.list[0].name).to.be.a('number');
             expect(data.list[1].name).to.be.a('string');
             expect(data.list[2].name).to.be.a('boolean');

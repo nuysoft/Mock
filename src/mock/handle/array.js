@@ -45,15 +45,15 @@ export function array({
             // 'data|+1': [{}, {}]
             if (parameters[2]) {
                 template.__order_index = template.__order_index || 0;
-
-                result = gen(template, undefined, {
+                const index = template.__order_index % template.length;
+                result = gen(template[index], undefined, {
                     path: [...path, name],
                     templatePath: [...templatePath, name],
                     currentContext: result,
                     templateCurrentContext: template,
                     root: root || result,
                     templateRoot: templateRoot || template,
-                })[template.__order_index % template.length];
+                });
 
                 template.__order_index += +parameters[2];
             } else {
