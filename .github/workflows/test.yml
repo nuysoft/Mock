@@ -21,7 +21,8 @@ jobs:
                   # this will use the latest Node 16 version
                   node-version: 18.16.0
             # install dependencies using clean install to avoid package lock updates
-            - run: pnpm ci
+            - run: npm i -g pnpm
+            - run: pnpm i
             - run: pnpm coverage
 
             # Save coverage report in Coveralls
