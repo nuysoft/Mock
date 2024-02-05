@@ -1,8 +1,11 @@
-import Handler from './handler.js';
-import { _mocked } from './_mocked.js';
-import { XHR } from './xhr/index.js';
+import Handler from './handler';
+import { _mocked } from './_mocked';
+import { XHR } from './xhr/index';
 
-export function mock(...args) {
+function mock(url: string, type: string, template: any): void;
+function mock(url: string, template: any): void;
+function mock<T>(template: any): T;
+function mock(...args: any[]) {
     let rurl;
     let rtype = 'get';
     let template;
@@ -32,3 +35,4 @@ export function mock(...args) {
     });
     return null;
 }
+export { mock };

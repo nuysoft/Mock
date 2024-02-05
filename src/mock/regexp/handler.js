@@ -54,8 +54,10 @@
         null-character      \o      NUL 字符
  */
 
-import * as Util from '../util.js';
-import { character, pick, boolean, integer } from '../random/index.js';
+import * as Util from '../util';
+
+import { pick } from '../random/helper';
+import { character, boolean, integer } from '../random/basic';
 /*
 
     */

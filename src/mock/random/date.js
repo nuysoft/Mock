@@ -2,10 +2,10 @@
 /*
     ## Date
 */
-import { integer } from './basic/number.js';
+import { integer } from './basic/number';
 
 // 日期占位符集合。
-import _patternLetters from './date/_patternLetters.js';
+import _patternLetters from './date/_patternLetters';
 
 const _rformat = new RegExp(`(${Object.keys(_patternLetters).join('|')})`, 'g');
 

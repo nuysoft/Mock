@@ -1,8 +1,8 @@
 /*
     ## Basics
 */
-export * from './basic/number.js';
-export * from './basic/boolean.js';
-export * from './basic/character.js';
-export * from './basic/string.js';
-export * from './basic/range.js';
+export * from './basic/number';
+export * from './basic/boolean';
+export * from './basic/character';
+export * from './basic/string';
+export * from './basic/range';

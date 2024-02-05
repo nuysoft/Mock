@@ -1,4 +1,4 @@
-import { isURLSearchParameters } from '../utils/is.js';
+import { isURLSearchParameters } from '../utils/is';
 import { BODY as INTERNALS } from '../INTERNALS';
 /**
  * Performs the operation "extract a `Content-Type` value from |object|" as

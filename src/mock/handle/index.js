@@ -1,7 +1,7 @@
-export { array } from './array.js';
-export { boolean } from './boolean.js';
-export { function } from './function.js';
-export { number } from './number.js';
-export { object } from './object.js';
-export { regexp } from './regexp.js';
-export { string } from './string.js';
+export { array } from './array';
+export { boolean } from './boolean';
+export { function } from './function';
+export { number } from './number';
+export { object } from './object';
+export { regexp } from './regexp';
+export { string } from './string';

@@ -1,4 +1,4 @@
-import { natural } from '../basic.js';
+import { natural } from '../basic';
 export default function range(defaultMin, defaultMax, min, max) {
     return min === undefined
         ? natural(defaultMin, defaultMax) // (min,max)

@@ -4,7 +4,7 @@
 */
 
 import size from './image.json';
-import { pick } from './helper.js';
+import { pick } from './helper';
 const { _adSize, _screenSize, _videoSize } = size;
 
 /*

@@ -1,4 +1,4 @@
-import { float } from '../random/basic/number.js';
+import { float } from '../random/basic/number';
 export function number({ rule: { min, max, dmax, dmin, decimal, range, count, dcount, parameters }, template = '' }) {
     let result;
 

@@ -1,6 +1,6 @@
 // 用于生成 Blob 和 File 型数据的工具
-import { type } from '../util.js';
-import { word } from './text/text_en.js';
+import { type } from '../util';
+import { word } from './text/text_en';
 function prepare(anyData) {
     let prepared;
     switch (type(anyData)) {

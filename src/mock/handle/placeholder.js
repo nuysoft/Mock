@@ -1,9 +1,9 @@
-import Constant from '../constant.js';
-import { type as Type } from '../util.js';
-import { pick } from '../random/index.js';
-import * as Random from '../random/index.js';
-import { gen } from './gen.js';
-import { splitPathToArray, getValueByKeyPath } from './path.js';
+import Constant from '../constant';
+import { type as Type } from '../util';
+import { pick } from '../random/helper';
+import Random from '../random';
+import { gen } from './gen';
+import { splitPathToArray, getValueByKeyPath } from './path';
 
 // 占位符即是字符串函数的意思
 function placeholder(Placeholder, obj, templateContext, options) {

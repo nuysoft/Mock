@@ -1,4 +1,4 @@
-import * as RE from '../regexp/index.js';
+import * as RE from '../regexp/index';
 
 export function regexp({ rule: { count }, template: { source } }) {
     // 'name': /regexp/,

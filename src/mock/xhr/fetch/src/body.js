@@ -4,10 +4,10 @@
  * Body interface provides common methods for Request and Response
  */
 
-import { isURLSearchParameters } from './utils/is.js';
-import { BODY as INTERNALS } from './INTERNALS.js';
+import { isURLSearchParameters } from './utils/is';
+import { BODY as INTERNALS } from './INTERNALS';
 
-import { consumeBody } from './body/consumeBody.js';
+import { consumeBody } from './body/consumeBody';
 /**
  * Body mixin
  *

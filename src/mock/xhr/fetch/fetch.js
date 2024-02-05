@@ -10,11 +10,11 @@ function mockFetch() {
 }
 
 // 假的 fetch 函数
-import { find, convert } from '../ajax-tools.js';
+import { find, convert } from '../ajax-tools';
 
 // 假的 Response 对象
 // import fakeResponse from "./src/response.js";
-import fakeResponse from './src/response.js';
+import fakeResponse from './src/response';
 
 async function fakeFetch(url, options = {}) {
     if (window.fetch.$mock === true) {

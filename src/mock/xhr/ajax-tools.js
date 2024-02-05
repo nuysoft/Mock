@@ -1,6 +1,6 @@
-import { type as Type, isFunction } from '../util.js';
-import { gen } from '../handle/gen.js'; // 从模板生成数据
-import { _mocked } from '../_mocked.js';
+import { type as Type, isFunction } from '../util';
+import { gen } from '../handle/gen'; // 从模板生成数据
+import { _mocked } from '../_mocked';
 
 // 查找与请求参数匹配的数据模板：URL，Type
 function find({ url, type }) {

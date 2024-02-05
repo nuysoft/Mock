@@ -22,8 +22,8 @@
         ```
  */
 
-import Constant from './constant.js';
-import { integer } from './random/index.js';
+import Constant from './constant';
+import { integer } from './random/basic/number';
 /* jshint -W041 */
 export function parser(name = '') {
     if (typeof name !== 'string') name = name + '';

@@ -1,7 +1,7 @@
-import Constant from '../constant.js';
-import { isNumeric } from '../util.js';
-import { string as _string } from '../random/index.js';
-import { placeholder as Placeholder } from './placeholder.js';
+import Constant from '../constant';
+import { isNumeric } from '../util';
+import { string as _string } from '../random/basic';
+import { placeholder as Placeholder } from './placeholder';
 export function string(options) {
     const {
         rule: { range, count },

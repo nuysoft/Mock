@@ -1,7 +1,7 @@
 // 使用不完全覆盖的方式，使用继承方式继承所有的属性
 // 只在 send 方式调用的时候对其进行数据返回
-import { find, convert } from '../ajax-tools.js';
-import HTTP_STATUS_CODES from './constant.js';
+import { find, convert } from '../ajax-tools';
+import HTTP_STATUS_CODES from './constant';
 
 const voidFunc = function () {};
 const window = globalThis.window || {};

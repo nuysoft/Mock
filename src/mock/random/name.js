@@ -5,7 +5,7 @@
 */
 import Name from './name.json';
 const { firstName, lastName, cfirstName, clastName } = Name;
-import { pick } from './helper.js';
+import { pick } from './helper';
 
 // 随机生成一个常见的英文名。
 function first() {

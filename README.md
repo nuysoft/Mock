@@ -1,6 +1,6 @@
 # Mockjs 重构 项目
 
-| 2023/2/5 | 测试全部完成 |
+| ![](https://img.shields.io/badge/更新-2023/2/5-blue?style=flat-square) | [![Coverage Status](https://coveralls.io/repos/github/KonghaYao/Mock/badge.svg?branch=esm)](https://coveralls.io/github/KonghaYao/Mock?branch=esm) | ![npm version](https://img.shields.io/npm/v/mockjs-ts.svg?style=flat-square) |
 
 ## 简介
 

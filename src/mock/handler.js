@@ -31,9 +31,9 @@
 
 */
 
-import { extend } from './util.js';
-import * as Random from './random/index.js';
-import { gen } from './handle/gen.js';
+import { extend } from './util';
+import Random from './random';
+import { gen } from './handle/gen';
 /*
     template        属性值（即数据模板）
     name            属性名
@@ -51,7 +51,7 @@ const Handler = {
     extend,
 };
 
-import { array, object, number, boolean, string as _string, function as _function, regexp } from './handle/index.js';
+import { array, object, number, boolean, string as _string, function as _function, regexp } from './handle/index';
 Handler.extend({
     array,
     object,
@@ -62,8 +62,8 @@ Handler.extend({
     regexp,
 });
 
-import { placeholder } from './handle/placeholder.js';
-import { getValueByKeyPath, normalizePath, splitPathToArray } from './handle/path.js';
+import { placeholder } from './handle/placeholder';
+import { getValueByKeyPath, normalizePath, splitPathToArray } from './handle/path';
 Handler.extend({
     _all: function () {
         return Object.keys(Random).reduce((col, key) => {

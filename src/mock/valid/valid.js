@@ -23,9 +23,9 @@
     [JSON-Schama validator](http://json-schema-validator.herokuapp.com/)
     [Regexp Demo](http://demos.forbeslindesay.co.uk/regexp/)
 */
-import Constant from '../constant.js';
-import * as Util from '../util.js';
-import { toJSONSchema } from '../schema/schema.js';
+import Constant from '../constant';
+import * as Util from '../util';
+import { toJSONSchema } from '../schema/schema';
 
 function valid(template, data) {
     const schema = toJSONSchema(template);

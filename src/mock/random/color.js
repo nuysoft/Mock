@@ -72,8 +72,8 @@
         return color.toUpperCase()
 */
 import Color from 'color'; // 使用 color 这个库进行颜色转换
-import DICT from './color/color_dict.js';
-import { pick } from './helper.js';
+import DICT from './color/color_dict';
+import { pick } from './helper';
 import RandomColor from './color/color_dict_cn.json';
 
 let _hue;

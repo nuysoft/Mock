@@ -1,1 +1,1 @@
-export { toJSONSchema } from './schema.js';
+export { toJSONSchema } from './schema';

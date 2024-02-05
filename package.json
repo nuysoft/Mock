@@ -26,11 +26,12 @@
     },
     "main": "./dist/mock.mjs",
     "module": "./dist/mock.mjs",
+    "types": "./dist/mock.d.ts",
     "scripts": {
         "test": "vitest",
         "coverage": "vitest run --coverage",
         "build": "vite build",
-        "prepublish": "pnpm build",
+        "prepublish": "tsc && pnpm build",
         "prettier": "prettier --write src/**/*.{ts,json,md,yml,js}"
     },
     "dependencies": {
@@ -45,6 +46,7 @@
         "jquery": "~2.1.1",
         "jsdom": "^24.0.0",
         "prettier": "^2.3.2",
+        "typescript": "^5.3.3",
         "vite": "^5.0.12",
         "vitest": "^1.2.2"
     }

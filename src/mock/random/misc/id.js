@@ -1,7 +1,7 @@
-import DICT from '../address_dict.js';
-import { pick } from '../helper.js';
-import { date } from '../date.js';
-import { string } from '../basic.js';
+import DICT from '../address_dict';
+import { pick } from '../helper';
+import { date } from '../date';
+import { string } from '../basic';
 /*
     随机生成一个 18 位身份证。
 

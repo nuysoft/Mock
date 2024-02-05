@@ -1,5 +1,5 @@
-import { pick } from '../random/index.js';
-import { gen } from './gen.js';
+import { pick } from '../random/helper';
+import { gen } from './gen';
 export function array({
     name,
     rule: { min, max, parameters, count },

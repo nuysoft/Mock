@@ -1,10 +1,10 @@
 /*
     ## Address
 */
-import DICT from './address_dict.js';
+import DICT from './address_dict';
 const REGION = ['东北', '华北', '华东', '华中', '华南', '西南', '西北'];
-import { pick } from './helper.js';
-import { natural } from './basic/number.js';
+import { pick } from './helper';
+import { natural } from './basic/number';
 
 // 随机生成一个大区。
 function region() {

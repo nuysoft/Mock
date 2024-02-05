@@ -1,4 +1,4 @@
-import { natural } from '../basic.js';
+import { natural } from '../basic';
 import { random, sampleSize, times } from 'lodash-es';
 
 function cparagraph(min = 3, max = 7) {

@@ -1,6 +1,6 @@
 import { random, times } from 'lodash-es';
-import { character } from '../basic.js';
-import { capitalize } from '../helper.js';
+import { character } from '../basic';
+import { capitalize } from '../helper';
 // 随机生成一个句子，第一个单词的首字母大写。
 function sentence(min = 12, max = 18) {
     switch (arguments.length) {

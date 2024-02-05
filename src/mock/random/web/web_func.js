@@ -1,6 +1,6 @@
-import { pick } from '../helper.js';
-import { word } from '../text.js';
-import { protocols, tlds } from './web_dict.js';
+import { pick } from '../helper';
+import { word } from '../text';
+import { protocols, tlds } from './web_dict';
 /*
     随机生成一个 URL。
 
@@ -40,7 +40,7 @@ export function tld() {
     return pick(tlds);
 }
 
-import { character, natural } from '../basic.js';
+import { character, natural } from '../basic';
 
 // 随机生成一个邮件地址。
 export function email(domain) {

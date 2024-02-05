@@ -2,9 +2,9 @@
     ## Miscellaneous
 */
 import { v4 as uuid } from 'uuid';
-import id from './misc/id.js';
-import guid from './misc/guid.js';
-import { natural } from '../random/basic/number';
+import id from './misc/id';
+import guid from './misc/guid';
+import { natural } from './basic/number';
 /*
     生成一个全局的自增整数。
     类似自增主键（auto increment primary key）。

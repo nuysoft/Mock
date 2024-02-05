@@ -1,2 +1,2 @@
-export { Parser } from './parser.js';
-export { Handler } from './handler.js';
+export { Parser } from './parser';
+export { Handler } from './handler';

@@ -1,6 +1,6 @@
-import { natural } from './number.js';
+import { natural } from './number';
 import { times } from 'lodash-es';
-import { character } from './character.js';
+import { character } from './character';
 const string = function (...args) {
     let len;
     let pool;

@@ -1,7 +1,7 @@
-import Constant from '../constant.js';
-import { type as Type } from '../util.js';
-import { parser as Parser } from '../parser.js';
-import * as typeset from './index.js';
+import Constant from '../constant';
+import { type as Type } from '../util';
+import { parser as Parser } from '../parser';
+import * as typeset from './index';
 let GID = 1; // 1.0.1 版本引用了 Constant.GUID 但是那个是常量，后面这个变量需要改变
 export function gen(template, name = '', context = {}) {
     const newContext = {

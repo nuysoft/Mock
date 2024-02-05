@@ -1,7 +1,7 @@
-import { shuffle } from '../random/index.js';
-import Constant from '../constant.js';
-import { type as Type } from '../util.js';
-import { gen } from './gen.js';
+import { shuffle } from '../random/helper';
+import Constant from '../constant';
+import { type as Type } from '../util';
+import { gen } from './gen';
 export function object({ template, rule: { min, count }, context: { path, templatePath, root, templateRoot } }) {
     const result = {};
     let keys = [];

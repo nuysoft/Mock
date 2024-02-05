@@ -1,8 +1,8 @@
 // 在 fetch 的代理中只需要进行 fetch 的数据代理即可
 //
-import { mockFetch } from './fetch/fetch.js';
+import { mockFetch } from './fetch/fetch';
 
-import { MockXMLHttpRequest } from './XMLHttpRequest/xhr.js';
+import { MockXMLHttpRequest } from './XMLHttpRequest/xhr';
 export const XHR = Object.assign(
     function () {
         return new MockXMLHttpRequest(...arguments);

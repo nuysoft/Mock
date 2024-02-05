@@ -5,9 +5,9 @@
 
     > [JSON Schema](http://json-schema.org/)
  */
-import Constant from '../constant.js';
-import { type } from '../util.js';
-import { parser } from '../parser.js';
+import Constant from '../constant';
+import { type } from '../util';
+import { parser } from '../parser';
 
 function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
     // type rule properties items
