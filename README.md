@@ -22,12 +22,13 @@ npm i -D mockjs-ts
 
 1. 对源代码中的大部分循环遍历逻辑进行了修改。
 2. 引用 lodash 和 color 库对源代码中的随机函数和颜色转换等函数进行简化。（原作者当年是没有依靠任何库的，这一点令我很佩服）
-3. 源代码打包方式改为 rollup 打包，生成 esm 版本，cjs 版本和 iife 版本。
-4. 扩充 [Mockjs](http://mockjs.com/) 的功能，比如提供 timestamp 模板等。
-5. 更改随机颜色为从 [中国色](http://zhongguose.com) 中抽取一种颜色。 （中国色 数据来自于 http://zhongguose.com)
-6. 删除 XHR 代理时的同步行为，这个行为已经不被浏览器所使用。
-7. 使用继承代理的方式而不是覆盖 XHR 请求的方式代理 原生 XHR 行为。
-8. 代码通过 eslint 和 prettier 进行风格化管理，加强代码的可读性。
+3. 支持通过 `registerRandom` 方法注册自定义随机函数。
+4. 源代码打包方式改为 rollup 打包，生成 esm 版本，cjs 版本和 iife 版本。
+5. 扩充 [Mockjs](http://mockjs.com/) 的功能，比如提供 timestamp 模板等。
+6. 更改随机颜色为从 [中国色](http://zhongguose.com) 中抽取一种颜色。 （中国色 数据来自于 http://zhongguose.com)
+7. 删除 XHR 代理时的同步行为，这个行为已经不被浏览器所使用。
+8. 使用继承代理的方式而不是覆盖 XHR 请求的方式代理 原生 XHR 行为。
+9. 代码通过 eslint 和 prettier 进行风格化管理，加强代码的可读性。
 
 ## 教程
 
