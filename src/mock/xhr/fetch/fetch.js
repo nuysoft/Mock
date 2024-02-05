@@ -19,18 +19,18 @@ import fakeResponse from './src/response.js';
 async function fakeFetch(url, options = {}) {
     if (window.fetch.$mock === true) {
         // 只有在 $mock 标记为 true 时才进行代理
-        const result = find({
+        const savedHook = {
             url,
-            type: (options.method || 'get').toLowerCase(),
-        });
+            type: options.method || 'get',
+        };
+        const result = find(savedHook);
         if (result) {
-            const data = convert(result, {});
-            console.warn('mock代理中');
+            const data = convert({ ...result, body: options.body }, savedHook);
+            console.warn('mock | fetch代理中', url);
             return new fakeResponse(data, options);
         }
     }
 
-    console.warn('未使用 mockjs');
     return realFetch(url, options);
 }
 export { fakeFetch, mockFetch };

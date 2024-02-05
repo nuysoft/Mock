@@ -28,7 +28,9 @@
     "module": "./dist/mock.mjs",
     "scripts": {
         "test": "vitest",
+        "coverage": "vitest run --coverage",
         "build": "vite build",
+        "prepublish": "pnpm build",
         "prettier": "prettier --write src/**/*.{ts,json,md,yml,js}"
     },
     "dependencies": {
@@ -38,8 +40,10 @@
     },
     "devDependencies": {
         "@vitest/browser": "^1.2.2",
-        "happy-dom": "^13.3.8",
+        "@vitest/coverage-v8": "^1.2.2",
+        "blob-polyfill": "^7.0.20220408",
         "jquery": "~2.1.1",
+        "jsdom": "^24.0.0",
         "prettier": "^2.3.2",
         "vite": "^5.0.12",
         "vitest": "^1.2.2"

@@ -6,8 +6,8 @@ import { _mocked } from '../_mocked.js';
 function find({ url, type }) {
     type = type.toLowerCase();
 
-    for (const item of _mocked) {
-        const { rurl, rtype } = item;
+    for (const item of _mocked.$getAll()) {
+        const { url: rurl, type: rtype } = item;
         if (match(rurl, url) && match(rtype, type)) {
             console.log('[mock]', url, '>', item.rurl);
             return item;
@@ -28,7 +28,9 @@ function match(expected, actual) {
 }
 
 // 数据模板 ＝> 响应数据
-function convert({ template }, options) {
-    return isFunction(template) ? template(options) : gen(template);
+function convert({ template, body }, options) {
+    return isFunction(template)
+        ? template({ ...options, type: options.type.toUpperCase(), body: body ?? null })
+        : gen(template);
 }
 export { find, convert, match };

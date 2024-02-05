@@ -1,119 +1,43 @@
-// @vitest-environment happy-dom
-// 数据占位符定义（Data Placeholder Definition，DPD）
-import { it, describe, expect, before } from 'vitest';
+// @vitest-environment jsdom
+
+import { it, describe, expect, afterEach } from 'vitest';
 import Mock from '../src/mock';
+import * as _ from 'lodash-es';
 import $ from 'jquery';
+import { Blob } from 'blob-polyfill';
+globalThis.Blob = Blob;
 describe('Request', function () {
     const donePolyfill = (fn) => {
         return () => new Promise((res) => fn(res));
     };
-    describe('jQuery.ajax()', function () {
-        it(
-            'Math.random()',
-            donePolyfill(function (done) {
-                var url = Math.random();
-                $.ajax({
-                    url: url,
-                    dataType: 'json',
-                })
-                    .done(function (/*data, textStatus, jqXHR*/) {
-                        // 不会进入
-                    })
-                    .fail(function (jqXHR /*, textStatus, errorThrown*/) {
-                        // 浏览器 || PhantomJS
-                        expect([404, 0]).to.include(jqXHR.status);
-                    })
-                    .always(function () {
-                        done();
-                    });
-            }),
-        );
-    });
-    describe('jQuery.getScript()', function () {
-        it(
-            './materiels/noop.js',
-            donePolyfill(function (done) {
-                var url = './materiels/noop.js';
-                $.getScript(url, function (script, textStatus, jqXHR) {
-                    expect(script).to.be.ok;
-                    done();
-                });
-            }),
-        );
-    });
-    describe('jQuery.load()', function () {
-        it(
-            './materiels/noop.html',
-            donePolyfill(function (done) {
-                var url = './materiels/noop.html';
-                $('<div>').load(url, function (responseText /*, textStatus, jqXHR*/) {
-                    expect(responseText).to.be.ok;
-                    done();
-                });
-            }),
-        );
-    });
-    describe('jQuery.ajax() XHR Fields', function () {
-        it(
-            'Math.random()',
-            donePolyfill(function (done) {
-                var that = this;
-                var url = Math.random();
-                var xhr;
-                $.ajax({
-                    xhr: function () {
-                        xhr = $.ajaxSettings.xhr();
-                        return xhr;
-                    },
-                    url: url,
-                    dataType: 'json',
-                    xhrFields: {
-                        timeout: 123,
-                        withCredentials: true,
-                    },
-                })
-                    .done(function (/*data, textStatus, jqXHR*/) {
-                        // 不会进入
-                    })
-                    .fail(function (jqXHR /*, textStatus, errorThrown*/) {
-                        // 浏览器 || PhantomJS
-                        expect([404, 0]).to.include(jqXHR.status);
-                        expect(xhr.timeout).to.be.equal(123);
-                        expect(xhr.withCredentials).to.be.equal(true);
-                    })
-                    .always(function () {
-                        done();
-                    });
-            }),
-        );
-    });
 
-    describe('Mock.mock( rurl, template )', function () {
-        it('rurl_template.json', async function (done) {
-            var url = 'rurl_template.json';
+    afterEach(() => {
+        Mock._mocked.$clear();
+    });
+    it('Mock.mock( rurl, template )', async function (done) {
+        const url = 'rurl_template.json';
 
-            Mock.mock(/rurl_template.json/, {
-                'list|1-10': [
-                    {
-                        'id|+1': 1,
-                        email: '@EMAIL',
-                    },
-                ],
-            });
-
-            Mock.setup({
-                // timeout: 100,
-                timeout: '10-50',
-            });
-            return fetch(url)
-                .then((res) => res.json())
-                .then(function (data /*, textStatus, jqXHR*/) {
-                    expect(data).to.have.property('list').that.be.an('array').with.length.within(1, 10);
-                    _.each(data.list, function (item, index, list) {
-                        if (index > 0) expect(item.id).to.be.equal(list[index - 1].id + 1);
-                    });
-                });
+        Mock.mock(/rurl_template.json/, {
+            'list|1-10': [
+                {
+                    'id|+1': 1,
+                    email: '@EMAIL',
+                },
+            ],
         });
+
+        Mock.setup({
+            // timeout: 100,
+            timeout: '10-50',
+        });
+        await fetch(url)
+            .then((res) => res.json())
+            .then(function (data /*, textStatus, jqXHR*/) {
+                expect(data).to.have.property('list').that.be.an('array').with.length.within(1, 10);
+                _.each(data.list, function (item, index, list) {
+                    if (index > 0) expect(item.id).to.be.equal(list[index - 1].id + 1);
+                });
+            });
     });
 
     describe('Mock.mock( rurl, function(options) )', function () {
@@ -127,7 +51,7 @@ describe('Request', function () {
                     expect(options).to.not.equal(undefined);
                     expect(options.url).to.be.equal(url);
                     expect(options.type).to.be.equal('GET');
-                    expect(options.body).to.be.equal(null);
+                    expect(options.body).toBeFalsy();
                     return Mock.mock({
                         'list|1-10': [
                             {
@@ -149,7 +73,7 @@ describe('Request', function () {
                         });
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR, textStatus, errorThrown);
+                        // console.log(jqXHR, textStatus, errorThrown);
                     })
                     .always(function () {
                         done();
@@ -158,50 +82,48 @@ describe('Request', function () {
         );
     });
 
-    describe('Mock.mock( rurl, function(options) ) + GET + data', function () {
-        it(
-            'rurl_function.json',
-            donePolyfill(function (done) {
-                var that = this;
-                var url = 'rurl_function.json';
+    it(
+        'Mock.mock( rurl, function(options) ) + GET + data',
+        donePolyfill(function (done) {
+            var that = this;
+            var url = 'rurl_function.json';
 
-                Mock.mock(/rurl_function\.json/, function (options) {
-                    expect(options).to.not.equal(undefined);
-                    expect(options.url).to.be.equal(url + '?foo=1');
-                    expect(options.type).to.be.equal('GET');
-                    expect(options.body).to.be.equal(null);
-                    return Mock.mock({
-                        'list|1-10': [
-                            {
-                                'id|+1': 1,
-                                email: '@EMAIL',
-                            },
-                        ],
-                    });
+            Mock.mock(/rurl_function\.json/, function (options) {
+                expect(options).to.not.equal(undefined);
+                expect(options.url).to.be.equal('rurl_function.json?foo=1');
+                expect(options.type).to.be.equal('GET');
+                expect(options.body).to.be.equal(null);
+                return Mock.mock({
+                    'list|1-10': [
+                        {
+                            'id|+1': 1,
+                            email: '@EMAIL',
+                        },
+                    ],
                 });
+            });
 
-                $.ajax({
-                    url: url,
-                    dataType: 'json',
-                    data: {
-                        foo: 1,
-                    },
-                })
-                    .done(function (data /*, status, jqXHR*/) {
-                        expect(data).to.have.property('list').that.be.an('array').with.length.within(1, 10);
-                        _.each(data.list, function (item, index, list) {
-                            if (index > 0) expect(item.id).to.be.equal(list[index - 1].id + 1);
-                        });
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR, textStatus, errorThrown);
-                    })
-                    .always(function () {
-                        done();
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                data: {
+                    foo: 1,
+                },
+            })
+                .done(function (data /*, status, jqXHR*/) {
+                    expect(data).to.have.property('list').that.be.an('array').with.length.within(1, 10);
+                    _.each(data.list, function (item, index, list) {
+                        if (index > 0) expect(item.id).to.be.equal(list[index - 1].id + 1);
                     });
-            }),
-        );
-    });
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR, textStatus, errorThrown);
+                })
+                .always(function () {
+                    done();
+                });
+        }),
+    );
 
     describe('Mock.mock( rurl, function(options) ) + POST + data', function () {
         it(

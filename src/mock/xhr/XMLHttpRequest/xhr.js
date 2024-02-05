@@ -49,6 +49,7 @@ class MockXMLHttpRequest extends XMLHttpRequest {
         if (this.$mock) {
             this.$template = find({ url: this.$url, type: this.$type });
             if (this.$template) {
+                this.$template = { ...this.$template, body };
                 defineGetAndSet(this);
                 this.dispatchEvent(new Event('loadstart'));
                 setTimeout(this.$done.bind(this), this.timeout || 100);
@@ -85,9 +86,9 @@ class MockXMLHttpRequest extends XMLHttpRequest {
 
         this.status = 200;
         this.statusText = HTTP_STATUS_CODES[200];
-        const data = convert(this.$template, {});
+        const data = convert(this.$template, { url: this.$url, type: this.$type });
         this.response = data;
-        this.responseText = this.response;
+        this.responseText = typeof this.response === 'string' ? this.response : JSON.stringify(this.response);
         this.readyState = this.DONE;
         this.dispatchEvent(new Event('readystatechange'));
         this.dispatchEvent(new Event('load'));

@@ -1,16 +1,18 @@
 // 集中管理 mocked 的 url
-const mapper = new Map();
-const _mocked = Object.assign([], {
-    $genKey(val) {
-        return JSON.stringify(val);
+let mapper = [];
+const _mocked = {
+    $getAll() {
+        return mapper;
     },
     $set(value) {
-        const key = this.$genKey({ url: value.rurl, type: value.rtype });
-        mapper.set(key, value);
-        this.push(value);
+        value = { url: value.rurl, type: value.rtype, template: value.template };
+        mapper.push(value);
     },
     $delete(key) {
         mapper.delete(key);
     },
-});
+    $clear() {
+        mapper = [];
+    },
+};
 export { _mocked };
