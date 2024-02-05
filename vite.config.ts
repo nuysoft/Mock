@@ -11,7 +11,7 @@ export default {
     },
     test: {
         coverage: {
-            reporter: ['text', 'json', 'html', 'clover'],
+            reporter: ['text', 'json', 'html', 'lcov'],
         },
     }
 }
