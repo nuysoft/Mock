@@ -3,7 +3,7 @@
 */
 
 import { shuffle as _shuffle, capitalize as _capitalize, sampleSize, random, sample } from 'lodash-es';
-const capitalize = (info = 'undefined') => _capitalize(info)
+const capitalize = (info = 'undefined') => _capitalize(info);
 const upper = function (str) {
     return (str + '').toUpperCase();
 };
@@ -28,7 +28,7 @@ const pick = function (arr, ...args) {
             [min, max] = args;
             return sampleSize(arr, random(min, max));
         default:
-            return sample([arr, ...args])
+            return sample([arr, ...args]);
     }
 };
 /*
@@ -42,7 +42,7 @@ const shuffle = function (arr, min, max) {
         case 1:
             return result;
         case 2:
-            return result.slice(0, min)
+            return result.slice(0, min);
         /* falls through */
         case 3:
             return result.slice(min, max);

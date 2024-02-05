@@ -117,9 +117,9 @@ function rgba() {
 // hsl(300,80%,90%)
 function hsl() {
     const hsv = _goldenRatioColor();
-    const num = hsv.hsl()
+    const num = hsv.hsl();
     // 防止小数导致判断错误
-    num.color[0] = Math.floor(num.color[0])
+    num.color[0] = Math.floor(num.color[0]);
     return num.string();
 }
 export { color, hex, rgb, rgba, hsl, _goldenRatioColor };

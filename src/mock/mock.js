@@ -2,8 +2,6 @@ import Handler from './handler.js';
 import { _mocked } from './_mocked.js';
 import { XHR } from './xhr/index.js';
 
-const window = globalThis.window || {};
-
 export function mock(...args) {
     let rurl;
     let rtype = 'get';
@@ -17,16 +15,15 @@ export function mock(...args) {
         // 2 和 3 switch 穿透
         case 2:
             // Mock.mock(rurl, template)
+            XHR.mock();
             [rurl, template] = args;
             break;
         case 3:
-            // Mock.mock(rurl,rtype, template)
+            XHR.mock();
+            // Mock.mock(rurl, rtype, template)
             [rurl, rtype, template] = args;
             break;
     }
-
-    // 拦截 XHR
-    if (window.XMLHttpRequest !== XHR) window.XMLHttpRequest = XHR;
 
     _mocked.$set({
         rurl,

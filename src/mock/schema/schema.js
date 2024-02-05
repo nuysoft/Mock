@@ -25,7 +25,9 @@ function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
             result.items = template.map((value, index) => toJSONSchema(value, index, result.path));
             break;
         case 'object':
-            result.properties = [...Object.entries(template)].map(([name, value]) => toJSONSchema(value, name, result.path));
+            result.properties = [...Object.entries(template)].map(([name, value]) =>
+                toJSONSchema(value, name, result.path),
+            );
             break;
     }
 

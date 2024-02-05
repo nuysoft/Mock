@@ -5,7 +5,7 @@ import { capitalize } from '../helper.js';
 function sentence(min = 12, max = 18) {
     switch (arguments.length) {
         case 1:
-            max = min
+            max = min;
     }
     const len = random(min, max);
     const string = times(len, () => word()).join(' ');
@@ -16,7 +16,7 @@ function sentence(min = 12, max = 18) {
 function word(min = 3, max = 10) {
     switch (arguments.length) {
         case 1:
-            max = min
+            max = min;
     }
     const len = random(min, max);
     return times(len, () => character('lower')).join('');
@@ -26,7 +26,7 @@ function word(min = 3, max = 10) {
 function paragraph(min = 3, max = 7) {
     switch (arguments.length) {
         case 1:
-            max = min
+            max = min;
     }
     const len = random(min, max);
     return times(len, () => sentence()).join('\n');
@@ -36,9 +36,11 @@ function paragraph(min = 3, max = 7) {
 function title(min = 3, max = 7) {
     switch (arguments.length) {
         case 1:
-            max = min
+            max = min;
     }
     const len = random(min, max);
-    return times(len, () => word(1, 1)).join('').toUpperCase();
+    return times(len, () => word(1, 1))
+        .join('')
+        .toUpperCase();
 }
 export { word, paragraph, sentence, title };

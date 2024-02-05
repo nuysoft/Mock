@@ -5,11 +5,11 @@ import { _mocked } from '../_mocked.js';
 // 查找与请求参数匹配的数据模板：URL，Type
 function find({ url, type }) {
     type = type.toLowerCase();
-    for (const sUrlType in _mocked) {
-        const item = _mocked[sUrlType];
+
+    for (const item of _mocked) {
         const { rurl, rtype } = item;
         if (match(rurl, url) && match(rtype, type)) {
-            // console.log('[mock]', url, '>', item.rurl)
+            console.log('[mock]', url, '>', item.rurl);
             return item;
         }
     }
