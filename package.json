@@ -1,7 +1,7 @@
 {
-    "name": "mockjs-esm",
+    "name": "mockjs-ts",
     "title": "Mock.js",
-    "description": "Mockjs 的 esm 版本，基础 api 一致",
+    "description": "Mockjs 的 typescript 版本，基础 api 一致",
     "version": "2.0.0",
     "homepage": "http://mockjs.com/",
     "keywords": [

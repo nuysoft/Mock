@@ -3,7 +3,7 @@ export default {
         lib: {
             // Could also be a dictionary or array of multiple entry points
             entry: './src/mock.js',
-            name: 'mock',
+            name: 'Mock',
             formats: ['es', 'umd'],
             // the proper extensions will be added
             fileName: 'mock',
@@ -11,7 +11,7 @@ export default {
     },
     test: {
         coverage: {
-            reporter: ['text', 'json', 'html'],
+            reporter: ['text', 'json', 'html', 'clover'],
         },
     }
 }
