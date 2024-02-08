@@ -7,7 +7,9 @@ export default {
             formats: ['es', 'umd'],
             // the proper extensions will be added
             fileName: 'mock',
+
         },
+        sourcemap: true
     },
     test: {
         coverage: {

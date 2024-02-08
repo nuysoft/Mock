@@ -58,7 +58,7 @@ export function array({
                 template.__order_index += +parameters[2];
             } else {
                 // 'data|1-10': [{}]
-                [...Array(count).keys()].forEach(() => {
+                [...Array(Math.min(count, 10000)).keys()].forEach(() => {
                     template.forEach((item, index) => {
                         result.push(
                             gen(item, result.length, {
