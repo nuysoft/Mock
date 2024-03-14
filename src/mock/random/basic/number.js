@@ -1,4 +1,4 @@
-import { random } from 'lodash-es';
+import { random } from 'game-random';
 const isNumber = function (el) {
     return typeof el === 'number' && !isNaN(el);
 };

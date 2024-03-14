@@ -1,4 +1,4 @@
-import { sample } from 'lodash-es';
+import { sample } from 'game-random';
 const pools = {
     lower: 'abcdefghijklmnopqrstuvwxyz',
     upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',

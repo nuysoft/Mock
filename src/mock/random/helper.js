@@ -1,8 +1,8 @@
 /*
     ## Helpers
 */
-
-import { shuffle as _shuffle, capitalize as _capitalize, sampleSize, random, sample } from 'lodash-es';
+import { random, sample, sampleSize } from 'game-random';
+import { shuffle as _shuffle, capitalize as _capitalize } from 'lodash-es';
 const capitalize = (info = 'undefined') => _capitalize(info);
 const upper = function (str) {
     return (str + '').toUpperCase();
@@ -18,6 +18,7 @@ const pick = function (arr, ...args) {
     let min;
     let max;
     let count;
+    if (arr === undefined) return undefined
     switch (args.length) {
         case 0:
             return sample(arr);

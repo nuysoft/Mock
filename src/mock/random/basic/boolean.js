@@ -1,4 +1,4 @@
-import { random } from 'lodash-es';
+import { random } from 'game-random';
 const boolean = function (min, max, cur = false) {
     // ! cur:boolean 是划分概率的一个启动符号
     // if (cur) {

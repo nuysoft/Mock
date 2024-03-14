@@ -1,5 +1,6 @@
 import { natural } from '../basic';
-import { random, sampleSize, times } from 'lodash-es';
+import { random, sampleSize } from 'game-random';
+import { times } from 'lodash-es';
 
 function cparagraph(min = 3, max = 7) {
     const len = random(min, max);
