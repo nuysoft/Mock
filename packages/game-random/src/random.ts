@@ -1,7 +1,8 @@
 import { alea as seedrandom } from 'seedrandom';
+import { GlobalSeedAtom } from './globalSeed';
 function _random(lower: number, upper: number, floating: boolean, seed?: string | undefined) {
     const step = upper - lower;
-
+    seed = seed ?? GlobalSeedAtom()
     const result = lower + step * (seed !== undefined ? seedrandom(seed).quick() : Math.random());
 
     return floating ? result : Math.floor(result);

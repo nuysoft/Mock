@@ -39,3 +39,4 @@ const Mock = {
 
 export default Mock;
 export { registerRandom } from './mock/random';
+export * from 'game-random'

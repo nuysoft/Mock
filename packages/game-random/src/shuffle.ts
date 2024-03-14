@@ -1,5 +1,5 @@
 import seedrandom from 'seedrandom';
-
+import { GlobalSeedAtom } from './globalSeed'
 const isArray = function ($: any) {
     return Object.prototype.toString.call($) === '[object Array]';
 };
@@ -12,6 +12,7 @@ const shuffle = function <T>(arr: T[], seed?: string) {
     if (!isArray(arr)) return null;
 
     const size = arr.length;
+    seed = seed ?? GlobalSeedAtom()
     const rng = seedrandom(seed);
     const resp = [];
     const keys = [];
@@ -29,6 +30,7 @@ const shuffle = function <T>(arr: T[], seed?: string) {
 const unshuffle = function <T>(arr: T[], seed?: string) {
     if (!isArray(arr)) return null;
     const size = arr.length;
+    seed = seed ?? GlobalSeedAtom()
     const rng = seedrandom(seed);
     const resp = [];
     const keys = [];
