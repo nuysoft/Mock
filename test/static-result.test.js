@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import Mock, { GlobalSeedAtom } from '../src/mock';
 describe('static result', () => {
     it('template', () => {
-        GlobalSeedAtom("100")
+        GlobalSeedAtom(Math.random())
         var tpl = {
             basics: {
                 boolean1: '@BOOLEAN',

@@ -29,7 +29,15 @@
         UUID格式：xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx(8-4-4-16)
         GUID格式：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (8-4-4-4-12)
     */
-import { v4 as uuid } from 'uuid';
+import { random } from 'game-random'
+function generateGUID() {
+    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = random(0, 15);
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+    return uuid;
+}
 export default function guid() {
-    return uuid();
+    return generateGUID();
 }

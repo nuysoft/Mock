@@ -5,6 +5,9 @@
 
 import size from './image.json';
 import { pick } from './helper';
+import _brandColors from './brandColors.json';
+import { hex } from './color';
+import { sample } from 'game-random';
 const { _adSize, _screenSize, _videoSize } = size;
 
 /*
@@ -19,8 +22,7 @@ const { _adSize, _screenSize, _videoSize } = size;
         console.log('\'' + item.text() + '\'', ':', '\'' + item.next().text() + '\'', ',')
     })
 */
-import _brandColors from './brandColors.json';
-import { hex } from './color';
+
 const _brandNames = Object.keys(_brandColors);
 
 /*
@@ -50,16 +52,16 @@ function image(...args) {
     }
 
     // Random.image()
-    if (!size) size = pick(_adSize);
-
+    if (!size) size = sample(_adSize);
+    size = size.replaceAll('"','')
     // 去除前面的 # 号
-    foreground = (foreground || hex()).replace(/^#/, '');
-    background = (background || hex()).replace(/^#/, '');
+    foreground = (foreground || hex()).replace(/^#/, '').replaceAll('"','');
+    background = (background || hex()).replace(/^#/, '').replaceAll('"','');
 
     // http://dummyimage.com/600x400/cc00cc/470047.png&text=hello
     return `http://dummyimage.com/${size}${background ? '/' + background : ''}${foreground ? '/' + foreground : ''}${
-        format ? '.' + format : ''
-    }${text ? '&text=' + text : ''}`;
+        format ? '.' + format.replaceAll('"','') : ''
+    }${text ? '&text=' + text.replaceAll('"','') : ''}`;
 }
 /*
     生成一段随机的 Base64 图片编码。

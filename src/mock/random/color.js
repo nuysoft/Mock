@@ -73,20 +73,21 @@
 */
 import Color from 'color'; // 使用 color 这个库进行颜色转换
 import DICT from './color/color_dict';
-import { pick } from './helper';
 import RandomColor from './color/color_dict_cn.json';
+import { random, sample } from 'game-random'
 
 let _hue;
 function _goldenRatioColor(saturation, value) {
-    const _goldenRatio = 0.618033988749895;
-    _hue = _hue || Math.random();
-    _hue += _goldenRatio;
-    _hue %= 1;
+    return Color(color())
+    // const _goldenRatio = 0.618033988749895;
+    // _hue = _hue || (random(true) );
+    // _hue += _goldenRatio;
+    // _hue %= 1;
 
-    if (typeof saturation !== 'number') saturation = 0.5;
-    if (typeof value !== 'number') value = 0.95;
+    // if (typeof saturation !== 'number') saturation = 0.5;
+    // if (typeof value !== 'number') value = 0.95;
 
-    return Color.hsv(_hue * 360, saturation * 100, value * 100);
+    // return Color.hsv(_hue * 360, saturation * 100, value * 100);
 }
 
 // 中国色 数据来自于 http://zhongguose.com
@@ -94,7 +95,7 @@ function _goldenRatioColor(saturation, value) {
 // 随机生成一个有吸引力的颜色，格式为 '#RRGGBB' hex。
 function color(name) {
     if (name || DICT[name]) return DICT[name].nicer;
-    return pick(RandomColor).hex;
+    return sample(RandomColor).hex;
 }
 
 // #DAC0DE
@@ -111,7 +112,7 @@ function rgb() {
 // rgba(128,255,255,0.3)
 function rgba() {
     const hsv = _goldenRatioColor();
-    return hsv.alpha(Math.random().toFixed(2)).hsv().string();
+    return hsv.alpha(random(true).toFixed(2)).hsv().string();
 }
 
 // hsl(300,80%,90%)
