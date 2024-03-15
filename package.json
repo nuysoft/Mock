@@ -2,7 +2,7 @@
     "name": "mockjs-ts",
     "title": "Mock.js",
     "description": "Mockjs 的 typescript 版本，基础 api 一致",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "homepage": "http://mockjs.com/",
     "files": [
         "dist",
