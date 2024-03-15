@@ -18,7 +18,7 @@ const pick = function (arr, ...args) {
     let min;
     let max;
     let count;
-    if (arr === undefined) return undefined
+    if (arr === undefined) return undefined;
     switch (args.length) {
         case 0:
             return sample(arr);

@@ -74,11 +74,11 @@
 import Color from 'color'; // 使用 color 这个库进行颜色转换
 import DICT from './color/color_dict';
 import RandomColor from './color/color_dict_cn.json';
-import { random, sample } from 'game-random'
+import { random, sample } from 'game-random';
 
 let _hue;
 function _goldenRatioColor(saturation, value) {
-    return Color(color())
+    return Color(color());
     // const _goldenRatio = 0.618033988749895;
     // _hue = _hue || (random(true) );
     // _hue += _goldenRatio;

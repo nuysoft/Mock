@@ -53,15 +53,15 @@ function image(...args) {
 
     // Random.image()
     if (!size) size = sample(_adSize);
-    size = size.replaceAll('"','')
+    size = size.replaceAll('"', '');
     // 去除前面的 # 号
-    foreground = (foreground || hex()).replace(/^#/, '').replaceAll('"','');
-    background = (background || hex()).replace(/^#/, '').replaceAll('"','');
+    foreground = (foreground || hex()).replace(/^#/, '').replaceAll('"', '');
+    background = (background || hex()).replace(/^#/, '').replaceAll('"', '');
 
     // http://dummyimage.com/600x400/cc00cc/470047.png&text=hello
     return `http://dummyimage.com/${size}${background ? '/' + background : ''}${foreground ? '/' + foreground : ''}${
-        format ? '.' + format.replaceAll('"','') : ''
-    }${text ? '&text=' + text.replaceAll('"','') : ''}`;
+        format ? '.' + format.replaceAll('"', '') : ''
+    }${text ? '&text=' + text.replaceAll('"', '') : ''}`;
 }
 /*
     生成一段随机的 Base64 图片编码。
