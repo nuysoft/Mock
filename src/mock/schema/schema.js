@@ -5,43 +5,33 @@
 
     > [JSON Schema](http://json-schema.org/)
  */
-var Constant = require('../constant')
-var Util = require('../util')
-var Parser = require('../parser')
+import Constant from '../constant';
+import { type } from '../util';
+import { parser } from '../parser';
 
-function toJSONSchema(template, name, path /* Internal Use Only */ ) {
+function toJSONSchema(template, name, path = [] /* Internal Use Only */) {
     // type rule properties items
-    path = path || []
-    var result = {
+    const result = {
         name: typeof name === 'string' ? name.replace(Constant.RE_KEY, '$1') : name,
-        template: template,
-        type: Util.type(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
-        rule: Parser.parse(name)
-    }
-    result.path = path.slice(0)
-    result.path.push(name === undefined ? 'ROOT' : result.name)
+        template,
+        type: type(template), // 可能不准确，例如 { 'name|1': [{}, {} ...] }
+        rule: parser(name),
+        path: path.slice(0),
+    };
+    result.path.push(name === undefined ? 'ROOT' : result.name);
 
     switch (result.type) {
         case 'array':
-            result.items = []
-            Util.each(template, function(value, index) {
-                result.items.push(
-                    toJSONSchema(value, index, result.path)
-                )
-            })
-            break
+            result.items = template.map((value, index) => toJSONSchema(value, index, result.path));
+            break;
         case 'object':
-            result.properties = []
-            Util.each(template, function(value, name) {
-                result.properties.push(
-                    toJSONSchema(value, name, result.path)
-                )
-            })
-            break
+            result.properties = [...Object.entries(template)].map(([name, value]) =>
+                toJSONSchema(value, name, result.path),
+            );
+            break;
     }
 
-    return result
-
+    return result;
 }
-
-module.exports = toJSONSchema
+export { toJSONSchema };
+export default toJSONSchema;

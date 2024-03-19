@@ -1,49 +1,58 @@
 {
-  "name": "mockjs",
-  "title": "Mock.js",
-  "description": "生成随机数据 & 拦截 Ajax 请求",
-  "version": "1.0.1-beta3",
-  "homepage": "http://mockjs.com/",
-  "keywords": [
-    "mock",
-    "mockJSON",
-    "mockAjax"
-  ],
-  "author": "nuysoft@gmail.com",
-  "dependencies": {
-    "commander": "*"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-connect": "^5.7.0",
-    "gulp-coveralls": "^0.1.4",
-    "gulp-istanbul": "^0.10.4",
-    "gulp-jshint": "^2.1.0",
-    "gulp-mocha": "^2.2.0",
-    "gulp-mocha-phantomjs": "^0.10.1",
-    "jshint": "^2.8.0",
-    "jshint-stylish": "^2.1.0",
-    "webpack": "^1.12.9"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/nuysoft/Mock.git"
-  },
-  "main": "./dist/mock.js",
-  "scripts": {
-    "test": "gulp mocha",
-    "coveralls": "gulp coveralls"
-  },
-  "bin": {
-    "random": "bin/random"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/nuysoft/Mock/blob/master/LICENSE"
+    "name": "mockjs-ts",
+    "title": "Mock.js",
+    "description": "Mockjs 的 typescript 版本，基础 api 一致",
+    "version": "2.3.0",
+    "homepage": "http://mockjs.com/",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "keywords": [
+        "mock",
+        "mockJSON",
+        "mockAjax",
+        "mockTempalte"
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/nuysoft/Mock/blob/master/MIT-LICENSE.txt"
+        },
+        {
+            "type": "MIT",
+            "url": "https://github.com/KonghaYao/Mock/LICENSE"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/KonghaYao/Mock.git"
+    },
+    "main": "./dist/mock.mjs",
+    "module": "./dist/mock.mjs",
+    "types": "./dist/mock.d.ts",
+    "scripts": {
+        "test": "vitest",
+        "coverage": "vitest run --coverage",
+        "build": "vite build",
+        "prepublish": " pnpm build && tsc ",
+        "prettier": "prettier --write src/**/*.{ts,json,md,yml,js}"
+    },
+    "dependencies": {
+        "color": "^3.1.3",
+        "game-random": "workspace:",
+        "lodash-es": "^4.17.21",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "@vitest/browser": "^1.2.2",
+        "@vitest/coverage-v8": "^1.2.2",
+        "blob-polyfill": "^7.0.20220408",
+        "jquery": "~2.1.1",
+        "jsdom": "^24.0.0",
+        "prettier": "^2.3.2",
+        "typescript": "^5.3.3",
+        "vite": "^5.0.12",
+        "vitest": "^1.2.2"
     }
-  ],
-  "spm": {
-    "main": "dist/mock.js"
-  }
 }

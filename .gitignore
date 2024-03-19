@@ -1,9 +1,3 @@
-bak
-.DS_Store
-.*.swp
-.idea
 node_modules
-bower_components
+dist
 coverage
-PLAN.md
-npm-debug.log

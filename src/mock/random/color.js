@@ -9,7 +9,7 @@
         var bg_colour = Math.floor(Math.random() * 16777215).toString(16);
         bg_colour = "#" + ("000000" + bg_colour).slice(-6);
         document.bgColor = bg_colour;
-    
+
     http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
         Creating random colors is actually more difficult than it seems. The randomness itself is easy, but aesthetically pleasing randomness is more difficult.
         https://github.com/devongovett/color-generator
@@ -29,7 +29,7 @@
 
     http://tool.c7sky.com/webcolor
         网页设计常用色彩搭配表
-    
+
     https://github.com/One-com/one-color
         An OO-based JavaScript color parser/computation toolkit with support for RGB, HSV, HSL, CMYK, and alpha channels.
         API 很赞
@@ -61,7 +61,7 @@
             color += letters[Math.floor(Math.random() * 16)]
         }
         return color
-    
+
         // 随机生成一个无脑的颜色，格式为 '#RRGGBB'。
         // _brainlessColor()
         var color = Math.floor(
@@ -71,67 +71,56 @@
         color = "#" + ("000000" + color).slice(-6)
         return color.toUpperCase()
 */
+import Color from 'color'; // 使用 color 这个库进行颜色转换
+import DICT from './color/color_dict';
+import RandomColor from './color/color_dict_cn.json';
+import { random, sample } from 'game-random';
 
-var Convert = require('./color_convert')
-var DICT = require('./color_dict')
+let _hue;
+function _goldenRatioColor(saturation, value) {
+    return Color(color());
+    // const _goldenRatio = 0.618033988749895;
+    // _hue = _hue || (random(true) );
+    // _hue += _goldenRatio;
+    // _hue %= 1;
 
-module.exports = {
-    // 随机生成一个有吸引力的颜色，格式为 '#RRGGBB'。
-    color: function(name) {
-        if (name || DICT[name]) return DICT[name].nicer
-        return this.hex()
-    },
-    // #DAC0DE
-    hex: function() {
-        var hsv = this._goldenRatioColor()
-        var rgb = Convert.hsv2rgb(hsv)
-        var hex = Convert.rgb2hex(rgb[0], rgb[1], rgb[2])
-        return hex
-    },
-    // rgb(128,255,255)
-    rgb: function() {
-        var hsv = this._goldenRatioColor()
-        var rgb = Convert.hsv2rgb(hsv)
-        return 'rgb(' +
-            parseInt(rgb[0], 10) + ', ' +
-            parseInt(rgb[1], 10) + ', ' +
-            parseInt(rgb[2], 10) + ')'
-    },
-    // rgba(128,255,255,0.3)
-    rgba: function() {
-        var hsv = this._goldenRatioColor()
-        var rgb = Convert.hsv2rgb(hsv)
-        return 'rgba(' +
-            parseInt(rgb[0], 10) + ', ' +
-            parseInt(rgb[1], 10) + ', ' +
-            parseInt(rgb[2], 10) + ', ' +
-            Math.random().toFixed(2) + ')'
-    },
-    // hsl(300,80%,90%)
-    hsl: function() {
-        var hsv = this._goldenRatioColor()
-        var hsl = Convert.hsv2hsl(hsv)
-        return 'hsl(' +
-            parseInt(hsl[0], 10) + ', ' +
-            parseInt(hsl[1], 10) + ', ' +
-            parseInt(hsl[2], 10) + ')'
-    },
-    // http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
-    // https://github.com/devongovett/color-generator/blob/master/index.js
-    // 随机生成一个有吸引力的颜色。
-    _goldenRatioColor: function(saturation, value) {
-        this._goldenRatio = 0.618033988749895
-        this._hue = this._hue || Math.random()
-        this._hue += this._goldenRatio
-        this._hue %= 1
+    // if (typeof saturation !== 'number') saturation = 0.5;
+    // if (typeof value !== 'number') value = 0.95;
 
-        if (typeof saturation !== "number") saturation = 0.5;
-        if (typeof value !== "number") value = 0.95;
-
-        return [
-            this._hue * 360,
-            saturation * 100,
-            value * 100
-        ]
-    }
+    // return Color.hsv(_hue * 360, saturation * 100, value * 100);
 }
+
+// 中国色 数据来自于 http://zhongguose.com
+
+// 随机生成一个有吸引力的颜色，格式为 '#RRGGBB' hex。
+function color(name) {
+    if (name || DICT[name]) return DICT[name].nicer;
+    return sample(RandomColor).hex;
+}
+
+// #DAC0DE
+function hex() {
+    const hsv = _goldenRatioColor();
+    return hsv.hex();
+}
+
+// rgb(128,255,255)
+function rgb() {
+    const hsv = _goldenRatioColor();
+    return hsv.hsv().string();
+}
+// rgba(128,255,255,0.3)
+function rgba() {
+    const hsv = _goldenRatioColor();
+    return hsv.alpha(random(true).toFixed(2)).hsv().string();
+}
+
+// hsl(300,80%,90%)
+function hsl() {
+    const hsv = _goldenRatioColor();
+    const num = hsv.hsl();
+    // 防止小数导致判断错误
+    num.color[0] = Math.floor(num.color[0]);
+    return num.string();
+}
+export { color, hex, rgb, rgba, hsl, _goldenRatioColor };
